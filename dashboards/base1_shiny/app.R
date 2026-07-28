@@ -23,6 +23,7 @@ path_mides_anual_local <- file.path(local_data_dir, "painel_mg_anual.rds")
 path_mides_municipios_local <- file.path(local_data_dir, "mides_municipios_lookup.csv")
 path_mides_municipios_rds_local <- file.path(local_data_dir, "mides_municipios_lookup.rds")
 path_cadastro_local <- file.path(local_data_dir, "cadastro_base.rds")
+path_classificacao_local <- file.path(local_data_dir, "classificacao_areas_politica_mg_v0_5.rds")
 path_mg_sf_local <- file.path(local_data_dir, "mg_municipios_sf_web.rds")
 path_mg_contorno_local <- file.path(local_data_dir, "mg_contorno_sf_web.rds")
 path_vinculos_repo <- file.path(out_dir, "base_1_vinculos_2015_2019.csv")
@@ -30,6 +31,7 @@ path_validacao_repo <- file.path(out_dir, "base_1_validacao_siconfi_reconstruido
 path_mides_anual_repo <- file.path(project_dir, "dados/processado/painel_mg_anual.rds")
 path_mides_municipios_repo <- file.path(project_dir, "dashboards/base1_shiny/data/mides_municipios_lookup.csv")
 path_cadastro_repo <- file.path(project_dir, "dados/processado/cadastro_base.rds")
+path_classificacao_repo <- file.path(project_dir, "analises/classificacao_politicas/outputs/classificacao_areas_politica_mg_v0_5_completa.csv")
 path_mg_sf_repo <- file.path(project_dir, "dashboards/base1_shiny/data/mg_municipios_sf_web.rds")
 path_mg_contorno_repo <- file.path(project_dir, "dashboards/base1_shiny/data/mg_contorno_sf_web.rds")
 
@@ -38,6 +40,7 @@ path_validacao <- if (file.exists(path_validacao_rds_local)) path_validacao_rds_
 path_mides_anual <- if (file.exists(path_mides_anual_local)) path_mides_anual_local else path_mides_anual_repo
 path_mides_municipios <- if (file.exists(path_mides_municipios_rds_local)) path_mides_municipios_rds_local else if (file.exists(path_mides_municipios_local)) path_mides_municipios_local else path_mides_municipios_repo
 path_cadastro <- if (file.exists(path_cadastro_local)) path_cadastro_local else path_cadastro_repo
+path_classificacao <- if (file.exists(path_classificacao_local)) path_classificacao_local else path_classificacao_repo
 path_mg_sf <- if (file.exists(path_mg_sf_local)) path_mg_sf_local else path_mg_sf_repo
 path_mg_contorno <- if (file.exists(path_mg_contorno_local)) path_mg_contorno_local else path_mg_contorno_repo
 
@@ -46,6 +49,7 @@ if (!file.exists(path_validacao)) stop("Arquivo nao encontrado: ", path_validaca
 if (!file.exists(path_mides_anual)) stop("Arquivo nao encontrado: ", path_mides_anual)
 if (!file.exists(path_mides_municipios)) stop("Arquivo nao encontrado: ", path_mides_municipios)
 if (!file.exists(path_cadastro)) stop("Arquivo nao encontrado: ", path_cadastro)
+if (!file.exists(path_classificacao)) stop("Arquivo nao encontrado: ", path_classificacao)
 if (!file.exists(path_mg_sf)) stop("Arquivo nao encontrado: ", path_mg_sf)
 if (!file.exists(path_mg_contorno)) stop("Arquivo nao encontrado: ", path_mg_contorno)
 
@@ -256,6 +260,29 @@ cadastro_base <- readRDS(path_cadastro) |>
     setores_cadastro, situacao_cadastro, ano_fundacao
   )
 
+# A classificacao v0.5 qualifica o consorcio sem alterar a observacao MIDES.
+# CNPJs ausentes, inativos ou sem area continuam no painel como "Sem classificacao ativa".
+classificacao_v05 <- read_table_app(path_classificacao) |>
+  mutate(
+    cnpj_consorcio = str_pad(as.character(cnpj_consorcio), 14, side = "left", pad = "0"),
+    ativo_analise = coalesce(ativo_analise, FALSE),
+    area_filtro = if_else(ativo_analise & !is.na(area_politica_final) & area_politica_final != "", area_politica_final, "Sem classificacao ativa"),
+    macrogrupo_filtro = if_else(ativo_analise & !is.na(macroarea_final) & macroarea_final != "", macroarea_final, "Sem classificacao ativa"),
+    perfil_filtro = if_else(ativo_analise & !is.na(perfil_institucional) & perfil_institucional != "", perfil_institucional, "Sem classificacao ativa"),
+    status_classificacao = coalesce(status_validacao, "Sem classificacao"),
+    fonte_classificacao = coalesce(fonte_principal, "Sem classificacao")
+  ) |>
+  select(
+    cnpj_consorcio,
+    area_politica = area_filtro,
+    macrogrupo_politica = macrogrupo_filtro,
+    perfil_classificacao = perfil_filtro,
+    status_classificacao,
+    fonte_classificacao,
+    ativo_classificacao = ativo_analise
+  ) |>
+  distinct(cnpj_consorcio, .keep_all = TRUE)
+
 mides_anual <- readRDS(path_mides_anual) |>
   mutate(
     ano = as.integer(ano),
@@ -265,12 +292,18 @@ mides_anual <- readRDS(path_mides_anual) |>
   ) |>
   left_join(mides_municipios, by = "cod_ibge_6") |>
   left_join(cadastro_base, by = "cnpj_consorcio") |>
+  left_join(classificacao_v05, by = "cnpj_consorcio") |>
   mutate(
     municipio = if_else(is.na(municipio) | municipio == "", paste0("IBGE ", cod_ibge_6), municipio),
     sigla = coalesce(sigla_cadastro, "(sem sigla)"),
     razao_social = coalesce(razao_social_cadastro, nome_credor_freq),
     setores = coalesce(setores_cadastro, "(sem setor)"),
     situacao = coalesce(situacao_cadastro, "(sem situacao)"),
+    area_politica = coalesce(area_politica, "Sem classificacao ativa"),
+    macrogrupo_politica = coalesce(macrogrupo_politica, "Sem classificacao ativa"),
+    perfil_classificacao = coalesce(perfil_classificacao, "Sem classificacao ativa"),
+    status_classificacao = coalesce(status_classificacao, "Fora do universo da classificacao"),
+    fonte_classificacao = coalesce(fonte_classificacao, "Fora do universo da classificacao"),
     tipo_valor = case_when(
       valor_corrente > 0 & valor_restos > 0 ~ "corrente + restos",
       valor_corrente > 0 ~ "corrente",
@@ -323,6 +356,9 @@ classes_opts <- levels(droplevels(base_final$classe_validacao))
 mides_anos_opts <- sort(unique(mides_anual$ano))
 mides_municipios_opts <- sort(unique(mides_anual$municipio))
 mides_consorcios_opts <- sort(unique(mides_anual$sigla))
+mides_areas_opts <- sort(unique(mides_anual$area_politica))
+mides_macrogrupos_opts <- sort(unique(mides_anual$macrogrupo_politica))
+mides_perfis_opts <- sort(unique(mides_anual$perfil_classificacao))
 mides_regra_valor_opts <- c(
   "Todos os registros" = "todos",
   "Valor corrente positivo" = "corrente",
@@ -997,6 +1033,12 @@ ui <- page_navbar(
           selectInput("mides_mapa_metrica", label_com_info("Metrica do mapa", "Define a cor do mapa: valor MIDES, numero de consorcios ou numero de transacoes."), choices = mides_mapa_metrica_opts, selected = "valor_total"),
           textInput("mides_busca", label_com_info("Busca livre no MIDES", "Pesquisa municipio, sigla, CNPJ, razao social e nome recorrente do credor no MIDES."), placeholder = "municipio, sigla, CNPJ, razao social..."),
           div(tags$label("&nbsp;"), actionButton("limpar_mides", "Limpar MIDES", class = "btn-reset"))
+        ),
+        div(
+          class = "inline-filters",
+          selectizeInput("mides_area", label_com_info("Area de politica publica", "Filtra a area detalhada atribuida ao CNPJ do consorcio. Registros sem categoria ativa permanecem disponiveis na opcao correspondente."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todas as areas")),
+          selectizeInput("mides_macrogrupo", label_com_info("Macrogrupo", "Agrupa areas detalhadas em blocos analiticos. Use junto ou separadamente da area detalhada."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos os macrogrupos")),
+          selectizeInput("mides_perfil", label_com_info("Perfil institucional", "Descreve o perfil do consorcio, como setorial, multifinalitario ou multissetorial. Perfil nao substitui uma area de politica publica."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos os perfis"))
         )
       ),
       div(
@@ -1183,6 +1225,9 @@ server <- function(input, output, session) {
   updateSelectizeInput(session, "cmp_consorcio", choices = consorcios_opts, server = TRUE)
   updateSelectizeInput(session, "mides_municipio", choices = mides_municipios_opts, server = TRUE)
   updateSelectizeInput(session, "mides_consorcio", choices = mides_consorcios_opts, server = TRUE)
+  updateSelectizeInput(session, "mides_area", choices = mides_areas_opts, server = TRUE)
+  updateSelectizeInput(session, "mides_macrogrupo", choices = mides_macrogrupos_opts, server = TRUE)
+  updateSelectizeInput(session, "mides_perfil", choices = mides_perfis_opts, server = TRUE)
 
   observeEvent(input$limpar, {
     updateCheckboxGroupInput(session, "ano", selected = anos_opts)
@@ -1204,6 +1249,9 @@ server <- function(input, output, session) {
     updateCheckboxGroupInput(session, "mides_ano", selected = mides_anos_opts)
     updateSelectizeInput(session, "mides_municipio", selected = character(0))
     updateSelectizeInput(session, "mides_consorcio", selected = character(0))
+    updateSelectizeInput(session, "mides_area", selected = character(0))
+    updateSelectizeInput(session, "mides_macrogrupo", selected = character(0))
+    updateSelectizeInput(session, "mides_perfil", selected = character(0))
     updateSelectInput(session, "mides_regra_valor", selected = "total")
     updateSelectInput(session, "mides_mapa_metrica", selected = "valor_total")
     updateTextInput(session, "mides_busca", value = "")
@@ -1268,6 +1316,9 @@ server <- function(input, output, session) {
 
     if (length(input$mides_municipio) > 0) df <- df |> filter(municipio %in% input$mides_municipio)
     if (length(input$mides_consorcio) > 0) df <- df |> filter(sigla %in% input$mides_consorcio)
+    if (length(input$mides_area) > 0) df <- df |> filter(area_politica %in% input$mides_area)
+    if (length(input$mides_macrogrupo) > 0) df <- df |> filter(macrogrupo_politica %in% input$mides_macrogrupo)
+    if (length(input$mides_perfil) > 0) df <- df |> filter(perfil_classificacao %in% input$mides_perfil)
     if (!is.null(input$mides_busca) && str_squish(input$mides_busca) != "") {
       termos <- str_to_lower(str_squish(input$mides_busca))
       df <- df |> filter(str_detect(pesquisa_mides, fixed(termos)))
@@ -1279,6 +1330,9 @@ server <- function(input, output, session) {
       input$mides_regra_valor,
       input$mides_municipio,
       input$mides_consorcio,
+      input$mides_area,
+      input$mides_macrogrupo,
+      input$mides_perfil,
       input$mides_busca
     )
 
@@ -1336,6 +1390,9 @@ server <- function(input, output, session) {
       input$mides_mapa_metrica,
       input$mides_municipio,
       input$mides_consorcio,
+      input$mides_area,
+      input$mides_macrogrupo,
+      input$mides_perfil,
       input$mides_busca
     )
 
@@ -1356,6 +1413,9 @@ server <- function(input, output, session) {
 
     if (length(input$mides_municipio) > 0) df <- df |> filter(municipio %in% input$mides_municipio)
     if (length(input$mides_consorcio) > 0) df <- df |> filter(sigla %in% input$mides_consorcio)
+    if (length(input$mides_area) > 0) df <- df |> filter(area_politica %in% input$mides_area)
+    if (length(input$mides_macrogrupo) > 0) df <- df |> filter(macrogrupo_politica %in% input$mides_macrogrupo)
+    if (length(input$mides_perfil) > 0) df <- df |> filter(perfil_classificacao %in% input$mides_perfil)
     if (!is.null(input$mides_busca) && str_squish(input$mides_busca) != "") {
       termos <- str_to_lower(str_squish(input$mides_busca))
       df <- df |> filter(str_detect(pesquisa_mides, fixed(termos)))
@@ -1368,6 +1428,9 @@ server <- function(input, output, session) {
       input$mides_regra_valor,
       input$mides_municipio,
       input$mides_consorcio,
+      input$mides_area,
+      input$mides_macrogrupo,
+      input$mides_perfil,
       input$mides_busca
     )
 
@@ -1474,6 +1537,9 @@ server <- function(input, output, session) {
       input$mides_regra_valor,
       input$mides_municipio,
       input$mides_consorcio,
+      input$mides_area,
+      input$mides_macrogrupo,
+      input$mides_perfil,
       input$mides_busca
     )
 
@@ -1563,6 +1629,9 @@ server <- function(input, output, session) {
       input$mides_regra_valor,
       input$mides_municipio,
       input$mides_consorcio,
+      input$mides_area,
+      input$mides_macrogrupo,
+      input$mides_perfil,
       input$mides_busca
     )
 
@@ -2242,6 +2311,9 @@ server <- function(input, output, session) {
         sigla,
         cnpj_consorcio,
         razao_social,
+        area_politica,
+        macrogrupo_politica,
+        perfil_institucional = perfil_classificacao,
         valor_corrente = round(valor_corrente, 2),
         valor_restos = round(valor_restos, 2),
         valor_total = round(valor_total, 2),

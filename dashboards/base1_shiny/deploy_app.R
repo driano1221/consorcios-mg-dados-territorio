@@ -1,8 +1,4 @@
-source_dir <- if (dir.exists("C:/_ideiaMides/dashboards/base1_shiny")) {
-  "C:/_ideiaMides/dashboards/base1_shiny"
-} else {
-  "C:/IPEA/dados servidor IPEA/IPEA arquivos servidor para análise/ideiaMides/dashboards/base1_shiny"
-}
+source_dir <- normalizePath("dashboards/base1_shiny", winslash = "/", mustWork = TRUE)
 
 app_files <- c(
   "app.R",
@@ -12,6 +8,7 @@ app_files <- c(
   "data/base_1_validacao_siconfi_reconstruido_2015_2019.rds",
   "data/base_1_vinculos_2015_2019.rds",
   "data/cadastro_base.rds",
+  "data/classificacao_areas_politica_mg_v0_5.rds",
   "data/mg_contorno_sf_web.rds",
   "data/mg_municipios_sf_web.rds",
   "data/mides_municipios_lookup.rds",

@@ -43,7 +43,13 @@ Essas regras estao em `.gitignore`.
 2. Reexecutar e validar o script afetado.
 3. Atualizar a memoria, proximos passos e o diario de trabalho quando a sessao for relevante.
 4. Revisar `git status` para garantir que bases pesadas nao entraram por engano.
-5. Criar um commit com mensagem objetiva, por exemplo: `classificacao: validar casos coerentes v0.5`.
+5. Atualizar `docs/DIARIO_DE_TRABALHO.md` com decisao, arquivos alterados, validacoes e pendencias.
+6. Criar um commit com mensagem objetiva, por exemplo: `classificacao: validar casos coerentes v0.5`.
+7. Enviar o commit para `origin` ao encerrar a sessao.
+
+## Remoto
+
+Repositorio privado: <https://github.com/driano1221/ideiaMides>.
 
 ## Limite Atual
 

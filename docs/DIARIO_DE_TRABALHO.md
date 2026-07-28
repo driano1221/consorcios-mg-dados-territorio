@@ -46,7 +46,34 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 
 ### Pendencias Mantidas
 
-- Integrar a classificacao v0.5 como filtro analitico no MIDES completo, se aprovado.
 - Decidir se matriz/filial sera consolidada financeiramente e nos movimentos.
 - Nao iniciar ainda a frente 3: base anual formal de movimentos municipio x consorcio x ano.
 
+---
+
+## 2026-07-28 - Integracao v0.5 ao MIDES completo
+
+### Decisao e escopo
+
+- A classificacao v0.5 passou a integrar a tela `MIDES completo` exclusivamente como atributo do CNPJ do consorcio.
+- A integracao e feita por `left_join`: nenhum pagamento, par municipio-consorcio, ano ou movimento foi removido, agregado ou reclassificado.
+- CNPJs sem classificacao ativa continuam no painel sob o rotulo `Sem classificacao ativa`; portanto, o filtro nao reduz silenciosamente o universo historico.
+
+### Entregas
+
+- Incluidos os filtros multiplos `Area de politica publica`, `Macrogrupo` e `Perfil institucional` na tela MIDES completo.
+- Incluidas as tres colunas correspondentes na tabela detalhada MIDES.
+- Criados `dashboards/base1_shiny/preparar_classificacao_v0_5.R` e `dashboards/base1_shiny/tests/test_classificacao_v0_5.R`.
+- O script de deploy passou a usar caminho relativo ao repositorio, sem depender de diretorios locais alternativos.
+
+### Validacoes
+
+- Camada v0.5 preparada com 223 CNPJs tecnicos, 217 ativos e 94 casos coerentes validados.
+- Teste automatizado aprovado: preservacao de 15.135 linhas MIDES e 161 CNPJs, filtros por area, macrogrupo, perfil e sem classificacao ativa, mapa e base de movimentos.
+- Teste visual local aprovado: os filtros alteram KPIs e mapa; `Limpar MIDES` restaura o universo; o mapa de movimentos permanece renderizavel com os atributos aplicados.
+
+### Publicacao e versionamento
+
+- Dashboard republicado em <https://kl5ug0-adriano-pires.shinyapps.io/base1-mides-munic-siconfi/>.
+- Repositorio remoto privado criado em <https://github.com/driano1221/ideiaMides>.
+- Regra operacional definida: ao concluir uma sessao relevante, atualizar este diario, criar commit e enviar para `origin`.

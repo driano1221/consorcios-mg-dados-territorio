@@ -18,6 +18,7 @@ O projeto tem hoje tres blocos principais funcionando:
    - publicado em `https://kl5ug0-adriano-pires.shinyapps.io/base1-mides-munic-siconfi/`;
    - inclui Base 1, MIDES completo, comparacao 2015 vs 2019, auditorias e documentacao metodologica;
    - inclui mapas dinamicos para intensidade MIDES, composicao territorial das fontes e transicao 2015 vs 2019;
+   - a tela MIDES completo agora permite filtrar por area detalhada, macrogrupo e perfil institucional da classificacao v0.5; atributos ausentes permanecem visiveis como `Sem classificacao ativa`.
    - aba `MIDES completo > Entradas/saidas` mostra movimento anual dos pares municipio-consorcio entre 2014 e 2021;
    - mapas foram refinados visualmente com fundo branco, divisas municipais continuas, paletas mais legiveis, zoom/tela cheia e filtros integrados.
 
@@ -94,7 +95,7 @@ Entregas priorizadas:
    - **versao analitica v0.5 concluida:** `analises/classificacao_politicas/outputs/classificacao_areas_politica_mg_v0_5_analitica_ativa.csv` e `.rds`;
    - cobre os 223 CNPJs MG e reduz o uso analitico a tres campos: `area_politica_final`, `fonte_principal` e `status_validacao`; macroarea e perfil permanecem apenas como auxiliares;
    - status atual: 34 confirmadas, 94 provisorias coerentes, 15 provisorias por cadastro, 48 provisorias por nome, 23 multifinalitarios sem inferencia automatica, 6 pendentes, 2 filiais aguardando regra e 1 associacao fora do escopo;
-   - a v0.2 e a trilha tecnica continuam preservadas; a v0.3 nao altera MIDES, Base 1 ou dashboard;
+   - a v0.2 e a trilha tecnica continuam preservadas; a v0.5 entra no MIDES completo somente como atributo de filtro, sem alterar valores, pares ou movimentos;
    - regra de fontes: documentacao > revisao documental v0.2 > nome juridico com MUNIC coerente > MUNIC segura > cadastro IPEA arquivo sem conflito > nome juridico provisório > pendencia;
    - `tipo_fonte = regex` no cadastro IPEA e inferencia do nome, nao fonte independente.
 
@@ -108,7 +109,7 @@ Entregas priorizadas:
    - os seis pendentes tematicos inaptos/baixados foram retirados somente da camada analitica ativa; permanecem no arquivo tecnico;
    - a classificacao de matriz/filial ainda nao consolida CNPJs, valores ou movimentos; isso requer decisao separada;
    - os 16 multifinalitarios/multissetoriais sem area final permanecem apenas como perfil institucional, sem inferencia setorial adicional nesta etapa;
-   - antes da frente de movimentos, integrar a v0.5 ao dashboard e consolidar documentacao e repositorio.
+   - [feito] integrar a v0.5 ao MIDES completo, consolidar documentacao e preparar testes automatizados; os filtros ativos sao area detalhada, macrogrupo e perfil institucional.
 
 4. **Aprimoramentos do dashboard**
    - exibir nome de municipio no mapa apenas em filtros suficientemente restritos, para preservar legibilidade;

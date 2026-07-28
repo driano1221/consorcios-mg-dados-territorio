@@ -5,6 +5,7 @@ Dashboard Shiny para consulta interativa da Base 1.
 ## Conteudo
 
 - filtros multisselecao por ano, grupo de vinculo, classe SICONFI, municipio, consorcio e busca livre;
+- filtros MIDES completo por area detalhada, macrogrupo e perfil institucional da classificacao v0.5;
 - KPIs compactos no topo;
 - tabela pesquisavel/exportavel da base final;
 - tabela agregada de validacao SICONFI por municipio-ano;
@@ -15,6 +16,7 @@ Dashboard Shiny para consulta interativa da Base 1.
 
 - `data/base_1_vinculos_2015_2019.csv`
 - `data/base_1_validacao_siconfi_reconstruido_2015_2019.csv`
+- `data/classificacao_areas_politica_mg_v0_5.rds`
 
 Esses arquivos foram copiados para dentro da pasta do app para facilitar publicacao.
 
@@ -55,6 +57,8 @@ base1_shiny/
 MIDES e MUNIC formam a base de vinculos em `municipio x consorcio x ano`.
 
 SICONFI entra como validacao financeira agregada em `municipio x ano`, usando a regra `consorcio_pagas`.
+
+No MIDES completo, a classificacao v0.5 e anexada por CNPJ somente como atributo analitico. Ela nao altera valores, pares ou movimentos. CNPJs sem classificacao ativa permanecem acessiveis pelo filtro `Sem classificacao ativa`.
 
 ## Documentacao No App
 
