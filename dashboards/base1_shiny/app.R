@@ -88,8 +88,7 @@ rotulos_macrogrupo <- c(
 )
 rotulos_perfil <- c(
   setorial = "Setorial", multiarea = "Multiarea documentada",
-  multifinalitario = "Multifinalitario", multissetorial = "Multissetorial",
-  associacao_municipal = "Associacao municipal"
+  multifinalitario_ou_multissetorial = "Multifinalitario ou multissetorial"
 )
 extrair_categorias <- function(x) {
   x <- x[!is.na(x) & x != ""]
@@ -345,7 +344,8 @@ mides_anual <- readRDS(path_mides_anual) |>
     setores = coalesce(setores_cadastro, "(sem setor)"),
     situacao = coalesce(situacao_cadastro, "(sem situacao)"),
     cobertura_classificacao = case_when(
-      is.na(ativo_classificacao) ~ "Fora do universo da classificacao MG",
+      is.na(ativo_classificacao) ~ "Consorcio sediado fora de MG",
+      status_classificacao == "excluida_associacao_municipal" ~ "Entidade associativa fora do escopo",
       !ativo_classificacao ~ "CNPJ inativo ou baixado",
       is.na(area_politica) ~ "Perfil institucional sem area especifica",
       TRUE ~ "Area classificada"
@@ -1107,7 +1107,7 @@ ui <- page_navbar(
           class = "inline-filters",
           selectizeInput("mides_area", label_com_info("Area de politica publica", "Seleciona politicas especificas, como Saude, Agricultura ou Saneamento basico. Um consorcio com mais de uma area e encontrado em qualquer uma delas.", "Selecionar"), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Clique para selecionar areas", plugins = list("remove_button"), closeAfterSelect = FALSE)),
           selectizeInput("mides_macrogrupo", label_com_info("Macrogrupo", "Seleciona blocos amplos que reagrupam as areas detalhadas, como Saude ou Ambiente e saneamento.", "Selecionar"), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Clique para selecionar macrogrupos", plugins = list("remove_button"), closeAfterSelect = FALSE)),
-          selectizeInput("mides_perfil", label_com_info("Perfil institucional", "Seleciona como a instituicao se organiza: setorial, multiarea, multifinalitario, multissetorial ou associacao municipal. Perfil nao e uma area de politica publica.", "Selecionar"), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Clique para selecionar perfis", plugins = list("remove_button"), closeAfterSelect = FALSE))
+          selectizeInput("mides_perfil", label_com_info("Perfil institucional", "Seleciona como o consorcio se organiza: setorial, multiarea documentada ou multifinalitario ou multissetorial. Perfil nao e uma area de politica publica.", "Selecionar"), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Clique para selecionar perfis", plugins = list("remove_button"), closeAfterSelect = FALSE))
         )
       ),
       div(
@@ -1249,35 +1249,33 @@ ui <- page_navbar(
           "Classificacao de areas",
           div(
             class = "doc-grid",
-            div(class = "doc-card", h3("Area detalhada"), p("Indica o tema de politica publica efetivamente evidenciado: Saude, Agricultura, Saneamento basico e assim por diante. Um CNPJ pode ter mais de uma area.")),
-            div(class = "doc-card", h3("Macrogrupo"), p("Reagrupa as areas detalhadas para analise ampla. Por exemplo, Residuos solidos, Meio ambiente e Recursos hidricos pertencem a Ambiente e saneamento.")),
-            div(class = "doc-card", h3("Perfil institucional"), p("Descreve a forma de atuacao institucional. Setorial, multifinalitario e multissetorial nao substituem nem criam uma area de politica publica."))
+            div(class = "doc-card", h3("Area detalhada"), p("Tema de politica publica com evidencia registrada, como Saude, Agricultura ou Saneamento basico. Um CNPJ pode ter mais de uma area.")),
+            div(class = "doc-card", h3("Macrogrupo"), p("Familia analitica das areas detalhadas. Residuos solidos, Meio ambiente e Recursos hidricos foram reunidos em Ambiente e saneamento.")),
+            div(class = "doc-card", h3("Perfil institucional"), p("Forma de organizacao do consorcio. Perfil nao substitui nem cria uma area de politica publica."))
           ),
           tags$details(class = "doc-detail", open = NA, tags$summary("Diferenca entre area, macrogrupo e perfil"),
             tags$table(tags$thead(tags$tr(tags$th("Campo"), tags$th("Pergunta respondida"), tags$th("Exemplo"))), tags$tbody(
               tags$tr(tags$td("Area detalhada"), tags$td("Em qual politica publica o consorcio atua?"), tags$td("Saude; Saneamento basico; Agricultura.")),
               tags$tr(tags$td("Macrogrupo"), tags$td("A qual familia ampla pertencem essas areas?"), tags$td("Saude; Ambiente e saneamento; Desenvolvimento territorial.")),
-              tags$tr(tags$td("Perfil institucional"), tags$td("Como a instituicao se organiza ou se apresenta?"), tags$td("Setorial; Multiarea documentada; Multifinalitario; Multissetorial."))
+              tags$tr(tags$td("Perfil institucional"), tags$td("Como o consorcio se organiza ou se apresenta?"), tags$td("Setorial; Multiarea documentada; Multifinalitario ou multissetorial."))
             )),
-            p("Exemplo: um consorcio com areas Meio ambiente e Residuos solidos recebe o macrogrupo Ambiente e saneamento e perfil Multiarea documentada. Ja um consorcio denominado multifinalitario pode ter esse perfil sem receber area especifica, quando o nome nao prova uma politica concreta.")
+            p("Exemplo: um consorcio com Meio ambiente e Residuos solidos recebe o macrogrupo Ambiente e saneamento e o perfil Multiarea documentada. Um consorcio denominado multifinalitario ou multissetorial pode permanecer sem area especifica quando o nome nao prova uma politica concreta.")
           ),
           tags$details(class = "doc-detail", tags$summary("Perfis institucionais"),
             tags$ul(
-              tags$li(tags$strong("Setorial:"), " uma area de politica publica claramente identificada."),
-              tags$li(tags$strong("Multiarea documentada:"), " duas ou mais areas detalhadas identificadas por evidencia; nao e apenas um nome generico."),
-              tags$li(tags$strong("Multifinalitario:"), " instituicao apresentada como ampla ou multifinalitaria; esse nome sozinho nao autoriza inventar areas."),
-              tags$li(tags$strong("Multissetorial:"), " nome ou documentacao indica varios setores; uma area so entra quando estiver explicitamente indicada."),
-              tags$li(tags$strong("Associacao municipal:"), " entidade associativa, mantida no arquivo tecnico e distinta de consorcio intermunicipal."))
+              tags$li(tags$strong("Setorial:"), " uma area de politica publica foi identificada."),
+              tags$li(tags$strong("Multiarea documentada:"), " duas ou mais areas detalhadas foram identificadas por evidencia."),
+              tags$li(tags$strong("Multifinalitario ou multissetorial:"), " perfil amplo identificado pelo nome ou pela documentacao, sem atribuir area quando nao ha evidencia setorial suficiente."))
           ),
-          tags$details(class = "doc-detail", open = NA, tags$summary("Pipeline de classificacao"),
+          tags$details(class = "doc-detail", open = NA, tags$summary("Como a classificacao v0.5 foi produzida"),
             tags$ol(
-              tags$li("Padronizar setores do Cadastro IPEA e da MUNIC em areas detalhadas e macrogrupos."),
-              tags$li("Usar MUNIC de forma auditada: combinacoes heterogeneas entre macroareas nao sao unidas automaticamente."),
-              tags$li("Usar nome juridico e aliases MIDES apenas como inferencia textual rastreavel quando a evidencia setorial direta nao basta."),
-              tags$li("Separar perfil institucional, area de politica publica, fonte principal, status e justificativa."),
-              tags$li("Aplicar decisoes humanas em camada versionada, sem sobrescrever MIDES, MUNIC, SICONFI ou o cadastro bruto."))
+              tags$li("Os setores do Cadastro IPEA e da MUNIC foram padronizados em areas detalhadas e macrogrupos."),
+              tags$li("Combinacoes MUNIC entre macroareas heterogeneas nao foram unidas automaticamente."),
+              tags$li("Nome juridico e aliases MIDES foram usados somente como inferencia textual rastreavel quando nao havia evidencia setorial direta."),
+              tags$li("Area, macrogrupo, perfil institucional, fonte, status e justificativa foram registrados em campos separados."),
+              tags$li("As decisoes foram gravadas em camada versionada, sem alterar MIDES, MUNIC, SICONFI ou o cadastro bruto."))
           ),
-          tags$details(class = "doc-detail", tags$summary("Areas e macrogrupos"),
+          tags$details(class = "doc-detail", tags$summary("Taxonomia aplicada"),
             tags$table(tags$thead(tags$tr(tags$th("Area detalhada"), tags$th("Macrogrupo"), tags$th("Leitura"))), tags$tbody(
               tags$tr(tags$td("saude; urgencia_emergencia; vigilancia_em_saude"), tags$td("saude"), tags$td("Atencao, redes, urgencia e vigilancia em saude.")),
               tags$tr(tags$td("saneamento_basico; residuos_solidos; meio_ambiente; recursos_hidricos"), tags$td("ambiente_saneamento"), tags$td("Servicos ambientais, saneamento e gestao hidrica.")),
@@ -1287,15 +1285,14 @@ ui <- page_navbar(
               tags$tr(tags$td("iluminacao_publica; licitacao_compras_compartilhadas; gestao_publica"), tags$td("gestao_publica"), tags$td("Funcoes administrativas e servicos compartilhados."))
             ))
           ),
-          tags$details(class = "doc-detail", tags$summary("Como cada tipo foi obtido"),
+          tags$details(class = "doc-detail", tags$summary("Fontes e limites aplicados"),
             tags$ul(
-              tags$li(tags$strong("Herdado:"), " setor presente no Cadastro IPEA, MUNIC auditada ou revisao documental."),
-              tags$li(tags$strong("Inferido:"), " nome juridico ou alias MIDES explicita uma area; a fonte fica registrada como nome/alias, nao como evidencia documental plena."),
-              tags$li(tags$strong("Matriz/filial:"), " filial herda apenas area e perfil da matriz pela raiz de 8 digitos. Valores MIDES, pares e movimentos nao foram consolidados."),
-              tags$li(tags$strong("Multifinalitario:"), " perfil por nome; area somente se texto explicitar setor. Os demais permanecem sem area especifica."),
-              tags$li(tags$strong("Excluido inativo:"), " matriz inapta ou baixada, retirada somente da camada analitica ativa; continua preservada no arquivo tecnico."))
-          ),
-          div(class = "panel-card", h3("Cobertura da classificacao no MIDES completo"), p(class = "small-note", "Os filtros de classificacao exibem somente categorias substantivas. Esta tabela mostra separadamente os CNPJs sem area, inativos ou fora do universo de 223 CNPJs do cadastro MG."), DTOutput("tabela_cobertura_classificacao"))
+              tags$li(tags$strong("Fontes usadas:"), " Cadastro IPEA, MUNIC auditada, revisao documental e, quando necessario, nome juridico ou alias MIDES."),
+              tags$li(tags$strong("Matriz/filial:"), " filiais herdaram apenas area e perfil da matriz pela raiz de oito digitos. Valores, pares e movimentos nao foram consolidados."),
+              tags$li(tags$strong("Multifinalitario ou multissetorial:"), " recebeu area apenas quando havia evidencia setorial explicita."),
+              tags$li(tags$strong("Cobertura no MIDES:"), " dos 161 CNPJs observados, 136 tem area classificada; 15 tem perfil amplo sem area comprovada; 8 sao sediados fora de MG; 1 esta inativo ou baixado; e uma associacao municipal foi retirada da camada analitica."),
+              tags$li(tags$strong("Limite atual:"), " a classificacao de consorcios sediados fora de MG e a consolidacao financeira de matriz/filial nao foram realizadas."))
+          )
         )
       )
     )
@@ -2387,60 +2384,6 @@ server <- function(input, output, session) {
         coluna_detalhes
       ))
     )
-  }, server = TRUE)
-
-  output$tabela_cobertura_classificacao <- renderDT({
-    df <- mides_anual |>
-      filter(cobertura_classificacao != "Area classificada") |>
-      group_by(
-        cobertura_classificacao,
-        cnpj_consorcio,
-        sigla,
-        razao_social,
-        area_politica,
-        macrogrupo_politica,
-        perfil_classificacao
-      ) |>
-      summarise(
-        anos_mides = paste(sort(unique(ano)), collapse = "; "),
-        linhas_mides = n(),
-        valor_total_mides = sum(valor_total, na.rm = TRUE),
-        .groups = "drop"
-      ) |>
-      transmute(
-        situacao = cobertura_classificacao,
-        cnpj_consorcio,
-        sigla,
-        razao_social,
-        area_politica = formatar_categorias(area_politica, rotulos_area),
-        macrogrupo = formatar_categorias(macrogrupo_politica, rotulos_macrogrupo),
-        perfil = coalesce(unname(rotulos_perfil[perfil_classificacao]), "Nao informado"),
-        anos_mides,
-        linhas_mides,
-        valor_total_mides = round(valor_total_mides, 2)
-      ) |>
-      arrange(situacao, sigla, razao_social)
-
-    datatable(
-      df,
-      rownames = FALSE,
-      extensions = "Buttons",
-      options = list(
-        dom = "Bfrtip",
-        buttons = c("copy", "csv", "excel"),
-        pageLength = 15,
-        scrollX = TRUE,
-        deferRender = TRUE,
-        language = dt_pt
-      )
-    ) |>
-      formatCurrency(
-        columns = "valor_total_mides",
-        currency = "R$ ",
-        mark = ".",
-        dec.mark = ",",
-        interval = 3
-      )
   }, server = TRUE)
 
   output$tabela_mides <- renderDT({

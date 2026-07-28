@@ -20,7 +20,7 @@ classificacao <- read_csv(source_path, show_col_types = FALSE) |>
   distinct(cnpj_consorcio, .keep_all = TRUE)
 
 stopifnot(nrow(classificacao) == 223L)
-stopifnot(sum(classificacao$ativo_analise) == 217L)
+stopifnot(sum(classificacao$ativo_analise) == 216L)
 stopifnot(sum(classificacao$status_validacao == "validada_usuario_coerente") == 94L)
 
 dir.create(dirname(target_path), recursive = TRUE, showWarnings = FALSE)

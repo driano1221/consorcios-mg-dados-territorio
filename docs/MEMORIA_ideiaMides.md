@@ -5,6 +5,16 @@
 
 ---
 
+## Atualizacao Da Classificacao v0.5
+
+- A classificacao por area de politica publica e atributo analitico do CNPJ no MIDES completo; nao altera pagamentos, pares ou movimentos.
+- A camada tecnica preserva 223 CNPJs MG; a camada analitica ativa tem 216, apos retirar seis CNPJs inaptos/baixados e a AMESP, que e associacao municipal.
+- Os perfis `multifinalitario` e `multissetorial` foram unificados em `multifinalitario_ou_multissetorial`. O perfil amplo nao cria area setorial sem evidencia.
+- No MIDES completo, 136 dos 161 CNPJs observados tem area classificada; 15 tem perfil amplo sem area comprovada; 8 sao consorcios sediados fora de MG; 1 esta inativo ou baixado; e 1 e entidade associativa fora do escopo.
+- A documentacao do dashboard descreve regras ja executadas e limites atuais. A tabela de cobertura detalhada foi removida da documentacao para manter a leitura breve.
+
+---
+
 ## Objetivo
 
 Construir um painel longitudinal de participacao municipal em consorcios intermunicipais para **Minas Gerais (piloto)**, combinando evidencias fiscais, declaratorias e cadastrais.

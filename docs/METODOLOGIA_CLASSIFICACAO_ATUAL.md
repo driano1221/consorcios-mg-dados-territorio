@@ -1,6 +1,6 @@
 # Classificacao De Areas De Politica Publica - Estado Atual
 
-**Versao em uso:** v0.5, 2026-07-28  
+**Versao em uso:** v0.5, atualizada em 2026-07-28
 **Unidade:** CNPJ de consorcio no universo MG do cadastro IPEA.  
 **Finalidade:** apoiar analises futuras de entradas, saidas e permanencia no MIDES completo.
 
@@ -9,7 +9,7 @@
 Classificamos duas dimensoes diferentes:
 
 1. **Area de politica publica:** o que o consorcio declara ou evidencia fazer, por exemplo `saude`, `saneamento_basico` ou `desenvolvimento_regional`.
-2. **Perfil institucional:** como o consorcio se apresenta, por exemplo `setorial`, `multissetorial` ou `multifinalitario`.
+2. **Perfil institucional:** como o consorcio se apresenta: `setorial`, `multiarea` ou `multifinalitario_ou_multissetorial`.
 
 Perfil nao substitui area. Um consorcio multifinalitario pode ter uma area explicita, varias areas ou nenhuma area especifica comprovada.
 
@@ -19,11 +19,11 @@ No dashboard, as tres dimensoes sao mantidas separadas:
 |---|---|---|
 | Area detalhada | Em qual politica publica ha evidencia de atuacao? | `saude`, `saneamento_basico`, `agricultura` |
 | Macrogrupo | Em qual familia ampla se encaixa a area? | `saude`, `ambiente_saneamento`, `desenvolvimento_territorial` |
-| Perfil institucional | Como a entidade se organiza ou se apresenta? | `setorial`, `multiarea`, `multifinalitario`, `multissetorial` |
+| Perfil institucional | Como o consorcio se organiza ou se apresenta? | `setorial`, `multiarea`, `multifinalitario_ou_multissetorial` |
 
 Os filtros de area e macrogrupo operam por componente. Assim, um CNPJ classificado em `meio_ambiente; residuos_solidos` pode ser localizado por qualquer uma das duas areas, sem que a combinacao inteira vire uma opcao de filtro.
 
-## Pipeline Resumido
+## Como A Classificacao v0.5 Foi Produzida
 
 ```text
 Cadastro IPEA + MUNIC 2015/2019 + nome juridico/aliases MIDES
@@ -40,6 +40,14 @@ Revisao documental e decisoes humanas versionadas
                  v
 Camada analitica ativa v0.5
 ```
+
+O diagrama descreve etapas **ja executadas**. Em termos operacionais:
+
+1. Setores do Cadastro IPEA e da MUNIC foram padronizados em areas detalhadas e macrogrupos.
+2. Combinacoes MUNIC entre macroareas heterogeneas nao foram unidas automaticamente.
+3. Nome juridico e aliases MIDES foram usados apenas como inferencia textual rastreavel quando nao havia evidencia setorial direta.
+4. Area, macrogrupo, perfil, fonte, status e justificativa foram registrados em campos separados.
+5. As decisoes foram gravadas em camada versionada, sem alterar MIDES, MUNIC, SICONFI ou o cadastro bruto.
 
 ## Fontes E Tipo De Classificacao
 
@@ -66,12 +74,10 @@ Camada analitica ativa v0.5
 
 `desenvolvimento_regional` e uma area territorial ampla. Em geral abrange cooperacao entre municipios, planejamento, estruturacao regional, apoio institucional e desenvolvimento municipal. Ela **nao prova**, por si so, que o consorcio atue em uma politica setorial unica como saude ou saneamento.
 
-## Tratamento Dos Multifinalitarios
+## Tratamento Do Perfil Amplo
 
-Os 23 casos foram classificados pelo nome juridico, usando aliases MIDES apenas quando o nome juridico nao trazia o termo.
+Os 35 casos anteriormente rotulados como multifinalitarios ou multissetoriais passaram a usar o mesmo perfil: `multifinalitario_ou_multissetorial`. O perfil identifica escopo amplo, mas nao prova uma politica setorial.
 
-- 19 receberam perfil `multifinalitario`;
-- 4 receberam perfil `multissetorial`;
 - 7 receberam tambem area `saude`, pois nome ou alias MIDES declara explicitamente saude;
 - 16 ficaram sem area especifica: o perfil esta validado, mas nenhuma politica setorial foi inventada.
 
@@ -81,7 +87,7 @@ Foram identificadas duas filiais que aguardavam classificacao tematica. Ambas pa
 
 | Filial | Matriz | Classificacao herdada |
 |---|---|---|
-| Centro-CIS | CIS Caparao | `saude`; perfil `multissetorial` |
+| Centro-CIS | CIS Caparao | `saude`; perfil `multifinalitario_ou_multissetorial` |
 | ICISMEP LOG | CISMEP | `saude`; perfil `setorial` |
 
 Essa regra e somente classificatoria. **Nao** soma pagamentos MIDES, nao altera SICONFI e nao muda a unidade de movimentos.
@@ -92,22 +98,23 @@ Essa regra e somente classificatoria. **Nao** soma pagamentos MIDES, nao altera 
 |---|---:|
 | Universo tecnico | 223 |
 | Excluidos somente da camada analitica por inatividade/baixa | 6 |
-| Camada analitica ativa | 217 |
+| Camada analitica ativa | 216 |
 | Confirmados por revisao/documentacao | 34 |
 | Validados pelo usuario: coerentes | 94 |
 | Validados pelo usuario: cadastro IPEA ou nome | 63 |
 | Nome/alias com area explicita | 7 |
-| Perfil validado sem area especifica | 16 |
+| Perfil amplo validado sem area especifica | 16 |
 | Filial com tipo herdado da matriz | 2 |
-| Fora do escopo | 1 |
+| Associacao municipal retirada da camada analitica | 1 |
 
 ## Limites Mantidos
 
 - A classificacao nao altera as bases brutas MIDES, MUNIC, SICONFI ou cadastro IPEA.
 - Validacao para uso analitico nao substitui a documentacao institucional de cada consorcio.
 - A regra de consolidacao financeira de matriz/filial continua pendente de decisao metodologica.
-- Os 16 multifinalitarios/multissetoriais sem area devem permanecer sem area ate surgir evidencia setorial suficiente.
-- No MIDES completo, registros fora do universo MG da classificacao, inativos/baixados ou com perfil sem area continuam preservados nos totais. Eles sao apresentados separadamente na cobertura da classificacao, e nao como uma categoria de area.
+- Os 16 consorcios de perfil amplo sem area devem permanecer sem area ate surgir evidencia setorial suficiente.
+- No MIDES completo, 136 dos 161 CNPJs observados tem area classificada. Quinze tem perfil amplo sem area comprovada, oito sao consorcios sediados fora de MG, um esta inativo ou baixado e uma associacao municipal foi retirada da camada analitica. Todos continuam preservados nos totais financeiros do MIDES.
+- A classificacao de consorcios sediados fora de MG e a consolidacao financeira de matriz/filial nao foram realizadas.
 
 ## Arquivos Relacionados
 

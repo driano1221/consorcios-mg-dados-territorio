@@ -18,7 +18,7 @@ O projeto tem hoje tres blocos principais funcionando:
    - publicado em `https://kl5ug0-adriano-pires.shinyapps.io/base1-mides-munic-siconfi/`;
    - inclui Base 1, MIDES completo, comparacao 2015 vs 2019, auditorias e documentacao metodologica;
    - inclui mapas dinamicos para intensidade MIDES, composicao territorial das fontes e transicao 2015 vs 2019;
-   - a tela MIDES completo agora permite filtrar por area detalhada, macrogrupo e perfil institucional da classificacao v0.5; atributos ausentes permanecem visiveis como `Sem classificacao ativa`.
+   - a tela MIDES completo permite filtrar por area detalhada, macrogrupo e perfil institucional da classificacao v0.5; atributos sem area permanecem preservados nos totais, sem uma categoria generica de filtro.
    - aba `MIDES completo > Entradas/saidas` mostra movimento anual dos pares municipio-consorcio entre 2014 e 2021;
    - mapas foram refinados visualmente com fundo branco, divisas municipais continuas, paletas mais legiveis, zoom/tela cheia e filtros integrados.
 
@@ -94,7 +94,7 @@ Entregas priorizadas:
 3. **Classificacao por area de politica publica**
    - **versao analitica v0.5 concluida:** `analises/classificacao_politicas/outputs/classificacao_areas_politica_mg_v0_5_analitica_ativa.csv` e `.rds`;
    - cobre os 223 CNPJs MG e reduz o uso analitico a tres campos: `area_politica_final`, `fonte_principal` e `status_validacao`; macroarea e perfil permanecem apenas como auxiliares;
-   - status atual: 34 confirmadas, 94 provisorias coerentes, 15 provisorias por cadastro, 48 provisorias por nome, 23 multifinalitarios sem inferencia automatica, 6 pendentes, 2 filiais aguardando regra e 1 associacao fora do escopo;
+   - status atual: 34 confirmadas, 94 coerentes validadas, 63 validadas por cadastro/nome, 16 perfis amplos sem area especifica, 2 filiais herdadas, 6 inativos/baixados e 1 associacao municipal fora da camada analitica;
    - a v0.2 e a trilha tecnica continuam preservadas; a v0.5 entra no MIDES completo somente como atributo de filtro, sem alterar valores, pares ou movimentos;
    - regra de fontes: documentacao > revisao documental v0.2 > nome juridico com MUNIC coerente > MUNIC segura > cadastro IPEA arquivo sem conflito > nome juridico provisório > pendencia;
    - `tipo_fonte = regex` no cadastro IPEA e inferencia do nome, nao fonte independente.
@@ -105,10 +105,10 @@ Entregas priorizadas:
    - [em validacao humana] conferir a amostra reprodutivel de 19 CNPJs em `analises/classificacao_politicas/outputs/amostra_validacao_regra_MUNIC_v0_1.xlsx`; este controle documenta a aceitacao empirica da regra, sem reabrir a uniao automatica;
    - [feito] gerar `outputs/caderno_decisao_v0_3/caderno_decisao_classificacao_v0_3.xlsx`, que separa os 188 casos sem confirmacao plena por tipo de incerteza e preserva suas evidencias para decisao humana;
    - [feito] incorporar as decisoes de 28/07 na v0.4: 15 casos por cadastro e 48 por nome validados para uso analitico; seis matrizes inaptas/baixadas excluidas apenas da camada ativa; duas filiais herdaram classificacao da matriz; 23 multifinalitarios foram separados em perfil por nome e area apenas quando explicitada;
-   - estado ativo v0.5: 217 CNPJs (34 confirmados, 94 coerentes validados pelo usuario, 63 validados pelo usuario por cadastro/nome, 7 com saude explicita por nome/alias, 16 perfis sem area especifica, 2 filiais herdadas e 1 fora do escopo);
+   - estado ativo v0.5: 216 CNPJs (34 confirmados, 94 coerentes validados pelo usuario, 63 validados pelo usuario por cadastro/nome, 7 com saude explicita por nome/alias, 16 perfis amplos sem area especifica e 2 filiais herdadas);
    - os seis pendentes tematicos inaptos/baixados foram retirados somente da camada analitica ativa; permanecem no arquivo tecnico;
    - a classificacao de matriz/filial ainda nao consolida CNPJs, valores ou movimentos; isso requer decisao separada;
-   - os 16 multifinalitarios/multissetoriais sem area final permanecem apenas como perfil institucional, sem inferencia setorial adicional nesta etapa;
+   - os 16 casos de perfil `multifinalitario_ou_multissetorial` sem area final permanecem sem inferencia setorial adicional nesta etapa;
    - [feito] integrar a v0.5 ao MIDES completo, consolidar documentacao e preparar testes automatizados; os filtros ativos sao area detalhada, macrogrupo e perfil institucional.
 
 4. **Aprimoramentos do dashboard**

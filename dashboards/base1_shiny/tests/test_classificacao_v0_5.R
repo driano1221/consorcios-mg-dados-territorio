@@ -10,7 +10,9 @@ stopifnot(nrow(mides_anual) == 15135L)
 stopifnot(n_distinct(mides_anual$cnpj_consorcio) == 161L)
 stopifnot(!("Sem classificacao ativa" %in% c(names(mides_areas_opts), unname(mides_areas_opts))))
 stopifnot("saude" %in% unname(mides_areas_opts))
-stopifnot(any(mides_anual$cobertura_classificacao == "Fora do universo da classificacao MG"))
+stopifnot(!any(unname(mides_perfis_opts) %in% c("multifinalitario", "multissetorial", "associacao_municipal")))
+stopifnot("multifinalitario_ou_multissetorial" %in% unname(mides_perfis_opts))
+stopifnot(any(mides_anual$cobertura_classificacao == "Consorcio sediado fora de MG"))
 
 shiny::testServer(server, {
   session$setInputs(
@@ -42,8 +44,11 @@ shiny::testServer(server, {
   stopifnot(nrow(por_perfil) > 0L, all(por_perfil$perfil_classificacao == "setorial"))
 
   session$setInputs(mides_perfil = character(0), mides_area = character(0))
-  cobertura <- mides_anual |> filter(cobertura_classificacao != "Area classificada")
-  stopifnot(nrow(cobertura) > 0L, any(cobertura$cobertura_classificacao == "Perfil institucional sem area especifica"))
+  cobertura <- mides_anual |> distinct(cnpj_consorcio, cobertura_classificacao)
+  stopifnot(sum(cobertura$cobertura_classificacao == "Area classificada") == 136L)
+  stopifnot(sum(cobertura$cobertura_classificacao == "Perfil institucional sem area especifica") == 15L)
+  stopifnot(sum(cobertura$cobertura_classificacao == "Consorcio sediado fora de MG") == 8L)
+  stopifnot(sum(cobertura$cobertura_classificacao == "Entidade associativa fora do escopo") == 1L)
 
   session$setInputs(mides_area = area_teste, mides_municipio = unique(por_area$municipio)[1])
   mapa <- dados_mides_mapa()

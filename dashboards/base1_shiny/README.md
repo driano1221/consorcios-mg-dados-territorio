@@ -58,7 +58,7 @@ MIDES e MUNIC formam a base de vinculos em `municipio x consorcio x ano`.
 
 SICONFI entra como validacao financeira agregada em `municipio x ano`, usando a regra `consorcio_pagas`.
 
-No MIDES completo, a classificacao v0.5 e anexada por CNPJ somente como atributo analitico. Ela nao altera valores, pares ou movimentos. Os filtros mostram apenas categorias substantivas. Casos sem area comprovada, inativos/baixados e CNPJs fora do universo MG ficam preservados na tabela de cobertura da classificacao, dentro de `Documentacao`.
+No MIDES completo, a classificacao v0.5 e anexada por CNPJ somente como atributo analitico. Ela nao altera valores, pares ou movimentos. Os filtros mostram apenas categorias substantivas. Casos sem area comprovada, inativos/baixados, sediados fora de MG ou fora do escopo continuam preservados nos totais financeiros e sao explicados brevemente em `Documentacao`.
 
 ## Documentacao No App
 

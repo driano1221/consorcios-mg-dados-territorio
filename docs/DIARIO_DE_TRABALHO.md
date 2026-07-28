@@ -81,6 +81,35 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 
 ---
 
+## 2026-07-28 - Simplificacao Da Classificacao E Da Documentacao
+
+### Decisoes Aplicadas
+
+- Os perfis `multifinalitario` e `multissetorial` foram unificados em `multifinalitario_ou_multissetorial`.
+- A AMESP foi retirada da camada analitica de consorcios por ser associacao municipal; seu registro MIDES permaneceu preservado.
+- A tabela de cobertura foi removida da aba `Documentacao`. A cobertura passou a ser explicada em texto breve, sem expor registros individuais nessa tela.
+
+### Entregas
+
+- A v0.5 foi regenerada com 223 CNPJs tecnicos e 216 CNPJs analiticos ativos.
+- O filtro de perfil passou a ter tres opcoes: `Setorial`, `Multiarea documentada` e `Multifinalitario ou multissetorial`.
+- O rotulo de cobertura foi corrigido para `Consorcio sediado fora de MG`.
+- A documentacao do dashboard passou a descrever a classificacao como processo ja executado, com fontes, regras aplicadas, cobertura e limites atuais.
+
+### Cobertura MIDES Mantida
+
+- Dos 161 CNPJs observados no MIDES completo: 136 tem area classificada; 15 tem perfil amplo sem area comprovada; 8 sao sediados fora de MG; 1 esta inativo ou baixado; e 1 e entidade associativa fora do escopo.
+- Nenhuma linha, valor, par ou movimento MIDES foi removido ou agregado.
+
+### Validacoes
+
+- `07_consolidar_classificacao_v0_5.R` e `preparar_classificacao_v0_5.R` executados com sucesso.
+- `tests/test_classificacao_v0_5.R` aprovado com os novos perfis e as contagens de cobertura.
+- `app.R` carregado com sucesso pelo R.
+- Dashboard republicado e verificado por HTTP 200: <https://kl5ug0-adriano-pires.shinyapps.io/base1-mides-munic-siconfi/>.
+
+---
+
 ## 2026-07-28 - Integracao v0.5 ao MIDES completo
 
 ### Decisao e escopo
