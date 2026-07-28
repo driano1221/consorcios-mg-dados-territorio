@@ -544,6 +544,20 @@ Leitura da procedencia e confianca da v0.2:
 
 ---
 
+## Movimentos Anuais E Features Espaciais - 2026-07-28
+
+- as frentes de movimentos e fronteira foram materializadas fora do dashboard em `analises/movimentos_espaciais/`;
+- a unidade e `municipio x CNPJ x ano`, exclusivamente no MIDES completo entre 2014 e 2021;
+- a presenca adotada e `valor_total > 0`: o resultado descreve pagamento observado no MIDES, nao filiacao juridica formal;
+- os 2.835 pares observados foram balanceados nos oito anos, formando 22.680 linhas; 673 pares tiveram duas ou mais transicoes;
+- os eventos possiveis sao `base_inicial`, `entrada_observada`, `retorno_observado`, `permaneceu`, `saida_observada` e `ausente`; 2014 e apenas base inicial;
+- a vizinhanca foi criada com a malha oficial geobr/IBGE 2020, nao com a geometria simplificada do dashboard; ha 2.375 fronteiras compartilhadas e os 853 municipios tem ao menos um vizinho;
+- fronteira exige linha compartilhada; municipios que apenas se tocam em um canto nao sao vizinhos;
+- features por par ativo: numero/proporcao de vizinhos no mesmo consorcio, fora do consorcio, indicador de borda e isolamento;
+- features para saida sao observadas em `t-1`, quando o municipio ainda estava no consorcio; para entrada, foi criado universo de 18.404 candidatos externos de borda em `t-1`, dos quais 1.060 tiveram entrada ou retorno observado;
+- matriz e filial continuam como CNPJs separados; MUNIC e SICONFI nao entram nesta frente;
+- outputs nao foram integrados ao dashboard. O proximo passo e revisar resultados descritivos e definir o teste estatistico antes de publicar.
+
 ## Documentos Historicos
 
 Arquivos antigos continuam uteis como registro de processo, mas nao devem ser usados como estado atual:

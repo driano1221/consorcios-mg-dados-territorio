@@ -13,6 +13,39 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 
 ---
 
+## 2026-07-28 - Movimentos Anuais E Features Espaciais MIDES
+
+### Decisoes Aplicadas
+
+- A analise usa exclusivamente o MIDES completo de 2014 a 2021; MUNIC e SICONFI nao entram nesta frente.
+- Presenca foi definida como `valor_total > 0` e recebe o nome metodologico de pagamento observado no MIDES.
+- Matriz e filial continuam como CNPJs separados.
+- Vizinhos municipais exigem fronteira compartilhada em linha; contato em um ponto nao conta.
+
+### Entregas
+
+- Criada a pasta `analises/movimentos_espaciais/`, com scripts reprocessaveis, README e teste automatizado.
+- `01_materializar_movimentos_mides.R` gerou 22.680 linhas balanceadas: 2.835 pares municipio-CNPJ observados x 8 anos.
+- Eventos materializados: `base_inicial`, `entrada_observada`, `retorno_observado`, `permaneceu`, `saida_observada` e `ausente`.
+- Criadas tabelas por par, consorcio-ano e municipio-ano; 673 pares tiveram duas ou mais transicoes observadas.
+- `02_features_espaciais_fronteira.R` usou a malha municipal completa geobr/IBGE 2020 e encontrou 2.375 fronteiras compartilhadas entre os 853 municipios de MG.
+- Para cada participante, foram calculados vizinhos dentro/fora do consorcio, proporcoes, borda e isolamento.
+- Foi criado o universo de 18.404 candidatos externos de borda para analisar entradas; 1.060 entradas/retornos observados ocorreram nesse universo.
+- Nenhuma dessas bases foi integrada ou publicada no dashboard.
+
+### Validacoes
+
+- Regra de presenca reconciliada com `valor_total > 0`.
+- Teste automatizado confirmou 2.835 pares, 22.680 linhas anuais, 853 municipios com vizinhanca e 2.375 divisas positivas.
+- Todos os eventos de saida possuem exposicao espacial medida no ano anterior.
+- O cache da vizinhanca evita recalcular intersecoes de geometria em reexecucoes: apos a primeira execucao, a etapa espacial passou de cerca de dois minutos para poucos segundos.
+
+### Pendencia
+
+- Validar resultados descritivos e decidir o desenho da analise estatistica antes de integrar qualquer tabela ou mapa ao dashboard.
+
+---
+
 ## 2026-07-28 - Classificacao v0.5, Documentacao E Repositorio
 
 ### Decisoes Incorporadas

@@ -25,6 +25,16 @@ Este arquivo serve como indice rapido dos documentos de memoria e contexto do pr
 | `analises/base_1_2015_2019/outputs/` | Outputs da Base 1 e validacao SICONFI reconstruida. |
 | `dashboards/base1_shiny/` | App Shiny publicado para consulta da Base 1 e MIDES completo. |
 
+## Movimentos Espaciais No MIDES Completo
+
+| Arquivo/Pasta | Uso |
+|---|---|
+| `analises/movimentos_espaciais/README.md` | Leitura inicial: escopo, regra de presenca, outputs e limites da analise espacial. |
+| `analises/movimentos_espaciais/01_materializar_movimentos_mides.R` | Gera a base anual balanceada de movimentos observados no MIDES. |
+| `analises/movimentos_espaciais/02_features_espaciais_fronteira.R` | Constroi fronteiras municipais oficiais e features de borda, isolamento e candidatos de entrada. |
+| `analises/movimentos_espaciais/tests/03_validar_movimentos_espaciais.R` | Teste automatizado das tabelas materializadas. |
+| `analises/movimentos_espaciais/outputs/` | Saidas locais pesadas: movimentos, vizinhanca, features e universo de risco de entrada. |
+
 ## Classificacao De Politicas Publicas
 
 | Arquivo/Pasta | Uso |

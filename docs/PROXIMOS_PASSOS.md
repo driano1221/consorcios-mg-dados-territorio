@@ -70,7 +70,7 @@ Nao aplicar automaticamente antes da validacao.
 
 ### 2. Analise territorial do movimento no MIDES completo
 
-**Status:** prioridade imediata definida na ultima reuniao.
+**Status:** bases analiticas de movimentos e fronteira materializadas; aguardando validacao dos resultados antes de integrar ao dashboard.
 
 Objetivo:
 
@@ -85,11 +85,26 @@ Entregas priorizadas:
    - indicador de recorrencia no par `municipio x consorcio`: quantidade de entradas, saidas e transicoes entre 2014 e 2021;
    - `movimento_recorrente = Sim` quando o par apresentar mais de uma transicao de presenca/ausencia no periodo.
 
+   Entrega concluida em 2026-07-28:
+
+   - `analises/movimentos_espaciais/01_materializar_movimentos_mides.R` gerou uma serie balanceada de 22.680 linhas: 2.835 pares observados x 8 anos;
+   - a regra aplicada e `valor_total > 0`, interpretada como pagamento observado no MIDES, nunca como filiacao juridica;
+   - outputs incluem movimento por par, por consorcio-ano e por municipio-ano;
+   - 673 pares tiveram duas ou mais transicoes observadas entre 2014 e 2021.
+
 2. **Features espaciais de fronteira**
    - construir vizinhanca entre municipios de MG a partir das geometrias municipais;
    - para cada municipio dentro de cada consorcio-ano, calcular numero e proporcao de vizinhos que tambem pertencem ao consorcio;
    - derivar numero e proporcao de vizinhos fora do consorcio, indicador de municipio de fronteira e eventual isolamento territorial;
    - testar descritivamente se municipios de fronteira apresentam mais entradas, saidas ou movimentos recorrentes.
+
+   Entrega concluida em 2026-07-28:
+
+   - malha oficial completa geobr/IBGE de 2020 usada somente no processamento; a geometria leve do dashboard nao foi usada para calcular vizinhanca;
+   - 2.375 fronteiras municipais compartilhadas foram identificadas por linha, excluindo contato apenas por canto;
+   - cada par ativo recebeu numero/proporcao de vizinhos dentro e fora do consorcio, indicador de borda e isolamento;
+   - foi criado universo de 18.404 candidatos externos de borda para modelar entradas, sem assumir que todos os municipios de MG sao candidatos equivalentes;
+   - os outputs ainda nao foram integrados ao dashboard.
 
 3. **Classificacao por area de politica publica**
    - **versao analitica v0.5 concluida:** `analises/classificacao_politicas/outputs/classificacao_areas_politica_mg_v0_5_analitica_ativa.csv` e `.rds`;
