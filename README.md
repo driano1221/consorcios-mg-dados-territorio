@@ -9,6 +9,7 @@ Painel longitudinal de participacao municipal em consorcios intermunicipais. O p
 | Estado atual e decisoes | `docs/MEMORIA_ideiaMides.md` |
 | Proximos passos | `docs/PROXIMOS_PASSOS.md` |
 | Indice dos documentos | `docs/DICIONARIO_MEMORIAS.md` |
+| Diario de trabalho | `docs/DIARIO_DE_TRABALHO.md` |
 | Base 1 2015/2019 | `analises/base_1_2015_2019/` |
 | Classificacao de politicas | `docs/METODOLOGIA_CLASSIFICACAO_ATUAL.md` |
 | Dashboard publicado | `dashboards/base1_shiny/` |
@@ -43,6 +44,7 @@ ideiaMides/
 - Codigo, metodologia, decisoes e pequenos arquivos de configuracao entram no Git.
 - Dados brutos, RDS, CSVs de output, logs, bundles de deploy e mapas gerados ficam locais e estao no `.gitignore`.
 - Cada mudanca metodologica relevante deve atualizar `docs/MEMORIA_ideiaMides.md`, `docs/PROXIMOS_PASSOS.md` e, quando aplicavel, a metodologia especifica da analise.
+- Ao encerrar uma sessao relevante, registrar tambem uma entrada breve em `docs/DIARIO_DE_TRABALHO.md`.
 - Nao consolidar valores financeiros de matriz/filial sem decisao metodologica expressa.
 
 ## Estado Metodologico Atual

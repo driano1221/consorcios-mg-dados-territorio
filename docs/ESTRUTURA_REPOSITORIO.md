@@ -41,7 +41,7 @@ Essas regras estao em `.gitignore`.
 
 1. Alterar codigo ou metodologia.
 2. Reexecutar e validar o script afetado.
-3. Atualizar a memoria e proximos passos.
+3. Atualizar a memoria, proximos passos e o diario de trabalho quando a sessao for relevante.
 4. Revisar `git status` para garantir que bases pesadas nao entraram por engano.
 5. Criar um commit com mensagem objetiva, por exemplo: `classificacao: validar casos coerentes v0.5`.
 
