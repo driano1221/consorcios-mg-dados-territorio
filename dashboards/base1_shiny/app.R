@@ -553,6 +553,20 @@ definicoes <- tibble::tribble(
   "Auditoria", "Painel de suspeitas cadastrais e territoriais para revisar CNPJs com mesmo nome, sigla ausente ou repeticoes em um mesmo municipio-ano."
 )
 
+label_com_info <- function(rotulo, explicacao) {
+  tags$span(
+    class = "filter-label",
+    rotulo,
+    tags$span(
+      class = "filter-info",
+      title = explicacao,
+      `aria-label` = paste0(rotulo, ". ", explicacao),
+      tabindex = "0",
+      "i"
+    )
+  )
+}
+
 ui <- page_navbar(
   title = div(
     class = "brand-wrap",
@@ -837,6 +851,24 @@ ui <- page_navbar(
         min-width: 180px;
         margin-bottom: 10px;
       }
+      .filter-label { display: inline-flex; align-items: center; gap: 5px; }
+      .filter-info {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 15px;
+        height: 15px;
+        border: 1px solid var(--ipea-muted);
+        border-radius: 50%;
+        color: var(--ipea-muted);
+        font-family: Georgia, serif;
+        font-size: 10px;
+        font-style: italic;
+        font-weight: 700;
+        line-height: 1;
+        cursor: help;
+      }
+      .filter-info:focus { outline: 2px solid var(--ipea-green); outline-offset: 2px; }
       .nav-tabs .nav-link { border-radius: 3px 3px 0 0; }
       .dataTables_wrapper { font-size: 12px; }
       table.dataTable thead th {
@@ -885,12 +917,12 @@ ui <- page_navbar(
           div(
             class = "filter-card",
             h3("Filtros do recorte"),
-            checkboxGroupInput("ano", "Ano", choices = anos_opts, selected = anos_opts, inline = TRUE),
-            checkboxGroupInput("grupo", "Conjuntos MIDES/MUNIC", choices = grupos_labels, selected = grupos_opts),
-            checkboxGroupInput("classe", "Validacao SICONFI opcional", choices = classes_labels, selected = classes_opts),
-            selectizeInput("municipio", "Municipio", choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
-            selectizeInput("consorcio", "Consorcio/sigla", choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
-            textInput("busca", "Busca livre", placeholder = "municipio, sigla, CNPJ, razao social..."),
+            checkboxGroupInput("ano", label_com_info("Ano", "Seleciona 2015, 2019 ou ambos no recorte comparavel."), choices = anos_opts, selected = anos_opts, inline = TRUE),
+            checkboxGroupInput("grupo", label_com_info("Conjuntos MIDES/MUNIC", "Filtra se o par aparece nas duas fontes, so no MIDES ou so na MUNIC."), choices = grupos_labels, selected = grupos_opts),
+            checkboxGroupInput("classe", label_com_info("Validacao SICONFI opcional", "Filtra a classe municipio-ano da comparacao financeira. SICONFI nao identifica o CNPJ de destino."), choices = classes_labels, selected = classes_opts),
+            selectizeInput("municipio", label_com_info("Municipio", "Permite selecionar um ou mais municipios. Os KPIs, tabelas e mapa usam a selecao."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
+            selectizeInput("consorcio", label_com_info("Consorcio/sigla", "Permite selecionar um ou mais consorcios pelo nome curto ou sigla."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
+            textInput("busca", label_com_info("Busca livre", "Pesquisa municipio, sigla, CNPJ e razao social dentro do recorte atual."), placeholder = "municipio, sigla, CNPJ, razao social..."),
             actionButton("limpar", "Limpar filtros", class = "btn-reset")
           )
         ),
@@ -955,15 +987,15 @@ ui <- page_navbar(
         h3("Filtros MIDES"),
         div(
           class = "inline-filters",
-          checkboxGroupInput("mides_ano", "Ano MIDES", choices = mides_anos_opts, selected = mides_anos_opts, inline = TRUE),
-          selectizeInput("mides_municipio", "Municipio", choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
-          selectizeInput("mides_consorcio", "Consorcio/sigla", choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos"))
+          checkboxGroupInput("mides_ano", label_com_info("Ano MIDES", "Seleciona anos observados no MIDES entre 2014 e 2021."), choices = mides_anos_opts, selected = mides_anos_opts, inline = TRUE),
+          selectizeInput("mides_municipio", label_com_info("Municipio", "Restringe a consulta MIDES a um ou mais municipios."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
+          selectizeInput("mides_consorcio", label_com_info("Consorcio/sigla", "Restringe a consulta MIDES a um ou mais consorcios."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos"))
         ),
         div(
           class = "inline-filters",
-          selectInput("mides_regra_valor", "Regra de valor", choices = mides_regra_valor_opts, selected = "total"),
-          selectInput("mides_mapa_metrica", "Metrica do mapa", choices = mides_mapa_metrica_opts, selected = "valor_total"),
-          textInput("mides_busca", "Busca livre no MIDES", placeholder = "municipio, sigla, CNPJ, razao social..."),
+          selectInput("mides_regra_valor", label_com_info("Regra de valor", "Define quais linhas MIDES entram no recorte: todos os registros, valor corrente, restos a pagar ou valor total positivo."), choices = mides_regra_valor_opts, selected = "total"),
+          selectInput("mides_mapa_metrica", label_com_info("Metrica do mapa", "Define a cor do mapa: valor MIDES, numero de consorcios ou numero de transacoes."), choices = mides_mapa_metrica_opts, selected = "valor_total"),
+          textInput("mides_busca", label_com_info("Busca livre no MIDES", "Pesquisa municipio, sigla, CNPJ, razao social e nome recorrente do credor no MIDES."), placeholder = "municipio, sigla, CNPJ, razao social..."),
           div(tags$label("&nbsp;"), actionButton("limpar_mides", "Limpar MIDES", class = "btn-reset"))
         )
       ),
@@ -1020,11 +1052,11 @@ ui <- page_navbar(
         h3("Filtros da comparacao"),
         div(
           class = "inline-filters",
-          selectizeInput("cmp_municipio", "Municipio", choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
-          selectizeInput("cmp_consorcio", "Consorcio/sigla", choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
-          checkboxGroupInput("cmp_status", "Status 2015 -> 2019", choices = status_opts, selected = status_opts)
+          selectizeInput("cmp_municipio", label_com_info("Municipio", "Seleciona municipios para comparar sua presenca em 2015 e 2019."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
+          selectizeInput("cmp_consorcio", label_com_info("Consorcio/sigla", "Seleciona consorcios para comparar seus pares entre 2015 e 2019."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
+          checkboxGroupInput("cmp_status", label_com_info("Status 2015 -> 2019", "Filtra pares que permaneceram, entraram em 2019 ou sairam depois de 2015."), choices = status_opts, selected = status_opts)
         ),
-        textInput("cmp_busca", "Busca livre na comparacao", placeholder = "municipio, sigla, CNPJ, razao social..."),
+        textInput("cmp_busca", label_com_info("Busca livre na comparacao", "Pesquisa municipio, sigla, CNPJ e razao social dentro da comparacao temporal."), placeholder = "municipio, sigla, CNPJ, razao social..."),
         actionButton("limpar_cmp", "Limpar comparacao", class = "btn-reset")
       ),
       div(

@@ -66,6 +66,7 @@ Este arquivo serve como indice rapido dos documentos de memoria e contexto do pr
 | `dashboards/base1_shiny/data/mg_municipios_sf_web.rds` | Geometria municipal simplificada para os mapas dinamicos do app. |
 | `dashboards/base1_shiny/data/mg_contorno_sf_web.rds` | Contorno estadual de MG usado por cima dos mapas. |
 | `dashboards/base1_shiny/deploy_app.R` | Script recomendado de deploy; usa `appFiles` explicito para nao empacotar arquivos desnecessarios. |
+| `dashboards/base1_shiny/app.R` | Contem tambem os tooltips dos filtros: icone `i` ao lado de cada campo nas tres telas analiticas. |
 
 Link publicado:
 

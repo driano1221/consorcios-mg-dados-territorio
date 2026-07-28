@@ -528,6 +528,7 @@ Leitura da procedencia e confianca da v0.2:
 - em 2026-07-28, a decisao humana seguinte validou os 94 casos `provisoria_coerente` para uso analitico. A rotina `07_consolidar_classificacao_v0_5.R` criou a v0.5 sem sobrescrever a v0.4: 217 CNPJs ativos, 34 confirmados, 94 coerentes validados, 63 validados por cadastro/nome, 7 por nome/alias setorial explicito, 16 perfis sem area, 2 filiais herdadas e 1 fora do escopo. A documentacao sintetica esta em `docs/METODOLOGIA_CLASSIFICACAO_ATUAL.md`.
 - em 2026-07-28, o dashboard recebeu a secao `Documentacao`, substituindo a antiga `Definicoes`: Guia do painel, Conceitos e Classificacao de areas. A classificacao ainda nao foi usada como filtro analitico nas outras telas; a mudanca atual e de transparência metodologica.
 - em 2026-07-28, o projeto passou a ter repositorio Git local inicializado. `README.md`, `docs/ESTRUTURA_REPOSITORIO.md` e `.gitignore` definem a porta de entrada, a estrutura e a separacao entre codigo/documentacao versionados e bases pesadas locais.
+- em 2026-07-28, foram adicionados icones de ajuda aos 16 filtros das telas Recorte 2015/2019, MIDES completo e 2015 vs 2019. Cada icone explica o campo e seu efeito no recorte por tooltip, sem criar filtro de origem/status. O dashboard foi republicado.
 
 ---
 
