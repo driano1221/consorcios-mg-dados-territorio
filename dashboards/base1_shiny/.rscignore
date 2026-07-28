@@ -1,0 +1,6 @@
+*.log
+shiny_stdout.log
+shiny_stderr.log
+tmp_map_preview/
+data/*.csv
+data/mg_divisas_sf_web.rds

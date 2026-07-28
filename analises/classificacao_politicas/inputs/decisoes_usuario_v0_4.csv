@@ -1,0 +1,6 @@
+regra,escopo,acao,decisao,justificativa
+validar_cadastro,provisoria_cadastro,manter_area,validada_usuario,Usuario validou a aba Provisoria cadastro IPEA para uso analitico.
+validar_nome,provisoria_nome,manter_area,validada_usuario,Usuario validou a aba Provisoria por nome para uso analitico.
+excluir_inativos,pendente_documento,excluir_da_camada_ativa,excluido_inativo,Usuario decidiu retirar os seis casos inaptos ou baixados da camada analitica ativa.
+filial_matriz,aguardar_matriz_filial,herdar_area_e_perfil,herdada_matriz,Usuario decidiu que filial segue o tipo e a area da matriz pela raiz de oito digitos.
+multifinal_nome,provisoria_multifinalitario,classificar_perfil_e_area_explicita,validada_usuario_nome,Usuario validou classificar perfil pelo nome; area so quando o nome ou alias MIDES explicitar setor.

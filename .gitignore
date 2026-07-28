@@ -1,0 +1,28 @@
+# Dados brutos, processados e artefatos pesados: mantidos localmente, fora do Git.
+dados/bruto/
+dados/processado/
+outputs/
+analises/**/outputs/
+analises/**/node_modules/
+analises/**/checks/*.csv
+analises/**/checks/*.xlsx
+dashboards/base1_shiny/data/
+
+# Artefatos temporarios, logs e bundles de publicacao.
+tmp/
+tmp_*.csv
+*.log
+dashboards/base1_shiny/tmp_map_preview/
+dashboards/base1_shiny/rsconnect/
+steam-card-market-bot/
+slides/assets/
+slides/*.html
+slides/*.png
+.Rhistory
+.RData
+.Rproj.user/
+
+# Sistema e editores.
+.DS_Store
+Thumbs.db
+.vscode/
