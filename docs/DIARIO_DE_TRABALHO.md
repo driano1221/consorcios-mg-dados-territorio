@@ -44,6 +44,14 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 
 - Validar resultados descritivos e decidir o desenho da analise estatistica antes de integrar qualquer tabela ou mapa ao dashboard.
 
+### EDA De Validacao
+
+- `04_eda_validacao_movimentos_espaciais.R` e `EDA_RESULTADOS.md` registraram a revisao reproduzivel das bases e amostras com semente fixa `20260728`.
+- Integridade aprovada: nenhuma duplicata, valor negativo, perda financeira ou municipio sem vizinho.
+- Resultado espacial preliminar: taxa de saida caiu de 24,4% entre isolados para 3,1% quando mais de 80% dos vizinhos estavam no mesmo consorcio; entre candidatos externos, a taxa de entrada subiu de 2,4% para 29,3% conforme aumentou a proporcao de vizinhos participantes.
+- Alertas: 252 presencas apenas por restos a pagar, 62 entradas/retornos apenas por restos, 184 valores abaixo de R$ 1.000, 25 transicoes internas entre CNPJs da mesma raiz e forte ruido nos nomes declarados no MIDES.
+- Antes do dashboard, separar semanticamente borda de participante e candidato externo, usar nome canonico do cadastro e decidir analises de sensibilidade.
+
 ---
 
 ## 2026-07-28 - Classificacao v0.5, Documentacao E Repositorio

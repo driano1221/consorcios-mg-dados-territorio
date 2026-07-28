@@ -557,6 +557,7 @@ Leitura da procedencia e confianca da v0.2:
 - features para saida sao observadas em `t-1`, quando o municipio ainda estava no consorcio; para entrada, foi criado universo de 18.404 candidatos externos de borda em `t-1`, dos quais 1.060 tiveram entrada ou retorno observado;
 - matriz e filial continuam como CNPJs separados; MUNIC e SICONFI nao entram nesta frente;
 - outputs nao foram integrados ao dashboard. O proximo passo e revisar resultados descritivos e definir o teste estatistico antes de publicar.
+- EDA de validacao salva em `analises/movimentos_espaciais/EDA_RESULTADOS.md`: nenhuma falha estrutural; taxa de saida variou de 24,4% entre isolados a 3,1% com mais de 80% dos vizinhos no mesmo consorcio, e a taxa de entrada entre candidatos de borda variou de 2,4% a 29,3%; os alertas principais sao restos a pagar, valores muito baixos, matriz/filial e nomes MIDES ruidosos.
 
 ## Documentos Historicos
 

@@ -33,6 +33,8 @@ Este arquivo serve como indice rapido dos documentos de memoria e contexto do pr
 | `analises/movimentos_espaciais/01_materializar_movimentos_mides.R` | Gera a base anual balanceada de movimentos observados no MIDES. |
 | `analises/movimentos_espaciais/02_features_espaciais_fronteira.R` | Constroi fronteiras municipais oficiais e features de borda, isolamento e candidatos de entrada. |
 | `analises/movimentos_espaciais/tests/03_validar_movimentos_espaciais.R` | Teste automatizado das tabelas materializadas. |
+| `analises/movimentos_espaciais/04_eda_validacao_movimentos_espaciais.R` | EDA reproduzivel de integridade, movimentos, efeitos espaciais e amostras. |
+| `analises/movimentos_espaciais/EDA_RESULTADOS.md` | Resultado consolidado da EDA, alertas e recomendacoes antes do dashboard. |
 | `analises/movimentos_espaciais/outputs/` | Saidas locais pesadas: movimentos, vizinhanca, features e universo de risco de entrada. |
 
 ## Classificacao De Politicas Publicas

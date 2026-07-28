@@ -23,8 +23,12 @@ Esta pasta materializa a analise de movimentos observados no MIDES completo, sem
    - Calcula, para cada participante, vizinhos dentro e fora do mesmo consorcio, borda e isolamento.
    - Cria tambem o universo de candidatos externos de borda para analisar entradas.
 
-3. \`tests/03_validar_movimentos_espaciais.R\`
+3. tests/03_validar_movimentos_espaciais.R
    - Verifica a unidade, a regra de presenca, a consistencia dos eventos e a cobertura da vizinhanca.
+
+4. 04_eda_validacao_movimentos_espaciais.R
+   - Reproduz as tabelas de integridade, movimentos, recorrencia, taxas espaciais, alertas e amostras aleatorias.
+   - A leitura consolidada esta em EDA_RESULTADOS.md.
 
 ## Saidas
 

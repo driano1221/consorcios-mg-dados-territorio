@@ -104,7 +104,8 @@ Entregas priorizadas:
    - 2.375 fronteiras municipais compartilhadas foram identificadas por linha, excluindo contato apenas por canto;
    - cada par ativo recebeu numero/proporcao de vizinhos dentro e fora do consorcio, indicador de borda e isolamento;
    - foi criado universo de 18.404 candidatos externos de borda para modelar entradas, sem assumir que todos os municipios de MG sao candidatos equivalentes;
-   - os outputs ainda nao foram integrados ao dashboard.
+   - os outputs ainda nao foram integrados ao dashboard;
+   - EDA concluida em `analises/movimentos_espaciais/EDA_RESULTADOS.md`: integridade aprovada e associacoes espaciais descritivas fortes; antes da integracao, revisar restos a pagar, valores muito baixos, matriz/filial, nomes canonicos e a nomenclatura de borda para candidatos externos.
 
 3. **Classificacao por area de politica publica**
    - **versao analitica v0.5 concluida:** `analises/classificacao_politicas/outputs/classificacao_areas_politica_mg_v0_5_analitica_ativa.csv` e `.rds`;
