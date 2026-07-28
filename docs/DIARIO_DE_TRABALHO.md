@@ -44,6 +44,36 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - `ff19f0f chore: organizar base inicial do ideiaMides`
 - `98c5a0d dashboard: adicionar ajuda contextual aos filtros`
 
+---
+
+## 2026-07-28 - Refinamento Dos Filtros De Classificacao
+
+### Problema Corrigido
+
+- Os filtros de classificacao exibiam codigos e combinacoes tecnicas, como `agricultura; desenvolvimento_regional`, inadequadas para consulta.
+- O antigo rotulo `Sem classificacao ativa` misturava perfil sem area, CNPJ inativo/baixado e CNPJ fora do universo MG da classificacao.
+
+### Entregas
+
+- Campos de selecao passaram a indicar `Selecionar`; campos de texto, `Digitar`.
+- Area detalhada, macrogrupo e perfil exibem rotulos legiveis e opcoes individuais.
+- A selecao de area usa correspondencia por componente: selecionar `Saude` encontra CNPJs com essa area mesmo que tenham outras areas associadas.
+- `Documentacao > Classificacao de areas` passou a explicar a diferenca entre area detalhada, macrogrupo e perfil institucional, inclusive os cinco perfis possiveis.
+- Incluida tabela de cobertura da classificacao no MIDES completo, sem transformar ausencia de area em categoria substantiva de filtro.
+
+### Situacao Observada No MIDES Completo
+
+- 16 CNPJs ativos sem area especifica comprovada: 12 multifinalitarios, 3 multissetoriais e 1 associacao municipal fora de escopo.
+- 8 CNPJs presentes no MIDES completo estao fora do universo de 223 CNPJs MG da classificacao.
+- 1 CNPJ presente no MIDES completo esta inativo ou baixado na camada classificatoria.
+- Esses registros continuam no MIDES e em seus totais; apenas nao aparecem como uma falsa area de politica publica.
+
+### Validacoes
+
+- `tests/test_classificacao_v0_5.R` aprovado: preservacao de 15.135 linhas e 161 CNPJs MIDES, filtros de area/macrogrupo/perfil, cobertura e dados de mapa.
+- Servidor Shiny local respondeu HTTP 200 apos as alteracoes.
+- Dashboard republicado e verificado por HTTP 200: <https://kl5ug0-adriano-pires.shinyapps.io/base1-mides-munic-siconfi/>.
+
 ### Pendencias Mantidas
 
 - Decidir se matriz/filial sera consolidada financeiramente e nos movimentos.

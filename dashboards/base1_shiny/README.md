@@ -5,7 +5,7 @@ Dashboard Shiny para consulta interativa da Base 1.
 ## Conteudo
 
 - filtros multisselecao por ano, grupo de vinculo, classe SICONFI, municipio, consorcio e busca livre;
-- filtros MIDES completo por area detalhada, macrogrupo e perfil institucional da classificacao v0.5;
+- filtros MIDES completo por area detalhada, macrogrupo e perfil institucional da classificacao v0.5, com opcoes individuais e rotulos legiveis;
 - KPIs compactos no topo;
 - tabela pesquisavel/exportavel da base final;
 - tabela agregada de validacao SICONFI por municipio-ano;
@@ -58,7 +58,7 @@ MIDES e MUNIC formam a base de vinculos em `municipio x consorcio x ano`.
 
 SICONFI entra como validacao financeira agregada em `municipio x ano`, usando a regra `consorcio_pagas`.
 
-No MIDES completo, a classificacao v0.5 e anexada por CNPJ somente como atributo analitico. Ela nao altera valores, pares ou movimentos. CNPJs sem classificacao ativa permanecem acessiveis pelo filtro `Sem classificacao ativa`.
+No MIDES completo, a classificacao v0.5 e anexada por CNPJ somente como atributo analitico. Ela nao altera valores, pares ou movimentos. Os filtros mostram apenas categorias substantivas. Casos sem area comprovada, inativos/baixados e CNPJs fora do universo MG ficam preservados na tabela de cobertura da classificacao, dentro de `Documentacao`.
 
 ## Documentacao No App
 
@@ -66,6 +66,6 @@ A aba `Documentacao` fica separada das telas analiticas e contem:
 
 - `Guia do painel`: escopo e leitura de cada tela;
 - `Conceitos`: pares, fontes, classes SICONFI e regra de leitura;
-- `Classificacao de areas`: pipeline v0.5, taxonomia, inferencias, multifinalitarios e regra classificatoria de matriz/filial.
+- `Classificacao de areas`: pipeline v0.5, diferenca entre area, macrogrupo e perfil institucional, taxonomia, inferencias, multifinalitarios, matriz/filial e cobertura no MIDES completo.
 
 A referencia completa fora do app e `../../docs/METODOLOGIA_CLASSIFICACAO_ATUAL.md`.

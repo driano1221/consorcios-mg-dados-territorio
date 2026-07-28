@@ -66,6 +66,52 @@ fmt_moeda_curto <- function(x) label_number(big.mark = ".", decimal.mark = ",", 
 fmt_int <- function(x) label_number(big.mark = ".", decimal.mark = ",", accuracy = 1)(x)
 pad_ibge <- function(x) str_pad(str_sub(as.character(x), 1, 6), 6, side = "left", pad = "0")
 fmt_flag <- function(x) if_else(isTRUE(x), "Sim", "Nao")
+rotulos_area <- c(
+  agricultura = "Agricultura", assistencia_social = "Assistencia social",
+  cultura = "Cultura", defesa_consumidor = "Defesa do consumidor",
+  desenvolvimento_regional = "Desenvolvimento regional", desenvolvimento_urbano = "Desenvolvimento urbano",
+  educacao = "Educacao", esporte = "Esporte", gestao_publica = "Gestao publica",
+  habitacao = "Habitacao", iluminacao_publica = "Iluminacao publica",
+  infraestrutura = "Infraestrutura", inspecao_produtos_origem_animal = "Inspecao de produtos de origem animal",
+  licitacao_compras_compartilhadas = "Licitacao e compras compartilhadas",
+  meio_ambiente = "Meio ambiente", recursos_hidricos = "Recursos hidricos",
+  residuos_solidos = "Residuos solidos", saneamento_basico = "Saneamento basico",
+  saude = "Saude", seguranca_publica = "Seguranca publica", transporte = "Transporte",
+  turismo = "Turismo", urgencia_emergencia = "Urgencia e emergencia",
+  vigilancia_em_saude = "Vigilancia em saude"
+)
+rotulos_macrogrupo <- c(
+  ambiente_saneamento = "Ambiente e saneamento", cultura_turismo = "Cultura e turismo",
+  desenvolvimento_rural = "Desenvolvimento rural", desenvolvimento_territorial = "Desenvolvimento territorial",
+  gestao_publica = "Gestao publica", politicas_sociais = "Politicas sociais",
+  saude = "Saude", seguranca_cidadania = "Seguranca e cidadania"
+)
+rotulos_perfil <- c(
+  setorial = "Setorial", multiarea = "Multiarea documentada",
+  multifinalitario = "Multifinalitario", multissetorial = "Multissetorial",
+  associacao_municipal = "Associacao municipal"
+)
+extrair_categorias <- function(x) {
+  x <- x[!is.na(x) & x != ""]
+  sort(unique(str_squish(unlist(str_split(x, ";")))))
+}
+rotular_opcoes <- function(codigos, rotulos) {
+  # Em inputs Shiny, o nome e o rotulo exibido e o valor e o codigo filtrado.
+  setNames(codigos, unname(rotulos[codigos]))
+}
+formatar_categorias <- function(x, rotulos) {
+  vapply(x, function(valor) {
+    if (is.na(valor) || valor == "") return("Nao informado")
+    codigos <- str_squish(unlist(str_split(valor, ";")))
+    paste(unname(rotulos[codigos]), collapse = " | ")
+  }, character(1))
+}
+tem_categoria <- function(x, escolhas) {
+  if (length(escolhas) == 0) return(rep(TRUE, length(x)))
+  vapply(x, function(valor) {
+    !is.na(valor) && any(str_squish(unlist(str_split(valor, ";"))) %in% escolhas)
+  }, logical(1))
+}
 max0 <- function(x) {
   x <- x[!is.na(x)]
   if (length(x) == 0) return(0)
@@ -261,14 +307,13 @@ cadastro_base <- readRDS(path_cadastro) |>
   )
 
 # A classificacao v0.5 qualifica o consorcio sem alterar a observacao MIDES.
-# CNPJs ausentes, inativos ou sem area continuam no painel como "Sem classificacao ativa".
 classificacao_v05 <- read_table_app(path_classificacao) |>
   mutate(
     cnpj_consorcio = str_pad(as.character(cnpj_consorcio), 14, side = "left", pad = "0"),
     ativo_analise = coalesce(ativo_analise, FALSE),
-    area_filtro = if_else(ativo_analise & !is.na(area_politica_final) & area_politica_final != "", area_politica_final, "Sem classificacao ativa"),
-    macrogrupo_filtro = if_else(ativo_analise & !is.na(macroarea_final) & macroarea_final != "", macroarea_final, "Sem classificacao ativa"),
-    perfil_filtro = if_else(ativo_analise & !is.na(perfil_institucional) & perfil_institucional != "", perfil_institucional, "Sem classificacao ativa"),
+    area_filtro = if_else(ativo_analise & !is.na(area_politica_final) & area_politica_final != "", area_politica_final, NA_character_),
+    macrogrupo_filtro = if_else(ativo_analise & !is.na(macroarea_final) & macroarea_final != "", macroarea_final, NA_character_),
+    perfil_filtro = if_else(ativo_analise & !is.na(perfil_institucional) & perfil_institucional != "", perfil_institucional, NA_character_),
     status_classificacao = coalesce(status_validacao, "Sem classificacao"),
     fonte_classificacao = coalesce(fonte_principal, "Sem classificacao")
   ) |>
@@ -299,9 +344,12 @@ mides_anual <- readRDS(path_mides_anual) |>
     razao_social = coalesce(razao_social_cadastro, nome_credor_freq),
     setores = coalesce(setores_cadastro, "(sem setor)"),
     situacao = coalesce(situacao_cadastro, "(sem situacao)"),
-    area_politica = coalesce(area_politica, "Sem classificacao ativa"),
-    macrogrupo_politica = coalesce(macrogrupo_politica, "Sem classificacao ativa"),
-    perfil_classificacao = coalesce(perfil_classificacao, "Sem classificacao ativa"),
+    cobertura_classificacao = case_when(
+      is.na(ativo_classificacao) ~ "Fora do universo da classificacao MG",
+      !ativo_classificacao ~ "CNPJ inativo ou baixado",
+      is.na(area_politica) ~ "Perfil institucional sem area especifica",
+      TRUE ~ "Area classificada"
+    ),
     status_classificacao = coalesce(status_classificacao, "Fora do universo da classificacao"),
     fonte_classificacao = coalesce(fonte_classificacao, "Fora do universo da classificacao"),
     tipo_valor = case_when(
@@ -356,9 +404,9 @@ classes_opts <- levels(droplevels(base_final$classe_validacao))
 mides_anos_opts <- sort(unique(mides_anual$ano))
 mides_municipios_opts <- sort(unique(mides_anual$municipio))
 mides_consorcios_opts <- sort(unique(mides_anual$sigla))
-mides_areas_opts <- sort(unique(mides_anual$area_politica))
-mides_macrogrupos_opts <- sort(unique(mides_anual$macrogrupo_politica))
-mides_perfis_opts <- sort(unique(mides_anual$perfil_classificacao))
+mides_areas_opts <- rotular_opcoes(extrair_categorias(mides_anual$area_politica), rotulos_area)
+mides_macrogrupos_opts <- rotular_opcoes(extrair_categorias(mides_anual$macrogrupo_politica), rotulos_macrogrupo)
+mides_perfis_opts <- rotular_opcoes(sort(unique(na.omit(mides_anual$perfil_classificacao))), rotulos_perfil)
 mides_regra_valor_opts <- c(
   "Todos os registros" = "todos",
   "Valor corrente positivo" = "corrente",
@@ -589,10 +637,11 @@ definicoes <- tibble::tribble(
   "Auditoria", "Painel de suspeitas cadastrais e territoriais para revisar CNPJs com mesmo nome, sigla ausente ou repeticoes em um mesmo municipio-ano."
 )
 
-label_com_info <- function(rotulo, explicacao) {
+label_com_info <- function(rotulo, explicacao, modo = NULL) {
   tags$span(
     class = "filter-label",
     rotulo,
+    if (!is.null(modo)) tags$span(class = "filter-mode", modo),
     tags$span(
       class = "filter-info",
       title = explicacao,
@@ -872,6 +921,26 @@ ui <- page_navbar(
         padding: 0;
       }
       .selectize-input, .form-control, .form-select, .btn { border-radius: 3px !important; }
+      .filter-mode {
+        color: var(--ipea-muted);
+        font-family: Consolas, 'Lucida Console', monospace;
+        font-size: 9px;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        border: 1px solid var(--ipea-line);
+        border-radius: 2px;
+        padding: 1px 4px;
+      }
+      .selectize-control.multi .selectize-input::after, .selectize-control.single .selectize-input::after {
+        border-color: var(--ipea-ink) transparent transparent transparent;
+        opacity: 1;
+      }
+      .selectize-control.multi .selectize-input {
+        min-height: 41px;
+        padding: 9px 32px 7px 11px;
+        background: #ffffff;
+      }
+      .selectize-dropdown { border-color: var(--ipea-line); }
       .btn-reset {
         width: 100%;
         border: 1px solid var(--ipea-ink);
@@ -956,9 +1025,9 @@ ui <- page_navbar(
             checkboxGroupInput("ano", label_com_info("Ano", "Seleciona 2015, 2019 ou ambos no recorte comparavel."), choices = anos_opts, selected = anos_opts, inline = TRUE),
             checkboxGroupInput("grupo", label_com_info("Conjuntos MIDES/MUNIC", "Filtra se o par aparece nas duas fontes, so no MIDES ou so na MUNIC."), choices = grupos_labels, selected = grupos_opts),
             checkboxGroupInput("classe", label_com_info("Validacao SICONFI opcional", "Filtra a classe municipio-ano da comparacao financeira. SICONFI nao identifica o CNPJ de destino."), choices = classes_labels, selected = classes_opts),
-            selectizeInput("municipio", label_com_info("Municipio", "Permite selecionar um ou mais municipios. Os KPIs, tabelas e mapa usam a selecao."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
-            selectizeInput("consorcio", label_com_info("Consorcio/sigla", "Permite selecionar um ou mais consorcios pelo nome curto ou sigla."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
-            textInput("busca", label_com_info("Busca livre", "Pesquisa municipio, sigla, CNPJ e razao social dentro do recorte atual."), placeholder = "municipio, sigla, CNPJ, razao social..."),
+            selectizeInput("municipio", label_com_info("Municipio", "Clique no campo para abrir opcoes. Tambem e possivel digitar parte do nome para localizar e selecionar um ou mais municipios.", "Selecionar"), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Clique para selecionar ou digite para localizar", plugins = list("remove_button"), closeAfterSelect = FALSE)),
+            selectizeInput("consorcio", label_com_info("Consorcio/sigla", "Clique no campo para abrir opcoes. Tambem e possivel digitar parte do nome ou sigla para localizar e selecionar.", "Selecionar"), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Clique para selecionar ou digite para localizar", plugins = list("remove_button"), closeAfterSelect = FALSE)),
+            textInput("busca", label_com_info("Busca livre", "Digite um trecho de municipio, sigla, CNPJ ou razao social dentro do recorte atual.", "Digitar"), placeholder = "Digite municipio, sigla, CNPJ ou razao social"),
             actionButton("limpar", "Limpar filtros", class = "btn-reset")
           )
         ),
@@ -1024,21 +1093,21 @@ ui <- page_navbar(
         div(
           class = "inline-filters",
           checkboxGroupInput("mides_ano", label_com_info("Ano MIDES", "Seleciona anos observados no MIDES entre 2014 e 2021."), choices = mides_anos_opts, selected = mides_anos_opts, inline = TRUE),
-          selectizeInput("mides_municipio", label_com_info("Municipio", "Restringe a consulta MIDES a um ou mais municipios."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
-          selectizeInput("mides_consorcio", label_com_info("Consorcio/sigla", "Restringe a consulta MIDES a um ou mais consorcios."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos"))
+          selectizeInput("mides_municipio", label_com_info("Municipio", "Clique no campo para abrir opcoes. Tambem e possivel digitar parte do nome para localizar e selecionar municipios.", "Selecionar"), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Clique para selecionar ou digite para localizar", plugins = list("remove_button"), closeAfterSelect = FALSE)),
+          selectizeInput("mides_consorcio", label_com_info("Consorcio/sigla", "Clique no campo para abrir opcoes. Tambem e possivel digitar parte do nome ou sigla para localizar e selecionar.", "Selecionar"), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Clique para selecionar ou digite para localizar", plugins = list("remove_button"), closeAfterSelect = FALSE))
         ),
         div(
           class = "inline-filters",
           selectInput("mides_regra_valor", label_com_info("Regra de valor", "Define quais linhas MIDES entram no recorte: todos os registros, valor corrente, restos a pagar ou valor total positivo."), choices = mides_regra_valor_opts, selected = "total"),
           selectInput("mides_mapa_metrica", label_com_info("Metrica do mapa", "Define a cor do mapa: valor MIDES, numero de consorcios ou numero de transacoes."), choices = mides_mapa_metrica_opts, selected = "valor_total"),
-          textInput("mides_busca", label_com_info("Busca livre no MIDES", "Pesquisa municipio, sigla, CNPJ, razao social e nome recorrente do credor no MIDES."), placeholder = "municipio, sigla, CNPJ, razao social..."),
+          textInput("mides_busca", label_com_info("Busca livre no MIDES", "Digite um trecho de municipio, sigla, CNPJ, razao social ou nome do credor no MIDES.", "Digitar"), placeholder = "Digite municipio, sigla, CNPJ ou razao social"),
           div(tags$label("&nbsp;"), actionButton("limpar_mides", "Limpar MIDES", class = "btn-reset"))
         ),
         div(
           class = "inline-filters",
-          selectizeInput("mides_area", label_com_info("Area de politica publica", "Filtra a area detalhada atribuida ao CNPJ do consorcio. Registros sem categoria ativa permanecem disponiveis na opcao correspondente."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todas as areas")),
-          selectizeInput("mides_macrogrupo", label_com_info("Macrogrupo", "Agrupa areas detalhadas em blocos analiticos. Use junto ou separadamente da area detalhada."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos os macrogrupos")),
-          selectizeInput("mides_perfil", label_com_info("Perfil institucional", "Descreve o perfil do consorcio, como setorial, multifinalitario ou multissetorial. Perfil nao substitui uma area de politica publica."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos os perfis"))
+          selectizeInput("mides_area", label_com_info("Area de politica publica", "Seleciona politicas especificas, como Saude, Agricultura ou Saneamento basico. Um consorcio com mais de uma area e encontrado em qualquer uma delas.", "Selecionar"), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Clique para selecionar areas", plugins = list("remove_button"), closeAfterSelect = FALSE)),
+          selectizeInput("mides_macrogrupo", label_com_info("Macrogrupo", "Seleciona blocos amplos que reagrupam as areas detalhadas, como Saude ou Ambiente e saneamento.", "Selecionar"), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Clique para selecionar macrogrupos", plugins = list("remove_button"), closeAfterSelect = FALSE)),
+          selectizeInput("mides_perfil", label_com_info("Perfil institucional", "Seleciona como a instituicao se organiza: setorial, multiarea, multifinalitario, multissetorial ou associacao municipal. Perfil nao e uma area de politica publica.", "Selecionar"), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Clique para selecionar perfis", plugins = list("remove_button"), closeAfterSelect = FALSE))
         )
       ),
       div(
@@ -1094,11 +1163,11 @@ ui <- page_navbar(
         h3("Filtros da comparacao"),
         div(
           class = "inline-filters",
-          selectizeInput("cmp_municipio", label_com_info("Municipio", "Seleciona municipios para comparar sua presenca em 2015 e 2019."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
-          selectizeInput("cmp_consorcio", label_com_info("Consorcio/sigla", "Seleciona consorcios para comparar seus pares entre 2015 e 2019."), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Todos")),
+          selectizeInput("cmp_municipio", label_com_info("Municipio", "Clique no campo para abrir opcoes. Tambem e possivel digitar parte do nome para localizar e selecionar municipios.", "Selecionar"), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Clique para selecionar ou digite para localizar", plugins = list("remove_button"), closeAfterSelect = FALSE)),
+          selectizeInput("cmp_consorcio", label_com_info("Consorcio/sigla", "Clique no campo para abrir opcoes. Tambem e possivel digitar parte do nome ou sigla para localizar e selecionar.", "Selecionar"), choices = NULL, selected = NULL, multiple = TRUE, options = list(placeholder = "Clique para selecionar ou digite para localizar", plugins = list("remove_button"), closeAfterSelect = FALSE)),
           checkboxGroupInput("cmp_status", label_com_info("Status 2015 -> 2019", "Filtra pares que permaneceram, entraram em 2019 ou sairam depois de 2015."), choices = status_opts, selected = status_opts)
         ),
-        textInput("cmp_busca", label_com_info("Busca livre na comparacao", "Pesquisa municipio, sigla, CNPJ e razao social dentro da comparacao temporal."), placeholder = "municipio, sigla, CNPJ, razao social..."),
+        textInput("cmp_busca", label_com_info("Busca livre na comparacao", "Digite um trecho de municipio, sigla, CNPJ ou razao social dentro da comparacao temporal.", "Digitar"), placeholder = "Digite municipio, sigla, CNPJ ou razao social"),
         actionButton("limpar_cmp", "Limpar comparacao", class = "btn-reset")
       ),
       div(
@@ -1180,9 +1249,25 @@ ui <- page_navbar(
           "Classificacao de areas",
           div(
             class = "doc-grid",
-            div(class = "doc-card", h3("Unidade e fontes"), p("A unidade e o CNPJ do consorcio. A classificacao usa cadastro IPEA, MUNIC, nome juridico, aliases MIDES e revisao documental, mantendo a origem registrada.")),
-            div(class = "doc-card", h3("Perfil nao e area"), p("Multifinalitario e multissetorial descrevem o perfil institucional. Uma area, como saude ou saneamento, so e atribuida quando houver evidencia setorial.")),
-            div(class = "doc-card", h3("Estado atual v0.5"), p("217 CNPJs ativos para analise. Seis CNPJs inativos ou baixados foram excluidos somente da camada analitica; os dados tecnicos foram preservados."))
+            div(class = "doc-card", h3("Area detalhada"), p("Indica o tema de politica publica efetivamente evidenciado: Saude, Agricultura, Saneamento basico e assim por diante. Um CNPJ pode ter mais de uma area.")),
+            div(class = "doc-card", h3("Macrogrupo"), p("Reagrupa as areas detalhadas para analise ampla. Por exemplo, Residuos solidos, Meio ambiente e Recursos hidricos pertencem a Ambiente e saneamento.")),
+            div(class = "doc-card", h3("Perfil institucional"), p("Descreve a forma de atuacao institucional. Setorial, multifinalitario e multissetorial nao substituem nem criam uma area de politica publica."))
+          ),
+          tags$details(class = "doc-detail", open = NA, tags$summary("Diferenca entre area, macrogrupo e perfil"),
+            tags$table(tags$thead(tags$tr(tags$th("Campo"), tags$th("Pergunta respondida"), tags$th("Exemplo"))), tags$tbody(
+              tags$tr(tags$td("Area detalhada"), tags$td("Em qual politica publica o consorcio atua?"), tags$td("Saude; Saneamento basico; Agricultura.")),
+              tags$tr(tags$td("Macrogrupo"), tags$td("A qual familia ampla pertencem essas areas?"), tags$td("Saude; Ambiente e saneamento; Desenvolvimento territorial.")),
+              tags$tr(tags$td("Perfil institucional"), tags$td("Como a instituicao se organiza ou se apresenta?"), tags$td("Setorial; Multiarea documentada; Multifinalitario; Multissetorial."))
+            )),
+            p("Exemplo: um consorcio com areas Meio ambiente e Residuos solidos recebe o macrogrupo Ambiente e saneamento e perfil Multiarea documentada. Ja um consorcio denominado multifinalitario pode ter esse perfil sem receber area especifica, quando o nome nao prova uma politica concreta.")
+          ),
+          tags$details(class = "doc-detail", tags$summary("Perfis institucionais"),
+            tags$ul(
+              tags$li(tags$strong("Setorial:"), " uma area de politica publica claramente identificada."),
+              tags$li(tags$strong("Multiarea documentada:"), " duas ou mais areas detalhadas identificadas por evidencia; nao e apenas um nome generico."),
+              tags$li(tags$strong("Multifinalitario:"), " instituicao apresentada como ampla ou multifinalitaria; esse nome sozinho nao autoriza inventar areas."),
+              tags$li(tags$strong("Multissetorial:"), " nome ou documentacao indica varios setores; uma area so entra quando estiver explicitamente indicada."),
+              tags$li(tags$strong("Associacao municipal:"), " entidade associativa, mantida no arquivo tecnico e distinta de consorcio intermunicipal."))
           ),
           tags$details(class = "doc-detail", open = NA, tags$summary("Pipeline de classificacao"),
             tags$ol(
@@ -1209,12 +1294,13 @@ ui <- page_navbar(
               tags$li(tags$strong("Matriz/filial:"), " filial herda apenas area e perfil da matriz pela raiz de 8 digitos. Valores MIDES, pares e movimentos nao foram consolidados."),
               tags$li(tags$strong("Multifinalitario:"), " perfil por nome; area somente se texto explicitar setor. Os demais permanecem sem area especifica."),
               tags$li(tags$strong("Excluido inativo:"), " matriz inapta ou baixada, retirada somente da camada analitica ativa; continua preservada no arquivo tecnico."))
-          )
+          ),
+          div(class = "panel-card", h3("Cobertura da classificacao no MIDES completo"), p(class = "small-note", "Os filtros de classificacao exibem somente categorias substantivas. Esta tabela mostra separadamente os CNPJs sem area, inativos ou fora do universo de 223 CNPJs do cadastro MG."), DTOutput("tabela_cobertura_classificacao"))
         )
       )
     )
   ),
-  nav_spacer(),
+    nav_spacer(),
   nav_item(tags$img(src = "IPEA-LOGO.png", alt = "IPEA", class = "nav-logo"))
 )
 
@@ -1225,9 +1311,10 @@ server <- function(input, output, session) {
   updateSelectizeInput(session, "cmp_consorcio", choices = consorcios_opts, server = TRUE)
   updateSelectizeInput(session, "mides_municipio", choices = mides_municipios_opts, server = TRUE)
   updateSelectizeInput(session, "mides_consorcio", choices = mides_consorcios_opts, server = TRUE)
-  updateSelectizeInput(session, "mides_area", choices = mides_areas_opts, server = TRUE)
-  updateSelectizeInput(session, "mides_macrogrupo", choices = mides_macrogrupos_opts, server = TRUE)
-  updateSelectizeInput(session, "mides_perfil", choices = mides_perfis_opts, server = TRUE)
+  # Sao listas pequenas; carregar no cliente preserva rotulos legiveis e resposta imediata.
+  updateSelectizeInput(session, "mides_area", choices = mides_areas_opts, server = FALSE)
+  updateSelectizeInput(session, "mides_macrogrupo", choices = mides_macrogrupos_opts, server = FALSE)
+  updateSelectizeInput(session, "mides_perfil", choices = mides_perfis_opts, server = FALSE)
 
   observeEvent(input$limpar, {
     updateCheckboxGroupInput(session, "ano", selected = anos_opts)
@@ -1316,8 +1403,8 @@ server <- function(input, output, session) {
 
     if (length(input$mides_municipio) > 0) df <- df |> filter(municipio %in% input$mides_municipio)
     if (length(input$mides_consorcio) > 0) df <- df |> filter(sigla %in% input$mides_consorcio)
-    if (length(input$mides_area) > 0) df <- df |> filter(area_politica %in% input$mides_area)
-    if (length(input$mides_macrogrupo) > 0) df <- df |> filter(macrogrupo_politica %in% input$mides_macrogrupo)
+    if (length(input$mides_area) > 0) df <- df |> filter(tem_categoria(area_politica, input$mides_area))
+    if (length(input$mides_macrogrupo) > 0) df <- df |> filter(tem_categoria(macrogrupo_politica, input$mides_macrogrupo))
     if (length(input$mides_perfil) > 0) df <- df |> filter(perfil_classificacao %in% input$mides_perfil)
     if (!is.null(input$mides_busca) && str_squish(input$mides_busca) != "") {
       termos <- str_to_lower(str_squish(input$mides_busca))
@@ -1413,8 +1500,8 @@ server <- function(input, output, session) {
 
     if (length(input$mides_municipio) > 0) df <- df |> filter(municipio %in% input$mides_municipio)
     if (length(input$mides_consorcio) > 0) df <- df |> filter(sigla %in% input$mides_consorcio)
-    if (length(input$mides_area) > 0) df <- df |> filter(area_politica %in% input$mides_area)
-    if (length(input$mides_macrogrupo) > 0) df <- df |> filter(macrogrupo_politica %in% input$mides_macrogrupo)
+    if (length(input$mides_area) > 0) df <- df |> filter(tem_categoria(area_politica, input$mides_area))
+    if (length(input$mides_macrogrupo) > 0) df <- df |> filter(tem_categoria(macrogrupo_politica, input$mides_macrogrupo))
     if (length(input$mides_perfil) > 0) df <- df |> filter(perfil_classificacao %in% input$mides_perfil)
     if (!is.null(input$mides_busca) && str_squish(input$mides_busca) != "") {
       termos <- str_to_lower(str_squish(input$mides_busca))
@@ -2302,6 +2389,60 @@ server <- function(input, output, session) {
     )
   }, server = TRUE)
 
+  output$tabela_cobertura_classificacao <- renderDT({
+    df <- mides_anual |>
+      filter(cobertura_classificacao != "Area classificada") |>
+      group_by(
+        cobertura_classificacao,
+        cnpj_consorcio,
+        sigla,
+        razao_social,
+        area_politica,
+        macrogrupo_politica,
+        perfil_classificacao
+      ) |>
+      summarise(
+        anos_mides = paste(sort(unique(ano)), collapse = "; "),
+        linhas_mides = n(),
+        valor_total_mides = sum(valor_total, na.rm = TRUE),
+        .groups = "drop"
+      ) |>
+      transmute(
+        situacao = cobertura_classificacao,
+        cnpj_consorcio,
+        sigla,
+        razao_social,
+        area_politica = formatar_categorias(area_politica, rotulos_area),
+        macrogrupo = formatar_categorias(macrogrupo_politica, rotulos_macrogrupo),
+        perfil = coalesce(unname(rotulos_perfil[perfil_classificacao]), "Nao informado"),
+        anos_mides,
+        linhas_mides,
+        valor_total_mides = round(valor_total_mides, 2)
+      ) |>
+      arrange(situacao, sigla, razao_social)
+
+    datatable(
+      df,
+      rownames = FALSE,
+      extensions = "Buttons",
+      options = list(
+        dom = "Bfrtip",
+        buttons = c("copy", "csv", "excel"),
+        pageLength = 15,
+        scrollX = TRUE,
+        deferRender = TRUE,
+        language = dt_pt
+      )
+    ) |>
+      formatCurrency(
+        columns = "valor_total_mides",
+        currency = "R$ ",
+        mark = ".",
+        dec.mark = ",",
+        interval = 3
+      )
+  }, server = TRUE)
+
   output$tabela_mides <- renderDT({
     df <- dados_mides_filtrados() |>
       transmute(
@@ -2311,9 +2452,10 @@ server <- function(input, output, session) {
         sigla,
         cnpj_consorcio,
         razao_social,
-        area_politica,
-        macrogrupo_politica,
-        perfil_institucional = perfil_classificacao,
+        area_politica = formatar_categorias(area_politica, rotulos_area),
+        macrogrupo_politica = formatar_categorias(macrogrupo_politica, rotulos_macrogrupo),
+        perfil_institucional = coalesce(unname(rotulos_perfil[perfil_classificacao]), "Nao informado"),
+        cobertura_classificacao,
         valor_corrente = round(valor_corrente, 2),
         valor_restos = round(valor_restos, 2),
         valor_total = round(valor_total, 2),

@@ -13,6 +13,16 @@ Classificamos duas dimensoes diferentes:
 
 Perfil nao substitui area. Um consorcio multifinalitario pode ter uma area explicita, varias areas ou nenhuma area especifica comprovada.
 
+No dashboard, as tres dimensoes sao mantidas separadas:
+
+| Campo | Pergunta respondida | Exemplo |
+|---|---|---|
+| Area detalhada | Em qual politica publica ha evidencia de atuacao? | `saude`, `saneamento_basico`, `agricultura` |
+| Macrogrupo | Em qual familia ampla se encaixa a area? | `saude`, `ambiente_saneamento`, `desenvolvimento_territorial` |
+| Perfil institucional | Como a entidade se organiza ou se apresenta? | `setorial`, `multiarea`, `multifinalitario`, `multissetorial` |
+
+Os filtros de area e macrogrupo operam por componente. Assim, um CNPJ classificado em `meio_ambiente; residuos_solidos` pode ser localizado por qualquer uma das duas areas, sem que a combinacao inteira vire uma opcao de filtro.
+
 ## Pipeline Resumido
 
 ```text
@@ -97,6 +107,7 @@ Essa regra e somente classificatoria. **Nao** soma pagamentos MIDES, nao altera 
 - Validacao para uso analitico nao substitui a documentacao institucional de cada consorcio.
 - A regra de consolidacao financeira de matriz/filial continua pendente de decisao metodologica.
 - Os 16 multifinalitarios/multissetoriais sem area devem permanecer sem area ate surgir evidencia setorial suficiente.
+- No MIDES completo, registros fora do universo MG da classificacao, inativos/baixados ou com perfil sem area continuam preservados nos totais. Eles sao apresentados separadamente na cobertura da classificacao, e nao como uma categoria de area.
 
 ## Arquivos Relacionados
 
