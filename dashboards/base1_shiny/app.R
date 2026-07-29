@@ -665,6 +665,205 @@ paleta_mov_mides <- c(
   "Saiu" = "#e07a2f",
   "Misto" = "#8f8f8f"
 )
+
+escape_html <- function(x) as.character(htmltools::htmlEscape(coalesce(as.character(x), "")))
+
+resumir_movimentos_longitudinais <- function(df) {
+  df |>
+    summarise(
+      pares_ativos = sum(presente_mides, na.rm = TRUE),
+      entradas_novas = sum(evento_movimento == "entrada_observada", na.rm = TRUE),
+      retornos = sum(evento_movimento == "retorno_observado", na.rm = TRUE),
+      saidas = sum(evento_movimento == "saida_observada", na.rm = TRUE),
+      permanencias = sum(evento_movimento == "permaneceu", na.rm = TRUE),
+      saldo_liquido = sum(delta_presenca, na.rm = TRUE),
+      recorrentes_ativos = sum(presente_mides & movimento_recorrente, na.rm = TRUE),
+      valor_total_mides = sum(valor_total, na.rm = TRUE),
+      .by = c(ano, cnpj_consorcio, sigla, razao_social)
+    ) |>
+    arrange(cnpj_consorcio, ano)
+}
+
+html_trajetoria_compacta <- function(resumo) {
+  resumo <- resumo |> arrange(ano)
+  paste0(
+    "<div class='trajectory-inline'>",
+    paste0(
+      "<div class='trajectory-mini-year' title='",
+      resumo$ano, ": ", resumo$pares_ativos, " ativos; ",
+      resumo$entradas_novas, " entradas novas; ", resumo$retornos, " retornos; ",
+      resumo$saidas, " saidas; saldo ", ifelse(resumo$saldo_liquido > 0, "+", ""), resumo$saldo_liquido, "'>",
+      "<span>", resumo$ano, "</span>",
+      "<strong>", resumo$pares_ativos, "</strong>",
+      "<small><b class='entry'>+", resumo$entradas_novas, "</b>",
+      "<b class='return'>&#8634;", resumo$retornos, "</b>",
+      "<b class='exit'>&minus;", resumo$saidas, "</b></small>",
+      "</div>",
+      collapse = ""
+    ),
+    "</div>"
+  )
+}
+
+html_tabela_anual_longitudinal <- function(resumo) {
+  resumo <- resumo |> arrange(ano)
+  linhas <- paste0(
+    "<tr><td><strong>", resumo$ano, "</strong></td>",
+    "<td>", resumo$pares_ativos, "</td>",
+    "<td class='text-entry'>+", resumo$entradas_novas, "</td>",
+    "<td class='text-return'>&#8634;", resumo$retornos, "</td>",
+    "<td class='text-exit'>&minus;", resumo$saidas, "</td>",
+    "<td>", resumo$permanencias, "</td>",
+    "<td class='", ifelse(resumo$saldo_liquido > 0, "saldo-pos", ifelse(resumo$saldo_liquido < 0, "saldo-neg", "")), "'>",
+    ifelse(resumo$saldo_liquido > 0, "+", ""), resumo$saldo_liquido, "</td>",
+    "<td>", resumo$recorrentes_ativos, "</td>",
+    "<td>", fmt_moeda(resumo$valor_total_mides), "</td></tr>",
+    collapse = ""
+  )
+  paste0(
+    "<div class='long-table-scroll'><table class='long-annual-table'>",
+    "<thead><tr><th>Ano</th><th>Ativos</th><th>Entradas</th><th>Retornos</th><th>Saidas</th>",
+    "<th>Permanencias</th><th>Saldo</th><th>Recorrentes</th><th>Valor MIDES</th></tr></thead>",
+    "<tbody>", linhas, "</tbody></table></div>"
+  )
+}
+
+html_timeline_longitudinal <- function(resumo) {
+  resumo <- resumo |> arrange(ano)
+  max_ativos <- max(c(resumo$pares_ativos, 1), na.rm = TRUE)
+  paste0(
+    "<div class='trajectory-years'>",
+    paste0(
+      "<div class='trajectory-year-card'>",
+      "<div class='trajectory-year-head'><span>", resumo$ano, "</span><strong>", resumo$pares_ativos, " ativos</strong></div>",
+      "<div class='trajectory-bar'><i style='width:", round(100 * resumo$pares_ativos / max_ativos, 1), "%'></i></div>",
+      "<div class='trajectory-events'>",
+      "<span class='entry'>+", resumo$entradas_novas, " entradas</span>",
+      "<span class='return'>&#8634;", resumo$retornos, " retornos</span>",
+      "<span class='exit'>&minus;", resumo$saidas, " saidas</span>",
+      "</div><small>saldo ", ifelse(resumo$saldo_liquido > 0, "+", ""), resumo$saldo_liquido, "</small>",
+      "</div>",
+      collapse = ""
+    ),
+    "</div>"
+  )
+}
+
+html_matriz_movimentos <- function(df, anos) {
+  anos <- sort(unique(as.integer(anos)))
+  if (nrow(df) == 0L || length(anos) == 0L) return("<p>Sem municipios no recorte.</p>")
+
+  mapa_estado <- c(
+    base_inicial = "state-base", entrada_observada = "state-entry",
+    retorno_observado = "state-return", saiu = "state-exit",
+    saida_observada = "state-exit", permaneceu = "state-stay", ausente = "state-absent"
+  )
+  mapa_simbolo <- c(
+    base_inicial = "&#8226;", entrada_observada = "+", retorno_observado = "&#8634;",
+    saiu = "&minus;", saida_observada = "&minus;", permaneceu = "&#8226;", ausente = ""
+  )
+  mapa_rotulo <- c(
+    base_inicial = "Base inicial", entrada_observada = "Entrada nova",
+    retorno_observado = "Retorno", saiu = "Saida", saida_observada = "Saida",
+    permaneceu = "Permanencia", ausente = "Ausencia"
+  )
+
+  linhas <- lapply(split(df, df$cod_ibge_6), function(mun) {
+    mun <- mun |> arrange(ano)
+    celulas <- vapply(anos, function(ano_atual) {
+      x <- mun[mun$ano == ano_atual, , drop = FALSE]
+      if (nrow(x) == 0L) {
+        estado <- "ausente"
+        valor <- 0
+      } else {
+        estado <- as.character(x$evento_movimento[[1]])
+        if (is.na(estado) || estado == "") estado <- if (isTRUE(x$presente_mides[[1]])) "permaneceu" else "ausente"
+        valor <- coalesce(x$valor_total[[1]], 0)
+      }
+      paste0(
+        "<td class='movement-state ", unname(mapa_estado[estado]), "' title='",
+        escape_html(mun$municipio[[1]]), " | ", ano_atual, " | ", unname(mapa_rotulo[estado]),
+        " | valor total ", escape_html(fmt_moeda(valor)), "'>",
+        unname(mapa_simbolo[estado]), "</td>"
+      )
+    }, character(1))
+    primeiro_ano <- suppressWarnings(min(mun$ano[mun$presente_mides], na.rm = TRUE))
+    if (!is.finite(primeiro_ano)) primeiro_ano <- 9999L
+    list(
+      primeiro_ano = primeiro_ano,
+      municipio = mun$municipio[[1]],
+      html = paste0(
+        "<tr><th title='IBGE ", escape_html(mun$cod_ibge_6[[1]]), "'>",
+        escape_html(mun$municipio[[1]]), "</th>", paste0(celulas, collapse = ""), "</tr>"
+      )
+    )
+  })
+  ordem <- order(vapply(linhas, `[[`, numeric(1), "primeiro_ano"), vapply(linhas, `[[`, character(1), "municipio"))
+  corpo <- paste0(vapply(linhas[ordem], `[[`, character(1), "html"), collapse = "")
+
+  paste0(
+    "<div class='movement-legend'>",
+    "<span class='state-base'>Base inicial</span><span class='state-stay'>Permaneceu</span>",
+    "<span class='state-entry'>Entrada nova</span><span class='state-return'>Retorno</span>",
+    "<span class='state-exit'>Saida</span><span class='state-absent'>Ausente</span></div>",
+    "<div class='movement-matrix-scroll'><table class='movement-matrix'><thead><tr><th>Municipio</th>",
+    paste0("<th>", anos, "</th>", collapse = ""),
+    "</tr></thead><tbody>", corpo, "</tbody></table></div>"
+  )
+}
+
+html_listas_eventos_longitudinais <- function(df, anos) {
+  anos <- sort(unique(as.integer(anos)))
+  blocos <- vapply(anos, function(ano_atual) {
+    atual <- df |> filter(ano == ano_atual)
+    tipos <- c(
+      "Entradas novas" = "entrada_observada", "Retornos" = "retorno_observado",
+      "Saidas" = "saida_observada", "Permanencias" = "permaneceu"
+    )
+    grupos <- paste0(vapply(names(tipos), function(rotulo) {
+      nomes <- atual$municipio[atual$evento_movimento == tipos[[rotulo]]]
+      nomes <- sort(unique(nomes))
+      lista <- if (length(nomes) == 0L) {
+        "<span>Nenhum municipio.</span>"
+      } else {
+        paste0("<ul><li>", paste(escape_html(nomes), collapse = "</li><li>"), "</li></ul>")
+      }
+      paste0("<div><strong>", rotulo, " (", length(nomes), ")</strong>", lista, "</div>")
+    }, character(1)), collapse = "")
+    paste0(
+      "<details class='event-year-detail'><summary>", ano_atual,
+      " | +", sum(atual$evento_movimento == "entrada_observada"),
+      " entradas | &#8634;", sum(atual$evento_movimento == "retorno_observado"),
+      " retornos | &minus;", sum(atual$evento_movimento == "saida_observada"),
+      " saidas</summary><div class='event-list-grid'>", grupos, "</div></details>"
+    )
+  }, character(1))
+  paste0(blocos, collapse = "")
+}
+
+html_detalhe_longitudinal <- function(df, resumo) {
+  anos <- sort(unique(resumo$ano))
+  primeiro <- resumo |> slice_min(ano, n = 1, with_ties = FALSE)
+  ultimo <- resumo |> slice_max(ano, n = 1, with_ties = FALSE)
+  pico <- resumo |> slice_max(pares_ativos, n = 1, with_ties = FALSE)
+  paste0(
+    "<div class='longitudinal-detail'>",
+    "<div class='longitudinal-kpis'>",
+    "<div><span>Inicio do recorte</span><strong>", primeiro$pares_ativos, "</strong><small>", primeiro$ano, "</small></div>",
+    "<div><span>Final do recorte</span><strong>", ultimo$pares_ativos, "</strong><small>", ultimo$ano, "</small></div>",
+    "<div><span>Pico observado</span><strong>", pico$pares_ativos, "</strong><small>", pico$ano, "</small></div>",
+    "<div><span>Saldo acumulado</span><strong>", ifelse(sum(resumo$saldo_liquido) > 0, "+", ""), sum(resumo$saldo_liquido), "</strong><small>movimentos</small></div>",
+    "</div>",
+    "<h4>Trajetoria anual</h4>", html_timeline_longitudinal(resumo),
+    "<details class='long-detail-section' open><summary>Tabela anual completa</summary>", html_tabela_anual_longitudinal(resumo), "</details>",
+    "<details class='long-detail-section'><summary>Matriz municipio x ano</summary>",
+    "<p class='detail-help'>Cada linha acompanha um municipio. Passe o mouse sobre uma celula para ver o movimento e o valor MIDES do ano.</p>",
+    html_matriz_movimentos(df, anos), "</details>",
+    "<details class='long-detail-section'><summary>Listas de municipios por evento</summary>",
+    html_listas_eventos_longitudinais(df, anos), "</details>",
+    "</div>"
+  )
+}
 dt_pt <- list(
   search = "Buscar:",
   lengthMenu = "Mostrar _MENU_ registros",
@@ -1166,6 +1365,82 @@ ui <- page_navbar(
       .movement-detail-group.exit { border-top: 3px solid #e07a2f; }
       .movement-detail-group.stay { border-top: 3px solid #147d3f; }
       .movement-detail-group.recurrent { border-top: 3px solid #59666c; }
+      .trajectory-inline {
+        display: grid;
+        grid-template-columns: repeat(8, minmax(58px, 1fr));
+        min-width: 520px;
+        gap: 3px;
+      }
+      .trajectory-mini-year {
+        background: #f7fafb;
+        border: 1px solid #d8e3e9;
+        min-height: 58px;
+        padding: 4px 5px;
+        text-align: center;
+      }
+      .trajectory-mini-year > span, .trajectory-mini-year > strong, .trajectory-mini-year > small { display: block; }
+      .trajectory-mini-year > span { color: var(--ipea-muted); font-family: Consolas, monospace; font-size: 9px; }
+      .trajectory-mini-year > strong { color: var(--ipea-ink); font-family: Georgia, serif; font-size: 17px; line-height: 1.15; }
+      .trajectory-mini-year > small { display: flex; justify-content: center; gap: 4px; font-size: 8px; }
+      .trajectory-mini-year b { font-weight: 700; }
+      .trajectory-inline .entry, .text-entry { color: #176b91; }
+      .trajectory-inline .return, .text-return { color: #6556a3; }
+      .trajectory-inline .exit, .text-exit { color: #b95716; }
+      .longitudinal-detail { background: #ffffff; padding: 14px; }
+      .longitudinal-detail h4 { color: var(--ipea-ink); font-family: Georgia, serif; font-size: 18px; margin: 16px 0 8px; }
+      .longitudinal-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+      .longitudinal-kpis > div { background: #f5f8fa; border-top: 3px solid var(--ipea-ink); padding: 9px 11px; }
+      .longitudinal-kpis span, .longitudinal-kpis small, .longitudinal-kpis strong { display: block; }
+      .longitudinal-kpis span { color: var(--ipea-muted); font-size: 9px; text-transform: uppercase; letter-spacing: .05em; }
+      .longitudinal-kpis strong { color: var(--ipea-ink); font-family: Georgia, serif; font-size: 22px; }
+      .longitudinal-kpis small { color: #64747b; font-size: 9px; }
+      .trajectory-years { display: grid; grid-template-columns: repeat(8, minmax(104px, 1fr)); gap: 6px; overflow-x: auto; padding-bottom: 5px; }
+      .trajectory-year-card { min-width: 104px; background: #fbfcfd; border: 1px solid var(--ipea-line); padding: 8px; }
+      .trajectory-year-head { display: flex; justify-content: space-between; align-items: baseline; gap: 5px; }
+      .trajectory-year-head span { color: var(--ipea-muted); font-family: Consolas, monospace; font-size: 10px; }
+      .trajectory-year-head strong { color: var(--ipea-ink); font-size: 12px; }
+      .trajectory-bar { height: 5px; background: #e4ebee; margin: 7px 0; }
+      .trajectory-bar i { display: block; height: 100%; background: var(--ipea-green); }
+      .trajectory-events span { display: block; font-size: 9px; line-height: 1.45; }
+      .trajectory-events .entry { color: #176b91; }
+      .trajectory-events .return { color: #6556a3; }
+      .trajectory-events .exit { color: #b95716; }
+      .trajectory-year-card > small { display: block; color: #53636a; border-top: 1px solid #e2e9ec; margin-top: 5px; padding-top: 4px; }
+      .long-detail-section { border: 1px solid var(--ipea-line); margin-top: 9px; background: #ffffff; }
+      .long-detail-section > summary, .event-year-detail > summary { cursor: pointer; color: var(--ipea-ink); font-weight: 700; padding: 10px 12px; }
+      .long-detail-section[open] > summary { border-bottom: 1px solid var(--ipea-line); background: #f5f8fa; }
+      .detail-help { color: var(--ipea-muted); font-size: 11px; margin: 10px 12px; }
+      .long-table-scroll, .movement-matrix-scroll { overflow: auto; max-width: 100%; }
+      .long-annual-table, .movement-matrix { width: 100%; border-collapse: collapse; font-size: 10px; }
+      .long-annual-table th, .long-annual-table td, .movement-matrix th, .movement-matrix td { border: 1px solid #d7e1e6; padding: 6px 7px; text-align: center; }
+      .long-annual-table thead th, .movement-matrix thead th { position: sticky; top: 0; z-index: 2; background: #edf4f7; color: var(--ipea-ink); }
+      .long-annual-table tbody tr:nth-child(even) { background: #f9fbfc; }
+      .saldo-pos { color: #147d3f; font-weight: 700; }
+      .saldo-neg { color: #b95716; font-weight: 700; }
+      .movement-matrix-scroll { max-height: 430px; margin: 0 12px 12px; }
+      .movement-matrix { min-width: 700px; }
+      .movement-matrix th:first-child { position: sticky; left: 0; z-index: 3; min-width: 180px; max-width: 240px; text-align: left; background: #ffffff; }
+      .movement-matrix thead th:first-child { z-index: 4; background: #edf4f7; }
+      .movement-state { width: 52px; min-width: 52px; height: 30px; font-size: 14px; font-weight: 700; }
+      .state-base { background: #c6dce9 !important; color: #173a50 !important; }
+      .state-stay { background: #b8dca7 !important; color: #174f2c !important; }
+      .state-entry { background: #5aa6cc !important; color: #ffffff !important; }
+      .state-return { background: #8e7cc3 !important; color: #ffffff !important; }
+      .state-exit { background: #e59a62 !important; color: #44200a !important; }
+      .state-absent { background: #eef1f2 !important; color: #6e7b80 !important; }
+      .movement-legend { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 12px; }
+      .movement-legend span { border: 1px solid #d4dde1; font-size: 9px; padding: 3px 6px; }
+      .event-year-detail { border-top: 1px solid #e2e9ec; }
+      .event-list-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 0 12px 12px; }
+      .event-list-grid > div { border-top: 3px solid #d8e3e9; background: #f9fbfc; padding: 8px; }
+      .event-list-grid strong { color: var(--ipea-ink); font-size: 11px; }
+      .event-list-grid ul { max-height: 150px; overflow: auto; margin: 5px 0 0 16px; padding: 0; }
+      .event-list-grid li, .event-list-grid span { color: #425159; font-size: 10px; }
+      @media (max-width: 900px) {
+        .longitudinal-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .trajectory-years { grid-template-columns: repeat(4, minmax(104px, 1fr)); }
+        .event-list-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
       .doc-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1745,6 +2020,24 @@ ui <- page_navbar(
             DTOutput("tabela_movimentos_consorcio")
           )
         ),
+        nav_panel(
+          "Trajetoria 2014-2021",
+          div(
+            class = "panel-card",
+            h3("Trajetoria longitudinal dos consorcios"),
+            div(
+              class = "map-note movement-table-note",
+              tags$strong("Leitura completa dos anos selecionados."),
+              " Cada linha acompanha um consorcio. Os blocos anuais mostram ativos, entradas (+), retornos (seta circular) e saidas (-). ",
+              "Selecione ate cinco consorcios para habilitar no + a trajetoria detalhada, a matriz municipio x ano e as listas nominais."
+            ),
+            div(
+              class = "map-actions",
+              downloadButton("download_trajetoria_csv", "Baixar movimentos filtrados", icon = bsicons::bs_icon("download"))
+            ),
+            DTOutput("tabela_trajetoria_consorcios")
+          )
+        ),
         nav_panel("Resumo anual", div(class = "panel-card", h3("Resumo por ano"), DTOutput("tabela_mides_ano"))),
         nav_panel("Tabela detalhada", div(class = "panel-card", h3("MIDES municipio x consorcio x ano"), DTOutput("tabela_mides")))
       )
@@ -2062,18 +2355,7 @@ server <- function(input, output, session) {
     )
 
   dados_movimentos_consorcio_ano <- reactive({
-    dados_movimentos_filtrados() |>
-      summarise(
-        pares_ativos = sum(presente_mides),
-        entradas_novas = sum(evento_movimento == "entrada_observada"),
-        retornos = sum(evento_movimento == "retorno_observado"),
-        saidas = sum(evento_movimento == "saida_observada"),
-        permanencias = sum(evento_movimento == "permaneceu"),
-        saldo_liquido = sum(delta_presenca),
-        recorrentes_ativos = sum(presente_mides & movimento_recorrente),
-        valor_total_mides = sum(valor_total, na.rm = TRUE),
-        .by = c(ano, cnpj_consorcio, sigla, razao_social)
-      ) |>
+    resumir_movimentos_longitudinais(dados_movimentos_filtrados()) |>
       filter(pares_ativos + saidas + entradas_novas + retornos + permanencias > 0) |>
       arrange(desc(ano), sigla, cnpj_consorcio)
   })
@@ -3074,6 +3356,7 @@ server <- function(input, output, session) {
       df,
       rownames = FALSE,
       escape = FALSE,
+      selection = "none",
       options = list(
         dom = "ftip",
         pageLength = 10,
@@ -3110,6 +3393,128 @@ server <- function(input, output, session) {
         mark = ".", dec.mark = ",", digits = 0
       )
   }, server = TRUE)
+
+  output$tabela_trajetoria_consorcios <- renderDT({
+    movimentos <- dados_movimentos_filtrados()
+    resumo <- resumir_movimentos_longitudinais(movimentos)
+
+    if (nrow(resumo) == 0L) {
+      df <- tibble(
+        ` ` = character(), Consorcio = character(), `Trajetoria anual` = character(),
+        `Saldo do recorte` = integer(), Recorrentes = integer(), `Valor MIDES` = numeric(), Detalhes = character()
+      )
+    } else {
+      cnpjs_filtrados <- unique(movimentos$cnpj_consorcio)
+      detalhes_habilitados <- length(cnpjs_filtrados) <= 5L
+      detalhes <- lapply(split(movimentos, movimentos$cnpj_consorcio), function(dados_cnpj) {
+        if (!detalhes_habilitados) {
+          return(paste0(
+            "<div class='long-detail'><div class='long-detail-empty'>",
+            "Selecione ate cinco consorcios no filtro para abrir a linha do tempo, ",
+            "a matriz municipio x ano e as listas nominais.</div></div>"
+          ))
+        }
+        resumo_cnpj <- resumo |> filter(cnpj_consorcio == dados_cnpj$cnpj_consorcio[[1]])
+        html_detalhe_longitudinal(dados_cnpj, resumo_cnpj)
+      })
+      detalhes <- tibble(
+        cnpj_consorcio = names(detalhes),
+        detalhes = unname(unlist(detalhes, use.names = FALSE))
+      )
+      recorrentes <- movimentos |>
+        filter(movimento_recorrente) |>
+        summarise(recorrentes = n_distinct(cod_ibge_6), .by = cnpj_consorcio)
+
+      df <- resumo |>
+        summarise(
+          sigla = first(sigla),
+          razao_social = first(razao_social),
+          trajetoria = html_trajetoria_compacta(pick(everything())),
+          saldo = sum(saldo_liquido),
+          valor = sum(valor_total_mides),
+          .by = cnpj_consorcio
+        ) |>
+        left_join(detalhes, by = "cnpj_consorcio") |>
+        left_join(recorrentes, by = "cnpj_consorcio") |>
+        mutate(
+          recorrentes = coalesce(recorrentes, 0L),
+          consorcio = paste0(
+            "<div class='consorcio-cell'><strong>", escape_html(sigla), "</strong>",
+            "<span>", escape_html(cnpj_consorcio), " | ", escape_html(razao_social), "</span></div>"
+          )
+        ) |>
+        arrange(sigla, cnpj_consorcio) |>
+        transmute(
+          ` ` = "", Consorcio = consorcio, `Trajetoria anual` = trajetoria,
+          `Saldo do recorte` = saldo, Recorrentes = recorrentes,
+          `Valor MIDES` = round(valor, 2), Detalhes = detalhes
+        )
+    }
+
+    coluna_detalhes <- ncol(df) - 1L
+    datatable(
+      df,
+      rownames = FALSE,
+      escape = FALSE,
+      selection = "none",
+      options = list(
+        dom = "ftip",
+        pageLength = 8,
+        lengthChange = FALSE,
+        autoWidth = FALSE,
+        scrollX = TRUE,
+        deferRender = TRUE,
+        searchDelay = 350,
+        order = list(list(1, "asc")),
+        columnDefs = list(
+          list(className = "details-control", orderable = FALSE, width = "28px", targets = 0),
+          list(visible = FALSE, searchable = FALSE, targets = coluna_detalhes),
+          list(width = "250px", targets = 1),
+          list(width = "570px", orderable = FALSE, targets = 2),
+          list(className = "dt-center", width = "78px", targets = c(3, 4)),
+          list(width = "105px", targets = 5)
+        ),
+        language = dt_pt
+      ),
+      callback = JS(sprintf(
+        "table.on('click', 'td.details-control', function() {
+          var tr = $(this).closest('tr');
+          var row = table.row(tr);
+          if (row.child.isShown()) {
+            row.child.hide();
+            tr.removeClass('shown');
+          } else {
+            row.child(row.data()[%d]).show();
+            tr.addClass('shown');
+          }
+        });",
+        coluna_detalhes
+      ))
+    ) |>
+      formatCurrency(
+        columns = "Valor MIDES", currency = "R$ ",
+        mark = ".", dec.mark = ",", digits = 0
+      ) |>
+      formatStyle(
+        "Saldo do recorte",
+        color = styleInterval(c(-1, 0), c("#b95716", "#4f5d63", "#147d3f")),
+        fontWeight = "700"
+      )
+  }, server = TRUE)
+
+  output$download_trajetoria_csv <- downloadHandler(
+    filename = function() paste0("mides_movimentos_", Sys.Date(), ".csv"),
+    content = function(file) {
+      dados_movimentos_filtrados() |>
+        transmute(
+          ano, cod_ibge_6, municipio, cnpj_consorcio, sigla, razao_social,
+          presente_mides, evento_movimento, delta_presenca, movimento_recorrente,
+          valor_corrente, valor_restos, valor_total
+        ) |>
+        arrange(cnpj_consorcio, municipio, ano) |>
+        write_csv(file, na = "")
+    }
+  )
 
   output$tabela_mides <- renderDT({
     df <- dados_mides_filtrados() |>

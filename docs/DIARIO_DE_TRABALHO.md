@@ -344,3 +344,40 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Saldo significa `entradas novas + retornos - saidas` e descreve movimento financeiro observado, nao mudanca juridica.
 - Recorrente significa duas ou mais mudancas de presenca no periodo 2014-2021.
 - A consolidacao matriz/filial permanece fora desta entrega e podera alterar contagens somente depois de decisao formal.
+
+---
+
+## 2026-07-29 - Trajetoria Longitudinal MIDES 2014-2021
+
+### Objetivo
+
+- Complementar a consulta anual por consorcio com uma leitura unica dos oito anos.
+- Permitir identificar quando municipios entraram, retornaram, permaneceram ou deixaram de apresentar pagamento ao mesmo CNPJ.
+
+### Entregas
+
+- Criada a subaba `MIDES completo > Trajetoria 2014-2021`.
+- A tabela principal apresenta uma linha por consorcio e oito blocos anuais com ativos, entradas novas, retornos e saidas, alem de saldo, recorrentes e valor MIDES.
+- Em filtros de ate cinco consorcios, o botao `+` abre KPIs do periodo, linha do tempo anual, tabela analitica, matriz municipio x ano e listas nominais por evento.
+- A matriz diferencia base inicial, permanencia, entrada nova, retorno, saida e ausencia; o tooltip informa municipio, ano, evento e valor.
+- Adicionado download CSV dos movimentos filtrados.
+- A geracao dos detalhes pesados foi limitada a cinco consorcios. A comparacao geral de 161 CNPJs permanece disponivel sem construir matrizes desnecessarias.
+
+### Exemplo Validado
+
+- CODAP: 2 municipios ativos em 2014 e 20 em 2021, saldo acumulado de +18.
+- Em 2019: 10 ativos, 5 entradas novas, 1 retorno e nenhuma saida.
+- Entre Rios de Minas aparece como entrada em 2016, saida em 2017 e retorno em 2019.
+
+### Testes E Validacao Visual
+
+- Criado `dashboards/base1_shiny/tests/test_trajetoria_longitudinal.R`.
+- Aprovados os testes de classificacao v0.5, documentacao espacial, mapas/exportacao e trajetoria longitudinal.
+- Revisadas visualmente a comparacao geral, a expansao CODAP, a matriz e a adaptacao para tela pequena.
+- As seis paginas principais foram reabertas; nenhuma apresentou erro de console.
+
+### Estado Ao Final
+
+- A frente 5 do plano esta concluida em duas visoes complementares: consulta anual e trajetoria 2014-2021.
+- Entrada, retorno e saida continuam significando mudanca na presenca de pagamento MIDES, nao ato juridico de adesao ou desligamento.
+- Matriz e filiais continuam separadas ate decisao formal da equipe.

@@ -17,7 +17,7 @@ O projeto tem hoje tres blocos principais funcionando:
 | 2 | Auditar origem da classificacao | Concluida. Fonte, status, justificativa e trilha tecnica foram preservados e documentados. | Manter rastreabilidade nas revisoes futuras. |
 | 3 | Base anual de movimentos municipio x consorcio x ano | Concluida e reprocessavel: 22.680 linhas, 2.835 pares e oito anos. | Apenas integrar novos recortes ou regras se forem aprovados. |
 | 4 | Features espaciais de fronteira | Concluida: 2.375 fronteiras e nove variaveis espaciais, com universos de entrada e saida. | Eventuais sensibilidades por comprimento de divisa e recortes territoriais. |
-| 5 | Tabela analitica anual por consorcio | Concluida no dashboard: uma linha por consorcio-ano, com ativos, entradas novas, retornos, saidas, permanencias, saldo, recorrentes, valor e listas expansiveis de municipios. | Apenas adaptar a regra caso matriz/filial venha a ser consolidada. |
+| 5 | Tabela analitica anual por consorcio | Concluida em duas leituras: consulta consorcio-ano e trajetoria longitudinal 2014-2021, com matriz municipio-ano e listas nominais. | Apenas adaptar a regra caso matriz/filial venha a ser consolidada. |
 | 6 | Testar hipotese de fronteira e movimento | Concluida como analise exploratoria: modelos, taxas, sensibilidades e documentacao no dashboard. | Adicionar controles socioeconomicos, fiscais, politicos e setoriais antes de interpretacoes mais fortes. |
 | 7 | Melhorar mapa com nomes em recortes pequenos | Concluida: nomes aparecem com ate 12 municipios destacados; o recorte automatico preserva contexto territorial e reduz a geometria renderizada. | Rever apenas se a equipe solicitar outro limite de rotulos. |
 | 8 | Exportacao PNG/PDF de alta qualidade | Concluida nos quatro mapas: PNG 450 dpi, PNG 300 dpi nos pequenos multiplos e PDF vetorial. | Validar uso editorial em cada novo template de relatorio. |
@@ -33,6 +33,7 @@ O projeto tem hoje tres blocos principais funcionando:
    - inclui mapas dinamicos para intensidade MIDES, composicao territorial das fontes e transicao 2015 vs 2019;
    - a tela MIDES completo permite filtrar por area detalhada, macrogrupo e perfil institucional da classificacao v0.5; atributos sem area permanecem preservados nos totais, sem uma categoria generica de filtro.
    - aba `MIDES completo > Entradas/saidas` mostra movimento anual dos pares municipio-consorcio entre 2014 e 2021;
+   - aba `MIDES completo > Trajetoria 2014-2021` compara os oito anos por consorcio e, em recortes de ate cinco consorcios, abre linha do tempo, tabela anual, matriz municipio-ano e listas de eventos;
    - mapas foram refinados visualmente com fundo branco, divisas municipais continuas, paletas mais legiveis, zoom/tela cheia e filtros integrados.
 
 3. **Auditorias cadastrais**
