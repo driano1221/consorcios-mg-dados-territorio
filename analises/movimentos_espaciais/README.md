@@ -1,6 +1,6 @@
 # Movimentos Espaciais No MIDES Completo
 
-Esta pasta materializa a analise de movimentos observados no MIDES completo, sem alterar o dashboard.
+Esta pasta materializa a analise de movimentos observados no MIDES completo. Seus resultados alimentam as tabelas, trajetorias e a documentacao espacial do dashboard, sem alterar os dados brutos.
 
 ## Escopo
 
@@ -79,4 +79,4 @@ Documentacao adicional:
 - O ano de 2014 e base inicial, portanto nao permite inferir entrada anterior.
 - A camada nao consolida CNPJ matriz/filial.
 - Os modelos atuais sao exploratorios e nao causais; faltam controles municipais, politicos, fiscais, setoriais e institucionais.
-- A analise ainda nao foi incorporada ao dashboard.
+- Os resultados foram incorporados ao dashboard como produto exploratorio; isso nao elimina as limitacoes metodologicas descritas acima.

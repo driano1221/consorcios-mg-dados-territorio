@@ -175,7 +175,7 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 ### Publicacao e versionamento
 
 - Dashboard republicado em <https://kl5ug0-adriano-pires.shinyapps.io/base1-mides-munic-siconfi/>.
-- Repositorio remoto privado criado em <https://github.com/driano1221/ideiaMides>.
+- Repositorio remoto criado inicialmente em <https://github.com/driano1221/ideiaMides>; em 29/07, ele foi tornado publico, profissionalizado e renomeado para `ideiamides-consorcios-mg`.
 - Regra operacional definida: ao concluir uma sessao relevante, atualizar este diario, criar commit e enviar para `origin`.
 
 ---
@@ -391,3 +391,27 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - A abertura sem filtro foi testada no universo geral de 161 CNPJs; o detalhe carregou sem erro e sem reconstruir previamente todas as matrizes.
 - Os blocos compactos foram redesenhados como pequenos multiplos de relatorio: faixa anual, numero principal de municipios ativos e tres linhas tabulares para entradas, retornos e saidas.
 - A largura minima passou a 116 pixels, os textos de evento a 10 pixels e os valores a 11 pixels; a validacao automatizada no navegador confirmou ausencia de quebra de linha.
+
+---
+
+## 2026-07-29 - Profissionalizacao Do Repositorio Publico
+
+### Objetivo
+
+- Transformar o GitHub em uma porta de entrada clara para o projeto, sem confundir pesquisa em desenvolvimento com produto institucional oficial.
+- Consolidar finalidade, fontes, arquitetura, produtos, limites e rotina de contribuicao.
+
+### Entregas
+
+- Reescrito o `README.md` com escopo, perguntas de pesquisa, fontes, estado atual, arquitetura, execucao, testes e limitacoes.
+- Criados `CONTRIBUTING.md`, `CHANGELOG.md` e `.github/pull_request_template.md`.
+- Atualizados `docs/ESTRUTURA_REPOSITORIO.md`, `docs/DICIONARIO_MEMORIAS.md` e os READMEs das analises e do dashboard.
+- Adicionado aviso explicito de que o repositorio representa pesquisa em desenvolvimento e nao uma posicao institucional oficial do IPEA.
+- Nome publico definido como `ideiaMides | Consorcios Intermunicipais de Minas Gerais` e slug como `ideiamides-consorcios-mg`.
+- Mantida a separacao entre codigo/documentacao versionados e bases pesadas locais; o projeto ainda nao possui `renv.lock` nem licenca formal definida.
+
+### Validacoes
+
+- Referencias Markdown internas verificadas.
+- Revisado o repositorio para remover descricoes obsoletas sobre movimentos espaciais, trajetoria longitudinal e visibilidade do remoto.
+- Metadados do GitHub preparados com descricao, dashboard como homepage e topicos de R, Shiny, politicas publicas, analise espacial e Minas Gerais.

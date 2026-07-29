@@ -9,7 +9,8 @@ Dashboard Shiny para consulta interativa da Base 1, do MIDES completo e das audi
 - KPIs compactos no topo;
 - tabela pesquisavel/exportavel da base final;
 - tabela agregada de validacao SICONFI por municipio-ano;
-- tabela anual por consorcio com entradas novas, retornos, saidas, permanencias, saldo, recorrencia e listas expansiveis de municipios;
+- tabela anual por consorcio com entradas novas, retornos, saidas, permanencias, saldo e recorrencia;
+- trajetoria longitudinal 2014-2021 com pequenos multiplos, detalhe sob demanda e matriz municipio-ano;
 - nomes municipais automaticos somente em recortes com ate 12 municipios destacados;
 - exportacao propria dos quatro mapas em PNG de alta resolucao e PDF vetorial;
 - secao `Documentacao` com guia do painel, conceitos, classificacao de areas e analise espacial dos movimentos MIDES;
@@ -61,6 +62,7 @@ base1_shiny/
 +-- tests/
     +-- test_documentacao_movimentos.R
     +-- test_movimentos_mapas_export.R
+    +-- test_trajetoria_longitudinal.R
 ```
 
 ## Leitura metodologica
@@ -88,5 +90,6 @@ O modulo de movimentos espaciais e validado por:
 Push-Location dashboards/base1_shiny
 Rscript tests/test_documentacao_movimentos.R
 Rscript tests/test_movimentos_mapas_export.R
+Rscript tests/test_trajetoria_longitudinal.R
 Pop-Location
 ```

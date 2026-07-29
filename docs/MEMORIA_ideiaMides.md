@@ -555,6 +555,7 @@ Leitura da procedencia e confianca da v0.2:
 - em 2026-07-28, foram adicionados icones de ajuda aos 16 filtros das telas Recorte 2015/2019, MIDES completo e 2015 vs 2019. Cada icone explica o campo e seu efeito no recorte por tooltip, sem criar filtro de origem/status. O dashboard foi republicado.
 - em 2026-07-28, foi criado `docs/DIARIO_DE_TRABALHO.md` como registro versionado de sessoes relevantes. O diario complementa, sem substituir, a memoria consolidada, os proximos passos e as atas de reuniao.
 - em 2026-07-28, a classificacao v0.5 foi integrada a tela MIDES completo como atributo de CNPJ por `left_join`. Foram adicionados filtros de area detalhada, macrogrupo e perfil institucional. A integracao preserva integralmente as 15.135 linhas MIDES e seus valores; CNPJs sem camada ativa ficam identificados como `Sem classificacao ativa`. A regra matriz/filial continua sem consolidar valores ou movimentos.
+- em 2026-07-29, o repositorio publico foi profissionalizado sob a identidade `ideiaMides | Consorcios Intermunicipais de Minas Gerais`, com slug `ideiamides-consorcios-mg`. O `README.md` passou a documentar finalidade, fontes, arquitetura, produtos, execucao e limites; foram adicionados `CONTRIBUTING.md`, `CHANGELOG.md` e template de pull request. O repositorio versiona codigo, testes, documentacao e pequenos insumos decisorios, mas nao distribui as bases pesadas. A ausencia de `renv.lock` e de licenca formal permanece registrada como limitacao de governanca.
 
 ---
 

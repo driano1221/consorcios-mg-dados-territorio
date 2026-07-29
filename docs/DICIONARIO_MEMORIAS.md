@@ -17,6 +17,15 @@ Este arquivo serve como indice rapido dos documentos de memoria e contexto do pr
 | `docs/METODOLOGIA_CLASSIFICACAO_ATUAL.md` | Leitura curta e atual da classificacao v0.5: taxonomia, fontes, inferencias, multifinalitarios, matriz/filial e limites. |
 | `docs/ESTRUTURA_REPOSITORIO.md` | Mapa do repositorio Git, regras de versionamento e papeis das pastas. |
 
+## Governanca Do Repositorio
+
+| Arquivo | Uso |
+|---|---|
+| `README.md` | Porta de entrada publica: finalidade, fontes, arquitetura, produtos, execucao e limites. |
+| `CONTRIBUTING.md` | Fluxo de contribuicao, convencoes, testes e requisitos de revisao. |
+| `CHANGELOG.md` | Marcos resumidos do produto; nao substitui o diario tecnico. |
+| `.github/pull_request_template.md` | Checklist padrao para revisar codigo, metodologia, testes e impacto analitico. |
+
 ## Base 1 2015/2019
 
 | Arquivo/Pasta | Uso |
@@ -89,6 +98,10 @@ Este arquivo serve como indice rapido dos documentos de memoria e contexto do pr
 Link publicado:
 
 `https://kl5ug0-adriano-pires.shinyapps.io/base1-mides-munic-siconfi/`
+
+Repositorio publico:
+
+`https://github.com/driano1221/ideiamides-consorcios-mg`
 
 Status em 2026-07-08:
 

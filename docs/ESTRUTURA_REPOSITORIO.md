@@ -49,8 +49,12 @@ Essas regras estao em `.gitignore`.
 
 ## Remoto
 
-Repositorio privado: <https://github.com/driano1221/ideiaMides>.
+Repositório público: <https://github.com/driano1221/ideiamides-consorcios-mg>.
+
+O repositório público contém código, testes e documentação. As bases locais pesadas e os outputs derivados continuam excluídos pelo `.gitignore`.
 
 ## Limite Atual
 
 Este repositorio organiza o que ja existe; nao moveu dados nem reescreveu caminhos do app. Uma reorganizacao fisica de dados so deve ocorrer depois de um teste completo de scripts e deploy, para evitar quebrar a reproducibilidade atual.
+
+O projeto ainda não possui `renv.lock`. Portanto, as versões exatas das dependências R não estão congeladas e essa limitação deve ser considerada em novas máquinas.
