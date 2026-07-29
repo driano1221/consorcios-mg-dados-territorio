@@ -1,6 +1,6 @@
-# Dashboard Base 1 2015/2019
+# Dashboard ideiaMides
 
-Dashboard Shiny para consulta interativa da Base 1.
+Dashboard Shiny para consulta interativa da Base 1, do MIDES completo e das auditorias do projeto.
 
 ## Conteudo
 
@@ -9,6 +9,9 @@ Dashboard Shiny para consulta interativa da Base 1.
 - KPIs compactos no topo;
 - tabela pesquisavel/exportavel da base final;
 - tabela agregada de validacao SICONFI por municipio-ano;
+- tabela anual por consorcio com entradas novas, retornos, saidas, permanencias, saldo, recorrencia e listas expansiveis de municipios;
+- nomes municipais automaticos somente em recortes com ate 12 municipios destacados;
+- exportacao propria dos quatro mapas em PNG de alta resolucao e PDF vetorial;
 - secao `Documentacao` com guia do painel, conceitos, classificacao de areas e analise espacial dos movimentos MIDES;
 - valores MIDES e SICONFI reconstruido no mesmo painel.
 
@@ -17,6 +20,7 @@ Dashboard Shiny para consulta interativa da Base 1.
 - `data/base_1_vinculos_2015_2019.csv`
 - `data/base_1_validacao_siconfi_reconstruido_2015_2019.csv`
 - `data/classificacao_areas_politica_mg_v0_5.rds`
+- `data/movimentos_municipio_consorcio_ano.rds`
 
 Esses arquivos foram copiados para dentro da pasta do app para facilitar publicacao.
 
@@ -49,12 +53,14 @@ base1_shiny/
 +-- data/
 |   +-- base_1_vinculos_2015_2019.csv
 |   +-- base_1_validacao_siconfi_reconstruido_2015_2019.csv
+|   +-- movimentos_municipio_consorcio_ano.rds
 +-- www/
 |   +-- IPEA-LOGO.png
 |   +-- pipeline_movimentos_mides.png
 |   +-- exposicao_espacial_mides.png
 +-- tests/
     +-- test_documentacao_movimentos.R
+    +-- test_movimentos_mapas_export.R
 ```
 
 ## Leitura metodologica
@@ -81,5 +87,6 @@ O modulo de movimentos espaciais e validado por:
 ```powershell
 Push-Location dashboards/base1_shiny
 Rscript tests/test_documentacao_movimentos.R
+Rscript tests/test_movimentos_mapas_export.R
 Pop-Location
 ```

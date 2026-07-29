@@ -27,6 +27,7 @@ path_cadastro_local <- file.path(local_data_dir, "cadastro_base.rds")
 path_classificacao_local <- file.path(local_data_dir, "classificacao_areas_politica_mg_v0_5.rds")
 path_mg_sf_local <- file.path(local_data_dir, "mg_municipios_sf_web.rds")
 path_mg_contorno_local <- file.path(local_data_dir, "mg_contorno_sf_web.rds")
+path_movimentos_local <- file.path(local_data_dir, "movimentos_municipio_consorcio_ano.rds")
 path_vinculos_repo <- file.path(out_dir, "base_1_vinculos_2015_2019.csv")
 path_validacao_repo <- file.path(out_dir, "base_1_validacao_siconfi_reconstruido_2015_2019.csv")
 path_mides_anual_repo <- file.path(project_dir, "dados/processado/painel_mg_anual.rds")
@@ -35,6 +36,7 @@ path_cadastro_repo <- file.path(project_dir, "dados/processado/cadastro_base.rds
 path_classificacao_repo <- file.path(project_dir, "analises/classificacao_politicas/outputs/classificacao_areas_politica_mg_v0_5_completa.csv")
 path_mg_sf_repo <- file.path(project_dir, "dashboards/base1_shiny/data/mg_municipios_sf_web.rds")
 path_mg_contorno_repo <- file.path(project_dir, "dashboards/base1_shiny/data/mg_contorno_sf_web.rds")
+path_movimentos_repo <- file.path(project_dir, "analises/movimentos_espaciais/outputs/movimentos_municipio_consorcio_ano.rds")
 
 path_vinculos <- if (file.exists(path_vinculos_rds_local)) path_vinculos_rds_local else if (file.exists(path_vinculos_local)) path_vinculos_local else path_vinculos_repo
 path_validacao <- if (file.exists(path_validacao_rds_local)) path_validacao_rds_local else if (file.exists(path_validacao_local)) path_validacao_local else path_validacao_repo
@@ -44,6 +46,7 @@ path_cadastro <- if (file.exists(path_cadastro_local)) path_cadastro_local else 
 path_classificacao <- if (file.exists(path_classificacao_local)) path_classificacao_local else path_classificacao_repo
 path_mg_sf <- if (file.exists(path_mg_sf_local)) path_mg_sf_local else path_mg_sf_repo
 path_mg_contorno <- if (file.exists(path_mg_contorno_local)) path_mg_contorno_local else path_mg_contorno_repo
+path_movimentos <- if (file.exists(path_movimentos_local)) path_movimentos_local else path_movimentos_repo
 
 if (!file.exists(path_vinculos)) stop("Arquivo nao encontrado: ", path_vinculos)
 if (!file.exists(path_validacao)) stop("Arquivo nao encontrado: ", path_validacao)
@@ -53,6 +56,7 @@ if (!file.exists(path_cadastro)) stop("Arquivo nao encontrado: ", path_cadastro)
 if (!file.exists(path_classificacao)) stop("Arquivo nao encontrado: ", path_classificacao)
 if (!file.exists(path_mg_sf)) stop("Arquivo nao encontrado: ", path_mg_sf)
 if (!file.exists(path_mg_contorno)) stop("Arquivo nao encontrado: ", path_mg_contorno)
+if (!file.exists(path_movimentos)) stop("Arquivo nao encontrado: ", path_movimentos)
 
 read_table_app <- function(path) {
   if (tolower(tools::file_ext(path)) == "rds") {
@@ -210,6 +214,257 @@ theme_mapa_limpo <- function() {
     )
 }
 
+selecionar_rotulos_mapa <- function(df, coluna_ativa, municipios_selecionados = character(), limite = 12L) {
+  ativos <- df |>
+    filter(.data[[coluna_ativa]]) |>
+    mutate(municipio = coalesce(municipio, str_to_title(municipio_geo)))
+
+  municipios_selecionados <- municipios_selecionados[!is.na(municipios_selecionados)]
+  if (length(municipios_selecionados) > 0L && length(municipios_selecionados) <= limite) {
+    return(
+      df |>
+        filter(municipio %in% municipios_selecionados | str_to_title(municipio_geo) %in% municipios_selecionados) |>
+        mutate(municipio = coalesce(municipio, str_to_title(municipio_geo)))
+    )
+  }
+
+  if (nrow(ativos) > 0L && nrow(ativos) <= limite) ativos else ativos[0, ]
+}
+
+camadas_rotulos_mapa <- function(rotulos, tamanho = 2.7) {
+  if (is.null(rotulos) || nrow(rotulos) == 0L) return(NULL)
+
+  crs_original <- st_crs(rotulos)
+  pontos <- rotulos |>
+    st_transform(5880) |>
+    (\(x) suppressWarnings(st_point_on_surface(x)))() |>
+    st_transform(crs_original)
+  coordenadas <- st_coordinates(pontos)
+  dados_rotulos <- pontos |>
+    st_drop_geometry() |>
+    mutate(x = coordenadas[, 1], y = coordenadas[, 2])
+
+  ggrepel::geom_label_repel(
+    data = dados_rotulos,
+    aes(x = x, y = y, label = municipio),
+    colour = "#17252d",
+    fill = scales::alpha("#ffffff", 0.94),
+    size = tamanho,
+    fontface = "bold",
+    label.size = 0.16,
+    label.r = unit(0.08, "lines"),
+    label.padding = unit(0.16, "lines"),
+    box.padding = unit(0.24, "lines"),
+    point.padding = unit(0.05, "lines"),
+    segment.colour = "#65737a",
+    segment.alpha = 0.72,
+    segment.size = 0.25,
+    min.segment.length = 0,
+    max.overlaps = Inf,
+    seed = 20260729,
+    inherit.aes = FALSE
+  )
+}
+
+limites_recorte_mapa <- function(foco) {
+  bbox <- st_bbox(foco)
+  largura <- max(as.numeric(bbox[["xmax"]] - bbox[["xmin"]]), 1.40)
+  altura <- max(as.numeric(bbox[["ymax"]] - bbox[["ymin"]]), 1.40)
+  margem_x <- largura * 0.18
+  margem_y <- altura * 0.18
+
+  list(
+    xlim = c(bbox[["xmin"]] - margem_x, bbox[["xmax"]] + margem_x),
+    ylim = c(bbox[["ymin"]] - margem_y, bbox[["ymax"]] + margem_y)
+  )
+}
+
+recortar_contexto_mapa <- function(df, foco = NULL) {
+  if (is.null(foco) || nrow(foco) == 0L) return(df)
+  limites <- limites_recorte_mapa(foco)
+  suppressWarnings(st_crop(
+    df,
+    xmin = limites$xlim[[1]], xmax = limites$xlim[[2]],
+    ymin = limites$ylim[[1]], ymax = limites$ylim[[2]]
+  ))
+}
+
+coord_sf_recorte <- function(foco = NULL) {
+  if (is.null(foco) || nrow(foco) == 0L) {
+    return(coord_sf(datum = NA, default_crs = st_crs(4674)))
+  }
+
+  limites <- limites_recorte_mapa(foco)
+
+  coord_sf(
+    xlim = limites$xlim,
+    ylim = limites$ylim,
+    datum = NA,
+    default_crs = st_crs(4674),
+    expand = FALSE
+  )
+}
+
+criar_plot_mides <- function(df, metrica_atual, anos_atual, rotulos = NULL, interativo = TRUE) {
+  foco <- if (!is.null(rotulos) && nrow(rotulos) > 0L) rotulos else NULL
+  df <- recortar_contexto_mapa(df, foco)
+  df <- df |> mutate(mapa_valor_plot = if_else(mapa_valor > 0, mapa_valor, NA_real_))
+  metrica_nome <- names(mides_mapa_metrica_opts)[match(metrica_atual, mides_mapa_metrica_opts)]
+  anos_txt <- paste(sort(unique(anos_atual)), collapse = ", ")
+  if (anos_txt == "") anos_txt <- "sem anos selecionados"
+
+  p <- ggplot(df) +
+    geom_sf(
+      aes(fill = mapa_valor_plot),
+      colour = "#4c554b", linewidth = 0.12,
+      lineend = "butt", linejoin = "round"
+    )
+
+  if (interativo) {
+    p <- p + geom_sf_interactive(
+      aes(tooltip = tooltip_mides, data_id = cod_ibge_6),
+      fill = "#ffffff", alpha = 0.001, colour = NA, linewidth = 0
+    )
+  }
+
+  p +
+    geom_sf(
+      data = mg_contorno_sf, inherit.aes = FALSE,
+      fill = NA, colour = "#2f2f2f", linewidth = 0.30,
+      lineend = "round", linejoin = "round"
+    ) +
+    camadas_rotulos_mapa(rotulos) +
+    scale_fill_gradientn(
+      colours = c("#f7fcf5", "#c7e9c0", "#74c476", "#238b45", "#00441b"),
+      trans = "log10", na.value = "#ffffff",
+      labels = function(x) fmt_mapa_valor(x, metrica_atual), name = metrica_nome
+    ) +
+    labs(
+      title = "MIDES: intensidade municipal",
+      subtitle = paste0("Escala logaritmica | anos: ", anos_txt),
+      caption = "Fonte: MIDES processado no projeto ideiaMides | geometria municipal geobr/IBGE 2020"
+    ) +
+    coord_sf_recorte(foco) +
+    theme_mapa_limpo()
+}
+
+criar_plot_movimento <- function(df, rotulos = NULL) {
+  foco <- if (!is.null(rotulos) && nrow(rotulos) > 0L) {
+    df |>
+      filter(as.character(classe_movimento) != "Sem dado") |>
+      group_by(cod_ibge_6) |>
+      slice(1L) |>
+      ungroup()
+  } else {
+    NULL
+  }
+  df <- recortar_contexto_mapa(df, foco)
+
+  ggplot(df) +
+    geom_sf(
+      aes(fill = classe_movimento),
+      colour = "#4d4d4d", linewidth = 0.075,
+      lineend = "round", linejoin = "round"
+    ) +
+    geom_sf(
+      data = mg_contorno_sf, inherit.aes = FALSE,
+      fill = NA, colour = "#202020", linewidth = 0.28,
+      lineend = "round", linejoin = "round"
+    ) +
+    camadas_rotulos_mapa(rotulos, tamanho = 2.05) +
+    scale_fill_manual(values = paleta_mov_mides, drop = TRUE, name = NULL) +
+    facet_wrap(~ano, ncol = 4) +
+    labs(
+      title = "MIDES: entradas e saidas anuais",
+      subtitle = "Cada painel compara pares municipio-consorcio contra o ano anterior",
+      caption = "Fonte: MIDES processado no projeto ideiaMides | unidade de movimento: par municipio-consorcio"
+    ) +
+    coord_sf_recorte(foco) +
+    theme_mapa_limpo() +
+    theme(
+      legend.position = "bottom", legend.box = "horizontal",
+      legend.key.width = unit(22, "pt"), legend.key.height = unit(14, "pt"),
+      legend.text = element_text(size = 9, colour = "#303030"),
+      strip.background = element_rect(fill = "#ffffff", colour = "#c8c8c8", linewidth = 0.35),
+      strip.text = element_text(face = "bold", size = 11, colour = "#303030"),
+      panel.spacing = unit(6, "pt")
+    ) +
+    guides(fill = guide_legend(nrow = 1, byrow = TRUE))
+}
+
+criar_plot_categorico <- function(df, tipo = c("fontes", "transicao"), rotulos = NULL, interativo = TRUE) {
+  tipo <- match.arg(tipo)
+  if (tipo == "fontes") {
+    coluna <- "classe_fontes"
+    tooltip <- "tooltip_fontes"
+    paleta <- paleta_fontes
+    titulo <- "Recorte 2015/2019: composicao territorial das fontes"
+    subtitulo <- "Cor por predominio de MIDES+MUNIC, so MIDES ou so MUNIC nos pares filtrados"
+    legenda <- "Predominio"
+    caption <- "Fonte: Base 1 2015/2019 | SICONFI entra apenas como validacao municipio-ano"
+  } else {
+    coluna <- "classe_transicao"
+    tooltip <- "tooltip_transicao"
+    paleta <- paleta_transicao
+    titulo <- "Transicao territorial dos pares entre 2015 e 2019"
+    subtitulo <- "Cor por movimento predominante no municipio, considerando os pares filtrados"
+    legenda <- "Movimento"
+    caption <- "Fonte: Base 1 2015/2019"
+  }
+
+  foco <- if (!is.null(rotulos) && nrow(rotulos) > 0L) {
+    df |> filter(as.character(.data[[coluna]]) != names(paleta)[[1]])
+  } else {
+    NULL
+  }
+  df <- recortar_contexto_mapa(df, foco)
+
+  p <- ggplot(df) +
+    geom_sf(
+      aes(fill = .data[[coluna]]),
+      colour = "#3f3f3f", linewidth = 0.16,
+      lineend = "butt", linejoin = "round"
+    )
+
+  if (interativo) {
+    p <- p + geom_sf_interactive(
+      aes(tooltip = .data[[tooltip]], data_id = cod_ibge_6),
+      fill = "#ffffff", alpha = 0.001, colour = NA, linewidth = 0
+    )
+  }
+
+  p +
+    geom_sf(
+      data = mg_contorno_sf, inherit.aes = FALSE,
+      fill = NA, colour = "#1f1f1f", linewidth = 0.35,
+      lineend = "round", linejoin = "round"
+    ) +
+    camadas_rotulos_mapa(rotulos) +
+    scale_fill_manual(values = paleta, drop = FALSE, name = legenda) +
+    labs(title = titulo, subtitle = subtitulo, caption = caption) +
+    coord_sf_recorte(foco) +
+    theme_mapa_limpo()
+}
+
+salvar_mapa_alta_resolucao <- function(plot, arquivo, formato = c("png", "pdf"), multiplo = FALSE) {
+  formato <- match.arg(formato)
+  largura <- if (multiplo) 16 else 12
+  altura <- if (multiplo) 10 else 8
+
+  if (formato == "png") {
+    ggsave(
+      arquivo, plot = plot, device = ragg::agg_png,
+      width = largura, height = altura, units = "in",
+      dpi = if (multiplo) 300 else 450, bg = "#ffffff"
+    )
+  } else {
+    ggsave(
+      arquivo, plot = plot, device = cairo_pdf,
+      width = largura, height = altura, units = "in", bg = "#ffffff"
+    )
+  }
+}
+
 vinculos <- read_table_app(path_vinculos) |>
   mutate(
     ano = as.integer(ano),
@@ -361,6 +616,28 @@ mides_anual <- readRDS(path_mides_anual) |>
       TRUE ~ "sem valor positivo"
     ),
     pesquisa_mides = str_to_lower(paste(municipio, sigla, razao_social, cnpj_consorcio, nome_credor_freq, setores))
+  )
+
+movimentos_analiticos <- readRDS(path_movimentos) |>
+  mutate(
+    ano = as.integer(ano),
+    cod_ibge_6 = pad_ibge(cod_ibge_6),
+    cnpj_consorcio = str_pad(as.character(cnpj_consorcio), 14, side = "left", pad = "0"),
+    municipio = str_to_title(municipio)
+  ) |>
+  select(-any_of(c("sigla", "razao_social"))) |>
+  left_join(cadastro_base, by = "cnpj_consorcio") |>
+  left_join(classificacao_v05, by = "cnpj_consorcio") |>
+  mutate(
+    sigla = coalesce(sigla_cadastro, "(sem sigla)"),
+    razao_social = coalesce(razao_social_cadastro, razao_social_mides, "(sem razao social)"),
+    pesquisa_movimento = str_to_lower(paste(municipio, sigla, razao_social, cnpj_consorcio)),
+    cobertura_classificacao = case_when(
+      is.na(ativo_classificacao) ~ "Consorcio sediado fora de MG",
+      !ativo_classificacao ~ "Fora da camada analitica ativa",
+      is.na(area_politica) ~ "Perfil institucional sem area especifica",
+      TRUE ~ "Area classificada"
+    )
   )
 
 mg_municipios_sf <- readRDS(path_mg_sf) |>
@@ -849,6 +1126,46 @@ ui <- page_navbar(
         color: var(--ipea-muted);
         margin-bottom: 10px;
       }
+      .map-actions {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin: 0 0 10px;
+      }
+      .map-actions .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        width: auto;
+        min-height: 34px;
+        padding: 6px 10px;
+        border: 1px solid var(--ipea-line);
+        background: #ffffff;
+        color: var(--ipea-ink);
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .map-actions .btn:hover { background: #edf4f7; border-color: #8aa6b3; }
+      .movement-table-note { border-left: 3px solid var(--ipea-green); }
+      .consorcio-cell strong { display: block; color: var(--ipea-ink); font-size: 12px; }
+      .consorcio-cell span { color: var(--ipea-muted); font-size: 10px; }
+      .movement-detail-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .movement-detail-group {
+        background: #ffffff;
+        border: 1px solid var(--ipea-line);
+        padding: 8px 10px;
+      }
+      .movement-detail-group strong { margin-top: 0; }
+      .movement-detail-group.entry { border-top: 3px solid #2b8cbe; }
+      .movement-detail-group.return { border-top: 3px solid #756bb1; }
+      .movement-detail-group.exit { border-top: 3px solid #e07a2f; }
+      .movement-detail-group.stay { border-top: 3px solid #147d3f; }
+      .movement-detail-group.recurrent { border-top: 3px solid #59666c; }
       .doc-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1226,9 +1543,11 @@ ui <- page_navbar(
       @media (max-width: 980px) {
         .kpi-row, .concept-grid, .inline-filters, .audit-grid, .doc-grid,
         .doc-stat-grid, .doc-two-col, .result-pair, .interpret-grid,
-        .risk-split, .doc-flow-five, .example-steps, .validation-list {
+        .risk-split, .doc-flow-five, .example-steps, .validation-list,
+        .movement-detail-grid {
           grid-template-columns: 1fr;
         }
+        .map-actions { justify-content: flex-start; }
         .doc-article { padding: 0 12px 18px; }
         .doc-timeline { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         .example-head { align-items: flex-start; flex-direction: column; }
@@ -1319,6 +1638,11 @@ ui <- page_navbar(
               class = "panel-card map-wrap",
               h3("Composicao territorial das fontes"),
               div(class = "map-note", "Mapa categorico por municipio. A visualizacao acompanha os filtros; passe o mouse para ver contagens MIDES/MUNIC e classes SICONFI."),
+              div(
+                class = "map-actions",
+                downloadButton("download_fontes_png", "PNG alta resolucao", icon = bsicons::bs_icon("image")),
+                downloadButton("download_fontes_pdf", "PDF vetorial", icon = bsicons::bs_icon("file-earmark-pdf"))
+              ),
               girafeOutput("mapa_fontes", width = "100%", height = "620px")
             )
           ),
@@ -1379,6 +1703,11 @@ ui <- page_navbar(
             class = "panel-card map-wrap",
             h3("Mapa municipal MIDES"),
             div(class = "map-note", "Mapa coropletico dinamico em escala logaritmica. A visualizacao acompanha os filtros; passe o mouse para ver municipio, valores, consorcios e transacoes."),
+            div(
+              class = "map-actions",
+              downloadButton("download_mides_png", "PNG alta resolucao", icon = bsicons::bs_icon("image")),
+              downloadButton("download_mides_pdf", "PDF vetorial", icon = bsicons::bs_icon("file-earmark-pdf"))
+            ),
             girafeOutput("mapa_mides", width = "100%", height = "620px"),
             br(),
             h3("Municipios de maior intensidade no filtro atual"),
@@ -1391,9 +1720,29 @@ ui <- page_navbar(
             class = "panel-card map-wrap",
             h3("Entradas e saidas no MIDES completo"),
             div(class = "map-note", "Leitura: azul indica entrada de pares municipio-consorcio, laranja indica saida, verde indica permanencia. Em 2014, o mapa mostra apenas o inicio da serie observada."),
+            div(
+              class = "map-actions",
+              downloadButton("download_movimento_png", "PNG alta resolucao", icon = bsicons::bs_icon("image")),
+              downloadButton("download_movimento_pdf", "PDF vetorial", icon = bsicons::bs_icon("file-earmark-pdf"))
+            ),
             girafeOutput("mapa_mides_movimento", width = "100%", height = "860px"),
             br(),
             uiOutput("bloco_mides_movimento")
+          )
+        ),
+        nav_panel(
+          "Movimentos por consorcio",
+          div(
+            class = "panel-card",
+            h3("Tabela anual de movimentos por consorcio"),
+            div(
+              class = "map-note movement-table-note",
+              tags$strong("Regra fixa: valor total MIDES positivo."),
+              " Cada linha resume um consorcio em um ano. Clique no + para ver os municipios em cada movimento. ",
+              tags$strong("Saldo"), " = entradas novas + retornos - saidas. ",
+              tags$strong("Recorrentes"), " = municipios com duas ou mais mudancas de presenca no periodo."
+            ),
+            DTOutput("tabela_movimentos_consorcio")
           )
         ),
         nav_panel("Resumo anual", div(class = "panel-card", h3("Resumo por ano"), DTOutput("tabela_mides_ano"))),
@@ -1433,6 +1782,11 @@ ui <- page_navbar(
             class = "panel-card map-wrap",
             h3("Mapa de transicao 2015-2019"),
             div(class = "map-note", "Mapa categorico por municipio. A visualizacao acompanha os filtros; a cor mostra se predominou permanencia, entrada em 2019 ou saida apos 2015."),
+            div(
+              class = "map-actions",
+              downloadButton("download_transicao_png", "PNG alta resolucao", icon = bsicons::bs_icon("image")),
+              downloadButton("download_transicao_pdf", "PDF vetorial", icon = bsicons::bs_icon("file-earmark-pdf"))
+            ),
             girafeOutput("mapa_transicao", width = "100%", height = "620px")
           )
         ),
@@ -1484,6 +1838,14 @@ ui <- page_navbar(
               tags$li(tags$strong("MIDES completo:"), " pagamentos e movimentos anuais no MIDES entre 2014 e 2021."),
               tags$li(tags$strong("2015 vs 2019:"), " compara presenca, entrada e saida entre os dois anos."),
               tags$li(tags$strong("Auditoria:"), " apresenta alertas que exigem verificacao, sem alterar os dados de origem."))
+          ),
+          tags$details(class = "doc-detail", open = NA, tags$summary("Movimentos anuais, nomes e exportacao dos mapas"),
+            tags$ul(
+              tags$li(tags$strong("Tabela anual por consorcio:"), " cada linha resume um CNPJ em um ano. O botao + abre as listas de municipios em entradas novas, retornos, saidas, permanencias, base inicial e movimentos recorrentes."),
+              tags$li(tags$strong("Saldo:"), " entradas novas + retornos - saidas. O saldo descreve a variacao financeira observada no MIDES; nao comprova adesao ou desligamento juridico."),
+              tags$li(tags$strong("Nomes nos mapas:"), " aparecem quando o filtro deixa no maximo 12 municipios destacados. O mapa amplia o recorte e preserva os municipios vizinhos como contexto."),
+              tags$li(tags$strong("Exportacao:"), " PNG e gerado em alta resolucao, a 450 dpi nos mapas individuais e 300 dpi nos pequenos multiplos; PDF e vetorial. Os arquivos refletem os filtros ativos."),
+              tags$li(tags$strong("Mapa dinamico:"), " permanece destinado a exploracao, tooltip e zoom. A exportacao propria substitui o download nativo do ggiraph para relatorios e apresentacoes."))
           )
         ),
         nav_panel(
@@ -1671,6 +2033,50 @@ server <- function(input, output, session) {
       input$mides_perfil,
       input$mides_busca
     )
+
+  dados_movimentos_filtrados <- reactive({
+    if (length(input$mides_ano) == 0) return(movimentos_analiticos[0, ])
+
+    df <- movimentos_analiticos |>
+      filter(ano %in% as.integer(input$mides_ano))
+
+    if (length(input$mides_municipio) > 0) df <- df |> filter(municipio %in% input$mides_municipio)
+    if (length(input$mides_consorcio) > 0) df <- df |> filter(sigla %in% input$mides_consorcio)
+    if (length(input$mides_area) > 0) df <- df |> filter(tem_categoria(area_politica, input$mides_area))
+    if (length(input$mides_macrogrupo) > 0) df <- df |> filter(tem_categoria(macrogrupo_politica, input$mides_macrogrupo))
+    if (length(input$mides_perfil) > 0) df <- df |> filter(perfil_classificacao %in% input$mides_perfil)
+    if (!is.null(input$mides_busca) && str_squish(input$mides_busca) != "") {
+      termos <- str_to_lower(str_squish(input$mides_busca))
+      df <- df |> filter(str_detect(pesquisa_movimento, fixed(termos)))
+    }
+    df
+  }) |>
+    bindCache(
+      input$mides_ano,
+      input$mides_municipio,
+      input$mides_consorcio,
+      input$mides_area,
+      input$mides_macrogrupo,
+      input$mides_perfil,
+      input$mides_busca
+    )
+
+  dados_movimentos_consorcio_ano <- reactive({
+    dados_movimentos_filtrados() |>
+      summarise(
+        pares_ativos = sum(presente_mides),
+        entradas_novas = sum(evento_movimento == "entrada_observada"),
+        retornos = sum(evento_movimento == "retorno_observado"),
+        saidas = sum(evento_movimento == "saida_observada"),
+        permanencias = sum(evento_movimento == "permaneceu"),
+        saldo_liquido = sum(delta_presenca),
+        recorrentes_ativos = sum(presente_mides & movimento_recorrente),
+        valor_total_mides = sum(valor_total, na.rm = TRUE),
+        .by = c(ano, cnpj_consorcio, sigla, razao_social)
+      ) |>
+      filter(pares_ativos + saidas + entradas_novas + retornos + permanencias > 0) |>
+      arrange(desc(ano), sigla, cnpj_consorcio)
+  })
 
   dados_mides_mapa <- reactive({
     metrica_mides <- input$mides_mapa_metrica
@@ -2080,6 +2486,46 @@ server <- function(input, output, session) {
   }) |>
     bindCache(input$cmp_status, input$cmp_municipio, input$cmp_consorcio, input$cmp_busca)
 
+  rotulos_mides_mapa <- reactive({
+    selecionar_rotulos_mapa(
+      dados_mides_mapa(), "tem_registro",
+      municipios_selecionados = input$mides_municipio,
+      limite = 12L
+    )
+  })
+
+  rotulos_fontes_mapa <- reactive({
+    df <- dados_fontes_mapa() |>
+      mutate(tem_destaque = as.character(classe_fontes) != "Sem par no filtro")
+    selecionar_rotulos_mapa(df, "tem_destaque", input$municipio, limite = 12L)
+  })
+
+  rotulos_transicao_mapa <- reactive({
+    df <- dados_transicao_mapa() |>
+      mutate(tem_destaque = as.character(classe_transicao) != "Sem par no filtro")
+    selecionar_rotulos_mapa(df, "tem_destaque", input$cmp_municipio, limite = 12L)
+  })
+
+  rotulos_movimento_mapa <- reactive({
+    mapa <- dados_mides_movimento_mapa()
+    if (nrow(mapa) == 0L) return(mapa[0, ])
+
+    municipios_selecionados <- input$mides_municipio
+    if (length(municipios_selecionados) > 0L && length(municipios_selecionados) <= 12L) {
+      return(mapa |> filter(municipio %in% municipios_selecionados))
+    }
+
+    if (length(input$mides_consorcio) != 1L) return(mapa[0, ])
+
+    eventos <- dados_mides_movimento_eventos() |>
+      distinct(ano, municipio) |>
+      add_count(ano, name = "n_rotulos_ano") |>
+      filter(n_rotulos_ano <= 12L)
+
+    mapa |>
+      semi_join(eventos, by = c("ano", "municipio"))
+  })
+
   dados_mides_mapa_auto <- debounce(dados_mides_mapa, 500)
   dados_fontes_mapa_auto <- debounce(dados_fontes_mapa, 500)
   dados_transicao_mapa_auto <- debounce(dados_transicao_mapa, 500)
@@ -2115,58 +2561,13 @@ server <- function(input, output, session) {
   output$kpi_mides_valor <- renderText(fmt_moeda(sum(dados_mides_filtrados()$valor_total, na.rm = TRUE)))
 
   output$mapa_mides <- renderGirafe({
-    df <- dados_mides_mapa_auto() |>
-      mutate(mapa_valor_plot = if_else(mapa_valor > 0, mapa_valor, NA_real_))
+    df <- dados_mides_mapa_auto()
     metrica_atual <- isolate(input$mides_mapa_metrica)
     if (is.null(metrica_atual) || !metrica_atual %in% mides_mapa_metrica_opts) {
       metrica_atual <- "valor_total"
     }
     anos_atual <- isolate(input$mides_ano)
-    metrica_nome <- names(mides_mapa_metrica_opts)[match(metrica_atual, mides_mapa_metrica_opts)]
-    anos_txt <- paste(sort(unique(anos_atual)), collapse = ", ")
-    if (anos_txt == "") anos_txt <- "sem anos selecionados"
-
-    p <- ggplot(df) +
-      geom_sf(
-        aes(fill = mapa_valor_plot),
-        colour = "#4c554b",
-        linewidth = 0.12,
-        lineend = "butt",
-        linejoin = "round"
-      ) +
-      geom_sf_interactive(
-        aes(
-          tooltip = tooltip_mides,
-          data_id = cod_ibge_6
-        ),
-        fill = "#ffffff",
-        alpha = 0.001,
-        colour = NA,
-        linewidth = 0
-      ) +
-      geom_sf(
-        data = mg_contorno_sf,
-        inherit.aes = FALSE,
-        fill = NA,
-        colour = "#2f2f2f",
-        linewidth = 0.30,
-        lineend = "round",
-        linejoin = "round"
-      ) +
-      scale_fill_gradientn(
-        colours = c("#f7fcf5", "#c7e9c0", "#74c476", "#238b45", "#00441b"),
-        trans = "log10",
-        na.value = "#ffffff",
-        labels = function(x) fmt_mapa_valor(x, metrica_atual),
-        name = metrica_nome
-      ) +
-      labs(
-        title = "MIDES: intensidade municipal",
-        subtitle = paste0("Escala logaritmica | anos: ", anos_txt),
-        caption = "Fonte: MIDES processado no projeto ideiaMides | geometria municipal geobr/IBGE 2020"
-      ) +
-      coord_sf(datum = NA) +
-      theme_mapa_limpo()
+    p <- criar_plot_mides(df, metrica_atual, anos_atual, rotulos_mides_mapa(), interativo = TRUE)
 
     girafe(
       ggobj = p,
@@ -2184,51 +2585,14 @@ server <- function(input, output, session) {
   output$mapa_mides_movimento <- renderGirafe({
     df <- dados_mides_movimento_mapa()
     validate(need(nrow(df) > 0, "Selecione ao menos um ano MIDES."))
-
-    p <- ggplot(df) +
-      geom_sf(
-        aes(fill = classe_movimento),
-        colour = "#4d4d4d",
-        linewidth = 0.075,
-        lineend = "round",
-        linejoin = "round"
-      ) +
-      geom_sf(
-        data = mg_contorno_sf,
-        inherit.aes = FALSE,
-        fill = NA,
-        colour = "#202020",
-        linewidth = 0.28,
-        lineend = "round",
-        linejoin = "round"
-      ) +
-      scale_fill_manual(values = paleta_mov_mides, drop = TRUE, name = NULL) +
-      facet_wrap(~ano, ncol = 4) +
-      labs(
-        title = "MIDES: entradas e saidas anuais",
-        subtitle = "Cada painel compara pares municipio-consorcio contra o ano anterior",
-        caption = "Fonte: MIDES processado no projeto ideiaMides | unidade de movimento: par municipio-consorcio"
-      ) +
-      coord_sf(datum = NA, expand = FALSE) +
-      theme_mapa_limpo() +
-      theme(
-        legend.position = "bottom",
-        legend.box = "horizontal",
-        legend.key.width = unit(22, "pt"),
-        legend.key.height = unit(14, "pt"),
-        legend.text = element_text(size = 9, colour = "#303030"),
-        strip.background = element_rect(fill = "#ffffff", colour = "#c8c8c8", linewidth = 0.35),
-        strip.text = element_text(face = "bold", size = 11, colour = "#303030"),
-        panel.spacing = unit(6, "pt")
-      ) +
-      guides(fill = guide_legend(nrow = 1, byrow = TRUE))
+    p <- criar_plot_movimento(df, rotulos_movimento_mapa())
 
     girafe(
       ggobj = p,
       width_svg = 13.8,
       height_svg = 8.6,
       options = list(
-        opts_toolbar(position = "topright", saveaspng = TRUE, pngname = "mides_movimento_anual"),
+        opts_toolbar(position = "topright", saveaspng = FALSE),
         opts_zoom(min = 1, max = 5, duration = 250, default_on = FALSE),
         opts_sizing(rescale = TRUE)
       )
@@ -2237,42 +2601,7 @@ server <- function(input, output, session) {
 
   output$mapa_fontes <- renderGirafe({
     df <- dados_fontes_mapa_auto()
-
-    p <- ggplot(df) +
-      geom_sf(
-        aes(fill = classe_fontes),
-        colour = "#3f3f3f",
-        linewidth = 0.16,
-        lineend = "butt",
-        linejoin = "round"
-      ) +
-      geom_sf_interactive(
-        aes(
-          tooltip = tooltip_fontes,
-          data_id = cod_ibge_6
-        ),
-        fill = "#ffffff",
-        alpha = 0.001,
-        colour = NA,
-        linewidth = 0
-      ) +
-      geom_sf(
-        data = mg_contorno_sf,
-        inherit.aes = FALSE,
-        fill = NA,
-        colour = "#1f1f1f",
-        linewidth = 0.35,
-        lineend = "round",
-        linejoin = "round"
-      ) +
-      scale_fill_manual(values = paleta_fontes, drop = FALSE, name = "Predominio") +
-      labs(
-        title = "Recorte 2015/2019: composicao territorial das fontes",
-        subtitle = "Cor por predominio de MIDES+MUNIC, so MIDES ou so MUNIC nos pares filtrados",
-        caption = "Fonte: Base 1 2015/2019 | SICONFI entra apenas como validacao municipio-ano"
-      ) +
-      coord_sf(datum = NA) +
-      theme_mapa_limpo()
+    p <- criar_plot_categorico(df, "fontes", rotulos_fontes_mapa(), interativo = TRUE)
 
     girafe(
       ggobj = p,
@@ -2289,42 +2618,7 @@ server <- function(input, output, session) {
 
   output$mapa_transicao <- renderGirafe({
     df <- dados_transicao_mapa_auto()
-
-    p <- ggplot(df) +
-      geom_sf(
-        aes(fill = classe_transicao),
-        colour = "#3f3f3f",
-        linewidth = 0.16,
-        lineend = "butt",
-        linejoin = "round"
-      ) +
-      geom_sf_interactive(
-        aes(
-          tooltip = tooltip_transicao,
-          data_id = cod_ibge_6
-        ),
-        fill = "#ffffff",
-        alpha = 0.001,
-        colour = NA,
-        linewidth = 0
-      ) +
-      geom_sf(
-        data = mg_contorno_sf,
-        inherit.aes = FALSE,
-        fill = NA,
-        colour = "#1f1f1f",
-        linewidth = 0.35,
-        lineend = "round",
-        linejoin = "round"
-      ) +
-      scale_fill_manual(values = paleta_transicao, drop = FALSE, name = "Movimento") +
-      labs(
-        title = "Transicao territorial dos pares entre 2015 e 2019",
-        subtitle = "Cor por movimento predominante no municipio, considerando os pares filtrados",
-        caption = "Fonte: Base 1 2015/2019"
-      ) +
-      coord_sf(datum = NA) +
-      theme_mapa_limpo()
+    p <- criar_plot_categorico(df, "transicao", rotulos_transicao_mapa(), interativo = TRUE)
 
     girafe(
       ggobj = p,
@@ -2338,6 +2632,69 @@ server <- function(input, output, session) {
       )
     )
   })
+
+  output$download_mides_png <- downloadHandler(
+    filename = function() paste0("mides_intensidade_", Sys.Date(), ".png"),
+    contentType = "image/png",
+    content = function(file) {
+      metrica <- input$mides_mapa_metrica
+      if (is.null(metrica) || !metrica %in% mides_mapa_metrica_opts) metrica <- "valor_total"
+      p <- criar_plot_mides(dados_mides_mapa(), metrica, input$mides_ano, rotulos_mides_mapa(), interativo = FALSE)
+      salvar_mapa_alta_resolucao(p, file, "png")
+    }
+  )
+  output$download_mides_pdf <- downloadHandler(
+    filename = function() paste0("mides_intensidade_", Sys.Date(), ".pdf"),
+    contentType = "application/pdf",
+    content = function(file) {
+      metrica <- input$mides_mapa_metrica
+      if (is.null(metrica) || !metrica %in% mides_mapa_metrica_opts) metrica <- "valor_total"
+      p <- criar_plot_mides(dados_mides_mapa(), metrica, input$mides_ano, rotulos_mides_mapa(), interativo = FALSE)
+      salvar_mapa_alta_resolucao(p, file, "pdf")
+    }
+  )
+  output$download_movimento_png <- downloadHandler(
+    filename = function() paste0("mides_movimentos_anuais_", Sys.Date(), ".png"),
+    contentType = "image/png",
+    content = function(file) salvar_mapa_alta_resolucao(
+      criar_plot_movimento(dados_mides_movimento_mapa(), rotulos_movimento_mapa()), file, "png", multiplo = TRUE
+    )
+  )
+  output$download_movimento_pdf <- downloadHandler(
+    filename = function() paste0("mides_movimentos_anuais_", Sys.Date(), ".pdf"),
+    contentType = "application/pdf",
+    content = function(file) salvar_mapa_alta_resolucao(
+      criar_plot_movimento(dados_mides_movimento_mapa(), rotulos_movimento_mapa()), file, "pdf", multiplo = TRUE
+    )
+  )
+  output$download_fontes_png <- downloadHandler(
+    filename = function() paste0("base1_fontes_", Sys.Date(), ".png"),
+    contentType = "image/png",
+    content = function(file) salvar_mapa_alta_resolucao(
+      criar_plot_categorico(dados_fontes_mapa(), "fontes", rotulos_fontes_mapa(), interativo = FALSE), file, "png"
+    )
+  )
+  output$download_fontes_pdf <- downloadHandler(
+    filename = function() paste0("base1_fontes_", Sys.Date(), ".pdf"),
+    contentType = "application/pdf",
+    content = function(file) salvar_mapa_alta_resolucao(
+      criar_plot_categorico(dados_fontes_mapa(), "fontes", rotulos_fontes_mapa(), interativo = FALSE), file, "pdf"
+    )
+  )
+  output$download_transicao_png <- downloadHandler(
+    filename = function() paste0("transicao_2015_2019_", Sys.Date(), ".png"),
+    contentType = "image/png",
+    content = function(file) salvar_mapa_alta_resolucao(
+      criar_plot_categorico(dados_transicao_mapa(), "transicao", rotulos_transicao_mapa(), interativo = FALSE), file, "png"
+    )
+  )
+  output$download_transicao_pdf <- downloadHandler(
+    filename = function() paste0("transicao_2015_2019_", Sys.Date(), ".pdf"),
+    contentType = "application/pdf",
+    content = function(file) salvar_mapa_alta_resolucao(
+      criar_plot_categorico(dados_transicao_mapa(), "transicao", rotulos_transicao_mapa(), interativo = FALSE), file, "pdf"
+    )
+  )
   output$tabela_conjuntos <- renderDT({
     df <- dados_filtrados() |>
       summarise(
@@ -2610,6 +2967,10 @@ server <- function(input, output, session) {
       df,
       rownames = FALSE,
       escape = FALSE,
+      colnames = c(
+        "", "Ano", "Consorcio", "Ativos", "Entradas novas", "Retornos",
+        "Saidas", "Permanencias", "Saldo", "Recorrentes", "Valor MIDES", "Detalhes"
+      ),
       options = list(
         dom = "t",
         pageLength = nrow(df),
@@ -2636,6 +2997,118 @@ server <- function(input, output, session) {
         coluna_detalhes
       ))
     )
+  }, server = TRUE)
+
+  output$tabela_movimentos_consorcio <- renderDT({
+    movimentos <- dados_movimentos_filtrados()
+    resumo <- dados_movimentos_consorcio_ano()
+
+    lista_html <- function(nomes) {
+      nomes <- sort(unique(nomes))
+      if (length(nomes) == 0L) return("<span>Nenhum municipio.</span>")
+      paste0("<ul><li>", paste(htmltools::htmlEscape(nomes), collapse = "</li><li>"), "</li></ul>")
+    }
+
+    tipos_evento <- c("entrada_observada", "retorno_observado", "saida_observada", "permaneceu", "base_inicial")
+    listas_eventos <- movimentos |>
+      filter(evento_movimento %in% tipos_evento) |>
+      mutate(evento_movimento = factor(evento_movimento, levels = tipos_evento)) |>
+      summarise(lista = lista_html(municipio), .by = c(ano, cnpj_consorcio, evento_movimento)) |>
+      tidyr::pivot_wider(
+        names_from = evento_movimento, values_from = lista,
+        names_expand = TRUE, values_fill = "<span>Nenhum municipio.</span>"
+      )
+
+    listas_recorrentes <- movimentos |>
+      filter(presente_mides, movimento_recorrente) |>
+      summarise(recorrentes_lista = lista_html(municipio), .by = c(ano, cnpj_consorcio))
+
+    detalhes_por_linha <- resumo |>
+      select(ano, cnpj_consorcio) |>
+      left_join(listas_eventos, by = c("ano", "cnpj_consorcio")) |>
+      left_join(listas_recorrentes, by = c("ano", "cnpj_consorcio")) |>
+      mutate(across(
+        all_of(c(tipos_evento, "recorrentes_lista")),
+        ~ coalesce(.x, "<span>Nenhum municipio.</span>")
+      )) |>
+      transmute(
+        ano, cnpj_consorcio,
+        detalhes = paste0(
+          "<div class='dt-detail-box'><div class='movement-detail-grid'>",
+          "<div class='movement-detail-group entry'><strong>Entradas novas</strong>", entrada_observada, "</div>",
+          "<div class='movement-detail-group return'><strong>Retornos</strong>", retorno_observado, "</div>",
+          "<div class='movement-detail-group exit'><strong>Saidas observadas</strong>", saida_observada, "</div>",
+          "<div class='movement-detail-group stay'><strong>Permanencias</strong>", permaneceu, "</div>",
+          "<div class='movement-detail-group entry'><strong>Base inicial de 2014</strong>", base_inicial, "</div>",
+          "<div class='movement-detail-group recurrent'><strong>Movimento recorrente no periodo</strong>", recorrentes_lista, "</div>",
+          "</div></div>"
+        )
+      )
+
+    if (nrow(resumo) == 0L) {
+      df <- tibble(
+        ` ` = character(), Ano = integer(), Consorcio = character(), Ativos = integer(),
+        `Entradas novas` = integer(), Retornos = integer(), Saidas = integer(), Permanencias = integer(),
+        Saldo = integer(), Recorrentes = integer(), `Valor MIDES` = numeric(), Detalhes = character()
+      )
+    } else {
+      df <- resumo |>
+        left_join(detalhes_por_linha, by = c("ano", "cnpj_consorcio")) |>
+        mutate(
+          consorcio = paste0(
+            "<div class='consorcio-cell'><strong>", htmltools::htmlEscape(sigla), "</strong>",
+            "<span>", htmltools::htmlEscape(cnpj_consorcio), " | ", htmltools::htmlEscape(razao_social), "</span></div>"
+          )
+        ) |>
+        transmute(
+          ` ` = "", Ano = ano, Consorcio = consorcio, Ativos = pares_ativos,
+          `Entradas novas` = entradas_novas, Retornos = retornos, Saidas = saidas,
+          Permanencias = permanencias, Saldo = saldo_liquido,
+          Recorrentes = recorrentes_ativos, `Valor MIDES` = round(valor_total_mides, 2),
+          Detalhes = detalhes
+        )
+    }
+
+    coluna_detalhes <- ncol(df) - 1L
+    datatable(
+      df,
+      rownames = FALSE,
+      escape = FALSE,
+      options = list(
+        dom = "ftip",
+        pageLength = 10,
+        lengthChange = FALSE,
+        autoWidth = FALSE,
+        scrollX = TRUE,
+        deferRender = TRUE,
+        searchDelay = 350,
+        columnDefs = list(
+          list(className = "details-control", orderable = FALSE, width = "28px", targets = 0),
+          list(visible = FALSE, targets = coluna_detalhes),
+          list(width = "290px", targets = 2),
+          list(className = "dt-center", targets = c(1, 3, 4, 5, 6, 7, 8, 9))
+        ),
+        language = dt_pt
+      ),
+      callback = JS(sprintf(
+        "table.on('click', 'td.details-control', function() {
+          var tr = $(this).closest('tr');
+          var row = table.row(tr);
+          if (row.child.isShown()) {
+            row.child.hide();
+            tr.removeClass('shown');
+          } else {
+            row.child(row.data()[%d]).show();
+            tr.addClass('shown');
+          }
+        });",
+        coluna_detalhes
+      ))
+    ) |>
+      formatCurrency(
+        columns = "Valor MIDES", currency = "R$ ",
+        mark = ".", dec.mark = ",", digits = 0
+      )
   }, server = TRUE)
 
   output$tabela_mides <- renderDT({

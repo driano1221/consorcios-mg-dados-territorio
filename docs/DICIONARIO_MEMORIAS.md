@@ -1,6 +1,6 @@
 # Dicionario De Memorias - ideiaMides
 
-Atualizado em: 2026-07-28
+Atualizado em: 2026-07-29
 
 Este arquivo serve como indice rapido dos documentos de memoria e contexto do projeto.
 
@@ -73,6 +73,7 @@ Este arquivo serve como indice rapido dos documentos de memoria e contexto do pr
 | `dashboards/base1_shiny/data/base_1_validacao_siconfi_reconstruido_2015_2019.csv` | Validacao SICONFI usada pelo app. |
 | `dashboards/base1_shiny/data/base_1_validacao_siconfi_reconstruido_2015_2019.rds` | Versao RDS otimizada da validacao SICONFI usada no app publicado. |
 | `dashboards/base1_shiny/data/painel_mg_anual.rds` | MIDES completo 2014-2021 usado na aba MIDES completo. |
+| `dashboards/base1_shiny/data/movimentos_municipio_consorcio_ano.rds` | Serie balanceada de 22.680 observacoes usada na tabela anual por consorcio e nas listas de municipios. |
 | `dashboards/base1_shiny/data/classificacao_areas_politica_mg_v0_5.rds` | Camada local v0.5 preparada para o deploy; adiciona atributos de classificacao por CNPJ sem alterar pagamentos, pares ou movimentos. |
 | `dashboards/base1_shiny/data/cadastro_base.rds` | Cadastro de consorcios usado para enriquecer nomes, siglas e metadados. |
 | `dashboards/base1_shiny/data/mides_municipios_lookup.csv` | Lookup de nomes municipais usado no MIDES completo. |
@@ -82,6 +83,7 @@ Este arquivo serve como indice rapido dos documentos de memoria e contexto do pr
 | `dashboards/base1_shiny/deploy_app.R` | Script recomendado de deploy; usa `appFiles` explicito para nao empacotar arquivos desnecessarios. |
 | `dashboards/base1_shiny/preparar_classificacao_v0_5.R` | Converte o CSV v0.5 tecnico em RDS local, validando contagens antes do deploy. |
 | `dashboards/base1_shiny/tests/test_classificacao_v0_5.R` | Teste automatizado de preservacao do MIDES e dos filtros de classificacao. |
+| `dashboards/base1_shiny/tests/test_movimentos_mapas_export.R` | Testa contagens anuais, rotulos condicionais, recorte espacial e arquivos PNG/PDF. |
 | `dashboards/base1_shiny/app.R` | Contem tambem os tooltips dos filtros: icone `i` ao lado de cada campo nas tres telas analiticas. |
 
 Link publicado:

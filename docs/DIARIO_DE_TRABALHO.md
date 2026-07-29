@@ -315,3 +315,32 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Comparacao: 2.484 pares para 4 em Corrego Danta; mapa permaneceu renderizado; limpeza restaurou 2.484.
 - Correcao republicada no shinyapps.io; as seis paginas principais abriram em aproximadamente 1,2 a 3,1 segundos, sem erros de console.
 - Na versao online, o filtro MIDES repetiu 15.131 -> 9 -> 15.131 e a comparacao repetiu 2.484 -> 4 -> 2.484, com mapas preservados.
+
+---
+
+## 2026-07-29 - Tabela Anual, Rotulos E Exportacao Cartografica
+
+### Entregas
+
+- Integrada ao app a serie balanceada `movimentos_municipio_consorcio_ano.rds`, com 22.680 observacoes, 2.835 pares municipio-CNPJ e 161 CNPJs.
+- Criada `MIDES completo > Movimentos por consorcio`: uma linha por CNPJ e ano, com ativos, entradas novas, retornos, saidas, permanencias, saldo, recorrentes e valor MIDES.
+- O botao `+` abre listas separadas dos municipios de cada movimento, incluindo a base inicial de 2014.
+- Formalizada a regra de rotulos: nomes aparecem quando o recorte tem ate 12 municipios destacados.
+- Mapas com rotulos recebem zoom contextual e corte previo da geometria, preservando municipios vizinhos e reduzindo o custo de renderizacao.
+- Adicionados botoes proprios de exportacao aos quatro mapas: PNG 450 dpi nos mapas individuais, PNG 300 dpi nos pequenos multiplos e PDF vetorial.
+
+### Validacoes
+
+- O caso CODAP em 2019 foi conferido: 10 ativos, 5 entradas novas, 1 retorno, 0 saidas, 4 permanencias, saldo +6 e 1 municipio recorrente.
+- A tabela expansivel foi validada visualmente no navegador, inclusive a lista real de Silverania como saida observada.
+- Os mapas MIDES e de fontes foram testados com filtros pequenos; nomes, zoom, contexto territorial e botoes de exportacao permaneceram legiveis.
+- Criado `tests/test_movimentos_mapas_export.R`, cobrindo contagens, limite de rotulos, recorte espacial, quatro construtores de mapa e arquivos PNG/PDF.
+- O PNG individual foi validado em 5.400 x 3.600 pixels; o PDF foi validado pelo cabecalho `%PDF`.
+- As seis paginas principais foram reabertas no navegador sem erro; a tabela anual, os tres recortes cartograficos e o mapa anual responderam aos filtros reais.
+- A versao foi republicada no shinyapps.io; tabela, mapa, links PNG/PDF e um download PNG real foram conferidos online, sem erros no console.
+
+### Decisoes
+
+- Saldo significa `entradas novas + retornos - saidas` e descreve movimento financeiro observado, nao mudanca juridica.
+- Recorrente significa duas ou mais mudancas de presenca no periodo 2014-2021.
+- A consolidacao matriz/filial permanece fora desta entrega e podera alterar contagens somente depois de decisao formal.

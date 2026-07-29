@@ -1,7 +1,17 @@
 # Memoria - Projeto ideiaMides
 
-**Ultima atualizacao:** 2026-07-28  
-**Status:** painel v2 consolidado; proximas etapas a definir.
+**Ultima atualizacao:** 2026-07-29
+**Status:** frentes 1 a 8 entregues em nivel exploratorio; consolidacao matriz/filial e controles adicionais permanecem pendentes.
+
+---
+
+## Atualizacao Do Dashboard Em 29/07
+
+- A base anual balanceada de movimentos esta integrada ao app: 22.680 linhas, 2.835 pares municipio-CNPJ e oito anos.
+- A nova tabela anual por consorcio mostra ativos, entradas novas, retornos, saidas, permanencias, saldo, recorrentes e valor; o botao `+` abre as listas de municipios.
+- Nomes municipais aparecem nos mapas somente com ate 12 municipios destacados. O zoom conserva contexto territorial e reduz a geometria renderizada.
+- Os quatro mapas possuem exportacao propria em PNG de alta resolucao e PDF vetorial, sempre refletindo os filtros ativos.
+- O teste `dashboards/base1_shiny/tests/test_movimentos_mapas_export.R` valida contagens, mapas, rotulos, recorte e arquivos exportados.
 
 ---
 

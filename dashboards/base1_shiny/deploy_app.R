@@ -15,6 +15,7 @@ app_files <- c(
   "data/mg_contorno_sf_web.rds",
   "data/mg_municipios_sf_web.rds",
   "data/mides_municipios_lookup.rds",
+  "data/movimentos_municipio_consorcio_ano.rds",
   "data/painel_mg_anual.rds"
 )
 
