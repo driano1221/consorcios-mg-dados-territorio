@@ -1,6 +1,6 @@
 # Metodologia - Base 1 2015/2019
 
-**Projeto:** ideiaMides  
+**Projeto:** Consórcios MG: Dados e Território
 **Frente:** Base 1 - recorte temporal 2015/2019  
 **Status:** experimento metodologico tangente ao painel principal v2  
 **Ultima atualizacao:** 2026-06-10  

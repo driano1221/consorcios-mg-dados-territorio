@@ -1,7 +1,7 @@
 # Pesquisa - Recortes Territoriais E Institucionais
 
 **Data de registro:** 2026-06-10  
-**Projeto:** ideiaMides  
+**Projeto:** Consórcios MG: Dados e Território
 **Status:** pesquisa exploratoria para proximas etapas; nao implementada ainda  
 
 ---
@@ -149,4 +149,3 @@ Recomendacao:
 2. **Bacias Hidrograficas**: tambem forte, mas exige decisao espacial sobre municipio em multiplas bacias.
 3. **AMM microrregionais**: boa hipotese institucional, mas demanda montagem de base propria.
 4. **Votos/deputados**: deixar por ultimo, com cautela metodologica e comunicacao muito cuidadosa.
-

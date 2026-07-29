@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Manter codigo, metodologia e decisoes do ideiaMides em uma unica trilha versionada, sem duplicar bases pesadas nem alterar caminhos usados pelo dashboard e pelas analises existentes.
+Manter codigo, metodologia e decisoes do projeto Consorcios MG: Dados e Territorio em uma unica trilha versionada, sem duplicar bases pesadas nem alterar caminhos usados pelo dashboard e pelas analises existentes.
 
 ## O Que Entra No Git
 
@@ -49,7 +49,7 @@ Essas regras estao em `.gitignore`.
 
 ## Remoto
 
-Repositório público: <https://github.com/driano1221/ideiamides-consorcios-mg>.
+Repositório público: <https://github.com/driano1221/consorcios-mg-dados-territorio>.
 
 O repositório público contém código, testes e documentação. As bases locais pesadas e os outputs derivados continuam excluídos pelo `.gitignore`.
 

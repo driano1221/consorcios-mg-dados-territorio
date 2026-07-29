@@ -1,4 +1,4 @@
-# Memoria - Projeto ideiaMides
+# Memoria - Projeto Consorcios MG: Dados e Territorio
 
 **Ultima atualizacao:** 2026-07-29
 **Status:** frentes 1 a 8 entregues em nivel exploratorio; consolidacao matriz/filial e controles adicionais permanecem pendentes.
@@ -556,6 +556,7 @@ Leitura da procedencia e confianca da v0.2:
 - em 2026-07-28, foi criado `docs/DIARIO_DE_TRABALHO.md` como registro versionado de sessoes relevantes. O diario complementa, sem substituir, a memoria consolidada, os proximos passos e as atas de reuniao.
 - em 2026-07-28, a classificacao v0.5 foi integrada a tela MIDES completo como atributo de CNPJ por `left_join`. Foram adicionados filtros de area detalhada, macrogrupo e perfil institucional. A integracao preserva integralmente as 15.135 linhas MIDES e seus valores; CNPJs sem camada ativa ficam identificados como `Sem classificacao ativa`. A regra matriz/filial continua sem consolidar valores ou movimentos.
 - em 2026-07-29, o repositorio publico foi profissionalizado sob a identidade `ideiaMides | Consorcios Intermunicipais de Minas Gerais`, com slug `ideiamides-consorcios-mg`. O `README.md` passou a documentar finalidade, fontes, arquitetura, produtos, execucao e limites; foram adicionados `CONTRIBUTING.md`, `CHANGELOG.md` e template de pull request. O repositorio versiona codigo, testes, documentacao e pequenos insumos decisorios, mas nao distribui as bases pesadas. A ausencia de `renv.lock` e de licenca formal permanece registrada como limitacao de governanca.
+- ainda em 2026-07-29, a identidade provisoria foi substituida por `Consorcios MG: Dados e Territorio`; o dashboard passou a usar `Painel Consorcios MG` e o GitHub foi renomeado para `consorcios-mg-dados-territorio`. Caminhos locais e nomes de arquivos historicos que contem `ideiaMides` foram mantidos para preservar compatibilidade e rastreabilidade. O app foi testado, republicado e manteve sua URL original.
 
 ---
 

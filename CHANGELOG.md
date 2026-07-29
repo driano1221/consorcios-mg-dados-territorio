@@ -4,6 +4,8 @@ As sessões detalhadas estão em `docs/DIARIO_DE_TRABALHO.md`. Este arquivo regi
 
 ## 2026-07-29
 
+- adotada a identidade `Consórcios MG: Dados e Território`, com o dashboard denominado `Painel Consórcios MG`;
+- repositório renomeado para `consorcios-mg-dados-territorio`;
 - adicionada a trajetória longitudinal MIDES 2014–2021 por consórcio;
 - implementado carregamento sob demanda da tabela anual e matriz município–ano;
 - concluídas tabela analítica anual, rotulagem condicional e exportação cartográfica em alta resolução;

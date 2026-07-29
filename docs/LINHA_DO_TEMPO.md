@@ -1,4 +1,4 @@
-# Linha do Tempo — ideiaMides
+# Linha do Tempo — Consórcios MG: Dados e Território
 **Atualizado em:** 2026-05-14
 
 ---

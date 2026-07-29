@@ -1,6 +1,6 @@
 # Atas E Resumos De Reunioes
 
-**Projeto:** ideiaMides  
+**Projeto:** Consórcios MG: Dados e Território
 **Arquivo criado em:** 2026-06-10  
 **Uso:** concentrar atas, resumos executivos e encaminhamentos de reunioes do projeto.
 
@@ -191,4 +191,3 @@ Pontos levantados:
   - `painel_2014_2021_mides_siconfi`;
   - `retrato_atual_integrado_v2`.
 - Revisar textos que possam sugerir que CNM retroage historicamente para 2019.
-

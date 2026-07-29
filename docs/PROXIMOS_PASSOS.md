@@ -1,4 +1,4 @@
-# Proximos Passos - ideiaMides
+# Proximos Passos - Consorcios MG: Dados e Territorio
 
 **Atualizado em:** 2026-07-29
 **Uso:** roteiro curto do estado atual, decisoes pendentes e proximas entregas possiveis.

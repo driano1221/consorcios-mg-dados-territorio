@@ -1,4 +1,4 @@
-# Dicionario De Memorias - ideiaMides
+# Dicionario De Memorias - Consorcios MG
 
 Atualizado em: 2026-07-29
 
@@ -101,7 +101,7 @@ Link publicado:
 
 Repositorio publico:
 
-`https://github.com/driano1221/ideiamides-consorcios-mg`
+`https://github.com/driano1221/consorcios-mg-dados-territorio`
 
 Status em 2026-07-08:
 

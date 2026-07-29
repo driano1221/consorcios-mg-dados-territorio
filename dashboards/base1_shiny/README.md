@@ -1,4 +1,4 @@
-# Dashboard ideiaMides
+# Painel Consórcios MG
 
 Dashboard Shiny para consulta interativa da Base 1, do MIDES completo e das auditorias do projeto.
 

@@ -1,4 +1,4 @@
-# ideiaMides | Consórcios Intermunicipais de Minas Gerais
+# Consórcios MG: Dados e Território
 
 [![R](https://img.shields.io/badge/R-4.3%2B-276DC3?logo=r&logoColor=white)](https://www.r-project.org/)
 [![Shiny](https://img.shields.io/badge/Shiny-dashboard-1f6f8b)](https://shiny.posit.co/)
@@ -81,7 +81,7 @@ flowchart LR
 ```
 
 ```text
-ideiamides-consorcios-mg/
+consorcios-mg-dados-territorio/
 |-- analises/
 |   |-- base_1_2015_2019/        # Recorte comparável e validação SICONFI
 |   |-- classificacao_politicas/ # Taxonomia, auditorias e decisões versionadas

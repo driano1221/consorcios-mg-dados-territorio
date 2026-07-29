@@ -1,4 +1,4 @@
-# Diario De Trabalho - ideiaMides
+# Diario De Trabalho - Consorcios MG
 
 **Uso:** registro breve por data de trabalho. Complementa as atas e a memoria consolidada: documenta o que foi alterado, validado e deixado pendente.
 
@@ -415,3 +415,12 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Referencias Markdown internas verificadas.
 - Revisado o repositorio para remover descricoes obsoletas sobre movimentos espaciais, trajetoria longitudinal e visibilidade do remoto.
 - Metadados do GitHub preparados com descricao, dashboard como homepage e topicos de R, Shiny, politicas publicas, analise espacial e Minas Gerais.
+
+### Identidade Definitiva
+
+- A identidade provisoria `ideiaMides` foi substituida por **Consorcios MG: Dados e Territorio**.
+- O produto interativo passou a se chamar **Painel Consorcios MG**.
+- O repositorio foi renomeado para <https://github.com/driano1221/consorcios-mg-dados-territorio>.
+- Nomes historicos de arquivos, pastas locais e registros antigos foram preservados quando a troca poderia quebrar scripts ou apagar contexto.
+- O `app.R` passou nos testes de classificacao v0.5 e trajetoria longitudinal.
+- O dashboard foi republicado; a URL existente foi preservada e respondeu `HTTP 200` com o novo titulo.

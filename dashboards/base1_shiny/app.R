@@ -342,7 +342,7 @@ criar_plot_mides <- function(df, metrica_atual, anos_atual, rotulos = NULL, inte
     labs(
       title = "MIDES: intensidade municipal",
       subtitle = paste0("Escala logaritmica | anos: ", anos_txt),
-      caption = "Fonte: MIDES processado no projeto ideiaMides | geometria municipal geobr/IBGE 2020"
+      caption = "Fonte: MIDES processado no projeto Consórcios MG | geometria municipal geobr/IBGE 2020"
     ) +
     coord_sf_recorte(foco) +
     theme_mapa_limpo()
@@ -377,7 +377,7 @@ criar_plot_movimento <- function(df, rotulos = NULL) {
     labs(
       title = "MIDES: entradas e saidas anuais",
       subtitle = "Cada painel compara pares municipio-consorcio contra o ano anterior",
-      caption = "Fonte: MIDES processado no projeto ideiaMides | unidade de movimento: par municipio-consorcio"
+      caption = "Fonte: MIDES processado no projeto Consórcios MG | unidade de movimento: par municipio-consorcio"
     ) +
     coord_sf_recorte(foco) +
     theme_mapa_limpo() +
@@ -1105,14 +1105,14 @@ ui <- page_navbar(
     class = "brand-wrap",
     div(
       class = "brand-text",
-      span(class = "brand-title", "Painel ideiaMides"),
+      span(class = "brand-title", "Painel Consórcios MG"),
       span(class = "brand-subtitle", "MIDES, MUNIC, SICONFI e auditoria")
     )
   ),
-  window_title = "ideiaMides | Dashboard",
+  window_title = "Painel Consórcios MG",
   theme = tema,
   header = tags$head(
-    tags$title("ideiaMides | Dashboard"),
+    tags$title("Painel Consórcios MG"),
     tags$style(HTML("
       :root {
         --ipea-ink: #173a50;
