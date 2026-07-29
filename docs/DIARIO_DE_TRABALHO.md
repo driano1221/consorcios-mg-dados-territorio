@@ -389,3 +389,5 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Os oito blocos anuais receberam maior contraste, borda continua, numero de ativos mais visivel e espacamento mais regular.
 - Eliminado o limite de cinco consorcios: o detalhe passou a ser calculado sob demanda pelo servidor quando o usuario clica no `+`.
 - A abertura sem filtro foi testada no universo geral de 161 CNPJs; o detalhe carregou sem erro e sem reconstruir previamente todas as matrizes.
+- Os blocos compactos foram redesenhados como pequenos multiplos de relatorio: faixa anual, numero principal de municipios ativos e tres linhas tabulares para entradas, retornos e saidas.
+- A largura minima passou a 116 pixels, os textos de evento a 10 pixels e os valores a 11 pixels; a validacao automatizada no navegador confirmou ausencia de quebra de linha.

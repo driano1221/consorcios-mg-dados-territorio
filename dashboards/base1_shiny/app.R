@@ -693,11 +693,13 @@ html_trajetoria_compacta <- function(resumo) {
       resumo$ano, ": ", resumo$pares_ativos, " ativos; ",
       resumo$entradas_novas, " entradas novas; ", resumo$retornos, " retornos; ",
       resumo$saidas, " saidas; saldo ", ifelse(resumo$saldo_liquido > 0, "+", ""), resumo$saldo_liquido, "'>",
-      "<span>", resumo$ano, "</span>",
-      "<strong>", resumo$pares_ativos, "<em>ativos</em></strong>",
-      "<small><b class='entry'>Entr. ", resumo$entradas_novas, "</b>",
-      "<b class='return'>Ret. ", resumo$retornos, "</b>",
-      "<b class='exit'>Sai. ", resumo$saidas, "</b></small>",
+      "<div class='trajectory-mini-head'>", resumo$ano, "</div>",
+      "<div class='trajectory-mini-value'><strong>", resumo$pares_ativos, "</strong><span>municipios ativos</span></div>",
+      "<dl class='trajectory-mini-events'>",
+      "<div class='entry'><dt>Entradas</dt><dd>", resumo$entradas_novas, "</dd></div>",
+      "<div class='return'><dt>Retornos</dt><dd>", resumo$retornos, "</dd></div>",
+      "<div class='exit'><dt>Saidas</dt><dd>", resumo$saidas, "</dd></div>",
+      "</dl>",
       "</div>",
       collapse = ""
     ),
@@ -1336,24 +1338,34 @@ ui <- page_navbar(
       .movement-detail-group.recurrent { border-top: 3px solid #59666c; }
       .trajectory-inline {
         display: grid;
-        grid-template-columns: repeat(8, minmax(86px, 1fr));
-        min-width: 740px;
-        gap: 5px;
+        grid-template-columns: repeat(8, minmax(116px, 1fr));
+        min-width: 960px;
+        gap: 7px;
       }
       .trajectory-mini-year {
         background: #ffffff;
-        border: 1px solid #b9cbd3;
-        border-top: 3px solid #315b70;
-        min-height: 72px;
-        padding: 6px 6px 5px;
+        border: 1px solid #afc0c8;
+        min-height: 126px;
+        padding: 0;
+        text-align: left;
+      }
+      .trajectory-mini-head {
+        background: #edf2f4;
+        border-bottom: 1px solid #c7d4da;
+        color: #355365;
+        font-family: Consolas, monospace;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 6px 9px;
         text-align: center;
       }
-      .trajectory-mini-year > span, .trajectory-mini-year > strong, .trajectory-mini-year > small { display: block; }
-      .trajectory-mini-year > span { color: #536b77; font-family: Consolas, monospace; font-size: 9px; font-weight: 700; }
-      .trajectory-mini-year > strong { color: var(--ipea-ink); font-family: Georgia, serif; font-size: 20px; line-height: 1.2; }
-      .trajectory-mini-year > strong em { color: var(--ipea-muted); font-family: Arial, sans-serif; font-size: 8px; font-style: normal; font-weight: 500; margin-left: 3px; }
-      .trajectory-mini-year > small { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; border-top: 1px solid #e0e8ec; margin-top: 3px; padding-top: 4px; font-size: 8px; }
-      .trajectory-mini-year b { font-weight: 700; }
+      .trajectory-mini-value { padding: 8px 9px 7px; text-align: center; }
+      .trajectory-mini-value strong { color: var(--ipea-ink); display: block; font-family: Georgia, serif; font-size: 25px; line-height: 1; }
+      .trajectory-mini-value span { color: #5b6d75; display: block; font-size: 9px; margin-top: 3px; white-space: nowrap; }
+      .trajectory-mini-events { border-top: 1px solid #d8e2e6; margin: 0; padding: 5px 9px 6px; }
+      .trajectory-mini-events > div { align-items: baseline; display: flex; font-size: 10px; justify-content: space-between; line-height: 1.5; white-space: nowrap; }
+      .trajectory-mini-events dt { color: #42545c; font-weight: 500; }
+      .trajectory-mini-events dd { font-family: Consolas, monospace; font-size: 11px; font-weight: 700; margin: 0; }
       .trajectory-inline .entry, .text-entry { color: #176b91; }
       .trajectory-inline .return, .text-return { color: #6556a3; }
       .trajectory-inline .exit, .text-exit { color: #b95716; }
@@ -1995,8 +2007,7 @@ ui <- page_navbar(
             div(
               class = "map-note movement-table-note",
               tags$strong("Leitura completa dos anos selecionados."),
-              " Cada linha acompanha um consorcio. Nos blocos anuais: ",
-              tags$strong("Entr."), " = entrada nova; ", tags$strong("Ret."), " = retorno; ", tags$strong("Sai."), " = saida. ",
+              " Cada linha acompanha um consorcio. Os blocos anuais mostram municipios ativos, entradas novas, retornos e saidas. ",
               "Clique no + de qualquer consorcio para carregar a trajetoria detalhada e a matriz municipio x ano."
             ),
             div(
