@@ -9,8 +9,8 @@
 
 - A base anual balanceada de movimentos esta integrada ao app: 22.680 linhas, 2.835 pares municipio-CNPJ e oito anos.
 - A nova tabela anual por consorcio mostra ativos, entradas novas, retornos, saidas, permanencias, saldo, recorrentes e valor; o botao `+` abre as listas de municipios.
-- A subaba `Trajetoria 2014-2021` oferece leitura longitudinal: uma linha por consorcio, oito blocos anuais e saldo do recorte. Com ate cinco consorcios filtrados, o `+` abre KPIs, linha do tempo, tabela anual, matriz municipio-ano e listas nominais.
-- A carga geral nao gera matrizes pesadas. Os detalhes completos sao calculados somente em recortes de ate cinco consorcios, preservando desempenho e legibilidade.
+- A subaba `Trajetoria 2014-2021` oferece leitura longitudinal: uma linha por consorcio, oito blocos anuais e saldo do recorte. O `+` abre sob demanda KPIs, linha do tempo, tabela anual e matriz municipio-ano para qualquer consorcio, sem exigir filtro previo.
+- A carga geral nao gera matrizes pesadas. Cada detalhe e calculado somente no clique da linha escolhida, preservando desempenho e legibilidade.
 - Nomes municipais aparecem nos mapas somente com ate 12 municipios destacados. O zoom conserva contexto territorial e reduz a geometria renderizada.
 - Os quatro mapas possuem exportacao propria em PNG de alta resolucao e PDF vetorial, sempre refletindo os filtros ativos.
 - O teste `dashboards/base1_shiny/tests/test_movimentos_mapas_export.R` valida contagens, mapas, rotulos, recorte e arquivos exportados.

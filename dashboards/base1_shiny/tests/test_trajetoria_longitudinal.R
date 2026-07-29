@@ -23,8 +23,11 @@ detalhe <- html_detalhe_longitudinal(codap, codap_resumo)
 
 stopifnot(
   lengths(regmatches(compacto, gregexpr("trajectory-mini-year", compacto, fixed = TRUE))) == 8L,
+  grepl("Entr. 5", compacto, fixed = TRUE),
+  grepl("Ret. 1", compacto, fixed = TRUE),
+  !grepl("&#8634;", compacto, fixed = TRUE),
   grepl("Matriz municipio x ano", detalhe, fixed = TRUE),
-  grepl("Listas de municipios por evento", detalhe, fixed = TRUE),
+  !grepl("Listas de municipios por evento", detalhe, fixed = TRUE),
   grepl("Entre Rios De Minas", detalhe, fixed = TRUE),
   grepl("state-exit", detalhe, fixed = TRUE),
   grepl("2014", detalhe, fixed = TRUE),

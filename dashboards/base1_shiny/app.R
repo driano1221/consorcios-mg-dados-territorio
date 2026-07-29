@@ -694,10 +694,10 @@ html_trajetoria_compacta <- function(resumo) {
       resumo$entradas_novas, " entradas novas; ", resumo$retornos, " retornos; ",
       resumo$saidas, " saidas; saldo ", ifelse(resumo$saldo_liquido > 0, "+", ""), resumo$saldo_liquido, "'>",
       "<span>", resumo$ano, "</span>",
-      "<strong>", resumo$pares_ativos, "</strong>",
-      "<small><b class='entry'>+", resumo$entradas_novas, "</b>",
-      "<b class='return'>&#8634;", resumo$retornos, "</b>",
-      "<b class='exit'>&minus;", resumo$saidas, "</b></small>",
+      "<strong>", resumo$pares_ativos, "<em>ativos</em></strong>",
+      "<small><b class='entry'>Entr. ", resumo$entradas_novas, "</b>",
+      "<b class='return'>Ret. ", resumo$retornos, "</b>",
+      "<b class='exit'>Sai. ", resumo$saidas, "</b></small>",
       "</div>",
       collapse = ""
     ),
@@ -711,7 +711,7 @@ html_tabela_anual_longitudinal <- function(resumo) {
     "<tr><td><strong>", resumo$ano, "</strong></td>",
     "<td>", resumo$pares_ativos, "</td>",
     "<td class='text-entry'>+", resumo$entradas_novas, "</td>",
-    "<td class='text-return'>&#8634;", resumo$retornos, "</td>",
+    "<td class='text-return'>", resumo$retornos, "</td>",
     "<td class='text-exit'>&minus;", resumo$saidas, "</td>",
     "<td>", resumo$permanencias, "</td>",
     "<td class='", ifelse(resumo$saldo_liquido > 0, "saldo-pos", ifelse(resumo$saldo_liquido < 0, "saldo-neg", "")), "'>",
@@ -738,9 +738,9 @@ html_timeline_longitudinal <- function(resumo) {
       "<div class='trajectory-year-head'><span>", resumo$ano, "</span><strong>", resumo$pares_ativos, " ativos</strong></div>",
       "<div class='trajectory-bar'><i style='width:", round(100 * resumo$pares_ativos / max_ativos, 1), "%'></i></div>",
       "<div class='trajectory-events'>",
-      "<span class='entry'>+", resumo$entradas_novas, " entradas</span>",
-      "<span class='return'>&#8634;", resumo$retornos, " retornos</span>",
-      "<span class='exit'>&minus;", resumo$saidas, " saidas</span>",
+      "<span class='entry'><b>", resumo$entradas_novas, "</b> entradas</span>",
+      "<span class='return'><b>", resumo$retornos, "</b> retornos</span>",
+      "<span class='exit'><b>", resumo$saidas, "</b> saidas</span>",
       "</div><small>saldo ", ifelse(resumo$saldo_liquido > 0, "+", ""), resumo$saldo_liquido, "</small>",
       "</div>",
       collapse = ""
@@ -812,35 +812,6 @@ html_matriz_movimentos <- function(df, anos) {
   )
 }
 
-html_listas_eventos_longitudinais <- function(df, anos) {
-  anos <- sort(unique(as.integer(anos)))
-  blocos <- vapply(anos, function(ano_atual) {
-    atual <- df |> filter(ano == ano_atual)
-    tipos <- c(
-      "Entradas novas" = "entrada_observada", "Retornos" = "retorno_observado",
-      "Saidas" = "saida_observada", "Permanencias" = "permaneceu"
-    )
-    grupos <- paste0(vapply(names(tipos), function(rotulo) {
-      nomes <- atual$municipio[atual$evento_movimento == tipos[[rotulo]]]
-      nomes <- sort(unique(nomes))
-      lista <- if (length(nomes) == 0L) {
-        "<span>Nenhum municipio.</span>"
-      } else {
-        paste0("<ul><li>", paste(escape_html(nomes), collapse = "</li><li>"), "</li></ul>")
-      }
-      paste0("<div><strong>", rotulo, " (", length(nomes), ")</strong>", lista, "</div>")
-    }, character(1)), collapse = "")
-    paste0(
-      "<details class='event-year-detail'><summary>", ano_atual,
-      " | +", sum(atual$evento_movimento == "entrada_observada"),
-      " entradas | &#8634;", sum(atual$evento_movimento == "retorno_observado"),
-      " retornos | &minus;", sum(atual$evento_movimento == "saida_observada"),
-      " saidas</summary><div class='event-list-grid'>", grupos, "</div></details>"
-    )
-  }, character(1))
-  paste0(blocos, collapse = "")
-}
-
 html_detalhe_longitudinal <- function(df, resumo) {
   anos <- sort(unique(resumo$ano))
   primeiro <- resumo |> slice_min(ano, n = 1, with_ties = FALSE)
@@ -859,8 +830,6 @@ html_detalhe_longitudinal <- function(df, resumo) {
     "<details class='long-detail-section'><summary>Matriz municipio x ano</summary>",
     "<p class='detail-help'>Cada linha acompanha um municipio. Passe o mouse sobre uma celula para ver o movimento e o valor MIDES do ano.</p>",
     html_matriz_movimentos(df, anos), "</details>",
-    "<details class='long-detail-section'><summary>Listas de municipios por evento</summary>",
-    html_listas_eventos_longitudinais(df, anos), "</details>",
     "</div>"
   )
 }
@@ -1367,47 +1336,52 @@ ui <- page_navbar(
       .movement-detail-group.recurrent { border-top: 3px solid #59666c; }
       .trajectory-inline {
         display: grid;
-        grid-template-columns: repeat(8, minmax(58px, 1fr));
-        min-width: 520px;
-        gap: 3px;
+        grid-template-columns: repeat(8, minmax(86px, 1fr));
+        min-width: 740px;
+        gap: 5px;
       }
       .trajectory-mini-year {
-        background: #f7fafb;
-        border: 1px solid #d8e3e9;
-        min-height: 58px;
-        padding: 4px 5px;
+        background: #ffffff;
+        border: 1px solid #b9cbd3;
+        border-top: 3px solid #315b70;
+        min-height: 72px;
+        padding: 6px 6px 5px;
         text-align: center;
       }
       .trajectory-mini-year > span, .trajectory-mini-year > strong, .trajectory-mini-year > small { display: block; }
-      .trajectory-mini-year > span { color: var(--ipea-muted); font-family: Consolas, monospace; font-size: 9px; }
-      .trajectory-mini-year > strong { color: var(--ipea-ink); font-family: Georgia, serif; font-size: 17px; line-height: 1.15; }
-      .trajectory-mini-year > small { display: flex; justify-content: center; gap: 4px; font-size: 8px; }
+      .trajectory-mini-year > span { color: #536b77; font-family: Consolas, monospace; font-size: 9px; font-weight: 700; }
+      .trajectory-mini-year > strong { color: var(--ipea-ink); font-family: Georgia, serif; font-size: 20px; line-height: 1.2; }
+      .trajectory-mini-year > strong em { color: var(--ipea-muted); font-family: Arial, sans-serif; font-size: 8px; font-style: normal; font-weight: 500; margin-left: 3px; }
+      .trajectory-mini-year > small { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; border-top: 1px solid #e0e8ec; margin-top: 3px; padding-top: 4px; font-size: 8px; }
       .trajectory-mini-year b { font-weight: 700; }
       .trajectory-inline .entry, .text-entry { color: #176b91; }
       .trajectory-inline .return, .text-return { color: #6556a3; }
       .trajectory-inline .exit, .text-exit { color: #b95716; }
-      .longitudinal-detail { background: #ffffff; padding: 14px; }
+      .longitudinal-detail { background: #ffffff; padding: 14px 16px 16px; }
       .longitudinal-detail h4 { color: var(--ipea-ink); font-family: Georgia, serif; font-size: 18px; margin: 16px 0 8px; }
       .longitudinal-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-      .longitudinal-kpis > div { background: #f5f8fa; border-top: 3px solid var(--ipea-ink); padding: 9px 11px; }
+      .longitudinal-kpis > div { background: #ffffff; border-top: 2px solid var(--ipea-ink); border-bottom: 1px solid #dce5e9; padding: 8px 4px 9px; }
       .longitudinal-kpis span, .longitudinal-kpis small, .longitudinal-kpis strong { display: block; }
       .longitudinal-kpis span { color: var(--ipea-muted); font-size: 9px; text-transform: uppercase; letter-spacing: .05em; }
       .longitudinal-kpis strong { color: var(--ipea-ink); font-family: Georgia, serif; font-size: 22px; }
       .longitudinal-kpis small { color: #64747b; font-size: 9px; }
-      .trajectory-years { display: grid; grid-template-columns: repeat(8, minmax(104px, 1fr)); gap: 6px; overflow-x: auto; padding-bottom: 5px; }
-      .trajectory-year-card { min-width: 104px; background: #fbfcfd; border: 1px solid var(--ipea-line); padding: 8px; }
+      .trajectory-years { display: grid; grid-template-columns: repeat(8, minmax(112px, 1fr)); gap: 7px; overflow-x: auto; padding-bottom: 5px; }
+      .trajectory-year-card { min-width: 112px; background: #ffffff; border: 1px solid #c8d6dc; border-top: 3px solid #315b70; padding: 9px; }
       .trajectory-year-head { display: flex; justify-content: space-between; align-items: baseline; gap: 5px; }
       .trajectory-year-head span { color: var(--ipea-muted); font-family: Consolas, monospace; font-size: 10px; }
       .trajectory-year-head strong { color: var(--ipea-ink); font-size: 12px; }
       .trajectory-bar { height: 5px; background: #e4ebee; margin: 7px 0; }
       .trajectory-bar i { display: block; height: 100%; background: var(--ipea-green); }
-      .trajectory-events span { display: block; font-size: 9px; line-height: 1.45; }
+      .trajectory-events { display: grid; gap: 2px; }
+      .trajectory-events span { display: flex; justify-content: space-between; gap: 4px; font-size: 9px; line-height: 1.4; }
+      .trajectory-events b { font-size: 10px; }
       .trajectory-events .entry { color: #176b91; }
       .trajectory-events .return { color: #6556a3; }
       .trajectory-events .exit { color: #b95716; }
       .trajectory-year-card > small { display: block; color: #53636a; border-top: 1px solid #e2e9ec; margin-top: 5px; padding-top: 4px; }
+      .trajectory-loading { padding: 18px; color: var(--ipea-muted); background: #ffffff; border-left: 3px solid var(--ipea-green); }
       .long-detail-section { border: 1px solid var(--ipea-line); margin-top: 9px; background: #ffffff; }
-      .long-detail-section > summary, .event-year-detail > summary { cursor: pointer; color: var(--ipea-ink); font-weight: 700; padding: 10px 12px; }
+      .long-detail-section > summary { cursor: pointer; color: var(--ipea-ink); font-weight: 700; padding: 10px 12px; }
       .long-detail-section[open] > summary { border-bottom: 1px solid var(--ipea-line); background: #f5f8fa; }
       .detail-help { color: var(--ipea-muted); font-size: 11px; margin: 10px 12px; }
       .long-table-scroll, .movement-matrix-scroll { overflow: auto; max-width: 100%; }
@@ -1430,16 +1404,9 @@ ui <- page_navbar(
       .state-absent { background: #eef1f2 !important; color: #6e7b80 !important; }
       .movement-legend { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 12px; }
       .movement-legend span { border: 1px solid #d4dde1; font-size: 9px; padding: 3px 6px; }
-      .event-year-detail { border-top: 1px solid #e2e9ec; }
-      .event-list-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 0 12px 12px; }
-      .event-list-grid > div { border-top: 3px solid #d8e3e9; background: #f9fbfc; padding: 8px; }
-      .event-list-grid strong { color: var(--ipea-ink); font-size: 11px; }
-      .event-list-grid ul { max-height: 150px; overflow: auto; margin: 5px 0 0 16px; padding: 0; }
-      .event-list-grid li, .event-list-grid span { color: #425159; font-size: 10px; }
       @media (max-width: 900px) {
         .longitudinal-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .trajectory-years { grid-template-columns: repeat(4, minmax(104px, 1fr)); }
-        .event-list-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       }
       .doc-grid {
         display: grid;
@@ -2028,14 +1995,20 @@ ui <- page_navbar(
             div(
               class = "map-note movement-table-note",
               tags$strong("Leitura completa dos anos selecionados."),
-              " Cada linha acompanha um consorcio. Os blocos anuais mostram ativos, entradas (+), retornos (seta circular) e saidas (-). ",
-              "Selecione ate cinco consorcios para habilitar no + a trajetoria detalhada, a matriz municipio x ano e as listas nominais."
+              " Cada linha acompanha um consorcio. Nos blocos anuais: ",
+              tags$strong("Entr."), " = entrada nova; ", tags$strong("Ret."), " = retorno; ", tags$strong("Sai."), " = saida. ",
+              "Clique no + de qualquer consorcio para carregar a trajetoria detalhada e a matriz municipio x ano."
             ),
             div(
               class = "map-actions",
               downloadButton("download_trajetoria_csv", "Baixar movimentos filtrados", icon = bsicons::bs_icon("download"))
             ),
-            DTOutput("tabela_trajetoria_consorcios")
+            DTOutput("tabela_trajetoria_consorcios"),
+            div(
+              style = "display:none;",
+              textInput("trajetoria_detalhe_solicitado", NULL, value = ""),
+              uiOutput("trajetoria_detalhe_buffer")
+            )
           )
         ),
         nav_panel("Resumo anual", div(class = "panel-card", h3("Resumo por ano"), DTOutput("tabela_mides_ano"))),
@@ -3401,26 +3374,9 @@ server <- function(input, output, session) {
     if (nrow(resumo) == 0L) {
       df <- tibble(
         ` ` = character(), Consorcio = character(), `Trajetoria anual` = character(),
-        `Saldo do recorte` = integer(), Recorrentes = integer(), `Valor MIDES` = numeric(), Detalhes = character()
+        `Saldo do recorte` = integer(), Recorrentes = integer(), `Valor MIDES` = numeric(), CNPJ = character()
       )
     } else {
-      cnpjs_filtrados <- unique(movimentos$cnpj_consorcio)
-      detalhes_habilitados <- length(cnpjs_filtrados) <= 5L
-      detalhes <- lapply(split(movimentos, movimentos$cnpj_consorcio), function(dados_cnpj) {
-        if (!detalhes_habilitados) {
-          return(paste0(
-            "<div class='long-detail'><div class='long-detail-empty'>",
-            "Selecione ate cinco consorcios no filtro para abrir a linha do tempo, ",
-            "a matriz municipio x ano e as listas nominais.</div></div>"
-          ))
-        }
-        resumo_cnpj <- resumo |> filter(cnpj_consorcio == dados_cnpj$cnpj_consorcio[[1]])
-        html_detalhe_longitudinal(dados_cnpj, resumo_cnpj)
-      })
-      detalhes <- tibble(
-        cnpj_consorcio = names(detalhes),
-        detalhes = unname(unlist(detalhes, use.names = FALSE))
-      )
       recorrentes <- movimentos |>
         filter(movimento_recorrente) |>
         summarise(recorrentes = n_distinct(cod_ibge_6), .by = cnpj_consorcio)
@@ -3434,7 +3390,6 @@ server <- function(input, output, session) {
           valor = sum(valor_total_mides),
           .by = cnpj_consorcio
         ) |>
-        left_join(detalhes, by = "cnpj_consorcio") |>
         left_join(recorrentes, by = "cnpj_consorcio") |>
         mutate(
           recorrentes = coalesce(recorrentes, 0L),
@@ -3447,11 +3402,11 @@ server <- function(input, output, session) {
         transmute(
           ` ` = "", Consorcio = consorcio, `Trajetoria anual` = trajetoria,
           `Saldo do recorte` = saldo, Recorrentes = recorrentes,
-          `Valor MIDES` = round(valor, 2), Detalhes = detalhes
+          `Valor MIDES` = round(valor, 2), CNPJ = cnpj_consorcio
         )
     }
 
-    coluna_detalhes <- ncol(df) - 1L
+    coluna_cnpj <- ncol(df) - 1L
     datatable(
       df,
       rownames = FALSE,
@@ -3468,7 +3423,7 @@ server <- function(input, output, session) {
         order = list(list(1, "asc")),
         columnDefs = list(
           list(className = "details-control", orderable = FALSE, width = "28px", targets = 0),
-          list(visible = FALSE, searchable = FALSE, targets = coluna_detalhes),
+          list(visible = FALSE, searchable = FALSE, targets = coluna_cnpj),
           list(width = "250px", targets = 1),
           list(width = "570px", orderable = FALSE, targets = 2),
           list(className = "dt-center", width = "78px", targets = c(3, 4)),
@@ -3484,11 +3439,25 @@ server <- function(input, output, session) {
             row.child.hide();
             tr.removeClass('shown');
           } else {
-            row.child(row.data()[%d]).show();
+            var cnpj = row.data()[%d];
+            row.child('<div id=\"traj-detail-' + cnpj + '\" class=\"trajectory-loading\">Carregando detalhes...</div>').show();
             tr.addClass('shown');
+            $('#trajetoria_detalhe_solicitado').val(cnpj + '|' + Date.now()).trigger('change');
+            var tentativas = 0;
+            var aguardarDetalhe = window.setInterval(function() {
+              tentativas += 1;
+              var fonte = document.querySelector('#trajetoria_detalhe_buffer [data-cnpj=\"' + cnpj + '\"]');
+              var destino = document.getElementById('traj-detail-' + cnpj);
+              if (fonte && destino) {
+                destino.outerHTML = fonte.innerHTML;
+                window.clearInterval(aguardarDetalhe);
+              } else if (tentativas > 150 || !destino) {
+                window.clearInterval(aguardarDetalhe);
+              }
+            }, 100);
           }
         });",
-        coluna_detalhes
+        coluna_cnpj
       ))
     ) |>
       formatCurrency(
@@ -3501,6 +3470,25 @@ server <- function(input, output, session) {
         fontWeight = "700"
       )
   }, server = TRUE)
+
+  output$trajetoria_detalhe_buffer <- renderUI({
+    pedido <- input$trajetoria_detalhe_solicitado
+    req(nzchar(pedido))
+    cnpj <- strsplit(pedido, "|", fixed = TRUE)[[1]][[1]]
+    cnpj <- gsub("[^0-9]", "", cnpj)
+    req(nchar(cnpj) == 14L)
+
+    dados_cnpj <- dados_movimentos_filtrados() |>
+      filter(cnpj_consorcio == cnpj)
+    if (nrow(dados_cnpj) == 0L) {
+      html <- "<div class='trajectory-loading'>Sem dados para este consorcio nos filtros atuais.</div>"
+    } else {
+      resumo_cnpj <- resumir_movimentos_longitudinais(dados_cnpj)
+      html <- html_detalhe_longitudinal(dados_cnpj, resumo_cnpj)
+    }
+    tags$div(`data-cnpj` = cnpj, HTML(html))
+  })
+  outputOptions(output, "trajetoria_detalhe_buffer", suspendWhenHidden = FALSE)
 
   output$download_trajetoria_csv <- downloadHandler(
     filename = function() paste0("mides_movimentos_", Sys.Date(), ".csv"),

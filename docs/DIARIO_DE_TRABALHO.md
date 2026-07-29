@@ -381,3 +381,11 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - A frente 5 do plano esta concluida em duas visoes complementares: consulta anual e trajetoria 2014-2021.
 - Entrada, retorno e saida continuam significando mudanca na presenca de pagamento MIDES, nao ato juridico de adesao ou desligamento.
 - Matriz e filiais continuam separadas ate decisao formal da equipe.
+
+### Refinamento Visual E De Interacao
+
+- Removida a secao redundante `Listas de municipios por evento`; a tabela anual e a matriz permanecem como detalhamento principal.
+- O simbolo circular de retorno foi retirado dos resumos e da tabela anual. Os blocos usam os rotulos `Entr.`, `Ret.` e `Sai.`, explicados no cabecalho.
+- Os oito blocos anuais receberam maior contraste, borda continua, numero de ativos mais visivel e espacamento mais regular.
+- Eliminado o limite de cinco consorcios: o detalhe passou a ser calculado sob demanda pelo servidor quando o usuario clica no `+`.
+- A abertura sem filtro foi testada no universo geral de 161 CNPJs; o detalhe carregou sem erro e sem reconstruir previamente todas as matrizes.

@@ -33,7 +33,7 @@ O projeto tem hoje tres blocos principais funcionando:
    - inclui mapas dinamicos para intensidade MIDES, composicao territorial das fontes e transicao 2015 vs 2019;
    - a tela MIDES completo permite filtrar por area detalhada, macrogrupo e perfil institucional da classificacao v0.5; atributos sem area permanecem preservados nos totais, sem uma categoria generica de filtro.
    - aba `MIDES completo > Entradas/saidas` mostra movimento anual dos pares municipio-consorcio entre 2014 e 2021;
-   - aba `MIDES completo > Trajetoria 2014-2021` compara os oito anos por consorcio e, em recortes de ate cinco consorcios, abre linha do tempo, tabela anual, matriz municipio-ano e listas de eventos;
+   - aba `MIDES completo > Trajetoria 2014-2021` compara os oito anos por consorcio e abre sob demanda linha do tempo, tabela anual e matriz municipio-ano para qualquer linha, sem exigir filtro previo;
    - mapas foram refinados visualmente com fundo branco, divisas municipais continuas, paletas mais legiveis, zoom/tela cheia e filtros integrados.
 
 3. **Auditorias cadastrais**
