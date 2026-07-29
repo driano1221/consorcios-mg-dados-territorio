@@ -70,7 +70,7 @@ Nao aplicar automaticamente antes da validacao.
 
 ### 2. Analise territorial do movimento no MIDES completo
 
-**Status:** bases analiticas de movimentos e fronteira materializadas; aguardando validacao dos resultados antes de integrar ao dashboard.
+**Status:** bases de movimentos, fronteira, universos de risco e modelos exploratorios materializados e validados; ainda fora do dashboard.
 
 Objetivo:
 
@@ -103,11 +103,22 @@ Entregas priorizadas:
    - malha oficial completa geobr/IBGE de 2020 usada somente no processamento; a geometria leve do dashboard nao foi usada para calcular vizinhanca;
    - 2.375 fronteiras municipais compartilhadas foram identificadas por linha, excluindo contato apenas por canto;
    - cada par ativo recebeu numero/proporcao de vizinhos dentro e fora do consorcio, indicador de borda e isolamento;
-   - foi criado universo de 18.404 candidatos externos de borda para modelar entradas, sem assumir que todos os municipios de MG sao candidatos equivalentes;
+   - foi criado inicialmente um subconjunto de 18.404 candidatos externos adjacentes;
+   - a revisao metodologica posterior ampliou o universo para todos os municipios nao participantes dos CNPJs ativos em `t-1`, permitindo comparar candidatos adjacentes com municipios sem vizinho participante;
    - os outputs ainda nao foram integrados ao dashboard;
-   - EDA concluida em `analises/movimentos_espaciais/EDA_RESULTADOS.md`: integridade aprovada e associacoes espaciais descritivas fortes; antes da integracao, revisar restos a pagar, valores muito baixos, matriz/filial, nomes canonicos e a nomenclatura de borda para candidatos externos.
+   - EDA concluida em `analises/movimentos_espaciais/EDA_RESULTADOS.md`: integridade aprovada e associacoes espaciais descritivas fortes; restos a pagar e valores baixos foram testados por sensibilidade, enquanto matriz/filial e nomes canonicos permanecem pendentes.
 
-3. **Classificacao por area de politica publica**
+3. **Universos de risco e modelos exploratorios**
+   - universo de entrada: 742.916 exposicoes de nao membros, com 1.395 entradas/retornos modelaveis;
+   - universo de saida: 12.842 exposicoes de participantes, com as 966 saidas originais recompostas;
+   - 418 entradas ficaram separadas por nao haver CNPJ ativo em `t-1`: 387 no primeiro aparecimento do CNPJ na janela e 31 apos lacuna completa;
+   - modelos logisticos usam exposicao espacial em `t-1`, tamanho do consorcio, grau municipal e efeitos fixos de ano, com erros-padrao agrupados por municipio e CNPJ;
+   - aumento de 10 pontos percentuais na proporcao de vizinhos participantes apresentou OR 2,22 para entrada/retorno e OR 0,79 para saida;
+   - sinais permaneceram estaveis usando somente pagamento corrente e valores minimos de R$ 100 e R$ 1.000;
+   - documentacao: `analises/movimentos_espaciais/METODOLOGIA_MODELOS_RISCO.md` e `RESULTADOS_MODELOS_RISCO.md`;
+   - interpretacao mantida: associacao exploratoria entre pagamentos MIDES, nao efeito causal nem adesao juridica.
+
+4. **Classificacao por area de politica publica**
    - **versao analitica v0.5 concluida:** `analises/classificacao_politicas/outputs/classificacao_areas_politica_mg_v0_5_analitica_ativa.csv` e `.rds`;
    - cobre os 223 CNPJs MG e reduz o uso analitico a tres campos: `area_politica_final`, `fonte_principal` e `status_validacao`; macroarea e perfil permanecem apenas como auxiliares;
    - status atual: 34 confirmadas, 94 coerentes validadas, 63 validadas por cadastro/nome, 16 perfis amplos sem area especifica, 2 filiais herdadas, 6 inativos/baixados e 1 associacao municipal fora da camada analitica;
@@ -127,12 +138,12 @@ Entregas priorizadas:
    - os 16 casos de perfil `multifinalitario_ou_multissetorial` sem area final permanecem sem inferencia setorial adicional nesta etapa;
    - [feito] integrar a v0.5 ao MIDES completo, consolidar documentacao e preparar testes automatizados; os filtros ativos sao area detalhada, macrogrupo e perfil institucional.
 
-4. **Aprimoramentos do dashboard**
+5. **Aprimoramentos do dashboard**
    - exibir nome de municipio no mapa apenas em filtros suficientemente restritos, para preservar legibilidade;
    - substituir o download atual por exportacao de mapa em alta resolucao, adequada para apresentacao e relatorio;
    - manter a visualizacao dinamica separada da exportacao estatica de alta qualidade.
 
-5. **Hipoteses a investigar**
+6. **Hipoteses a investigar**
    - municipios com maior proporcao de vizinhos fora do consorcio apresentam maior probabilidade de entrada ou saida?
    - movimentos recorrentes se concentram em determinadas areas de politica publica?
    - ha anos, regioes ou consorcios com saldo sistematicamente positivo ou negativo?

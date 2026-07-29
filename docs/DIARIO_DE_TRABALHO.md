@@ -177,3 +177,47 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Dashboard republicado em <https://kl5ug0-adriano-pires.shinyapps.io/base1-mides-munic-siconfi/>.
 - Repositorio remoto privado criado em <https://github.com/driano1221/ideiaMides>.
 - Regra operacional definida: ao concluir uma sessao relevante, atualizar este diario, criar commit e enviar para `origin`.
+
+---
+
+## 2026-07-28 - Universos De Risco E Modelos Espaciais MIDES
+
+### Revisao Metodologica
+
+- A antiga base de entrada continha apenas 18.404 candidatos externos adjacentes. Ela foi preservada como subconjunto, mas deixou de ser o universo principal.
+- O novo universo cruza cada CNPJ ativo em `t-1` com os 853 municipios de MG e exclui apenas quem ja participava em `t-1`.
+- Entrada nova e retorno passaram a ter conjuntos de risco separados.
+- Eventos sem nenhum municipio ativo no CNPJ em `t-1` foram retirados do modelo espacial e documentados separadamente.
+- Os termos foram diferenciados: candidato externo adjacente, participante na borda e participante isolado.
+
+### Entregas
+
+- Criado `analises/movimentos_espaciais/05_modelar_riscos_entrada_saida.R`.
+- Criados `tests/06_validar_modelos_risco.R` e `07_eda_modelos_risco.R`.
+- Criados `METODOLOGIA_MODELOS_RISCO.md` e `RESULTADOS_MODELOS_RISCO.md`.
+- Universo principal de entrada: 742.916 exposicoes e 1.395 entradas/retornos.
+- Universo principal de saida: 12.842 exposicoes e 966 saidas.
+- Fora do modelo espacial: 418 eventos, sendo 387 primeiros aparecimentos de CNPJ na janela e 31 reaparecimentos apos lacuna completa.
+
+### Modelos E Resultados
+
+- Regressao logistica com exposicao espacial em `t-1`, tamanho do consorcio, grau municipal e efeitos fixos de ano.
+- Erros-padrao agrupados por municipio e CNPJ.
+- Aumento de 10 pontos percentuais na proporcao de vizinhos participantes: OR 2,22 para entrada/retorno e OR 0,79 para saida.
+- Entrada nova: OR 2,20; retorno: OR 1,26.
+- Participante isolado: OR 3,98 para saida.
+- Sensibilidades com pagamento corrente, minimo de R$ 100 e minimo de R$ 1.000 mantiveram os sinais e magnitudes principais.
+
+### Validacoes
+
+- Chaves unicas e particao exata dos 853 municipios em cada CNPJ-ano elegivel.
+- Reproducao integral das 966 saidas e dos 1.813 eventos de entrada/retorno, considerando modelados e excluidos.
+- Recalculo independente de 500 exposicoes espaciais sem divergencia.
+- Scripts de validacao aprovados.
+- Nada foi integrado ao dashboard nesta sessao.
+
+### Limites Mantidos
+
+- Movimento significa pagamento observado no MIDES, nao adesao ou desligamento juridico.
+- Matriz e filial continuam separadas.
+- Os resultados sao associativos e exploratorios; ainda faltam controles socioeconomicos, fiscais, politicos, setoriais e institucionais.

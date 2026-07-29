@@ -30,6 +30,23 @@ Esta pasta materializa a analise de movimentos observados no MIDES completo, sem
    - Reproduz as tabelas de integridade, movimentos, recorrencia, taxas espaciais, alertas e amostras aleatorias.
    - A leitura consolidada esta em EDA_RESULTADOS.md.
 
+5. \`05_modelar_riscos_entrada_saida.R\`
+   - Materializa o universo completo de nao membros expostos a entrada e o universo de participantes expostos a saida.
+   - Separa entrada nova, retorno e eventos sem CNPJ ativo em \`t-1\`.
+   - Estima modelos logisticos com exposicao espacial defasada, controles basicos e erros-padrao agrupados por municipio e CNPJ.
+   - Executa sensibilidades por pagamento corrente e valores minimos.
+
+6. \`tests/06_validar_modelos_risco.R\`
+   - Recompoe todos os movimentos, verifica a particao dos 853 municipios e recalcula diretamente uma amostra de 500 exposicoes espaciais.
+
+7. \`07_eda_modelos_risco.R\`
+   - Produz resumo anual, motivos de exclusao do modelo e amostras reproduziveis de eventos.
+
+Documentacao adicional:
+
+- \`METODOLOGIA_MODELOS_RISCO.md\`: desenho completo dos universos, features e modelos.
+- \`RESULTADOS_MODELOS_RISCO.md\`: resultados, sensibilidades e limites de interpretacao.
+
 ## Saidas
 
 | Arquivo | Conteudo |
@@ -42,6 +59,10 @@ Esta pasta materializa a analise de movimentos observados no MIDES completo, sem
 | \`grau_vizinhanca_municipal_mg\` | Numero de vizinhos e comprimento total de divisas por municipio. |
 | \`features_espaciais_municipio_consorcio_ano\` | Features contemporaneas e exposicao espacial em t-1. |
 | \`risco_entrada_fronteira_municipio_consorcio_ano\` | Municipios externos vizinhos de um consorcio em t-1, com indicador de entrada observada em t. |
+| \`risco_entrada_completo_municipio_consorcio_ano\` | Todos os municipios nao participantes dos CNPJs ativos em t-1, inclusive os sem vizinho participante. |
+| \`risco_saida_municipio_consorcio_ano\` | Todos os participantes em t-1 e seu resultado de permanencia ou saida em t. |
+| \`modelos_logisticos_resultados.csv\` | Odds ratios e intervalos agrupados dos modelos principal e de sensibilidade. |
+| \`eventos_entrada_fora_universo_modelo.csv\` | Entradas sem CNPJ ativo em t-1, separadas entre primeiro aparecimento e reaparecimento apos lacuna. |
 | \`features_espaciais_consorcio_ano\` | Resumo territorial por consorcio-ano. |
 
 ## Leitura Das Features
@@ -50,11 +71,12 @@ Esta pasta materializa a analise de movimentos observados no MIDES completo, sem
 - \`municipio_borda\`: participante com pelo menos um municipio vizinho fora do consorcio no MIDES.
 - \`municipio_isolado\`: participante sem nenhum vizinho participante no mesmo CNPJ.
 - Campos com sufixo \`_t_1\`: medidos no ano anterior ao evento. Sao os campos adequados para testar saida.
-- Para entradas, a exposicao em \`t-1\` e medida no universo de candidatos externos que ja eram vizinhos de membros do consorcio.
+- Para entradas, a exposicao em \`t-1\` e medida para todos os nao membros dos CNPJs ativos no ano anterior. A tabela antiga de fronteira permanece como subconjunto operacional.
 
 ## Limites
 
 - Pagamento ausente nao prova desligamento institucional.
 - O ano de 2014 e base inicial, portanto nao permite inferir entrada anterior.
 - A camada nao consolida CNPJ matriz/filial.
-- A proxima etapa analitica e descritiva/inferencial: comparar entradas e saidas segundo borda, isolamento e proporcao de vizinhos participantes. Ela ainda nao foi incorporada ao dashboard.
+- Os modelos atuais sao exploratorios e nao causais; faltam controles municipais, politicos, fiscais, setoriais e institucionais.
+- A analise ainda nao foi incorporada ao dashboard.
