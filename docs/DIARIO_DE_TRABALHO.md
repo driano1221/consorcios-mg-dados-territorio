@@ -253,3 +253,32 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - A analise espacial continua exploratoria e associativa.
 - Os resultados agora estao documentados no dashboard, mas ainda nao foram transformados em filtros ou visualizacoes analiticas proprias.
 - A decisao sobre consolidacao de matriz e filial permanece pendente e nenhuma agregacao por raiz de CNPJ foi aplicada.
+
+---
+
+## 2026-07-28 - Revisao Didatica Da Documentacao Espacial
+
+### Problemas Corrigidos
+
+- A elegibilidade do exemplo Pote x CISNORJE nao estava suficientemente explicita, embora o caso ja pertencesse ao modelo de entrada nova.
+- A figura conceitual podia dar a impressao de que existiam apenas quatro features.
+- A secao de resultados apresentava odds ratios sem exemplos numericos de leitura.
+- A linha zerada de 2020 precisava ser identificada como produto do balanceamento do painel, nao como pagamento original MIDES.
+
+### Alteracoes
+
+- Incluido icone informativo nas 2.375 fronteiras, definidas como pares unicos de municipios que compartilham uma linha de divisa; contato por ponto e excluido.
+- As duas figuras foram reduzidas em aproximadamente 30% no desktop, mantendo largura integral em telas pequenas.
+- Documentadas nove variaveis espaciais: seis medidas numericas e tres indicadores binarios; tamanho do consorcio foi separado como controle.
+- Adicionados exemplos em todas as seis secoes da documentacao.
+- O caso Pote x CISNORJE passou a percorrer dados, balanceamento, classificacao temporal, elegibilidade, vizinhanca, indicadores e linha final do modelo.
+- Incluidos contrastes reais: Marilac como saida elegivel e Agua Comprida x CONECTAR como primeiro aparecimento fora do modelo espacial.
+- Formulas de presenca, proporcao, regressao logistica, odds ratio e taxa foram renderizadas com MathJax/LaTeX.
+- Adicionados exemplos numericos para OR 2,22 e OR 0,79, diferenciando odds, probabilidade e taxa bruta.
+
+### Validacoes
+
+- Teste da documentacao ampliado para conferir elegibilidade, exclusao, saida isolada, comprimento de divisa e novos textos.
+- `tests/test_documentacao_movimentos.R` e `tests/test_classificacao_v0_5.R` aprovados.
+- Inspecao visual local aprovada: formulas renderizadas, figuras com 767 pixels exibidos a partir de originais de 1.672 pixels e ausencia de overflow horizontal.
+- Dashboard republicado e conferido no shinyapps.io: exemplo elegivel, figuras reduzidas, icone informativo e largura da pagina validados.

@@ -23,6 +23,14 @@ conteudos_obrigatorios <- c(
   "742.916 exposições",
   "12.842 exposições",
   "R$ 27.210,15",
+  "Poté não é um caso excluído",
+  "n_vizinhos_total",
+  "comprimento_divisa_no_consorcio_t_1_km",
+  "nove variáveis espaciais",
+  "Marilac × consórcio de acolhimento, 2020",
+  "Água Comprida × CONECTAR, 2021",
+  "Substituindo os valores do exemplo de Poté",
+  "como interpretar OR = 2,22",
   "2,22",
   "0,79",
   "MIDES observa pagamentos"
@@ -31,6 +39,8 @@ stopifnot(all(vapply(conteudos_obrigatorios, grepl, logical(1), x = html_doc, fi
 
 movimentos <- readRDS(file.path(out_dir, "movimentos_municipio_consorcio_ano.rds"))
 entrada <- readRDS(file.path(out_dir, "risco_entrada_completo_municipio_consorcio_ano.rds"))
+saida <- readRDS(file.path(out_dir, "risco_saida_municipio_consorcio_ano.rds"))
+exclusoes <- read_csv(file.path(out_dir, "eventos_entrada_fora_universo_modelo.csv"), show_col_types = FALSE)
 vizinhos <- readRDS(file.path(out_dir, "vizinhos_municipais_mg.rds"))
 modelos <- read_csv(file.path(out_dir, "modelos_logisticos_resultados.csv"), show_col_types = FALSE)
 
@@ -51,6 +61,7 @@ stopifnot(
 
 risco_exemplo <- entrada |>
   filter(
+    regra_presenca == "principal_total_positivo",
     ano == 2021,
     cod_ibge_6 == municipio_exemplo,
     cnpj_consorcio == cnpj_exemplo
@@ -61,9 +72,34 @@ stopifnot(
   risco_exemplo$n_vizinhos_total == 5L,
   risco_exemplo$n_vizinhos_no_consorcio_t_1 == 5L,
   risco_exemplo$prop_vizinhos_no_consorcio_t_1 == 1,
+  round(risco_exemplo$comprimento_divisa_no_consorcio_t_1_km, 2) == 178.55,
   risco_exemplo$membros_consorcio_t_1 == 60L,
   risco_exemplo$candidato_externo_adjacente_t_1,
   risco_exemplo$entrada_nova_observada
+)
+
+saida_marilac <- saida |>
+  filter(
+    ano == 2020,
+    cod_ibge_6 == "314010",
+    cnpj_consorcio == "20666660000113"
+  )
+
+exclusao_conectar <- exclusoes |>
+  filter(
+    regra_presenca == "principal_total_positivo",
+    ano == 2021,
+    cod_ibge_6 == "310070",
+    cnpj_consorcio == "41774599000106"
+  )
+
+stopifnot(
+  nrow(saida_marilac) == 1L,
+  saida_marilac$membros_consorcio_t_1 == 1L,
+  saida_marilac$participante_isolado_t_1,
+  saida_marilac$saiu_observado,
+  nrow(exclusao_conectar) == 1L,
+  exclusao_conectar$motivo_exclusao == "primeiro_aparecimento_cnpj_na_janela"
 )
 
 vizinhos_exemplo <- bind_rows(

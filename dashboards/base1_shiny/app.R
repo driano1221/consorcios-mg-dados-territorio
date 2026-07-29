@@ -943,6 +943,7 @@ ui <- page_navbar(
         padding: 11px 12px;
       }
       .doc-stat span, .doc-stat small { display: block; color: var(--ipea-muted); font-size: 10px; }
+      .doc-stat span.filter-info { display: inline-flex; margin-left: 3px; vertical-align: middle; }
       .doc-stat strong { display: block; color: var(--ipea-ink); font-family: Georgia, serif; font-size: 19px; margin: 2px 0; }
       .doc-section {
         padding: 22px 2px;
@@ -982,6 +983,7 @@ ui <- page_navbar(
         vertical-align: top;
       }
       .doc-table tbody tr:nth-child(even) { background: #f9fbfc; }
+      .doc-table-wide { display: block; overflow-x: auto; }
       .doc-two-col, .result-pair, .interpret-grid, .risk-split {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1007,11 +1009,36 @@ ui <- page_navbar(
         border: 1px solid var(--ipea-line);
         background: #ffffff;
       }
+      .doc-figure-compact { max-width: 70%; margin-left: auto; margin-right: auto; }
       .doc-image { display: block; width: 100%; height: auto; }
       .doc-figure figcaption {
         color: var(--ipea-muted);
         font-size: 11px;
         margin-top: 8px;
+      }
+      .doc-example {
+        border-left: 4px solid var(--ipea-green);
+        background: #f6faf4;
+        margin: 16px 0;
+        padding: 13px 15px;
+      }
+      .doc-example-title {
+        color: var(--ipea-ink);
+        font-family: Georgia, serif;
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 7px;
+      }
+      .doc-example > p { color: #3c4a50; font-size: 12px; line-height: 1.5; }
+      .doc-math {
+        background: #fbfcfd;
+        border: 1px solid var(--ipea-line);
+        color: var(--ipea-ink);
+        margin: 12px 0;
+        min-height: 46px;
+        overflow-x: auto;
+        padding: 8px 12px;
+        text-align: center;
       }
       .doc-flow {
         display: grid;
@@ -1185,6 +1212,7 @@ ui <- page_navbar(
         .doc-timeline { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         .example-head { align-items: flex-start; flex-direction: column; }
         .example-value { width: 100%; }
+        .doc-figure-compact { max-width: 100%; }
         .brand-subtitle { display: none; }
         .navbar-nav { margin-left: 0; gap: 0; }
         .nav-logo { height: 30px; margin-left: 0; }

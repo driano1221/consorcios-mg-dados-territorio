@@ -6,8 +6,20 @@ doc_table <- function(headers, rows, class = "doc-table") {
   )
 }
 
-documentacao_movimentos_ui <- function() {
+doc_math <- function(latex) {
+  div(class = "doc-math", HTML(paste0("\\[", latex, "\\]")))
+}
+
+doc_example <- function(title, ...) {
   div(
+    class = "doc-example",
+    div(class = "doc-example-title", title),
+    ...
+  )
+}
+
+documentacao_movimentos_ui <- function() {
+  withMathJax(div(
     class = "doc-article",
 
     div(
@@ -32,7 +44,21 @@ documentacao_movimentos_ui <- function() {
       div(class = "doc-stat", span("Período"), strong("2014–2021"), tags$small("Oito exercícios anuais")),
       div(class = "doc-stat", span("Unidade básica"), strong("Município × CNPJ × ano"), tags$small("Um pagamento observado por par e exercício")),
       div(class = "doc-stat", span("Território"), strong("853 municípios"), tags$small("Minas Gerais")),
-      div(class = "doc-stat", span("Fronteiras"), strong("2.375"), tags$small("Divisas municipais compartilhadas"))
+      div(
+        class = "doc-stat",
+        span(
+          "Fronteiras ",
+          tags$span(
+            class = "filter-info",
+            title = "Cada fronteira representa um par de municípios de Minas Gerais que compartilha uma linha de divisa. Contato apenas por um ponto não foi contado. Cada par é contado uma única vez.",
+            `aria-label` = "Explicação sobre as 2.375 fronteiras municipais",
+            tabindex = "0",
+            "i"
+          )
+        ),
+        strong("2.375"),
+        tags$small("Pares de municípios com divisa compartilhada")
+      )
     ),
 
     navset_tab(
@@ -81,6 +107,18 @@ documentacao_movimentos_ui <- function() {
               )
             )
           ),
+          doc_example(
+            "Exemplo após a preparação dos dados: Poté × CISNORJE",
+            p("A chave é município 315240, CNPJ 13.220.150/0001-52 e ano. Em 2020 não há pagamento positivo para o par; o balanceamento cria a linha anual com zero. Em 2021 existe uma linha financeira observada no MIDES:"),
+            doc_table(
+              c("Ano", "Município", "CNPJ", "Valor corrente", "Restos", "Valor total", "Presença", "Origem da linha"),
+              list(
+                list("2020", "Poté", "13.220.150/0001-52", "R$ 0,00", "R$ 0,00", "R$ 0,00", "Não", "Preenchida no painel balanceado"),
+                list("2021", "Poté", "13.220.150/0001-52", "R$ 27.210,15", "R$ 0,00", "R$ 27.210,15", "Sim", "Pagamento observado no MIDES")
+              )
+            ),
+            p("A mudança de zero para valor positivo é um movimento financeiro de entrada observado em 2021.")
+          ),
           div(
             class = "doc-note",
             tags$strong("Fontes que não entram nesta análise: "),
@@ -100,7 +138,7 @@ documentacao_movimentos_ui <- function() {
             div(
               h4("Presença principal"),
               p("O par é considerado presente quando o valor total MIDES é positivo."),
-              div(class = "doc-code-line", "presente = valor_total > 0")
+              doc_math("presente_{i,c,t}=\\mathbb{1}(valor\\_total_{i,c,t}>0)")
             )
           ),
           p(
@@ -116,7 +154,7 @@ documentacao_movimentos_ui <- function() {
           h3("Pipeline completo"),
           p("O processamento foi executado em sete etapas. A figura resume a passagem do pagamento anual até os universos estatísticos de entrada e saída."),
           tags$figure(
-            class = "doc-figure",
+            class = "doc-figure doc-figure-compact",
             tags$img(
               src = "pipeline_movimentos_mides.png",
               alt = "Pipeline da análise espacial dos movimentos MIDES",
@@ -149,6 +187,11 @@ documentacao_movimentos_ui <- function() {
             div(class = "doc-year return", strong("2019"), span("Retorno")),
             div(class = "doc-year stay", strong("2020"), span("Permanece")),
             div(class = "doc-year exit", strong("2021"), span("Saída"))
+          ),
+          doc_example(
+            "Aplicação temporal ao exemplo real",
+            p("Para Poté × CISNORJE, defina t = 2021 e t−1 = 2020. Como não havia pagamento em 2020 e há R$ 27.210,15 em 2021, a variável de resultado é entrada nova observada."),
+            doc_math("entrada\\_nova_{Pote,CISNORJE,2021}=1")
           )
         ),
         div(
@@ -158,7 +201,7 @@ documentacao_movimentos_ui <- function() {
             "Para cada município e CNPJ, verifica-se quantos vizinhos já apresentavam pagamento ao mesmo CNPJ no ano anterior. A defasagem t−1 garante que a exposição territorial seja medida antes do movimento observado em t."
           ),
           tags$figure(
-            class = "doc-figure",
+            class = "doc-figure doc-figure-compact",
             tags$img(
               src = "exposicao_espacial_mides.png",
               alt = "Mapa conceitual da exposição espacial no MIDES",
@@ -168,30 +211,79 @@ documentacao_movimentos_ui <- function() {
               "Figura 2. Leitura dos indicadores de integração, borda, isolamento e adjacência externa."
             )
           ),
+          div(
+            class = "doc-note",
+            tags$strong("Não são apenas quatro features. "),
+            "A figura resume quatro situações fáceis de visualizar. A base técnica contém seis medidas espaciais numéricas e três indicadores binários derivados, totalizando nove variáveis espaciais. O tamanho do consórcio é um controle adicional, não uma feature de borda."
+          ),
+          doc_math("p_{i,c,t-1}=\\frac{N^{mesmo\\ CNPJ}_{i,c,t-1}}{N^{total}_{i}}"),
           doc_table(
-            c("Indicador", "Cálculo", "Interpretação"),
+            c("Grupo", "Variável", "Cálculo ou regra", "Uso"),
             list(
               list(
+                "Medida",
+                tags$code("n_vizinhos_total"),
+                "Número de municípios com divisa compartilhada.",
+                "Controle geográfico."
+              ),
+              list(
+                "Medida",
+                tags$code("n_vizinhos_no_consorcio_t_1"),
+                "Vizinhos com pagamento ao mesmo CNPJ em t−1.",
+                "Numerador da exposição."
+              ),
+              list(
+                "Medida",
+                tags$code("n_vizinhos_fora_consorcio_t_1"),
+                "Vizinhos sem pagamento ao mesmo CNPJ em t−1.",
+                "Exposição ao exterior."
+              ),
+              list(
+                "Medida",
                 tags$code("prop_vizinhos_no_consorcio_t_1"),
                 "Vizinhos com pagamento ao mesmo CNPJ ÷ total de vizinhos.",
                 "Integração territorial no ano anterior."
               ),
               list(
+                "Medida",
+                tags$code("prop_vizinhos_fora_consorcio_t_1"),
+                "Vizinhos sem pagamento ao CNPJ ÷ total de vizinhos.",
+                "Complemento da integração."
+              ),
+              list(
+                "Medida",
+                tags$code("comprimento_divisa_no_consorcio_t_1_km"),
+                "Quilômetros de divisa com vizinhos que pagavam ao CNPJ.",
+                "Sensibilidade espacial; não entra no modelo principal."
+              ),
+              list(
+                "Indicador",
                 tags$code("candidato_externo_adjacente_t_1"),
                 "Não pagava ao CNPJ e tinha ao menos um vizinho que pagava.",
                 "Município externo exposto à expansão territorial."
               ),
               list(
+                "Indicador",
                 tags$code("participante_isolado_t_1"),
                 "Pagava ao CNPJ, mas nenhum vizinho pagava ao mesmo CNPJ.",
                 "Participação financeira territorialmente isolada."
               ),
               list(
+                "Indicador",
                 tags$code("participante_na_borda_t_1"),
                 "Pagava ao CNPJ e tinha ao menos um vizinho sem pagamento ao CNPJ.",
                 "Posição de borda; o isolamento é seu caso extremo."
               )
-            )
+            ),
+            class = "doc-table doc-table-wide"
+          ),
+          doc_example(
+            "Indicadores calculados para Poté em 2020",
+            doc_table(
+              c("Total de vizinhos", "No CISNORJE", "Fora", "Proporção no CNPJ", "Divisa participante", "Candidato adjacente"),
+              list(list("5", "5", "0", "100%", "178,55 km", "Sim"))
+            ),
+            p("Esses valores são medidos antes do pagamento de 2021 e seguem juntos para a linha de risco de entrada.")
           )
         )
       ),
@@ -232,6 +324,17 @@ documentacao_movimentos_ui <- function() {
               )
             )
           ),
+          doc_example(
+            "Três casos reais de elegibilidade",
+            doc_table(
+              c("Caso", "Situação em t−1", "Situação em t", "Destino analítico", "Por quê"),
+              list(
+                list("Poté × CISNORJE, 2021", "Não pagava; CNPJ tinha 60 municípios ativos", "Passou a pagar", "Modelo de entrada nova", "Há configuração territorial anterior e o município estava em risco de entrar."),
+                list("Marilac × consórcio de acolhimento, 2020", "Pagava; era o único município ativo do CNPJ", "Deixou de pagar", "Modelo de saída", "O par estava ativo em t−1 e podia permanecer ou sair."),
+                list("Água Comprida × CONECTAR, 2021", "Nenhum município de MG pagava ao CNPJ", "Primeiro pagamento coletivo observado", "Fora do modelo espacial", "Não existe território anterior do CNPJ em t−1 para medir exposição.")
+              )
+            )
+          ),
           div(
             class = "doc-note",
             tags$strong("Por que ampliar a antiga base de fronteira? "),
@@ -251,6 +354,10 @@ documentacao_movimentos_ui <- function() {
               list("Reaparecimento após um ano sem qualquer município ativo", "31", "Preservado na base; fora do modelo espacial."),
               list(tags$strong("Total"), tags$strong("418"), "Reconciliado com os eventos originais.")
             )
+          ),
+          doc_example(
+            "Exemplo de exclusão corretamente documentada",
+            p("CONECTAR aparece em Minas em 2021 sem municípios ativos em 2020. Água Comprida e os demais primeiros pagamentos de 2021 continuam na base de movimentos, mas não recebem uma exposição espacial em t−1 e não entram na regressão de difusão.")
           )
         ),
         div(
@@ -283,6 +390,23 @@ documentacao_movimentos_ui <- function() {
             div(class = "doc-badges", span("Saúde"), span("Urgência e emergência"), span("Entrada nova observada"))
           ),
           div(class = "example-value", span("Pagamento em 2021"), strong("R$ 27.210,15"), tags$small("Valor corrente; restos iguais a zero"))
+        ),
+        div(
+          class = "doc-section",
+          h3("Por que este exemplo é válido para o modelo?"),
+          div(
+            class = "validation-list",
+            div(strong("✓"), p("O ano analisado é 2021; portanto, existe um ano anterior observável, 2020.")),
+            div(strong("✓"), p("O CISNORJE já possuía 60 municípios com pagamento em 2020.")),
+            div(strong("✓"), p("Poté não pagava ao CNPJ em 2020, logo pertencia ao universo de risco de entrada.")),
+            div(strong("✓"), p("A vizinhança de Poté em 2020 pode ser calculada antes do evento.")),
+            div(strong("✓"), p("O pagamento positivo em 2021 define o resultado observado como entrada nova."))
+          ),
+          div(
+            class = "doc-alert",
+            tags$strong("Conclusão de elegibilidade: "),
+            "Poté não é um caso excluído. É uma das 990 entradas novas modeladas e uma das 1.395 entradas ou retornos do universo principal."
+          )
         ),
         div(
           class = "doc-section",
@@ -327,6 +451,15 @@ documentacao_movimentos_ui <- function() {
             div(span("4"), p("Poté entra como candidato externo adjacente.")),
             div(span("5"), p("O pagamento em 2021 gera um evento positivo de entrada nova."))
           ),
+          h4("A linha que efetivamente entra no modelo"),
+          doc_table(
+            c("Ano t", "Resultado", "Membros do CNPJ em t−1", "Vizinhos totais", "Vizinhos no CNPJ", "Proporção", "Adjacente"),
+            list(
+              list("2021", "entrada_nova = 1", "60", "5", "5", "1,00", "Sim")
+            )
+          ),
+          doc_math("Y_{Pote,CISNORJE,2021}=1,\\quad p_{Pote,CISNORJE,2020}=\\frac{5}{5}=1"),
+          p("O modelo não analisa Poté isoladamente. Essa linha é estimada junto com todas as demais exposições elegíveis, incluindo municípios que não entraram."),
           div(
             class = "doc-note",
             tags$strong("Leitura correta: "),
@@ -341,10 +474,7 @@ documentacao_movimentos_ui <- function() {
           class = "doc-section",
           h3("Especificação estatística"),
           p("Foram estimadas regressões logísticas separadas para entrada, entrada nova, retorno e saída."),
-          div(
-            class = "model-formula",
-            "evento em t ~ exposição espacial em t−1 + log(1 + tamanho do consórcio) + número de vizinhos + efeitos fixos de ano"
-          ),
+          doc_math("\\operatorname{logit}[P(Y_{i,c,t}=1)]=\\alpha+\\beta p_{i,c,t-1}+\\gamma\\log(1+M_{c,t-1})+\\delta V_i+\\lambda_t"),
           doc_table(
             c("Componente", "Por que entra"),
             list(
@@ -354,6 +484,12 @@ documentacao_movimentos_ui <- function() {
               list("Efeitos fixos de ano", "Separam choques comuns de cada exercício."),
               list("Erros agrupados por município e CNPJ", "Reconhecem repetição de observações nas duas dimensões.")
             )
+          ),
+          doc_example(
+            "Substituindo os valores do exemplo de Poté",
+            p("Na regressão de entrada nova de 2021, a linha de Poté leva os seguintes valores:"),
+            doc_math("Y=1,\\quad p_{t-1}=1,\\quad M_{t-1}=60,\\quad V=5,\\quad ano=2021"),
+            p("O coeficiente de vizinhança não é calculado somente com Poté. Ele compara esta linha com centenas de milhares de linhas elegíveis, inclusive municípios com proporção zero e resultado Y = 0.")
           ),
           div(
             class = "doc-note",
@@ -373,6 +509,18 @@ documentacao_movimentos_ui <- function() {
               list("Saída: +10 p.p.", tags$strong("0,79"), "0,76–0,83", "Redução aproximada de 21% nas odds de saída."),
               list("Participante isolado", tags$strong("3,98"), "2,90–5,46", "Odds de saída quase quatro vezes maiores.")
             )
+          ),
+          doc_example(
+            "Exemplo didático: como interpretar OR = 2,22",
+            p("O resultado de 2,22 corresponde a um aumento de 10 pontos percentuais na proporção de vizinhos. Se dois casos fossem iguais nos controles e diferissem apenas de 20% para 30%, as odds estimadas do segundo seriam 2,22 vezes as do primeiro."),
+            doc_math("OR_{+10\\ p.p.}=e^{0{,}1\\beta}=2{,}22"),
+            p("Exemplo apenas ilustrativo: partindo de probabilidade de 1%, as odds são 0,0101. Multiplicadas por 2,22, tornam-se 0,0224, equivalentes a aproximadamente 2,19% de probabilidade."),
+            doc_math("odds_0=\\frac{0{,}01}{1-0{,}01}=0{,}0101;\\quad P_1=\\frac{2{,}22\\times0{,}0101}{1+2{,}22\\times0{,}0101}\\approx2{,}19\\%")
+          ),
+          doc_example(
+            "Exemplo didático: como interpretar OR = 0,79 na saída",
+            p("A cada 10 pontos percentuais adicionais de vizinhos no mesmo CNPJ, as odds de saída são multiplicadas por 0,79, isto é, caem aproximadamente 21%, mantendo os controles constantes."),
+            doc_math("1-0{,}79=0{,}21=21\\%")
           )
         ),
         div(
@@ -409,6 +557,11 @@ documentacao_movimentos_ui <- function() {
                 )
               )
             )
+          ),
+          doc_example(
+            "Leitura direta das taxas observadas",
+            p("Entre exposições com 0% de vizinhos no mesmo CNPJ, ocorreram 335 entradas em 724.512 casos: 0,05%. Acima de 80%, ocorreram 122 entradas em 416 casos: 29,33%. Estas são taxas descritivas brutas; os odds ratios acima vêm do modelo ajustado."),
+            doc_math("taxa=\\frac{eventos}{exposicoes}\\times100")
           )
         ),
         div(
@@ -470,6 +623,17 @@ documentacao_movimentos_ui <- function() {
               list("Eventos raros no universo de entrada", "Odds ratios podem parecer muito elevados em comparações binárias.", "Priorizar o gradiente por 10 pontos percentuais e as taxas observadas."),
               list("Primeiro ano da janela", "2014 é base inicial, não uma entrada identificável.", "Não inferir movimento anterior a 2014.")
             )
+          ),
+          doc_example(
+            "Como as limitações aparecem em casos concretos",
+            doc_table(
+              c("Caso", "Leitura incorreta", "Leitura adotada"),
+              list(
+                list("Poté × CISNORJE, 2021", "Poté aderiu juridicamente em 2021.", "Foi observado o primeiro pagamento MIDES do par em 2021."),
+                list("Água Comprida × CONECTAR, 2021", "O município tinha exposição territorial zero.", "O CNPJ não tinha território observado em 2020; o evento fica fora do modelo espacial."),
+                list("CNPJs de matriz e filial", "Cada CNPJ representa necessariamente um consórcio distinto.", "Os movimentos permanecem separados até decisão formal de consolidação por raiz.")
+              )
+            )
           )
         ),
         div(
@@ -509,5 +673,5 @@ documentacao_movimentos_ui <- function() {
         )
       )
     )
-  )
+  ))
 }
