@@ -70,7 +70,7 @@ Nao aplicar automaticamente antes da validacao.
 
 ### 2. Analise territorial do movimento no MIDES completo
 
-**Status:** bases de movimentos, fronteira, universos de risco e modelos exploratorios materializados e validados; ainda fora do dashboard.
+**Status:** bases de movimentos, fronteira, universos de risco e modelos exploratorios materializados e validados; metodologia e resultados documentados em `Documentacao > Movimentos espaciais`, ainda sem tela analitica propria no dashboard.
 
 Objetivo:
 
@@ -116,6 +116,7 @@ Entregas priorizadas:
    - aumento de 10 pontos percentuais na proporcao de vizinhos participantes apresentou OR 2,22 para entrada/retorno e OR 0,79 para saida;
    - sinais permaneceram estaveis usando somente pagamento corrente e valores minimos de R$ 100 e R$ 1.000;
    - documentacao: `analises/movimentos_espaciais/METODOLOGIA_MODELOS_RISCO.md` e `RESULTADOS_MODELOS_RISCO.md`;
+   - documentacao didatica integrada ao dashboard em `Documentacao > Movimentos espaciais`, com pipeline, exemplo real, resultados, sensibilidades e limitacoes;
    - interpretacao mantida: associacao exploratoria entre pagamentos MIDES, nao efeito causal nem adesao juridica.
 
 4. **Classificacao por area de politica publica**

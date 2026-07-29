@@ -9,7 +9,7 @@ Dashboard Shiny para consulta interativa da Base 1.
 - KPIs compactos no topo;
 - tabela pesquisavel/exportavel da base final;
 - tabela agregada de validacao SICONFI por municipio-ano;
-- secao `Documentacao` com guia do painel, conceitos e classificacao de areas;
+- secao `Documentacao` com guia do painel, conceitos, classificacao de areas e analise espacial dos movimentos MIDES;
 - valores MIDES e SICONFI reconstruido no mesmo painel.
 
 ## Dados usados
@@ -43,13 +43,18 @@ rsconnect::deployApp("dashboards/base1_shiny")
 ```text
 base1_shiny/
 +-- app.R
++-- documentacao_movimentos.R
 +-- start_app.R
 +-- README.md
 +-- data/
 |   +-- base_1_vinculos_2015_2019.csv
 |   +-- base_1_validacao_siconfi_reconstruido_2015_2019.csv
 +-- www/
-    +-- IPEA-LOGO.png
+|   +-- IPEA-LOGO.png
+|   +-- pipeline_movimentos_mides.png
+|   +-- exposicao_espacial_mides.png
++-- tests/
+    +-- test_documentacao_movimentos.R
 ```
 
 ## Leitura metodologica
@@ -66,6 +71,15 @@ A aba `Documentacao` fica separada das telas analiticas e contem:
 
 - `Guia do painel`: escopo e leitura de cada tela;
 - `Conceitos`: pares, fontes, classes SICONFI e regra de leitura;
+- `Movimentos espaciais`: pergunta de pesquisa, dados, pipeline temporal e espacial, universos de risco, exemplo real, modelos, resultados, sensibilidades, limites e validacoes;
 - `Classificacao de areas`: pipeline v0.5, diferenca entre area, macrogrupo e perfil institucional, taxonomia, inferencias, multifinalitarios, matriz/filial e cobertura no MIDES completo.
 
 A referencia completa fora do app e `../../docs/METODOLOGIA_CLASSIFICACAO_ATUAL.md`.
+
+O modulo de movimentos espaciais e validado por:
+
+```powershell
+Push-Location dashboards/base1_shiny
+Rscript tests/test_documentacao_movimentos.R
+Pop-Location
+```

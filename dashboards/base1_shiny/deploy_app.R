@@ -2,9 +2,12 @@ source_dir <- normalizePath("dashboards/base1_shiny", winslash = "/", mustWork =
 
 app_files <- c(
   "app.R",
+  "documentacao_movimentos.R",
   "README.md",
   "start_app.R",
   "www/IPEA-LOGO.png",
+  "www/exposicao_espacial_mides.png",
+  "www/pipeline_movimentos_mides.png",
   "data/base_1_validacao_siconfi_reconstruido_2015_2019.rds",
   "data/base_1_vinculos_2015_2019.rds",
   "data/cadastro_base.rds",

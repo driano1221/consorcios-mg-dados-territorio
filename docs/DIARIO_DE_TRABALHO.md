@@ -221,3 +221,35 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Movimento significa pagamento observado no MIDES, nao adesao ou desligamento juridico.
 - Matriz e filial continuam separadas.
 - Os resultados sao associativos e exploratorios; ainda faltam controles socioeconomicos, fiscais, politicos, setoriais e institucionais.
+
+---
+
+## 2026-07-28 - Documentacao Dos Movimentos Espaciais No Dashboard
+
+### Objetivo
+
+- Transformar os resultados tecnicos de movimentos e exposicao espacial em uma leitura didatica e auditavel para a equipe do IPEA.
+- Explicar a passagem do pagamento anual MIDES aos indicadores territoriais e modelos sem confundir movimento financeiro com adesao juridica.
+
+### Entregas
+
+- Criado `dashboards/base1_shiny/documentacao_movimentos.R` como modulo independente da aba `Documentacao > Movimentos espaciais`.
+- A documentacao foi organizada em seis partes: ideia e dados; pipeline e indicadores; universos de risco; exemplo real; modelo e resultados; limites e validacao.
+- Incorporadas as figuras `pipeline_movimentos_mides.png` e `exposicao_espacial_mides.png` em `dashboards/base1_shiny/www/`.
+- Incluido o exemplo real Pote x CISNORJE: ausencia de pagamento entre 2014 e 2020, pagamento de R$ 27.210,15 em 2021 e cinco de cinco vizinhos com pagamento ao mesmo CNPJ em 2020.
+- Documentados os universos de entrada e saida, as exclusoes dos modelos, a especificacao estatistica, os odds ratios, as taxas observadas, as sensibilidades de valor e as limitacoes atuais.
+
+### Validacoes
+
+- Criado `dashboards/base1_shiny/tests/test_documentacao_movimentos.R` para conferir imagens, textos, numeros, serie anual e os cinco vizinhos do exemplo.
+- `tests/test_documentacao_movimentos.R` e `tests/test_classificacao_v0_5.R` aprovados.
+- Aplicacao carregada localmente e respondendo HTTP 200.
+- Inspecao visual executada no navegador nas seis secoes; imagens carregadas em 1.672 x 941 pixels, sem overflow horizontal.
+- Conferidos no DOM os resultados principais: OR 2,22 para entrada/retorno, OR 0,79 para saida e OR 3,98 para participante isolado.
+- Dashboard republicado com 15 arquivos no pacote e verificado em <https://kl5ug0-adriano-pires.shinyapps.io/base1-mides-munic-siconfi/>.
+
+### Estado Ao Final
+
+- A analise espacial continua exploratoria e associativa.
+- Os resultados agora estao documentados no dashboard, mas ainda nao foram transformados em filtros ou visualizacoes analiticas proprias.
+- A decisao sobre consolidacao de matriz e filial permanece pendente e nenhuma agregacao por raiz de CNPJ foi aplicada.

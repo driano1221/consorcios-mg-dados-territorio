@@ -11,6 +11,7 @@ library(sf)
 library(classInt)
 
 app_dir <- gsub("\\\\", "/", getwd())
+source(file.path(app_dir, "documentacao_movimentos.R"), encoding = "UTF-8", local = TRUE)
 project_dir <- file.path(app_dir, "..", "..")
 out_dir <- file.path(project_dir, "analises/base_1_2015_2019/outputs")
 
@@ -884,6 +885,198 @@ ui <- page_navbar(
       .doc-detail table { width: 100%; margin-top: 10px; font-size: 12px; }
       .doc-detail th { background: #edf4f7; color: var(--ipea-ink); }
       .doc-detail th, .doc-detail td { border: 1px solid var(--ipea-line); padding: 7px; vertical-align: top; }
+      .doc-article {
+        background: #ffffff;
+        border: 1px solid var(--ipea-line);
+        padding: 0 22px 24px;
+      }
+      .doc-lead {
+        padding: 24px 0 18px;
+        border-bottom: 1px solid var(--ipea-line);
+      }
+      .doc-lead h2 {
+        color: var(--ipea-ink);
+        font-family: Georgia, serif;
+        font-size: 28px;
+        margin: 5px 0 8px;
+      }
+      .doc-lead > p {
+        color: #3c4a50;
+        font-size: 14px;
+        line-height: 1.55;
+        max-width: 1080px;
+      }
+      .doc-kicker {
+        color: var(--ipea-muted);
+        font-family: Consolas, 'Lucida Console', monospace;
+        font-size: 10px;
+        letter-spacing: .09em;
+      }
+      .doc-alert, .doc-note, .doc-question, .doc-conclusion {
+        border-left: 4px solid var(--ipea-green);
+        background: #f5faf2;
+        color: #26363d;
+        font-size: 13px;
+        line-height: 1.5;
+        padding: 11px 13px;
+        margin: 12px 0;
+      }
+      .doc-alert { border-left-color: #e87520; background: #fff8f1; }
+      .doc-question span {
+        display: block;
+        color: var(--ipea-muted);
+        font-family: Consolas, 'Lucida Console', monospace;
+        font-size: 9px;
+        letter-spacing: .08em;
+        margin-bottom: 4px;
+      }
+      .doc-question strong { color: var(--ipea-ink); font-size: 15px; }
+      .doc-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin: 16px 0;
+      }
+      .doc-stat {
+        border-top: 3px solid var(--ipea-ink);
+        background: #f7fafb;
+        padding: 11px 12px;
+      }
+      .doc-stat span, .doc-stat small { display: block; color: var(--ipea-muted); font-size: 10px; }
+      .doc-stat strong { display: block; color: var(--ipea-ink); font-family: Georgia, serif; font-size: 19px; margin: 2px 0; }
+      .doc-section {
+        padding: 22px 2px;
+        border-bottom: 1px solid #dfe9ee;
+      }
+      .doc-section:last-child { border-bottom: 0; }
+      .doc-section h3 {
+        color: var(--ipea-ink);
+        font-family: Georgia, serif;
+        font-size: 21px;
+        margin: 0 0 10px;
+      }
+      .doc-section h4 { color: var(--ipea-ink); font-size: 14px; margin: 0 0 7px; }
+      .doc-section > p, .doc-section li {
+        color: #3c4a50;
+        font-size: 13px;
+        line-height: 1.55;
+      }
+      .doc-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0;
+        font-size: 12px;
+      }
+      .doc-table th {
+        background: #edf4f7;
+        color: var(--ipea-ink);
+        font-family: Consolas, 'Lucida Console', monospace;
+        font-size: 10px;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+      }
+      .doc-table th, .doc-table td {
+        border: 1px solid var(--ipea-line);
+        padding: 8px 9px;
+        text-align: left;
+        vertical-align: top;
+      }
+      .doc-table tbody tr:nth-child(even) { background: #f9fbfc; }
+      .doc-two-col, .result-pair, .interpret-grid, .risk-split {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .doc-two-col > div {
+        border-left: 3px solid var(--ipea-line);
+        padding: 6px 12px;
+      }
+      .doc-two-col p { color: #3c4a50; font-size: 13px; line-height: 1.5; }
+      .doc-code-line, .model-formula {
+        background: #edf4f7;
+        border: 1px solid var(--ipea-line);
+        color: var(--ipea-ink);
+        font-family: Consolas, 'Lucida Console', monospace;
+        font-size: 12px;
+        padding: 10px 12px;
+      }
+      .model-formula { margin: 12px 0; text-align: center; line-height: 1.6; }
+      .doc-figure {
+        margin: 14px 0 18px;
+        padding: 10px;
+        border: 1px solid var(--ipea-line);
+        background: #ffffff;
+      }
+      .doc-image { display: block; width: 100%; height: auto; }
+      .doc-figure figcaption {
+        color: var(--ipea-muted);
+        font-size: 11px;
+        margin-top: 8px;
+      }
+      .doc-flow {
+        display: grid;
+        gap: 8px;
+        margin: 14px 0;
+      }
+      .doc-flow-five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      .doc-flow-step {
+        border-top: 3px solid var(--ipea-green);
+        background: #f7fafb;
+        min-height: 92px;
+        padding: 10px;
+      }
+      .doc-flow-step strong { display: block; color: var(--ipea-ink); font-size: 12px; margin-bottom: 5px; }
+      .doc-flow-step span { color: #53636a; font-size: 11px; line-height: 1.4; }
+      .doc-timeline {
+        display: grid;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        gap: 5px;
+        margin: 14px 0;
+      }
+      .doc-timeline-title { grid-column: 1 / -1; color: var(--ipea-muted); font-size: 10px; text-transform: uppercase; letter-spacing: .07em; }
+      .doc-year { border: 1px solid var(--ipea-line); padding: 8px 5px; text-align: center; }
+      .doc-year strong, .doc-year span { display: block; }
+      .doc-year strong { color: var(--ipea-ink); font-size: 12px; }
+      .doc-year span { color: #4d5d64; font-size: 10px; margin-top: 3px; }
+      .doc-year.absent { background: #f2f4f5; }
+      .doc-year.enter, .doc-year.return { background: #eaf6e5; border-color: #8fc970; }
+      .doc-year.stay { background: #edf4f7; }
+      .doc-year.exit { background: #fff1e6; border-color: #eaa36e; }
+      .risk-flow { max-width: 980px; margin: 16px auto; }
+      .risk-start {
+        border: 1px solid var(--ipea-line);
+        background: #edf4f7;
+        padding: 12px;
+        text-align: center;
+      }
+      .risk-start span, .risk-box > span { display: block; color: var(--ipea-muted); font-size: 9px; letter-spacing: .08em; }
+      .risk-start strong { color: var(--ipea-ink); }
+      .risk-arrow { color: var(--ipea-ink); font-size: 24px; text-align: center; line-height: 1; }
+      .risk-box { border: 1px solid var(--ipea-line); border-top: 4px solid var(--ipea-green); padding: 14px; }
+      .risk-box.exit { border-top-color: var(--ipea-ink); }
+      .risk-box p, .risk-box small { color: #53636a; font-size: 11px; line-height: 1.4; }
+      .risk-box strong { display: block; color: var(--ipea-ink); font-family: Georgia, serif; font-size: 18px; }
+      .example-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+      .example-head > div:first-child { max-width: 900px; }
+      .example-value { min-width: 230px; border-left: 4px solid var(--ipea-green); padding: 8px 14px; }
+      .example-value span, .example-value small, .example-value strong { display: block; }
+      .example-value span, .example-value small { color: var(--ipea-muted); font-size: 10px; }
+      .example-value strong { color: var(--ipea-ink); font-family: Georgia, serif; font-size: 24px; }
+      .doc-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+      .doc-badges span { border: 1px solid var(--ipea-line); background: #f7fafb; color: var(--ipea-ink); font-size: 10px; padding: 3px 7px; }
+      .example-steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+      .example-steps > div { border-top: 3px solid var(--ipea-green); background: #f7fafb; padding: 10px; }
+      .example-steps span { display: inline-flex; width: 22px; height: 22px; align-items: center; justify-content: center; background: var(--ipea-ink); color: #fff; font-size: 11px; }
+      .example-steps p { color: #3c4a50; font-size: 11px; line-height: 1.4; margin: 7px 0 0; }
+      .result-pair > div { min-width: 0; }
+      .interpret-box { border: 1px solid var(--ipea-line); padding: 14px 16px; }
+      .interpret-box.can { border-top: 4px solid var(--ipea-green); }
+      .interpret-box.cannot { border-top: 4px solid #e87520; }
+      .interpret-box li { margin-bottom: 5px; }
+      .validation-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .validation-list > div { display: flex; gap: 9px; align-items: flex-start; background: #f7fafb; padding: 9px 11px; }
+      .validation-list strong { color: var(--ipea-green); font-size: 16px; }
+      .validation-list p { color: #3c4a50; font-size: 12px; line-height: 1.4; margin: 1px 0 0; }
       td.details-control {
         cursor: pointer;
         text-align: center;
@@ -983,9 +1176,15 @@ ui <- page_navbar(
         color: var(--ipea-muted);
       }
       @media (max-width: 980px) {
-        .kpi-row, .concept-grid, .inline-filters, .audit-grid, .doc-grid {
+        .kpi-row, .concept-grid, .inline-filters, .audit-grid, .doc-grid,
+        .doc-stat-grid, .doc-two-col, .result-pair, .interpret-grid,
+        .risk-split, .doc-flow-five, .example-steps, .validation-list {
           grid-template-columns: 1fr;
         }
+        .doc-article { padding: 0 12px 18px; }
+        .doc-timeline { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .example-head { align-items: flex-start; flex-direction: column; }
+        .example-value { width: 100%; }
         .brand-subtitle { display: none; }
         .navbar-nav { margin-left: 0; gap: 0; }
         .nav-logo { height: 30px; margin-left: 0; }
@@ -1219,7 +1418,7 @@ ui <- page_navbar(
     "Documentacao",
     div(
       class = "page-band",
-      div(class = "hero", h2("Documentacao metodologica"), p("Leitura orientada do painel, das fontes, dos conceitos e da classificacao por area de politica publica.")),
+      div(class = "hero", h2("Documentacao metodologica"), p("Leitura orientada do painel, das fontes, dos conceitos, da classificacao por area de politica publica e da analise espacial dos movimentos MIDES.")),
       navset_tab(
         nav_panel(
           "Guia do painel",
@@ -1244,6 +1443,10 @@ ui <- page_navbar(
           tags$details(class = "doc-detail", tags$summary("Regra de leitura do SICONFI"),
             p("O SICONFI e uma fonte contabil por municipio e ano. Ele nao informa o CNPJ do consorcio que recebeu o recurso. Por isso, ele nao cria pares e nao confirma isoladamente um vinculo especifico."),
             p("A regra usada, ", tags$code("consorcio_pagas"), ", soma despesas pagas em rubricas de consorcio. A comparacao com o MIDES usa tolerancia de 10% ou R$ 10 mil."))
+        ),
+        nav_panel(
+          "Movimentos espaciais",
+          documentacao_movimentos_ui()
         ),
         nav_panel(
           "Classificacao de areas",
