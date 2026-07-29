@@ -282,3 +282,36 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - `tests/test_documentacao_movimentos.R` e `tests/test_classificacao_v0_5.R` aprovados.
 - Inspecao visual local aprovada: formulas renderizadas, figuras com 767 pixels exibidos a partir de originais de 1.672 pixels e ausencia de overflow horizontal.
 - Dashboard republicado e conferido no shinyapps.io: exemplo elegivel, figuras reduzidas, icone informativo e largura da pagina validados.
+
+---
+
+## 2026-07-28 - Correcao De Navegacao E Teste Funcional Completo
+
+### Incidente
+
+- Apos a inclusao das formulas, as paginas `MIDES completo` e `2015 vs 2019` deixaram de responder na versao publicada.
+- O problema foi reproduzido: `withMathJax()` executava processamento global sobre o DOM completo do Shiny e bloqueava a troca de abas.
+
+### Correcao
+
+- Removido o MathJax global e qualquer dependencia JavaScript de formula.
+- As formulas passaram a ser renderizadas estaticamente apenas na documentacao, com tipografia matematica, subscritos, sobrescritos e fracoes em HTML/CSS.
+- O teste automatizado agora impede a reintroducao de MathJax no modulo.
+
+### Testes Funcionais
+
+- Paginas principais aprovadas: Visao geral, Recorte 2015/2019, MIDES completo, 2015 vs 2019, Auditoria e Documentacao.
+- Recorte: Leitura, Tabela, Mapa fontes e SICONFI municipio-ano aprovados.
+- MIDES: Mapa, Entradas/saidas, Resumo anual e Tabela detalhada aprovados.
+- Comparacao: Mapa e Tabela aprovados.
+- Auditoria: Raiz CNPJ, Nomes juridicos, Nomes parecidos e Mesmo nome no municipio-ano aprovados.
+- Documentacao: quatro secoes externas e seis secoes de movimentos espaciais aprovadas.
+- Nenhum erro de console foi observado.
+
+### Testes Reativos
+
+- Busca do recorte: 4.046 pares para 7 em Corrego Danta; limpeza restaurou 4.046.
+- Busca MIDES: 15.131 linhas para 9 em Pote; mapa permaneceu renderizado; limpeza restaurou 15.131.
+- Comparacao: 2.484 pares para 4 em Corrego Danta; mapa permaneceu renderizado; limpeza restaurou 2.484.
+- Correcao republicada no shinyapps.io; as seis paginas principais abriram em aproximadamente 1,2 a 3,1 segundos, sem erros de console.
+- Na versao online, o filtro MIDES repetiu 15.131 -> 9 -> 15.131 e a comparacao repetiu 2.484 -> 4 -> 2.484, com mapas preservados.

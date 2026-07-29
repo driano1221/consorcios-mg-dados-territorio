@@ -9,6 +9,19 @@
 
 O projeto tem hoje tres blocos principais funcionando:
 
+### Plano Das Oito Frentes - Estado Em 28/07/2026
+
+| # | Frente | Estado atual | O que falta |
+|---:|---|---|---|
+| 1 | Classificacao detalhada e macrogrupos | Concluida na v0.5 para a camada analitica ativa e integrada ao MIDES completo. | Manter revisao versionada; nao inventar area para perfis amplos sem evidencia. Consolidacao matriz/filial e decisao separada. |
+| 2 | Auditar origem da classificacao | Concluida. Fonte, status, justificativa e trilha tecnica foram preservados e documentados. | Manter rastreabilidade nas revisoes futuras. |
+| 3 | Base anual de movimentos municipio x consorcio x ano | Concluida e reprocessavel: 22.680 linhas, 2.835 pares e oito anos. | Apenas integrar novos recortes ou regras se forem aprovados. |
+| 4 | Features espaciais de fronteira | Concluida: 2.375 fronteiras e nove variaveis espaciais, com universos de entrada e saida. | Eventuais sensibilidades por comprimento de divisa e recortes territoriais. |
+| 5 | Tabela analitica anual por consorcio | Parcial: `movimentos_consorcio_ano.csv` ja contem entradas, retornos, saidas, permanencias, saldo, ativos e valor. | Acrescentar listas de municipios e disponibilizar uma consulta propria no dashboard. |
+| 6 | Testar hipotese de fronteira e movimento | Concluida como analise exploratoria: modelos, taxas, sensibilidades e documentacao no dashboard. | Adicionar controles socioeconomicos, fiscais, politicos e setoriais antes de interpretacoes mais fortes. |
+| 7 | Melhorar mapa com nomes em recortes pequenos | Parcial. | Formalizar rotulos somente quando houver poucos municipios ou um consorcio especifico. |
+| 8 | Exportacao PNG/PDF de alta qualidade | Nao iniciada. | Criar botoes proprios com `ggsave`, PNG 300/450 dpi e PDF vetorial. |
+
 1. **Base 1 2015/2019**
    - recorte comparavel entre MIDES e MUNIC;
    - SICONFI entra como validacao financeira municipio-ano, nao como fonte de par municipio-consorcio;

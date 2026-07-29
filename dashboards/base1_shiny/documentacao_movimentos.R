@@ -6,8 +6,8 @@ doc_table <- function(headers, rows, class = "doc-table") {
   )
 }
 
-doc_math <- function(latex) {
-  div(class = "doc-math", HTML(paste0("\\[", latex, "\\]")))
+doc_math <- function(...) {
+  div(class = "doc-math", div(class = "doc-math-expression", ...))
 }
 
 doc_example <- function(title, ...) {
@@ -19,7 +19,7 @@ doc_example <- function(title, ...) {
 }
 
 documentacao_movimentos_ui <- function() {
-  withMathJax(div(
+  div(
     class = "doc-article",
 
     div(
@@ -138,7 +138,7 @@ documentacao_movimentos_ui <- function() {
             div(
               h4("Presença principal"),
               p("O par é considerado presente quando o valor total MIDES é positivo."),
-              doc_math("presente_{i,c,t}=\\mathbb{1}(valor\\_total_{i,c,t}>0)")
+              doc_math(HTML("presente<sub>i,c,t</sub> = 𝟙(valor_total<sub>i,c,t</sub> &gt; 0)"))
             )
           ),
           p(
@@ -191,7 +191,7 @@ documentacao_movimentos_ui <- function() {
           doc_example(
             "Aplicação temporal ao exemplo real",
             p("Para Poté × CISNORJE, defina t = 2021 e t−1 = 2020. Como não havia pagamento em 2020 e há R$ 27.210,15 em 2021, a variável de resultado é entrada nova observada."),
-            doc_math("entrada\\_nova_{Pote,CISNORJE,2021}=1")
+            doc_math(HTML("entrada_nova<sub>Poté,CISNORJE,2021</sub> = 1"))
           )
         ),
         div(
@@ -216,7 +216,7 @@ documentacao_movimentos_ui <- function() {
             tags$strong("Não são apenas quatro features. "),
             "A figura resume quatro situações fáceis de visualizar. A base técnica contém seis medidas espaciais numéricas e três indicadores binários derivados, totalizando nove variáveis espaciais. O tamanho do consórcio é um controle adicional, não uma feature de borda."
           ),
-          doc_math("p_{i,c,t-1}=\\frac{N^{mesmo\\ CNPJ}_{i,c,t-1}}{N^{total}_{i}}"),
+          doc_math(HTML("p<sub>i,c,t−1</sub> = <span class='doc-frac'><span>N<sup>mesmo CNPJ</sup><sub>i,c,t−1</sub></span><span>N<sup>total</sup><sub>i</sub></span></span>")),
           doc_table(
             c("Grupo", "Variável", "Cálculo ou regra", "Uso"),
             list(
@@ -458,7 +458,7 @@ documentacao_movimentos_ui <- function() {
               list("2021", "entrada_nova = 1", "60", "5", "5", "1,00", "Sim")
             )
           ),
-          doc_math("Y_{Pote,CISNORJE,2021}=1,\\quad p_{Pote,CISNORJE,2020}=\\frac{5}{5}=1"),
+          doc_math(HTML("Y<sub>Poté,CISNORJE,2021</sub> = 1;&nbsp;&nbsp; p<sub>Poté,CISNORJE,2020</sub> = <span class='doc-frac'><span>5</span><span>5</span></span> = 1")),
           p("O modelo não analisa Poté isoladamente. Essa linha é estimada junto com todas as demais exposições elegíveis, incluindo municípios que não entraram."),
           div(
             class = "doc-note",
@@ -474,7 +474,7 @@ documentacao_movimentos_ui <- function() {
           class = "doc-section",
           h3("Especificação estatística"),
           p("Foram estimadas regressões logísticas separadas para entrada, entrada nova, retorno e saída."),
-          doc_math("\\operatorname{logit}[P(Y_{i,c,t}=1)]=\\alpha+\\beta p_{i,c,t-1}+\\gamma\\log(1+M_{c,t-1})+\\delta V_i+\\lambda_t"),
+          doc_math(HTML("logit[P(Y<sub>i,c,t</sub> = 1)] = α + βp<sub>i,c,t−1</sub> + γlog(1 + M<sub>c,t−1</sub>) + δV<sub>i</sub> + λ<sub>t</sub>")),
           doc_table(
             c("Componente", "Por que entra"),
             list(
@@ -488,7 +488,7 @@ documentacao_movimentos_ui <- function() {
           doc_example(
             "Substituindo os valores do exemplo de Poté",
             p("Na regressão de entrada nova de 2021, a linha de Poté leva os seguintes valores:"),
-            doc_math("Y=1,\\quad p_{t-1}=1,\\quad M_{t-1}=60,\\quad V=5,\\quad ano=2021"),
+            doc_math(HTML("Y = 1;&nbsp;&nbsp; p<sub>t−1</sub> = 1;&nbsp;&nbsp; M<sub>t−1</sub> = 60;&nbsp;&nbsp; V = 5;&nbsp;&nbsp; ano = 2021")),
             p("O coeficiente de vizinhança não é calculado somente com Poté. Ele compara esta linha com centenas de milhares de linhas elegíveis, inclusive municípios com proporção zero e resultado Y = 0.")
           ),
           div(
@@ -513,14 +513,14 @@ documentacao_movimentos_ui <- function() {
           doc_example(
             "Exemplo didático: como interpretar OR = 2,22",
             p("O resultado de 2,22 corresponde a um aumento de 10 pontos percentuais na proporção de vizinhos. Se dois casos fossem iguais nos controles e diferissem apenas de 20% para 30%, as odds estimadas do segundo seriam 2,22 vezes as do primeiro."),
-            doc_math("OR_{+10\\ p.p.}=e^{0{,}1\\beta}=2{,}22"),
+            doc_math(HTML("OR<sub>+10 p.p.</sub> = e<sup>0,1β</sup> = 2,22")),
             p("Exemplo apenas ilustrativo: partindo de probabilidade de 1%, as odds são 0,0101. Multiplicadas por 2,22, tornam-se 0,0224, equivalentes a aproximadamente 2,19% de probabilidade."),
-            doc_math("odds_0=\\frac{0{,}01}{1-0{,}01}=0{,}0101;\\quad P_1=\\frac{2{,}22\\times0{,}0101}{1+2{,}22\\times0{,}0101}\\approx2{,}19\\%")
+            doc_math(HTML("odds<sub>0</sub> = <span class='doc-frac'><span>0,01</span><span>1 − 0,01</span></span> = 0,0101;&nbsp;&nbsp; P<sub>1</sub> = <span class='doc-frac'><span>2,22 × 0,0101</span><span>1 + 2,22 × 0,0101</span></span> ≈ 2,19%"))
           ),
           doc_example(
             "Exemplo didático: como interpretar OR = 0,79 na saída",
             p("A cada 10 pontos percentuais adicionais de vizinhos no mesmo CNPJ, as odds de saída são multiplicadas por 0,79, isto é, caem aproximadamente 21%, mantendo os controles constantes."),
-            doc_math("1-0{,}79=0{,}21=21\\%")
+            doc_math(HTML("1 − 0,79 = 0,21 = 21%"))
           )
         ),
         div(
@@ -561,7 +561,7 @@ documentacao_movimentos_ui <- function() {
           doc_example(
             "Leitura direta das taxas observadas",
             p("Entre exposições com 0% de vizinhos no mesmo CNPJ, ocorreram 335 entradas em 724.512 casos: 0,05%. Acima de 80%, ocorreram 122 entradas em 416 casos: 29,33%. Estas são taxas descritivas brutas; os odds ratios acima vêm do modelo ajustado."),
-            doc_math("taxa=\\frac{eventos}{exposicoes}\\times100")
+            doc_math(HTML("taxa = <span class='doc-frac'><span>eventos</span><span>exposições</span></span> × 100"))
           )
         ),
         div(
@@ -673,5 +673,5 @@ documentacao_movimentos_ui <- function() {
         )
       )
     )
-  ))
+  )
 }

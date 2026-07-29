@@ -1040,6 +1040,27 @@ ui <- page_navbar(
         padding: 8px 12px;
         text-align: center;
       }
+      .doc-math-expression {
+        align-items: center;
+        display: inline-flex;
+        flex-wrap: nowrap;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 18px;
+        font-style: italic;
+        line-height: 1.5;
+        white-space: nowrap;
+      }
+      .doc-math-expression sub, .doc-math-expression sup { font-size: .68em; }
+      .doc-frac {
+        display: inline-flex;
+        flex-direction: column;
+        line-height: 1.15;
+        margin: 0 6px;
+        text-align: center;
+        vertical-align: middle;
+      }
+      .doc-frac > span:first-child { border-bottom: 1px solid currentColor; padding: 0 5px 2px; }
+      .doc-frac > span:last-child { padding: 2px 5px 0; }
       .doc-flow {
         display: grid;
         gap: 8px;

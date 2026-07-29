@@ -36,6 +36,11 @@ conteudos_obrigatorios <- c(
   "MIDES observa pagamentos"
 )
 stopifnot(all(vapply(conteudos_obrigatorios, grepl, logical(1), x = html_doc, fixed = TRUE)))
+stopifnot(
+  grepl("doc-math-expression", html_doc, fixed = TRUE),
+  !grepl("MathJax", html_doc, fixed = TRUE),
+  !grepl("mathjax", html_doc, fixed = TRUE)
+)
 
 movimentos <- readRDS(file.path(out_dir, "movimentos_municipio_consorcio_ano.rds"))
 entrada <- readRDS(file.path(out_dir, "risco_entrada_completo_municipio_consorcio_ano.rds"))
