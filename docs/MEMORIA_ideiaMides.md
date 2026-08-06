@@ -584,6 +584,7 @@ Leitura da procedencia e confianca da v0.2:
 - resultados centrais documentados: OR 2,22 para entrada/retorno e OR 0,79 para saida a cada 10 pontos percentuais adicionais de vizinhos pagantes; esses resultados sao associativos, nao causais;
 - o exemplo Pote x CISNORJE x 2021 percorre o pipeline completo e mostra como uma observacao entra no modelo;
 - a base e os scripts permaneceram inalterados; a entrega foi exclusivamente documental.
+- a bibliografia do guia identifica separadamente fontes dos dados, infraestrutura espacial, metodo estatistico e literatura substantiva, deixando explicito que os trabalhos proximos motivam a hipotese, mas nao tornam o modelo atual causal.
 
 ## Documentos Historicos
 

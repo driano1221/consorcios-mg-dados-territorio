@@ -721,3 +721,51 @@ Adicionar controles municipais e setoriais, testar universos territoriais altern
 E a ressalva obrigatória:
 
 > O resultado é compatível com processos de difusão ou integração territorial, mas não demonstra adesão jurídica nem causalidade. A próxima etapa deve incorporar controles substantivos, resolver matriz/filial e testar universos territoriais e formas funcionais alternativas.
+
+---
+
+## 21. Referências
+
+### 21.1 Como As Referências Foram Usadas
+
+| Grupo | Referências | Papel no projeto |
+|---|---|---|
+| Fonte financeira | MiDES, Banco Mundial e Base dos Dados | Origem e documentação dos microdados de pagamentos municipais |
+| Fonte cartográfica | `geobr`/IBGE | Malha municipal de Minas Gerais de 2020 |
+| Operações espaciais | `sf` e padrão OGC Simple Features | Processamento vetorial e definição topológica das fronteiras compartilhadas |
+| Modelo estatístico | R `glm` e `sandwich` | Regressão logística e covariância agrupada por município e CNPJ |
+| Literatura substantiva | Lins; Di Porto et al.; Leão, Perobelli e Ribeiro | Motivação para estudar difusão, vizinhança e determinantes da cooperação intermunicipal |
+
+> As referências substantivas são próximas da pergunta de pesquisa, mas não tornam o modelo atual equivalente aos desenhos desses trabalhos. Em especial, Di Porto et al. tratam endogeneidade espacial com uma função de controle; o modelo deste projeto ainda é associativo e não implementa essa estratégia causal.
+
+### 21.2 Dados E Infraestrutura
+
+1. **DAHIS, Ricardo; RICCA, Bernardo; SCOT, Thiago; SALES, Nathalia; NASCIMENTO, Lucas.** *MiDES: New Data and Facts from Local Procurement and Budget Execution in Brazil*. World Bank Policy Research Working Paper, n. 10598, 2023. DOI: [10.1596/1813-9450-10598](https://doi.org/10.1596/1813-9450-10598).
+
+2. **WORLD BANK.** *Reproducibility package for MiDES: New Data and Facts from Local Procurement and Budget Execution in Brazil*. Referência RR_BRA_2023_19-v01. Disponível em: [World Bank Reproducibility Repository](https://reproducibility.worldbank.org/catalog/72).
+
+3. **BASE DOS DADOS.** *MiDES: microdados desagregados e harmonizados de compras públicas e execução orçamentária municipal*. Tabela consultada no BigQuery: `world_wb_mides.pagamento`. Disponível em: [Base dos Dados](https://basedosdados.org/dataset/d3874769-bcbd-4ece-a38a-157ba1021514?table=14c5d05b-9830-4710-b7ac-7e0ca1bf9d8b).
+
+4. **PEREIRA, Rafael H. M.; GONÇALVES, Caio N.** *geobr: Download Official Spatial Data Sets of Brazil*. Pacote R, versão 1.9.1, 2024. Disponível em: [CRAN](https://CRAN.R-project.org/package=geobr).
+
+### 21.3 Métodos Espaciais E Estatísticos
+
+5. **PEBESMA, Edzer.** Simple Features for R: Standardized Support for Spatial Vector Data. *The R Journal*, v. 10, n. 1, p. 439–446, 2018. DOI: [10.32614/RJ-2018-009](https://doi.org/10.32614/RJ-2018-009).
+
+6. **OPEN GEOSPATIAL CONSORTIUM.** *OpenGIS Implementation Specification for Geographic Information: Simple Feature Access, Part 1: Common Architecture*. Versão 1.2.1, documento OGC 06-103r4, 2011. Disponível em: [OGC Simple Feature Access](https://www.ogc.org/standards/sfa/). A regra `F***1****` aplicada no projeto segue o modelo topológico DE-9IM desse padrão.
+
+7. **ZEILEIS, Achim; KÖLL, Susanne; GRAHAM, Nathaniel.** Various Versatile Variances: An Object-Oriented Implementation of Clustered Covariances in R. *Journal of Statistical Software*, v. 95, n. 1, p. 1–36, 2020. DOI: [10.18637/jss.v095.i01](https://doi.org/10.18637/jss.v095.i01).
+
+8. **R CORE TEAM.** *R: A Language and Environment for Statistical Computing*. Vienna: R Foundation for Statistical Computing, 2023. Disponível em: [R Project](https://www.R-project.org/).
+
+### 21.4 Literatura Sobre Cooperação Intermunicipal
+
+9. **LINS, Pedro Buril Saraiva.** *Difusão dos consórcios públicos intermunicipais no Brasil: uma análise de sobrevivência*. Dissertação (Mestrado em Ciência Política), Universidade Federal de Pernambuco, Recife, 2023. Disponível no [Repositório da UFPE](https://repositorio.ufpe.br/handle/123456789/56301).
+
+10. **DI PORTO, Edoardo; PARENTI, Angela; PATY, Sonia; ABIDI, Zineb.** Local government cooperation at work: a control function approach. *Journal of Economic Geography*, v. 17, n. 2, p. 435–463, 2017. DOI: [10.1093/jeg/lbw008](https://doi.org/10.1093/jeg/lbw008).
+
+11. **LEÃO, Lucas; PEROBELLI, Fernando Salgueiro; RIBEIRO, Hilton Manoel Dias.** Ação Coletiva Institucional e consórcios públicos intermunicipais no Brasil. *urbe. Revista Brasileira de Gestão Urbana*, v. 16, 2024. DOI: [10.1590/2175-3369.016.e20240003](https://doi.org/10.1590/2175-3369.016.e20240003).
+
+### 21.5 Forma Curta Para Citar Na Apresentação
+
+> Fonte: elaboração própria com pagamentos MiDES/Banco Mundial, acessados pela Base dos Dados, e malha municipal geobr/IBGE 2020. Metodologia: regressão logística em R, indicadores de vizinhança construídos com `sf`/DE-9IM e erros-padrão agrupados com `sandwich`.

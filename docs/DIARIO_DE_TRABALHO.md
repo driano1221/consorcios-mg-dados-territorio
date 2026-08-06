@@ -448,3 +448,4 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Nenhum script, base ou estimativa foi alterado.
 - O documento passa a ser a leitura recomendada antes de apresentar a analise espacial em reuniao.
 - A proxima decisao metodologica continua sendo definir controles substantivos, universo territorial alternativo, tratamento matriz/filial e forma funcional da exposicao.
+- Em 05/08, o guia recebeu uma bibliografia comentada com as fontes do MiDES, Base dos Dados, geobr/IBGE, `sf`, OGC/DE-9IM, `sandwich`, R e tres trabalhos substantivos sobre difusao e cooperacao intermunicipal.
