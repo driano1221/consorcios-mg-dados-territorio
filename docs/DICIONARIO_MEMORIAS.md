@@ -1,6 +1,6 @@
 # Dicionario De Memorias - Consorcios MG
 
-Atualizado em: 2026-07-29
+Atualizado em: 2026-08-05
 
 Este arquivo serve como indice rapido dos documentos de memoria e contexto do projeto.
 
@@ -15,6 +15,7 @@ Este arquivo serve como indice rapido dos documentos de memoria e contexto do pr
 | `docs/LINHA_DO_TEMPO.md` | Linha do tempo historica das etapas do projeto. |
 | `docs/2026-05-14-HANDOFF.md` | Handoff historico do ciclo de maio; util para entender a origem do painel universal e da apresentacao. |
 | `docs/METODOLOGIA_CLASSIFICACAO_ATUAL.md` | Leitura curta e atual da classificacao v0.5: taxonomia, fontes, inferencias, multifinalitarios, matriz/filial e limites. |
+| `docs/GUIA_MODELO_ESPACIAL_REUNIAO.md` | Guia didatico para estudar e explicar o modelo de movimentos MIDES: dados, painel anual, indicadores espaciais, universos de risco, regressao logistica, resultados, exemplo real, limites e perguntas frequentes. |
 | `docs/ESTRUTURA_REPOSITORIO.md` | Mapa do repositorio Git, regras de versionamento e papeis das pastas. |
 
 ## Governanca Do Repositorio
@@ -44,6 +45,8 @@ Este arquivo serve como indice rapido dos documentos de memoria e contexto do pr
 | `analises/movimentos_espaciais/tests/03_validar_movimentos_espaciais.R` | Teste automatizado das tabelas materializadas. |
 | `analises/movimentos_espaciais/04_eda_validacao_movimentos_espaciais.R` | EDA reproduzivel de integridade, movimentos, efeitos espaciais e amostras. |
 | `analises/movimentos_espaciais/EDA_RESULTADOS.md` | Resultado consolidado da EDA, alertas e recomendacoes antes do dashboard. |
+| `analises/movimentos_espaciais/METODOLOGIA_MODELOS_RISCO.md` | Especificacao tecnica dos universos de entrada e saida, modelos logisticos e sensibilidades. |
+| `analises/movimentos_espaciais/RESULTADOS_MODELOS_RISCO.md` | Tabelas consolidadas dos modelos, efeitos espaciais e testes de robustez. |
 | `analises/movimentos_espaciais/outputs/` | Saidas locais pesadas: movimentos, vizinhanca, features e universo de risco de entrada. |
 
 ## Classificacao De Politicas Publicas

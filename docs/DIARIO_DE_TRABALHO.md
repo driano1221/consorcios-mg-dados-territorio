@@ -424,3 +424,27 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Nomes historicos de arquivos, pastas locais e registros antigos foram preservados quando a troca poderia quebrar scripts ou apagar contexto.
 - O `app.R` passou nos testes de classificacao v0.5 e trajetoria longitudinal.
 - O dashboard foi republicado; a URL existente foi preservada e respondeu `HTTP 200` com o novo titulo.
+
+---
+
+## 2026-08-05 - Guia De Estudo Do Modelo Espacial
+
+### Objetivo
+
+- Reescrever as anotacoes preparadas para a reuniao em um material tecnicamente correto e didatico.
+- Permitir explicar a origem dos dados, a construcao dos indicadores, os universos de risco, a regressao logistica, os resultados e os limites da analise.
+
+### Entrega
+
+- Criado `docs/GUIA_MODELO_ESPACIAL_REUNIAO.md`.
+- O guia separa pagamentos observados de adesao juridica e esclarece que o modelo e logistico com indicadores espaciais, nao SAR/CAR nem um desenho causal.
+- Incluidos formulas, quatro fluxogramas Mermaid, exemplo real Pote x CISNORJE, roteiro de cinco minutos e respostas para perguntas provaveis.
+- Os numeros foram conferidos nos scripts e documentos tecnicos: 1.194 CNPJs consultados, 161 observados, 2.835 pares, 22.680 linhas balanceadas, 2.375 fronteiras, 742.916 exposicoes de entrada e 12.842 exposicoes de saida.
+- Documentada a diferenca entre os 1.395 eventos de entrada/retorno modelados e os 418 movimentos sem territorio do CNPJ em `t-1`.
+- Registrados resultados principais, robustez, alertas de matriz/filial e limitacoes do universo estadual de candidatos.
+
+### Estado Ao Final
+
+- Nenhum script, base ou estimativa foi alterado.
+- O documento passa a ser a leitura recomendada antes de apresentar a analise espacial em reuniao.
+- A proxima decisao metodologica continua sendo definir controles substantivos, universo territorial alternativo, tratamento matriz/filial e forma funcional da exposicao.

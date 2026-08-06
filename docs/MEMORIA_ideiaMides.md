@@ -575,6 +575,16 @@ Leitura da procedencia e confianca da v0.2:
 - outputs nao foram integrados ao dashboard. O proximo passo e revisar resultados descritivos e definir o teste estatistico antes de publicar.
 - EDA de validacao salva em `analises/movimentos_espaciais/EDA_RESULTADOS.md`: nenhuma falha estrutural; taxa de saida variou de 24,4% entre isolados a 3,1% com mais de 80% dos vizinhos no mesmo consorcio, e a taxa de entrada entre candidatos de borda variou de 2,4% a 29,3%; os alertas principais sao restos a pagar, valores muito baixos, matriz/filial e nomes MIDES ruidosos.
 
+## Guia Do Modelo Espacial - 2026-08-05
+
+- criado `docs/GUIA_MODELO_ESPACIAL_REUNIAO.md` como material de estudo e apoio para reunioes;
+- o guia recompoe o processo completo: Cadastro IPEA -> consulta MIDES -> painel anual balanceado -> movimentos -> vizinhanca municipal -> indicadores em `t-1` -> universos de risco -> regressao logistica -> resultados e limites;
+- a terminologia foi corrigida para `municipio pagante`, `entrada financeira observada` e `saida financeira observada`, evitando interpretar pagamento como filiacao juridica;
+- o documento explica os 1.395 eventos de entrada/retorno modelados, os 418 movimentos preservados fora do modelo espacial e as 966 saidas modeladas;
+- resultados centrais documentados: OR 2,22 para entrada/retorno e OR 0,79 para saida a cada 10 pontos percentuais adicionais de vizinhos pagantes; esses resultados sao associativos, nao causais;
+- o exemplo Pote x CISNORJE x 2021 percorre o pipeline completo e mostra como uma observacao entra no modelo;
+- a base e os scripts permaneceram inalterados; a entrega foi exclusivamente documental.
+
 ## Documentos Historicos
 
 Arquivos antigos continuam uteis como registro de processo, mas nao devem ser usados como estado atual:
