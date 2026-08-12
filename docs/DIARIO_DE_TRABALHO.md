@@ -497,3 +497,21 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Nao foi registrada exclusao automatica de CNPJs com 0-2 municipios.
 - SICONFI foi mantido como validacao municipal agregada, sem CNPJ destinatario.
 - Informacoes pessoais e administrativas sem impacto no projeto foram removidas.
+
+---
+
+## 2026-08-12 - Interface Unica Da Memoria No Obsidian
+
+### Entrega
+
+- O vault pessoal do IPEA passou a ter uma unica entrada (`PAINEL_IPEA`) e uma unica memoria narrativa vigente (`MEMORIA_PROJETO`).
+- Reunioes e diarios continuam como registros datados; documentos anteriores foram preservados como historico ou atalhos.
+- O painel recebeu fluxos Mermaid para explicar atualizacao da memoria, linha do tempo e arquitetura das notas.
+- Criada e validada a skill pessoal `ipea-vault`, que identifica pedidos naturais de briefing, atualizacao de memoria, registro de reuniao e auditoria do vault.
+- Consolidado o registro duplicado de 12/08 em um unico diario da data.
+
+### Validacao
+
+- Todos os links internos adicionados ao painel e a memoria apontam para arquivos existentes.
+- A skill passou no validador oficial de skills.
+- O repositorio nao recebeu alteracao de codigo, base, dashboard ou metodologia nesta etapa.
