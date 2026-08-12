@@ -1,6 +1,6 @@
 # Proximos Passos - Consorcios MG: Dados e Territorio
 
-**Atualizado em:** 2026-07-29
+**Atualizado em:** 2026-08-12
 **Uso:** roteiro curto do estado atual, decisoes pendentes e proximas entregas possiveis.
 
 ---
@@ -50,6 +50,12 @@ O projeto tem hoje tres blocos principais funcionando:
 ---
 
 ## Decisoes Pendentes
+
+0. **Clareza do indicador de recorrencia no dashboard**
+   - recorrencia e definida no par `municipio x CNPJ` ao longo de 2014-2021;
+   - o total no resumo do consorcio esta correto;
+   - a coluna anual `Recorrentes` mostra pares recorrentes ativos naquele ano, nao novos recorrentes do ano;
+   - renomear para `Pares recorrentes ativos no ano` ou retirar a coluna da tabela anual. Recomendacao: retirar da tabela anual e manter o total do periodo no resumo.
 
 1. **Matriz e filiais**
    - decidir com superiores se matriz/filiais devem ser consolidadas por raiz de 8 digitos do CNPJ;

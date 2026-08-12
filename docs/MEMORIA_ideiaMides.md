@@ -586,6 +586,16 @@ Leitura da procedencia e confianca da v0.2:
 - a base e os scripts permaneceram inalterados; a entrega foi exclusivamente documental.
 - a bibliografia do guia identifica separadamente fontes dos dados, infraestrutura espacial, metodo estatistico e literatura substantiva, deixando explicito que os trabalhos proximos motivam a hipotese, mas nao tornam o modelo atual causal.
 
+## Esclarecimentos Metodologicos E Recorrencia - 2026-08-12
+
+- par significa `municipio x CNPJ`, sem ano; a unidade `municipio x CNPJ x ano` e uma observacao anual;
+- efeitos fixos de ano sao indicadores binarios estimados pela regressao e absorvem diferencas gerais de cada ano em relacao ao ano de referencia;
+- permanecias dentro e fora entram nos modelos como resultado zero; primeiros aparecimentos de CNPJ e reaparecimentos sem territorio em `t-1` ficam fora do modelo espacial de entrada;
+- o CIMVA foi conferido como exemplo aplicado: 22 municipios pagantes em 2019, 37 em 2020 e 48 em 2021; linhas reais ligam exposicao de vizinhanca, controles e resultado anual;
+- recorrencia e propriedade longitudinal do par com duas ou mais transicoes em 2014-2021;
+- o total longitudinal de recorrentes no resumo do consorcio esta correto, mas a coluna anual `Recorrentes` significa `pares recorrentes ativos no ano` e deve ser renomeada ou removida para evitar leitura errada;
+- nenhuma base ou estimativa foi modificada; os esclarecimentos foram incorporados ao guia e ao diario.
+
 ## Documentos Historicos
 
 Arquivos antigos continuam uteis como registro de processo, mas nao devem ser usados como estado atual:

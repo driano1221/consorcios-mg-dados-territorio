@@ -449,3 +449,32 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - O documento passa a ser a leitura recomendada antes de apresentar a analise espacial em reuniao.
 - A proxima decisao metodologica continua sendo definir controles substantivos, universo territorial alternativo, tratamento matriz/filial e forma funcional da exposicao.
 - Em 05/08, o guia recebeu uma bibliografia comentada com as fontes do MiDES, Base dos Dados, geobr/IBGE, `sf`, OGC/DE-9IM, `sandwich`, R e tres trabalhos substantivos sobre difusao e cooperacao intermunicipal.
+
+---
+
+## 2026-08-11 e 2026-08-12 - Esclarecimentos Do Modelo E Auditoria Da Recorrencia
+
+### Objetivo
+
+- Consolidar as explicacoes usadas na reuniao sobre pares, observacoes anuais, universos de risco, efeitos de ano e interpretacao dos modelos.
+- Verificar exemplos reais do CIMVA e do indicador de recorrencia exibido no dashboard.
+
+### Verificacoes
+
+- `par municipio-consorcio` significa municipio x CNPJ, sem ano; municipio x CNPJ x ano e uma observacao anual ou par-ano.
+- O CIMVA (CNPJ `21466841000169`) passou de 22 municipios pagantes em 2019 para 37 em 2020 e 48 em 2021.
+- Exemplos CIMVA conferidos: Iapu entrou em 2021 com 7 de 8 vizinhos pagantes; Jaguaraçu retornou com 4 de 4; Dom Joaquim saiu estando isolado; Entre Folhas permaneceu com 3 de 3.
+- Os 22 primeiros pagamentos do CIMVA em 2019 ficam fora do modelo espacial de entrada porque nao existia territorio pagante do CNPJ em 2018.
+- Recorrencia foi confirmada como propriedade do par no periodo completo: duas ou mais transicoes de presenca.
+- No SIMSAUDE, Silveirania e Visconde do Rio Branco sao os dois pares recorrentes.
+- Na tabela anual longitudinal, a coluna `Recorrentes` nao conta recorrencias surgidas naquele ano; conta pares recorrentes do periodo que estavam ativos no ano. O indicador e calculado corretamente, mas o rotulo e ambiguo.
+
+### Documentacao Atualizada
+
+- O guia do modelo passou a explicar efeitos fixos de ano, exclusoes do modelo, exemplo CIMVA e a diferenca entre recorrencia longitudinal e recorrente ativo no ano.
+- `docs/PROXIMOS_PASSOS.md` recebeu a pendencia de renomear ou retirar a coluna anual de recorrentes.
+
+### Pendencia
+
+- Corrigir a interface do dashboard. Recomendacao atual: retirar `Recorrentes` da tabela anual e manter apenas o total longitudinal no resumo do consorcio.
+- Nenhuma base, modelo ou estimativa foi alterada nesta sessao.

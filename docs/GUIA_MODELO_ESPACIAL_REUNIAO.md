@@ -197,6 +197,10 @@ $$
 
 Um par é recorrente quando possui duas ou mais transições. Foram encontrados **673 pares recorrentes**.
 
+Exemplo real: `Silveirania x SIMSAUDE` permaneceu pagante ate 2016, apresentou saida em 2017 e retorno em 2019. Saida e retorno somam duas transicoes; por isso, o par e recorrente.
+
+Recorrencia e uma propriedade do **par municipio x CNPJ no periodo completo**, e nao uma medida anual. No dashboard, o total exibido no resumo do consorcio conta os pares recorrentes entre 2014 e 2021. A coluna anual atualmente intitulada `Recorrentes` conta apenas quantos desses pares estavam ativos naquele ano. Esse rotulo deve ser alterado para `Pares recorrentes ativos no ano` ou a coluna deve ser retirada da tabela anual.
+
 ### 6.4 Sensibilidades
 
 Os modelos principais de proporção para entrada/retorno e saída foram reestimados com quatro regras:
@@ -379,6 +383,8 @@ Onde:
 | $M_{c,t-1}$ | Número de municípios pagantes ao CNPJ em `t−1` |
 | $V_i$ | Número total de vizinhos do município |
 | $\gamma_t$ | Efeitos fixos de ano |
+
+O efeito de ano nasce de variaveis indicadoras. Para 2021, por exemplo, o modelo cria uma coluna que vale `1` nas observacoes de 2021 e `0` nas demais. Seu coeficiente e estimado junto com os outros coeficientes e absorve diferencas gerais de 2021 em relacao ao ano de referencia, sem identificar separadamente pandemia, mudancas fiscais ou alteracoes de cobertura.
 
 Em linguagem de código:
 
@@ -670,6 +676,30 @@ Ele usa variáveis espaciais de vizinhança em uma regressão logística. Ainda 
 ### “Qual é o próximo avanço metodológico?”
 
 Adicionar controles municipais e setoriais, testar universos territoriais alternativos, resolver matriz/filial, avaliar não linearidade e estimar probabilidades ajustadas.
+
+### “Quem nao entra no modelo espacial?”
+
+- 2014 nao entra como ano de resultado; serve de base para as transicoes a partir de 2015.
+- Primeiro aparecimento territorial de um CNPJ e reaparecimento apos ano sem pagantes ficam fora do modelo de entrada, pois nao existe territorio do CNPJ em `t-1`. Sao 418 movimentos preservados fora da estimacao espacial.
+- MUNIC, SICONFI e CNM nao entram nas regressoes atuais.
+- Adesao juridica, estatutos e desligamentos formais nao entram: o desfecho e pagamento MIDES.
+- Contato apenas por canto nao define vizinhanca.
+- Matriz e filiais continuam como CNPJs separados.
+
+Municipios que permanecem pagando ou permanecem sem pagar **entram** nos respectivos modelos com resultado zero. Eles formam o grupo de comparacao necessario para estimar entrada e saida.
+
+### “Como o CIMVA entra no modelo?”
+
+O modelo nao atribui uma nota unica ao CIMVA. Cada transicao anual municipio x CIMVA contribui como uma observacao:
+
+| Observacao | Exposicao em `t-1` | Resultado em `t` | Modelo |
+|---|---:|---|---|
+| Iapu x CIMVA x 2021 | 7 de 8 vizinhos pagantes (87,5%) | entrada | entrada |
+| Jaguaraçu x CIMVA x 2021 | 4 de 4 (100%) | retorno | retorno |
+| Dom Joaquim x CIMVA x 2021 | 0 de 5 (isolado) | saida | saida/isolamento |
+| Entre Folhas x CIMVA x 2021 | 3 de 3 (100%) | permaneceu | saida, resultado zero |
+
+Os 22 primeiros pagamentos do CIMVA em 2019 nao entram no modelo espacial de entrada porque o CNPJ nao tinha municipios pagantes em 2018. Entre 2019 e 2021, o CIMVA passou de 22 para 48 municipios pagantes. Em 2021, os que permaneceram tinham em media 61,4% dos vizinhos pagando ao CIMVA em `t-1`, ante 38,7% entre os que sairam. Esse contraste e compativel com o resultado geral, mas nao prova causalidade para o CIMVA.
 
 ---
 
