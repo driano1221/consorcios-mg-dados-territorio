@@ -36,6 +36,7 @@ Essas regras estao em `.gitignore`.
 | `docs/` | Fonte de verdade para decisoes e memoria | Atualizar ao concluir frente relevante |
 | `dados/` e `outputs/` | Insumos e resultados locais | Nao versionar arquivos pesados |
 | `slides/` | Materiais de reuniao | Preservar fontes e scripts; HTMLs sao artefatos de entrega |
+| `docs/reunioes/` | Atas individuais, indice e template das reunioes semanais | Versionar atas sanitizadas; encaminhamentos abertos tambem devem atualizar `PROXIMOS_PASSOS.md` |
 
 ## Rotina De Atualizacao
 

@@ -11,6 +11,9 @@
 | Data | Tema principal | Status |
 |---|---|---|
 | 2026-05-29 | Discussao metodologica sobre temporalidade das fontes, SICONFI e bases analiticas | Registrada |
+| 2026-08-06 | Validacao dos movimentos MIDES, casos esparsos e universo do modelo | Data a confirmar; ata em `docs/reunioes/2026-08-06-validacao-mides-universo-modelo.md` |
+
+> Novas atas devem ser criadas individualmente em `docs/reunioes/`. Este arquivo permanece como registro historico da ata de 29/05 e indice de compatibilidade.
 
 ---
 

@@ -596,6 +596,17 @@ Leitura da procedencia e confianca da v0.2:
 - o total longitudinal de recorrentes no resumo do consorcio esta correto, mas a coluna anual `Recorrentes` significa `pares recorrentes ativos no ano` e deve ser renomeada ou removida para evitar leitura errada;
 - nenhuma base ou estimativa foi modificada; os esclarecimentos foram incorporados ao guia e ao diario.
 
+## Padrao Permanente De Reunioes - 2026-08-12
+
+- criado `docs/reunioes/` com indice cronologico, template e uma ata por reuniao;
+- novas reunioes passam a separar decisoes confirmadas, encaminhamentos, hipoteses e pontos nao decididos;
+- tarefas abertas seguem para `docs/PROXIMOS_PASSOS.md`; trabalho realizado segue para `docs/DIARIO_DE_TRABALHO.md`; mudancas concretas de patamar seguem para esta memoria;
+- registrada provisoriamente como 06/08/2026 a reuniao sobre casos MIDES esparsos e universo do modelo, com data a confirmar;
+- encaminhamento principal: caracterizar CNPJs de baixa escala/persistencia antes de excluir casos ou reestimar modelos;
+- validacoes propostas: cadastro/nome/CNPJ, documentos institucionais, distancia rodoviaria e sensibilidades do modelo;
+- nao foi aprovada exclusao automatica de CNPJs com no maximo 1 ou 2 municipios;
+- SICONFI permanece sem CNPJ destinatario e nao valida diretamente o par municipio-consorcio.
+
 ## Documentos Historicos
 
 Arquivos antigos continuam uteis como registro de processo, mas nao devem ser usados como estado atual:

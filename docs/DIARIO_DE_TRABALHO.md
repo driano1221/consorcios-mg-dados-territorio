@@ -478,3 +478,22 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 
 - Corrigir a interface do dashboard. Recomendacao atual: retirar `Recorrentes` da tabela anual e manter apenas o total longitudinal no resumo do consorcio.
 - Nenhuma base, modelo ou estimativa foi alterada nesta sessao.
+
+---
+
+## 2026-08-12 - Padrao Permanente De Reunioes E Ata De 06/08
+
+### Entregas
+
+- Criado `docs/reunioes/README.md` como indice e regra permanente.
+- Criado `docs/reunioes/TEMPLATE_ATA.md` para novas reunioes semanais.
+- Registrada a reuniao presumida de 06/08 em ata individual, com data marcada para confirmacao.
+- Separadas decisoes, encaminhamentos, hipoteses e pontos nao decididos.
+- Atualizado `docs/PROXIMOS_PASSOS.md` com a auditoria de CNPJs de baixa escala/persistencia e a pesquisa de distancia rodoviaria.
+
+### Cuidados
+
+- O resumo automatico foi confrontado com a transcricao.
+- Nao foi registrada exclusao automatica de CNPJs com 0-2 municipios.
+- SICONFI foi mantido como validacao municipal agregada, sem CNPJ destinatario.
+- Informacoes pessoais e administrativas sem impacto no projeto foram removidas.

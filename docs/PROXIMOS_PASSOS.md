@@ -57,6 +57,13 @@ O projeto tem hoje tres blocos principais funcionando:
    - a coluna anual `Recorrentes` mostra pares recorrentes ativos naquele ano, nao novos recorrentes do ano;
    - renomear para `Pares recorrentes ativos no ano` ou retirar a coluna da tabela anual. Recomendacao: retirar da tabela anual e manter o total do periodo no resumo.
 
+0.1. **Auditar CNPJs de baixa escala e persistencia**
+   - gerar tabela por CNPJ com maximo de municipios pagantes, anos ativos, municipio-anos, valor, entradas, saidas e recorrencia;
+   - destacar inicialmente CNPJs com no maximo 1 ou 2 municipios pagantes, sem exclui-los automaticamente;
+   - cruzar nomes, raizes, situacao cadastral, ano de fundacao e documentos;
+   - comparar resultados dos modelos com e sem casos classificados como pontuais ou de evidencia insuficiente;
+   - estudar distancia/tempo rodoviario ate a sede ou nucleo do consorcio.
+
 1. **Matriz e filiais**
    - decidir com superiores se matriz/filiais devem ser consolidadas por raiz de 8 digitos do CNPJ;
    - se aprovado, criar tabela `cnpj_original -> cnpj_matriz`;

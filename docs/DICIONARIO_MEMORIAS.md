@@ -11,6 +11,9 @@ Este arquivo serve como indice rapido dos documentos de memoria e contexto do pr
 | `docs/MEMORIA_ideiaMides.md` | Estado consolidado do projeto, decisoes metodologicas, entregas e proximos passos. Comecar por aqui. |
 | `docs/PROXIMOS_PASSOS.md` | Roteiro atual de proximas entregas, decisoes pendentes, itens pausados e frentes territoriais viaveis. |
 | `docs/ATAS_REUNIOES.md` | Registro de reunioes e encaminhamentos discutidos com a equipe. |
+| `docs/reunioes/README.md` | Indice cronologico e regra permanente para registrar novas reunioes. |
+| `docs/reunioes/TEMPLATE_ATA.md` | Estrutura padrao de ata: decisoes, encaminhamentos, hipoteses e pontos nao decididos. |
+| `docs/reunioes/AAAA-MM-DD-tema.md` | Uma ata por reuniao; fonte versionada e sanitizada, sem informacoes pessoais irrelevantes. |
 | `docs/DIARIO_DE_TRABALHO.md` | Registro por dia de trabalho: decisoes, arquivos alterados, validacoes, commits e pendencias. Atualizar ao concluir uma sessao relevante. |
 | `docs/LINHA_DO_TEMPO.md` | Linha do tempo historica das etapas do projeto. |
 | `docs/2026-05-14-HANDOFF.md` | Handoff historico do ciclo de maio; util para entender a origem do painel universal e da apresentacao. |
