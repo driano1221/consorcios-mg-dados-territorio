@@ -20,6 +20,7 @@ stopifnot(
 
 compacto <- html_trajetoria_compacta(codap_resumo)
 detalhe <- html_detalhe_longitudinal(codap, codap_resumo)
+tabela_anual <- html_tabela_anual_longitudinal(codap_resumo)
 
 stopifnot(
   lengths(regmatches(compacto, gregexpr("trajectory-mini-year", compacto, fixed = TRUE))) == 8L,
@@ -33,6 +34,7 @@ stopifnot(
   grepl("2014", detalhe, fixed = TRUE),
   grepl("2021", detalhe, fixed = TRUE)
 )
+stopifnot(!grepl("Recorrentes", tabela_anual, fixed = TRUE))
 
 shiny::testServer(server, {
   session$setInputs(
@@ -48,6 +50,18 @@ shiny::testServer(server, {
 
   tabela <- output$tabela_trajetoria_consorcios
   stopifnot(length(tabela) > 0L)
+})
+
+shiny::testServer(server, {
+  session$setInputs(
+    audit_baixa_padrao = auditoria_baixa_padrao_opts,
+    audit_baixa_situacao = auditoria_baixa_situacao_opts,
+    audit_baixa_estabelecimento = "Filial",
+    audit_baixa_busca = ""
+  )
+  session$flushReact()
+  stopifnot(output$kpi_audit_baixa_cnpjs == "6")
+  stopifnot(output$kpi_audit_baixa_filiais == "6")
 })
 
 cat("Testes da trajetoria longitudinal aprovados.\n")

@@ -2,6 +2,7 @@ source_dir <- normalizePath("dashboards/base1_shiny", winslash = "/", mustWork =
 
 app_files <- c(
   "app.R",
+  "auditoria_baixa_escala.R",
   "documentacao_movimentos.R",
   "README.md",
   "start_app.R",

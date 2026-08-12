@@ -9,8 +9,9 @@ Dashboard Shiny para consulta interativa da Base 1, do MIDES completo e das audi
 - KPIs compactos no topo;
 - tabela pesquisavel/exportavel da base final;
 - tabela agregada de validacao SICONFI por municipio-ano;
-- tabela anual por consorcio com entradas novas, retornos, saidas, permanencias, saldo e recorrencia;
+- tabela anual por consorcio com entradas novas, retornos, saidas, permanencias e saldo;
 - trajetoria longitudinal 2014-2021 com pequenos multiplos, detalhe sob demanda e matriz municipio-ano;
+- auditoria de 23 CNPJs com no maximo dois municipios pagantes em qualquer ano, sem exclusao automatica;
 - nomes municipais automaticos somente em recortes com ate 12 municipios destacados;
 - exportacao propria dos quatro mapas em PNG de alta resolucao e PDF vetorial;
 - secao `Documentacao` com guia do painel, conceitos, classificacao de areas e analise espacial dos movimentos MIDES;
@@ -48,6 +49,7 @@ rsconnect::deployApp("dashboards/base1_shiny")
 ```text
 base1_shiny/
 +-- app.R
++-- auditoria_baixa_escala.R
 +-- documentacao_movimentos.R
 +-- start_app.R
 +-- README.md
@@ -72,6 +74,8 @@ MIDES e MUNIC formam a base de vinculos em `municipio x consorcio x ano`.
 SICONFI entra como validacao financeira agregada em `municipio x ano`, usando a regra `consorcio_pagas`.
 
 No MIDES completo, a classificacao v0.5 e anexada por CNPJ somente como atributo analitico. Ela nao altera valores, pares ou movimentos. Os filtros mostram apenas categorias substantivas. Casos sem area comprovada, inativos/baixados, sediados fora de MG ou fora do escopo continuam preservados nos totais financeiros e sao explicados brevemente em `Documentacao`.
+
+Recorrencia e uma propriedade longitudinal do par municipio-CNPJ: duas ou mais mudancas de presenca no periodo. Por isso, o total aparece na trajetoria 2014-2021 e nao nas tabelas anuais.
 
 ## Documentacao No App
 

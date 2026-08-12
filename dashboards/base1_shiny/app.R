@@ -12,6 +12,7 @@ library(classInt)
 
 app_dir <- gsub("\\\\", "/", getwd())
 source(file.path(app_dir, "documentacao_movimentos.R"), encoding = "UTF-8", local = TRUE)
+source(file.path(app_dir, "auditoria_baixa_escala.R"), encoding = "UTF-8", local = TRUE)
 project_dir <- file.path(app_dir, "..", "..")
 out_dir <- file.path(project_dir, "analises/base_1_2015_2019/outputs")
 
@@ -558,7 +559,8 @@ cadastro_base <- readRDS(path_cadastro) |>
   ) |>
   select(
     cnpj_consorcio, sigla_cadastro, razao_social_cadastro,
-    setores_cadastro, situacao_cadastro, ano_fundacao
+    setores_cadastro, situacao_cadastro, ano_fundacao,
+    municipio_sede, natureza_juridica = nat_juridica
   )
 
 # A classificacao v0.5 qualifica o consorcio sem alterar a observacao MIDES.
@@ -640,6 +642,15 @@ movimentos_analiticos <- readRDS(path_movimentos) |>
     )
   )
 
+auditoria_baixa_escala <- construir_auditoria_baixa_escala(
+  readRDS(path_movimentos),
+  cadastro_base,
+  classificacao_v05
+)
+auditoria_baixa_padrao_opts <- sort(unique(auditoria_baixa_escala$padrao_temporal))
+auditoria_baixa_situacao_opts <- sort(unique(na.omit(auditoria_baixa_escala$situacao_cadastro)))
+auditoria_baixa_estabelecimento_opts <- sort(unique(auditoria_baixa_escala$tipo_estabelecimento))
+
 mg_municipios_sf <- readRDS(path_mg_sf) |>
   mutate(cod_ibge_6 = pad_ibge(cod_ibge_6))
 mg_contorno_sf <- readRDS(path_mg_contorno)
@@ -718,14 +729,13 @@ html_tabela_anual_longitudinal <- function(resumo) {
     "<td>", resumo$permanencias, "</td>",
     "<td class='", ifelse(resumo$saldo_liquido > 0, "saldo-pos", ifelse(resumo$saldo_liquido < 0, "saldo-neg", "")), "'>",
     ifelse(resumo$saldo_liquido > 0, "+", ""), resumo$saldo_liquido, "</td>",
-    "<td>", resumo$recorrentes_ativos, "</td>",
     "<td>", fmt_moeda(resumo$valor_total_mides), "</td></tr>",
     collapse = ""
   )
   paste0(
     "<div class='long-table-scroll'><table class='long-annual-table'>",
     "<thead><tr><th>Ano</th><th>Ativos</th><th>Entradas</th><th>Retornos</th><th>Saidas</th>",
-    "<th>Permanencias</th><th>Saldo</th><th>Recorrentes</th><th>Valor MIDES</th></tr></thead>",
+    "<th>Permanencias</th><th>Saldo</th><th>Valor MIDES</th></tr></thead>",
     "<tbody>", linhas, "</tbody></table></div>"
   )
 }
@@ -1165,7 +1175,9 @@ ui <- page_navbar(
         margin-top: 3px;
       }
       .page-band {
+        width: 100%;
         max-width: 1500px;
+        box-sizing: border-box;
         margin: 0 auto;
         padding: 18px 20px 28px 20px;
       }
@@ -1265,7 +1277,7 @@ ui <- page_navbar(
         gap: 10px;
         margin-bottom: 12px;
       }
-      .audit-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .audit-grid { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
       .audit-lead {
         border-left: 4px solid var(--ipea-green);
         padding: 10px 12px;
@@ -1993,8 +2005,7 @@ ui <- page_navbar(
               class = "map-note movement-table-note",
               tags$strong("Regra fixa: valor total MIDES positivo."),
               " Cada linha resume um consorcio em um ano. Clique no + para ver os municipios em cada movimento. ",
-              tags$strong("Saldo"), " = entradas novas + retornos - saidas. ",
-              tags$strong("Recorrentes"), " = municipios com duas ou mais mudancas de presenca no periodo."
+              tags$strong("Saldo"), " = entradas novas + retornos - saidas. A recorrencia e longitudinal e aparece apenas na trajetoria completa do consorcio."
             ),
             DTOutput("tabela_movimentos_consorcio")
           )
@@ -2084,9 +2095,39 @@ ui <- page_navbar(
         div(class = "audit-card", tags$strong("Raiz CNPJ"), p("Matriz e filiais pela raiz de 8 digitos do CNPJ.")),
         div(class = "audit-card", tags$strong("Nomes duplicados"), p("Mesmo nome juridico com mais de um CNPJ.")),
         div(class = "audit-card", tags$strong("Nomes parecidos"), p("CNPJs diferentes no mesmo municipio-ano compartilham termos territoriais relevantes.")),
+        div(class = "audit-card", tags$strong("Baixa escala MIDES"), p("CNPJs com no maximo dois municipios pagantes em qualquer ano observado.")),
         div(class = "audit-card", tags$strong("Revisao humana"), p("O alerta indica suspeita; nao e evidencia conclusiva de erro."))
       ),
       navset_tab(
+        nav_panel(
+          "Baixa escala MIDES",
+          div(
+            class = "panel-card",
+            h3("CNPJs com um ou dois municipios pagantes por ano"),
+            div(
+              class = "map-note",
+              "Diagnostico no MIDES 2014-2021. O criterio usa o maior numero anual de municipios com valor total positivo. ",
+              tags$strong("A tela nao exclui CNPJs e nao conclui que exista erro;"),
+              " organiza evidencias para revisao documental."
+            ),
+            div(
+              class = "inline-filters",
+              selectizeInput("audit_baixa_padrao", "Padrao temporal", choices = auditoria_baixa_padrao_opts, selected = auditoria_baixa_padrao_opts, multiple = TRUE, options = list(plugins = list("remove_button"))),
+              selectizeInput("audit_baixa_situacao", "Situacao cadastral", choices = auditoria_baixa_situacao_opts, selected = auditoria_baixa_situacao_opts, multiple = TRUE, options = list(plugins = list("remove_button"))),
+              selectizeInput("audit_baixa_estabelecimento", "Estabelecimento", choices = auditoria_baixa_estabelecimento_opts, selected = auditoria_baixa_estabelecimento_opts, multiple = TRUE, options = list(plugins = list("remove_button")))
+            ),
+            textInput("audit_baixa_busca", "Busca livre", placeholder = "Digite CNPJ, sigla, razao social ou municipio"),
+            actionButton("limpar_audit_baixa", "Limpar filtros", class = "btn-reset"),
+            div(
+              class = "kpi-row",
+              div(class = "mini-kpi", div(class = "label", "CNPJs"), div(class = "value", textOutput("kpi_audit_baixa_cnpjs", inline = TRUE))),
+              div(class = "mini-kpi", div(class = "label", "Maximo de 1 municipio"), div(class = "value", textOutput("kpi_audit_baixa_um", inline = TRUE))),
+              div(class = "mini-kpi", div(class = "label", "Maximo de 2 municipios"), div(class = "value", textOutput("kpi_audit_baixa_dois", inline = TRUE))),
+              div(class = "mini-kpi", div(class = "label", "Filiais"), div(class = "value", textOutput("kpi_audit_baixa_filiais", inline = TRUE)))
+            ),
+            DTOutput("tabela_auditoria_baixa_escala")
+          )
+        ),
         nav_panel("Raiz CNPJ", div(class = "panel-card", h3("Raizes de CNPJ com matriz/filiais ou multiplos CNPJs"), DTOutput("tabela_auditoria_cnpj_raiz"))),
         nav_panel("Nomes juridicos", div(class = "panel-card", h3("Nomes juridicos com mais de um CNPJ"), DTOutput("tabela_auditoria_nome"))),
         nav_panel("Nomes parecidos", div(class = "panel-card", h3("Pares com nomes territoriais parecidos"), DTOutput("tabela_auditoria_pares_parecidos"))),
@@ -2118,7 +2159,8 @@ ui <- page_navbar(
           ),
           tags$details(class = "doc-detail", open = NA, tags$summary("Movimentos anuais, nomes e exportacao dos mapas"),
             tags$ul(
-              tags$li(tags$strong("Tabela anual por consorcio:"), " cada linha resume um CNPJ em um ano. O botao + abre as listas de municipios em entradas novas, retornos, saidas, permanencias, base inicial e movimentos recorrentes."),
+              tags$li(tags$strong("Tabela anual por consorcio:"), " cada linha resume um CNPJ em um ano. O botao + abre as listas de municipios em entradas novas, retornos, saidas, permanencias e base inicial."),
+              tags$li(tags$strong("Recorrencia:"), " propriedade longitudinal do par municipio-CNPJ que mudou de presenca duas ou mais vezes entre 2014 e 2021. Por isso, o total aparece na trajetoria do consorcio, e nao como coluna anual."),
               tags$li(tags$strong("Saldo:"), " entradas novas + retornos - saidas. O saldo descreve a variacao financeira observada no MIDES; nao comprova adesao ou desligamento juridico."),
               tags$li(tags$strong("Nomes nos mapas:"), " aparecem quando o filtro deixa no maximo 12 municipios destacados. O mapa amplia o recorte e preserva os municipios vizinhos como contexto."),
               tags$li(tags$strong("Exportacao:"), " PNG e gerado em alta resolucao, a 450 dpi nos mapas individuais e 300 dpi nos pequenos multiplos; PDF e vetorial. Os arquivos refletem os filtros ativos."),
@@ -2204,6 +2246,13 @@ server <- function(input, output, session) {
   updateSelectizeInput(session, "mides_macrogrupo", choices = mides_macrogrupos_opts, server = FALSE)
   updateSelectizeInput(session, "mides_perfil", choices = mides_perfis_opts, server = FALSE)
 
+  observeEvent(input$limpar_audit_baixa, {
+    updateSelectizeInput(session, "audit_baixa_padrao", selected = auditoria_baixa_padrao_opts)
+    updateSelectizeInput(session, "audit_baixa_situacao", selected = auditoria_baixa_situacao_opts)
+    updateSelectizeInput(session, "audit_baixa_estabelecimento", selected = auditoria_baixa_estabelecimento_opts)
+    updateTextInput(session, "audit_baixa_busca", value = "")
+  })
+
   observeEvent(input$limpar, {
     updateCheckboxGroupInput(session, "ano", selected = anos_opts)
     updateCheckboxGroupInput(session, "grupo", selected = grupos_opts)
@@ -2231,6 +2280,38 @@ server <- function(input, output, session) {
     updateSelectInput(session, "mides_mapa_metrica", selected = "valor_total")
     updateTextInput(session, "mides_busca", value = "")
   })
+
+  dados_auditoria_baixa_escala <- reactive({
+    df <- auditoria_baixa_escala
+    if (length(input$audit_baixa_padrao) == 0L ||
+        length(input$audit_baixa_situacao) == 0L ||
+        length(input$audit_baixa_estabelecimento) == 0L) {
+      return(df[0, ])
+    }
+
+    df <- df |>
+      filter(
+        padrao_temporal %in% input$audit_baixa_padrao,
+        situacao_cadastro %in% input$audit_baixa_situacao,
+        tipo_estabelecimento %in% input$audit_baixa_estabelecimento
+      )
+
+    if (!is.null(input$audit_baixa_busca) && str_squish(input$audit_baixa_busca) != "") {
+      termo <- str_to_lower(str_squish(input$audit_baixa_busca))
+      pesquisa <- str_to_lower(paste(
+        df$cnpj_consorcio, df$sigla_cadastro, df$razao_social_cadastro,
+        df$municipios, df$municipio_sede
+      ))
+      df <- df[str_detect(pesquisa, fixed(termo)), ]
+    }
+    df
+  }) |>
+    bindCache(
+      input$audit_baixa_padrao,
+      input$audit_baixa_situacao,
+      input$audit_baixa_estabelecimento,
+      input$audit_baixa_busca
+    )
 
   dados_filtrados <- reactive({
     if (length(input$ano) == 0 || length(input$grupo) == 0 || length(input$classe) == 0) {
@@ -3234,8 +3315,9 @@ server <- function(input, output, session) {
       rownames = FALSE,
       escape = FALSE,
       colnames = c(
-        "", "Ano", "Consorcio", "Ativos", "Entradas novas", "Retornos",
-        "Saidas", "Permanencias", "Saldo", "Recorrentes", "Valor MIDES", "Detalhes"
+        "", "Ano", "Municipios na base inicial", "Municipios com entrada",
+        "Municipios com saida", "Municipios com permanencia", "Pares na base inicial",
+        "Pares que entraram", "Pares que sairam", "Pares que permaneceram", "Detalhes"
       ),
       options = list(
         dom = "t",
@@ -3285,16 +3367,11 @@ server <- function(input, output, session) {
         names_expand = TRUE, values_fill = "<span>Nenhum municipio.</span>"
       )
 
-    listas_recorrentes <- movimentos |>
-      filter(presente_mides, movimento_recorrente) |>
-      summarise(recorrentes_lista = lista_html(municipio), .by = c(ano, cnpj_consorcio))
-
     detalhes_por_linha <- resumo |>
       select(ano, cnpj_consorcio) |>
       left_join(listas_eventos, by = c("ano", "cnpj_consorcio")) |>
-      left_join(listas_recorrentes, by = c("ano", "cnpj_consorcio")) |>
       mutate(across(
-        all_of(c(tipos_evento, "recorrentes_lista")),
+        all_of(tipos_evento),
         ~ coalesce(.x, "<span>Nenhum municipio.</span>")
       )) |>
       transmute(
@@ -3306,7 +3383,6 @@ server <- function(input, output, session) {
           "<div class='movement-detail-group exit'><strong>Saidas observadas</strong>", saida_observada, "</div>",
           "<div class='movement-detail-group stay'><strong>Permanencias</strong>", permaneceu, "</div>",
           "<div class='movement-detail-group entry'><strong>Base inicial de 2014</strong>", base_inicial, "</div>",
-          "<div class='movement-detail-group recurrent'><strong>Movimento recorrente no periodo</strong>", recorrentes_lista, "</div>",
           "</div></div>"
         )
       )
@@ -3315,7 +3391,7 @@ server <- function(input, output, session) {
       df <- tibble(
         ` ` = character(), Ano = integer(), Consorcio = character(), Ativos = integer(),
         `Entradas novas` = integer(), Retornos = integer(), Saidas = integer(), Permanencias = integer(),
-        Saldo = integer(), Recorrentes = integer(), `Valor MIDES` = numeric(), Detalhes = character()
+        Saldo = integer(), `Valor MIDES` = numeric(), Detalhes = character()
       )
     } else {
       df <- resumo |>
@@ -3330,7 +3406,7 @@ server <- function(input, output, session) {
           ` ` = "", Ano = ano, Consorcio = consorcio, Ativos = pares_ativos,
           `Entradas novas` = entradas_novas, Retornos = retornos, Saidas = saidas,
           Permanencias = permanencias, Saldo = saldo_liquido,
-          Recorrentes = recorrentes_ativos, `Valor MIDES` = round(valor_total_mides, 2),
+          `Valor MIDES` = round(valor_total_mides, 2),
           Detalhes = detalhes
         )
     }
@@ -3353,7 +3429,7 @@ server <- function(input, output, session) {
           list(className = "details-control", orderable = FALSE, width = "28px", targets = 0),
           list(visible = FALSE, targets = coluna_detalhes),
           list(width = "290px", targets = 2),
-          list(className = "dt-center", targets = c(1, 3, 4, 5, 6, 7, 8, 9))
+          list(className = "dt-center", targets = c(1, 3, 4, 5, 6, 7, 8))
         ),
         language = dt_pt
       ),
@@ -3590,6 +3666,53 @@ server <- function(input, output, session) {
         language = dt_pt
       )
     )
+  }, server = TRUE)
+
+  output$kpi_audit_baixa_cnpjs <- renderText(fmt_int(nrow(dados_auditoria_baixa_escala())))
+  output$kpi_audit_baixa_um <- renderText(fmt_int(sum(dados_auditoria_baixa_escala()$max_municipios_ano == 1L)))
+  output$kpi_audit_baixa_dois <- renderText(fmt_int(sum(dados_auditoria_baixa_escala()$max_municipios_ano == 2L)))
+  output$kpi_audit_baixa_filiais <- renderText(fmt_int(sum(dados_auditoria_baixa_escala()$tipo_estabelecimento == "Filial")))
+
+  output$tabela_auditoria_baixa_escala <- renderDT({
+    df <- dados_auditoria_baixa_escala() |>
+      transmute(
+        cnpj = cnpj_consorcio,
+        estabelecimento = tipo_estabelecimento,
+        sigla = coalesce(sigla_cadastro, "(sem sigla)"),
+        razao_social = coalesce(razao_social_cadastro, "(sem razao social)"),
+        situacao = coalesce(situacao_cadastro, "(sem situacao)"),
+        max_municipios_ano,
+        municipios_unicos,
+        municipios,
+        anos_com_pagamento = anos,
+        padrao_temporal,
+        pares_recorrentes,
+        area_politica = coalesce(area_politica, "Nao informada"),
+        perfil = coalesce(perfil_classificacao, "Nao informado"),
+        hipotese_para_revisao = hipotese_revisao,
+        evidencia_automatica,
+        valor_total_periodo = round(valor_total_periodo, 2)
+      )
+
+    datatable(
+      df,
+      rownames = FALSE,
+      extensions = "Buttons",
+      filter = "top",
+      options = list(
+        dom = "Bfrtip",
+        buttons = c("copy", "csv", "excel"),
+        pageLength = 15,
+        scrollX = TRUE,
+        deferRender = TRUE,
+        searchDelay = 350,
+        language = dt_pt
+      )
+    ) |>
+      formatCurrency(
+        columns = "valor_total_periodo",
+        currency = "R$ ", mark = ".", dec.mark = ",", digits = 0
+      )
   }, server = TRUE)
 
   output$tabela_auditoria_cnpj_raiz <- renderDT({

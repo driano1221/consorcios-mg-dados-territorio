@@ -515,3 +515,27 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Todos os links internos adicionados ao painel e a memoria apontam para arquivos existentes.
 - A skill passou no validador oficial de skills.
 - O repositorio nao recebeu alteracao de codigo, base, dashboard ou metodologia nesta etapa.
+
+---
+
+## 2026-08-12 - Auditoria De Baixa Escala E Correcao Da Recorrencia
+
+### Entregas
+
+- Materializada auditoria reproduzivel de CNPJs com no maximo dois municipios pagantes em qualquer ano do MIDES 2014-2021.
+- Identificados 23 CNPJs: 12 com maximo anual de um municipio, 11 com maximo de dois e 6 filiais.
+- Classificados apenas padroes observaveis: 11 continuos em baixa escala, 5 intermitentes e 7 observados em um ano.
+- Criada a aba `Auditoria > Baixa escala MIDES`, com filtros, KPIs e exportacao da tabela.
+- Hipoteses de revisao foram explicitamente separadas de conclusoes; nenhum CNPJ foi excluido e nenhum modelo foi reestimado.
+- A coluna anual `Recorrentes` foi retirada das tabelas anuais. O total de pares recorrentes foi preservado na trajetoria longitudinal do consorcio.
+
+### Validacao
+
+- Testes automatizados confirmaram os 23 CNPJs, a distribuicao 12/11, os 6 estabelecimentos filiais e os tres padroes temporais.
+- Testes existentes de classificacao, documentacao, trajetoria, mapas e exportacao permaneceram aprovados.
+- A interface foi inspecionada localmente; filtros, reset e responsividade foram conferidos sem rolagem horizontal da pagina.
+
+### Pendencia
+
+- Revisar documentalmente os 23 casos, com prioridade para filiais e observacoes pontuais.
+- Decidir matriz/filial com os superiores antes de consolidar CNPJs ou recalcular valores.

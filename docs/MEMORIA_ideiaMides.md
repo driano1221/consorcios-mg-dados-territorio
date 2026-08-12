@@ -593,7 +593,8 @@ Leitura da procedencia e confianca da v0.2:
 - permanecias dentro e fora entram nos modelos como resultado zero; primeiros aparecimentos de CNPJ e reaparecimentos sem territorio em `t-1` ficam fora do modelo espacial de entrada;
 - o CIMVA foi conferido como exemplo aplicado: 22 municipios pagantes em 2019, 37 em 2020 e 48 em 2021; linhas reais ligam exposicao de vizinhanca, controles e resultado anual;
 - recorrencia e propriedade longitudinal do par com duas ou mais transicoes em 2014-2021;
-- o total longitudinal de recorrentes no resumo do consorcio esta correto, mas a coluna anual `Recorrentes` significa `pares recorrentes ativos no ano` e deve ser renomeada ou removida para evitar leitura errada;
+- o total longitudinal de recorrentes no resumo do consorcio esta correto; em 12/08 a coluna anual ambigua foi removida e o indicador permaneceu apenas na trajetoria do periodo;
+- a nova auditoria de baixa escala identifica 23 CNPJs com no maximo dois municipios pagantes por ano, sem exclusao automatica: 12 com maximo de um, 11 com maximo de dois, 6 filiais, 11 continuos, 5 intermitentes e 7 observados em um ano;
 - nenhuma base ou estimativa foi modificada; os esclarecimentos foram incorporados ao guia e ao diario.
 
 ## Padrao Permanente De Reunioes - 2026-08-12

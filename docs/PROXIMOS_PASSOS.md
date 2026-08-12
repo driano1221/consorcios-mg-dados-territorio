@@ -51,18 +51,12 @@ O projeto tem hoje tres blocos principais funcionando:
 
 ## Decisoes Pendentes
 
-0. **Clareza do indicador de recorrencia no dashboard**
-   - recorrencia e definida no par `municipio x CNPJ` ao longo de 2014-2021;
-   - o total no resumo do consorcio esta correto;
-   - a coluna anual `Recorrentes` mostra pares recorrentes ativos naquele ano, nao novos recorrentes do ano;
-   - renomear para `Pares recorrentes ativos no ano` ou retirar a coluna da tabela anual. Recomendacao: retirar da tabela anual e manter o total do periodo no resumo.
-
-0.1. **Auditar CNPJs de baixa escala e persistencia**
-   - gerar tabela por CNPJ com maximo de municipios pagantes, anos ativos, municipio-anos, valor, entradas, saidas e recorrencia;
-   - destacar inicialmente CNPJs com no maximo 1 ou 2 municipios pagantes, sem exclui-los automaticamente;
-   - cruzar nomes, raizes, situacao cadastral, ano de fundacao e documentos;
-   - comparar resultados dos modelos com e sem casos classificados como pontuais ou de evidencia insuficiente;
-   - estudar distancia/tempo rodoviario ate a sede ou nucleo do consorcio.
+0. **Auditoria de baixa escala e recorrencia - implementado em 12/08**
+   - a aba `Auditoria > Baixa escala MIDES` organiza 23 CNPJs com no maximo dois municipios pagantes em qualquer ano;
+   - sao 12 CNPJs com maximo de um municipio, 11 com maximo de dois e 6 filiais;
+   - os padroes observados sao 11 continuos em baixa escala, 5 intermitentes e 7 observados em um unico ano;
+   - a auditoria gera hipoteses para revisao, mas nao exclui casos nem altera o modelo;
+   - a coluna anual ambigua de recorrencia foi retirada; o total longitudinal permanece na trajetoria do consorcio.
 
 1. **Matriz e filiais**
    - decidir com superiores se matriz/filiais devem ser consolidadas por raiz de 8 digitos do CNPJ;
@@ -94,6 +88,15 @@ O que fazer se for aprovado:
 - atualizar dashboard e metodologia com a regra aplicada.
 
 Nao aplicar automaticamente antes da validacao.
+
+### 1.1 Revisar documentalmente os 23 CNPJs de baixa escala
+
+**Status:** caderno e filtros prontos; revisao humana pendente.
+
+- verificar primeiro os 6 estabelecimentos filiais;
+- distinguir baixa escala persistente, registro pontual, lacuna/retorno e encerramento;
+- decidir com a equipe quais evidencias permitem classificar um caso como insuficiente;
+- somente depois testar sensibilidades do modelo ou estudar distancia rodoviaria.
 
 ### 2. Analise territorial do movimento no MIDES completo
 
