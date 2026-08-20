@@ -29,6 +29,14 @@ path_classificacao_local <- file.path(local_data_dir, "classificacao_areas_polit
 path_mg_sf_local <- file.path(local_data_dir, "mg_municipios_sf_web.rds")
 path_mg_contorno_local <- file.path(local_data_dir, "mg_contorno_sf_web.rds")
 path_movimentos_local <- file.path(local_data_dir, "movimentos_municipio_consorcio_ano.rds")
+path_mides_nacional_anual <- file.path(local_data_dir, "mides_nacional_anual_app.rds")
+path_cadastro_nacional <- file.path(local_data_dir, "cadastro_nacional_consolidado_app.rds")
+path_movimentos_nacional <- file.path(local_data_dir, "mides_nacional_movimentos_app.rds")
+path_municipios_nacional_sf <- file.path(local_data_dir, "brasil_municipios_mides_sf_web.rds")
+path_estados_nacional_sf <- file.path(local_data_dir, "brasil_estados_contorno_sf_web.rds")
+path_brasil_contorno_sf <- file.path(local_data_dir, "brasil_contorno_sf_web.rds")
+path_cobertura_nacional <- file.path(local_data_dir, "mides_nacional_cobertura_app.rds")
+path_sem_municipio_nacional <- file.path(local_data_dir, "mides_nacional_sem_municipio_app.rds")
 path_vinculos_repo <- file.path(out_dir, "base_1_vinculos_2015_2019.csv")
 path_validacao_repo <- file.path(out_dir, "base_1_validacao_siconfi_reconstruido_2015_2019.csv")
 path_mides_anual_repo <- file.path(project_dir, "dados/processado/painel_mg_anual.rds")
@@ -58,6 +66,13 @@ if (!file.exists(path_classificacao)) stop("Arquivo nao encontrado: ", path_clas
 if (!file.exists(path_mg_sf)) stop("Arquivo nao encontrado: ", path_mg_sf)
 if (!file.exists(path_mg_contorno)) stop("Arquivo nao encontrado: ", path_mg_contorno)
 if (!file.exists(path_movimentos)) stop("Arquivo nao encontrado: ", path_movimentos)
+for (path_nacional in c(
+  path_mides_nacional_anual, path_cadastro_nacional, path_movimentos_nacional,
+  path_municipios_nacional_sf, path_estados_nacional_sf, path_brasil_contorno_sf,
+  path_cobertura_nacional, path_sem_municipio_nacional
+)) {
+  if (!file.exists(path_nacional)) stop("Arquivo nacional nao encontrado: ", path_nacional)
+}
 
 read_table_app <- function(path) {
   if (tolower(tools::file_ext(path)) == "rds") {
@@ -642,6 +657,17 @@ movimentos_analiticos <- readRDS(path_movimentos) |>
     )
   )
 
+dados_mides_nacional <- list(
+  anual = readRDS(path_mides_nacional_anual),
+  cadastro = readRDS(path_cadastro_nacional),
+  movimentos = readRDS(path_movimentos_nacional),
+  municipios_sf = readRDS(path_municipios_nacional_sf),
+  estados_sf = readRDS(path_estados_nacional_sf),
+  brasil_sf = readRDS(path_brasil_contorno_sf),
+  cobertura = readRDS(path_cobertura_nacional),
+  sem_municipio = readRDS(path_sem_municipio_nacional)
+)
+
 auditoria_baixa_escala <- construir_auditoria_baixa_escala(
   readRDS(path_movimentos),
   cadastro_base,
@@ -1074,7 +1100,7 @@ definicoes <- tibble::tribble(
   ~item, ~definicao,
   "Par municipio-consorcio", "Uma observacao que liga um municipio a um CNPJ de consorcio em um ano. Exemplo: Abaete x COMASF x 2015 e um par; o mesmo municipio em outro consorcio e outro par.",
   "MIDES", "Fonte de pagamento observado. Na Base 1, indica que o municipio pagou um CNPJ de consorcio em determinado ano.",
-  "MIDES completo", "Consulta anual separada, com todo o painel MIDES processado no projeto entre 2014 e 2021. Nao usa MUNIC nem SICONFI.",
+  "MIDES completo", "Consulta anual separada. A visao MG cobre 2014-2021; a visao Brasil preserva o periodo encontrado em cada UF. Nao usa MUNIC nem SICONFI.",
   "valor_corrente", "No MIDES, pagamentos do proprio exercicio.",
   "valor_restos", "No MIDES, pagamentos de restos a pagar. Sao valores associados a obrigacoes de anos anteriores.",
   "valor_total", "No MIDES, soma de valor_corrente e valor_restos para a linha municipio-consorcio-ano.",
@@ -1091,8 +1117,8 @@ definicoes <- tibble::tribble(
   "munic_sem_fluxo_financeiro", "MUNIC declara vinculo, mas MIDES e SICONFI nao mostram fluxo financeiro no municipio-ano.",
   "consorcio_pagas", "Regra SICONFI usada: rubricas com 'consorcio' e estagio 'Despesas Pagas'.",
   "2015 vs 2019", "Comparacao temporal feita por par municipio-consorcio. Classifica se o par permaneceu, entrou em 2019 ou saiu depois de 2015.",
-  "Raiz do CNPJ", "Os oito primeiros digitos do CNPJ. E usada apenas para auditar relacoes de matriz e filial; a consolidacao financeira por raiz ainda nao foi aplicada.",
-  "Auditoria", "Painel de suspeitas cadastrais e territoriais para revisar CNPJs com mesmo nome, sigla ausente ou repeticoes em um mesmo municipio-ano."
+  "Raiz do CNPJ", "Os oito primeiros digitos do CNPJ. Na camada nacional, matriz e filiais da mesma raiz sao consolidadas em uma entidade; os CNPJs originais permanecem rastreaveis.",
+  "Auditoria", "Painel de identidade nacional e de alertas do recorte MG. A camada nacional consolida matriz e filiais; os demais alertas continuam sujeitos a revisao humana."
 )
 
 label_com_info <- function(rotulo, explicacao, modo = NULL) {
@@ -1110,19 +1136,21 @@ label_com_info <- function(rotulo, explicacao, modo = NULL) {
   )
 }
 
+source(file.path(app_dir, "mides_nacional.R"), encoding = "UTF-8", local = TRUE)
+
 ui <- page_navbar(
   title = div(
     class = "brand-wrap",
     div(
       class = "brand-text",
-      span(class = "brand-title", "Painel Consórcios MG"),
-      span(class = "brand-subtitle", "MIDES, MUNIC, SICONFI e auditoria")
+      span(class = "brand-title", "Painel de Consórcios IPEA"),
+      span(class = "brand-subtitle", "Brasil e Minas Gerais | MIDES, MUNIC e SICONFI")
     )
   ),
-  window_title = "Painel Consórcios MG",
+  window_title = "Painel de Consórcios IPEA",
   theme = tema,
   header = tags$head(
-    tags$title("Painel Consórcios MG"),
+    tags$title("Painel de Consórcios IPEA"),
     tags$style(HTML("
       :root {
         --ipea-ink: #173a50;
@@ -1806,11 +1834,53 @@ ui <- page_navbar(
         font-size: 10px;
         color: var(--ipea-muted);
       }
+      .national-hero { border-left-color: #2b8cbe; }
+      .national-universe-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin: 12px 0;
+      }
+      .universe-kpi {
+        min-height: 105px;
+        padding: 14px 16px;
+        border: 1px solid var(--ipea-line);
+        border-top: 4px solid var(--ipea-ink);
+        background: #ffffff;
+      }
+      .universe-kpi.financial { border-top-color: #238b45; }
+      .universe-kpi.pending { border-top-color: #7c878c; }
+      .universe-kpi span, .universe-kpi small { display: block; color: var(--ipea-muted); }
+      .universe-kpi strong { display: block; margin: 3px 0; color: var(--ipea-ink); font: 700 30px Georgia, serif; }
+      .national-kpis { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+      .mini-kpi.warning { border-top-color: #e07a2f; }
+      .coverage-panel { overflow: hidden; }
+      .coverage-scroll { overflow-x: auto; padding-bottom: 6px; }
+      .coverage-chart {
+        display: grid;
+        grid-template-columns: 130px minmax(720px, 1fr);
+        gap: 5px 10px;
+        min-width: 900px;
+        align-items: center;
+      }
+      .coverage-years, .coverage-cells { display: grid; grid-template-columns: repeat(24, minmax(23px, 1fr)); gap: 2px; }
+      .coverage-years span { color: var(--ipea-muted); font: 9px Consolas, monospace; text-align: center; transform: rotate(-45deg); transform-origin: center; margin-bottom: 8px; }
+      .coverage-state { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
+      .coverage-state span { color: var(--ipea-muted); }
+      .coverage-cells i, .coverage-legend i { display: block; height: 18px; border: 1px solid #d4dde1; background: #f2f4f5; }
+      .coverage-cells i.covered, .coverage-legend i.covered { background: #2b8cbe; border-color: #2b8cbe; }
+      .coverage-legend { display: flex; gap: 18px; margin-top: 10px; color: var(--ipea-muted); font-size: 11px; }
+      .coverage-legend span { display: inline-flex; align-items: center; gap: 6px; }
+      .coverage-legend i { width: 16px; height: 12px; }
+      .national-trajectory-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(76px, 1fr)); gap: 4px; min-width: 620px; }
+      .national-trajectory-strip div { padding: 6px; border-top: 3px solid var(--ipea-ink); background: #f4f7f8; text-align: center; }
+      .national-trajectory-strip span, .national-trajectory-strip small { display: block; color: var(--ipea-muted); font-size: 10px; }
+      .national-trajectory-strip strong { display: block; color: var(--ipea-ink); font: 700 18px Georgia, serif; }
       @media (max-width: 980px) {
         .kpi-row, .concept-grid, .inline-filters, .audit-grid, .doc-grid,
         .doc-stat-grid, .doc-two-col, .result-pair, .interpret-grid,
         .risk-split, .doc-flow-five, .example-steps, .validation-list,
-        .movement-detail-grid {
+        .movement-detail-grid, .national-universe-grid, .national-kpis {
           grid-template-columns: 1fr;
         }
         .map-actions { justify-content: flex-start; }
@@ -1829,12 +1899,12 @@ ui <- page_navbar(
     "Visao geral",
     div(
       class = "page-band",
-      div(class = "hero", h2("Consulta executiva das bases do projeto"), p("O painel separa o recorte 2015/2019, o MIDES completo 2014-2021 e a auditoria cadastral. Cada area tem escopo, filtros e interpretacao proprios.")),
+      div(class = "hero", h2("Consulta executiva das bases do projeto"), p("O painel separa a camada nacional MIDES do recorte analitico de Minas Gerais. Cada area informa seu universo, periodo e regra de leitura.")),
       div(
         class = "concept-grid",
         div(class = "concept-card", tags$strong("Recorte 2015/2019"), p("Recorte comparavel de 2015 e 2019. Junta MIDES e MUNIC por par municipio-consorcio-ano e usa SICONFI como validacao financeira agregada.")),
-        div(class = "concept-card", tags$strong("MIDES completo"), p("Consulta anual separada de pagamentos observados no MIDES entre 2014 e 2021. Nao mistura MUNIC nem SICONFI.")),
-        div(class = "concept-card", tags$strong("Auditoria"), p("Listas de suspeitas para revisao humana: nomes/CNPJs duplicados e nomes territoriais parecidos no mesmo municipio-ano."))
+        div(class = "concept-card", tags$strong("MIDES completo"), p("Oferece duas visoes: MG em 2014-2021 e Brasil conforme a cobertura encontrada em oito UFs. Nao mistura MUNIC nem SICONFI.")),
+        div(class = "concept-card", tags$strong("Auditoria"), p("Mostra a identidade nacional consolidada por raiz CNPJ e mantem os alertas do recorte MG para revisao humana."))
       ),
       div(
         class = "concept-grid",
@@ -1924,6 +1994,10 @@ ui <- page_navbar(
     "MIDES completo",
     div(
       class = "page-band",
+      navset_pill(
+        nav_panel(
+          "Minas Gerais",
+          div(
       div(class = "hero", h2("MIDES completo 2014-2021"), p("Consulta separada do painel anual MIDES. A unidade e municipio x consorcio x ano, sem MUNIC e sem SICONFI.")),
       div(
         class = "panel-card",
@@ -2036,6 +2110,13 @@ ui <- page_navbar(
         nav_panel("Resumo anual", div(class = "panel-card", h3("Resumo por ano"), DTOutput("tabela_mides_ano"))),
         nav_panel("Tabela detalhada", div(class = "panel-card", h3("MIDES municipio x consorcio x ano"), DTOutput("tabela_mides")))
       )
+          )
+        ),
+        nav_panel(
+          "Brasil",
+          mides_nacional_ui("mides_br")
+        )
+      )
     )
   ),
   nav_panel(
@@ -2089,7 +2170,7 @@ ui <- page_navbar(
     "Auditoria",
     div(
       class = "page-band",
-      div(class = "hero", h2("Auditoria cadastral"), p("Alertas para revisao humana. A auditoria nao corrige nem unifica CNPJs automaticamente.")),
+      div(class = "hero", h2("Auditoria cadastral"), p("A identidade nacional consolida matriz e filiais por raiz CNPJ. As demais abas continuam como alertas para revisao humana.")),
       div(
         class = "audit-grid",
         div(class = "audit-card", tags$strong("Raiz CNPJ"), p("Matriz e filiais pela raiz de 8 digitos do CNPJ.")),
@@ -2099,6 +2180,7 @@ ui <- page_navbar(
         div(class = "audit-card", tags$strong("Revisao humana"), p("O alerta indica suspeita; nao e evidencia conclusiva de erro."))
       ),
       navset_tab(
+        nav_panel("Identidade nacional", auditoria_nacional_ui("mides_br")),
         nav_panel(
           "Baixa escala MIDES",
           div(
@@ -2146,14 +2228,14 @@ ui <- page_navbar(
           div(
             class = "doc-grid",
             div(class = "doc-card", h3("Base 1"), p("Recorte comparavel de 2015 e 2019. MIDES observa pagamento; MUNIC registra participacao declarada; SICONFI valida o gasto agregado do municipio-ano.")),
-            div(class = "doc-card", h3("MIDES completo"), p("Serie anual de 2014 a 2021. Permite acompanhar intensidade e movimentos de pares municipio-consorcio, sem combinar MUNIC ou SICONFI.")),
-            div(class = "doc-card", h3("Auditoria"), p("Identifica sinais cadastrais para revisao humana. Nao corrige CNPJ, nao soma valores e nao unifica matriz e filial automaticamente."))
+            div(class = "doc-card", h3("MIDES completo"), p("A visao MG cobre 2014-2021. A visao Brasil usa os anos encontrados em cada UF e consolida estabelecimentos da mesma raiz CNPJ.")),
+            div(class = "doc-card", h3("Auditoria"), p("A aba nacional mostra a identidade consolidada e rastreavel. Os alertas de baixa escala, nomes e repeticoes permanecem voltados a revisao humana."))
           ),
           tags$details(class = "doc-detail", open = NA, tags$summary("Como ler as telas"),
             tags$ul(
               tags$li(tags$strong("Visao geral:"), " panorama do recorte e seus indicadores."),
               tags$li(tags$strong("Base 1:"), " consulta de pares em 2015 e 2019 e sua classe de validacao SICONFI."),
-              tags$li(tags$strong("MIDES completo:"), " pagamentos e movimentos anuais no MIDES entre 2014 e 2021."),
+              tags$li(tags$strong("MIDES completo:"), " pagamentos e movimentos anuais em visoes separadas para Minas Gerais e Brasil."),
               tags$li(tags$strong("2015 vs 2019:"), " compara presenca, entrada e saida entre os dois anos."),
               tags$li(tags$strong("Auditoria:"), " apresenta alertas que exigem verificacao, sem alterar os dados de origem."))
           ),
@@ -2173,6 +2255,10 @@ ui <- page_navbar(
           tags$details(class = "doc-detail", tags$summary("Regra de leitura do SICONFI"),
             p("O SICONFI e uma fonte contabil por municipio e ano. Ele nao informa o CNPJ do consorcio que recebeu o recurso. Por isso, ele nao cria pares e nao confirma isoladamente um vinculo especifico."),
             p("A regra usada, ", tags$code("consorcio_pagas"), ", soma despesas pagas em rubricas de consorcio. A comparacao com o MIDES usa tolerancia de 10% ou R$ 10 mil."))
+        ),
+        nav_panel(
+          "MIDES Brasil",
+          documentacao_nacional_ui()
         ),
         nav_panel(
           "Movimentos espaciais",
@@ -2235,6 +2321,8 @@ ui <- page_navbar(
 )
 
 server <- function(input, output, session) {
+  mides_nacional_server("mides_br", dados_mides_nacional)
+
   updateSelectizeInput(session, "municipio", choices = municipios_opts, server = TRUE)
   updateSelectizeInput(session, "consorcio", choices = consorcios_opts, server = TRUE)
   updateSelectizeInput(session, "cmp_municipio", choices = municipios_opts, server = TRUE)

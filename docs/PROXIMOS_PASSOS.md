@@ -35,12 +35,14 @@ O projeto tem hoje tres blocos principais funcionando:
    - aba `MIDES completo > Entradas/saidas` mostra movimento anual dos pares municipio-consorcio entre 2014 e 2021;
    - aba `MIDES completo > Trajetoria 2014-2021` compara os oito anos por consorcio e abre sob demanda linha do tempo, tabela anual e matriz municipio-ano para qualquer linha, sem exigir filtro previo;
    - mapas foram refinados visualmente com fundo branco, divisas municipais continuas, paletas mais legiveis, zoom/tela cheia e filtros integrados.
+   - `MIDES completo` passou a oferecer visoes separadas `Minas Gerais` e `Brasil`; a visao nacional incorpora 1.159 entidades cadastrais, 505 raizes com algum registro MIDES, cobertura por UF, mapas, movimentos, trajetorias, tabelas e exportacao;
+   - Base 1, MUNIC, SICONFI, classificacao v0.5 e modelos continuam no escopo MG.
 
 3. **Auditoria e camada nacional de identidade**
-   - a regra por raiz de oito digitos foi aplicada em camada tecnica separada;
+   - a regra por raiz de oito digitos foi aplicada em camada tecnica e integrada em visao nacional separada no dashboard;
    - os 1.194 CNPJs formam 1.159 entidades, com 35 filiais em 23 raizes;
    - o MIDES nacional foi processado para oito UFs, preservando CNPJs originais e valores;
-   - o dashboard MG continua inalterado ate a validacao substantiva da nova camada.
+   - os produtos MG continuam preservados; a expansao nao recalculou seus modelos nem sua classificacao.
 
 4. **Mapas e visualizacoes territoriais**
    - mapa MIDES completo mostra intensidade municipal por valor, consorcios ou transacoes;
@@ -62,10 +64,11 @@ O projeto tem hoje tres blocos principais funcionando:
 1. **Matriz, filiais e expansao nacional**
    - crosswalk `cnpj_original -> cnpj_matriz` concluido e testado;
    - MIDES nacional consolidado concluido para as oito UFs com correspondencia;
-   - validar com a equipe as seis raizes efetivamente afetadas nos pagamentos;
-   - decidir a janela temporal comparavel entre UFs;
-   - decidir quando migrar o dashboard, movimentos, classificacoes e modelos;
-   - investigar ou manter em anexo as 681 transacoes de SC sem municipio.
+   - a primeira integracao ao dashboard foi aprovada como visao Brasil separada;
+   - a cobertura preserva todos os anos encontrados por UF e explicita lacunas em linha do tempo;
+   - as 681 transacoes de SC sem municipio entram no total financeiro sinalizado e ficam fora de pares, mapas e movimentos;
+   - validar com a equipe as seis raizes efetivamente afetadas e a leitura da primeira entrega nacional;
+   - decidir depois quando unificar interfaces e quando recalcular classificacoes e modelos.
 
 2. **Regra definitiva do SICONFI**
    - regra atual recomendada: `consorcio_pagas`;
@@ -82,14 +85,14 @@ O projeto tem hoje tres blocos principais funcionando:
 
 ### 1. Validar e integrar a camada nacional matriz/filial
 
-**Status:** camada tecnica concluida; integracao aos produtos ainda nao aplicada.
+**Status:** camada tecnica e primeira visao nacional no dashboard concluidas; produtos MG preservados.
 
 O que falta decidir:
 
 - revisar as seis raizes afetadas no MIDES e os aliases das filiais;
-- definir periodo nacional comum ou estrategia por cobertura de UF;
-- definir tratamento das transacoes sem chave municipal;
-- atualizar dashboard e modelos somente depois dessa validacao;
+- validar a estrategia adotada de cobertura especifica por UF;
+- validar o tratamento financeiro, nao municipal, das transacoes sem chave;
+- manter os modelos MG sem alteracao ate a integracao nacional ser aprovada;
 - avaliar separadamente a aplicacao da identidade consolidada ao SICONFI e MUNIC.
 
 Nao substituir silenciosamente os produtos MG existentes.
@@ -245,7 +248,7 @@ Primeiro output sugerido:
 
 - **SICONV:** pausado; nao mexer ate decisao explicita.
 - **CNM na Base 1:** fora do recorte 2015/2019; CNM e fonte atual/historica separada, nao comparavel diretamente com MUNIC 2015/2019.
-- **Consolidacao matriz/filial:** nao aplicar ainda; apenas auditoria esta pronta.
+- **Consolidacao matriz/filial:** aplicada na camada nacional MIDES e no dashboard Brasil; ainda nao aplicada a Base 1, MUNIC, SICONFI, classificacao v0.5 ou modelos MG.
 - **Deputados/votos:** viavel tecnicamente, mas deixar para etapa posterior por risco de interpretacao.
 - **AMM completa:** nao assumir que a base esta pronta; precisa coleta municipio a municipio.
 

@@ -1,11 +1,14 @@
-# Painel Consórcios MG
+# Painel de Consórcios IPEA
 
-Dashboard Shiny para consulta interativa da Base 1, do MIDES completo e das auditorias do projeto.
+Dashboard Shiny para consulta da Base 1 de Minas Gerais e da camada nacional consolidada do MIDES.
 
 ## Conteudo
 
 - filtros multisselecao por ano, grupo de vinculo, classe SICONFI, municipio, consorcio e busca livre;
 - filtros MIDES completo por area detalhada, macrogrupo e perfil institucional da classificacao v0.5, com opcoes individuais e rotulos legiveis;
+- visoes separadas `Minas Gerais` e `Brasil` no MIDES completo;
+- consolidacao nacional de matriz e filiais pela raiz de oito digitos, preservando os CNPJs originais;
+- linha do tempo da cobertura encontrada em CE, DF, MG, PB, PR, RS, SC e SP;
 - KPIs compactos no topo;
 - tabela pesquisavel/exportavel da base final;
 - tabela agregada de validacao SICONFI por municipio-ano;
@@ -23,6 +26,9 @@ Dashboard Shiny para consulta interativa da Base 1, do MIDES completo e das audi
 - `data/base_1_validacao_siconfi_reconstruido_2015_2019.csv`
 - `data/classificacao_areas_politica_mg_v0_5.rds`
 - `data/movimentos_municipio_consorcio_ano.rds`
+- `data/mides_nacional_anual_app.rds`
+- `data/cadastro_nacional_consolidado_app.rds`
+- `data/mides_nacional_movimentos_app.rds`
 
 Esses arquivos foram copiados para dentro da pasta do app para facilitar publicacao.
 
@@ -51,12 +57,16 @@ base1_shiny/
 +-- app.R
 +-- auditoria_baixa_escala.R
 +-- documentacao_movimentos.R
++-- mides_nacional.R
 +-- start_app.R
 +-- README.md
 +-- data/
 |   +-- base_1_vinculos_2015_2019.csv
 |   +-- base_1_validacao_siconfi_reconstruido_2015_2019.csv
 |   +-- movimentos_municipio_consorcio_ano.rds
+|   +-- mides_nacional_anual_app.rds
+|   +-- cadastro_nacional_consolidado_app.rds
+|   +-- mides_nacional_movimentos_app.rds
 +-- www/
 |   +-- IPEA-LOGO.png
 |   +-- pipeline_movimentos_mides.png
@@ -74,6 +84,8 @@ MIDES e MUNIC formam a base de vinculos em `municipio x consorcio x ano`.
 SICONFI entra como validacao financeira agregada em `municipio x ano`, usando a regra `consorcio_pagas`.
 
 No MIDES completo, a classificacao v0.5 e anexada por CNPJ somente como atributo analitico. Ela nao altera valores, pares ou movimentos. Os filtros mostram apenas categorias substantivas. Casos sem area comprovada, inativos/baixados, sediados fora de MG ou fora do escopo continuam preservados nos totais financeiros e sao explicados brevemente em `Documentacao`.
+
+Na visao Brasil, a unidade e `municipio pagador x raiz CNPJ x ano`. Os 1.194 estabelecimentos do cadastro IPEA formam 1.159 entidades; 505 possuem MIDES localizado na extracao atual. Registros sem municipio entram apenas no total financeiro sinalizado e nao criam pares, mapas ou movimentos.
 
 Recorrencia e uma propriedade longitudinal do par municipio-CNPJ: duas ou mais mudancas de presenca no periodo. Por isso, o total aparece na trajetoria 2014-2021 e nao nas tabelas anuais.
 

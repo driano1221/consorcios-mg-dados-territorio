@@ -1,7 +1,7 @@
 # Memoria - Projeto Consorcios MG: Dados e Territorio
 
 **Ultima atualizacao:** 2026-08-20
-**Status:** frentes 1 a 8 entregues em nivel exploratorio; identidade nacional matriz/filial materializada e validada fora do dashboard; controles adicionais permanecem pendentes.
+**Status:** frentes 1 a 8 entregues em nivel exploratorio; identidade nacional matriz/filial materializada, validada e integrada em uma visao Brasil separada no dashboard; controles adicionais permanecem pendentes.
 
 ---
 
@@ -11,6 +11,8 @@
 - Os 1.194 CNPJs do cadastro IPEA formam 1.159 entidades; 35 filiais foram incorporadas em 23 raizes.
 - O crosswalk preserva CNPJ, nome, sigla, situacao e sede de cada estabelecimento original.
 - A consulta MIDES encontrou 1.300.862 transacoes associadas a 512 CNPJs, 505 raizes e municipios pagadores de CE, DF, MG, PB, PR, RS, SC e SP.
+- O dashboard preserva a visao MG e oferece uma visao Brasil separada no `MIDES completo`, com cobertura temporal explicita por UF, mapas, movimentos, trajetorias, tabelas, exportacao e auditoria nacional.
+- As 681 transacoes de SC sem municipio identificado entram no total financeiro sinalizado, mas nao criam pares, mapas ou movimentos municipais.
 - A base anual passou de 40.535 linhas por CNPJ original para 40.486 por raiz, conservando R$ 15.168.694.503,38 no painel municipal.
 - Seis raizes foram efetivamente afetadas no MIDES e 49 chaves municipio-ano somaram matriz e filial.
 - Foram preservadas separadamente 681 transacoes de SC sem codigo municipal, no valor de R$ 11.145.961,39.

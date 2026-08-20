@@ -576,3 +576,33 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Definicao da janela temporal nacional comparavel.
 - Decisao sobre os registros de SC sem chave municipal.
 - Integracao futura ao dashboard, movimentos, classificacoes e modelos somente apos aprovacao.
+
+---
+
+## 2026-08-20 - Integracao MIDES Brasil Ao Dashboard
+
+### Entregas
+
+- Criada a visao separada `MIDES completo > Brasil`, sem substituir a consulta MG.
+- Incorporados os dois universos: 1.159 entidades cadastrais e 505 raizes com algum registro MIDES.
+- Adicionados filtros por periodo, UF pagadora, UF sede, municipio, entidade consolidada e busca livre.
+- Adicionados mapa nacional, movimentos anuais, tabela por consorcio, trajetoria, resumo, tabela detalhada e exportacoes.
+- Criada linha do tempo que preserva o periodo encontrado em cada UF e distingue lacuna de cobertura de valor zero.
+- Adicionada `Auditoria > Identidade nacional`, com matriz, filiais e CNPJs originais rastreaveis.
+- Adicionada documentacao interna da regra nacional, exemplo real e limites.
+
+### Regras Aplicadas
+
+- Matriz e filiais sao reunidas pela raiz de oito digitos; a ordem `0001` e canonica.
+- As 681 transacoes de SC sem municipio entram no total financeiro sinalizado e nao formam pares, mapas ou movimentos.
+- Movimentos so comparam anos consecutivos efetivamente cobertos pela mesma UF.
+- Base 1, MUNIC, SICONFI, classificacao v0.5 e modelos espaciais permanecem MG.
+
+### Validacao
+
+- 40.486 linhas anuais, 7.560 pares consolidados e nenhuma chave duplicada.
+- Os 1.194 CNPJs resultam em 1.159 entidades; 23 raizes incorporam 35 filiais.
+- Testes antigos de classificacao, mapas, exportacao, documentacao e trajetoria permaneceram aprovados.
+- Testes nacionais, filtros MG/CIMVA, todas as paginas, desktop e viewport movel foram verificados sem erros Shiny.
+- A legenda do mapa nacional foi convertida em cinco classes para evitar sobreposicao.
+- A versao foi publicada no shinyapps.io e as seis paginas principais, a visao Brasil, a auditoria nacional e a documentacao foram novamente verificadas na URL publica.

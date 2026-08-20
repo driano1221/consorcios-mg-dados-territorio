@@ -53,10 +53,10 @@ O piloto cobre os **853 municípios de Minas Gerais** e contém:
 - modelos exploratórios de entrada e saída com exposição espacial em `t-1`;
 - mapas interativos, exportação cartográfica e trajetória longitudinal por consórcio.
 
-Em paralelo ao dashboard mineiro, foi materializada uma primeira camada
-nacional auditável. Ela consolida os **1.194 CNPJs** do cadastro IPEA em
-**1.159 entidades** pela raiz de oito dígitos e processa os pagamentos MIDES
-localizados em oito UFs. Essa camada ainda não foi integrada ao dashboard.
+O dashboard agora incorpora uma camada nacional auditável. Ela consolida os
+**1.194 CNPJs** do cadastro IPEA em **1.159 entidades** pela raiz de oito
+dígitos e processa pagamentos MIDES localizados em oito UFs. A visão nacional
+permanece separada das análises comparáveis e dos modelos de Minas Gerais.
 
 ### Produtos
 
@@ -111,7 +111,7 @@ O dashboard reúne seis áreas:
 
 - visão executiva do projeto;
 - recorte comparável MIDES–MUNIC de 2015/2019;
-- MIDES completo de 2014–2021;
+- MIDES completo com visões separadas para MG (2014–2021) e Brasil (período por UF);
 - comparação territorial entre 2015 e 2019;
 - auditoria cadastral de CNPJs e nomes;
 - documentação metodológica incorporada.
@@ -152,9 +152,9 @@ Pop-Location
 - Presença no MIDES significa **pagamento positivo observado**, não filiação jurídica.
 - Entrada e saída representam mudança de presença financeira entre anos consecutivos.
 - O SICONFI valida o total municipal anual; ele não identifica o consórcio de destino.
-- A camada nacional v0.1 consolida matriz e filiais pela raiz de oito dígitos,
+- A camada nacional consolida matriz e filiais pela raiz de oito dígitos,
   preservando os estabelecimentos originais em um crosswalk auditável. O
-  dashboard MG publicado ainda usa a estrutura anterior.
+  recorte MG e os modelos permanecem na estrutura metodológica validada antes da expansão.
 - Os modelos espaciais atuais são associativos e exploratórios, não causais.
 - Toda inferência setorial deve preservar fonte, regra, status e justificativa.
 

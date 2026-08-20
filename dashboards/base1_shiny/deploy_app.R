@@ -4,6 +4,7 @@ app_files <- c(
   "app.R",
   "auditoria_baixa_escala.R",
   "documentacao_movimentos.R",
+  "mides_nacional.R",
   "README.md",
   "start_app.R",
   "www/IPEA-LOGO.png",
@@ -17,7 +18,15 @@ app_files <- c(
   "data/mg_municipios_sf_web.rds",
   "data/mides_municipios_lookup.rds",
   "data/movimentos_municipio_consorcio_ano.rds",
-  "data/painel_mg_anual.rds"
+  "data/painel_mg_anual.rds",
+  "data/mides_nacional_anual_app.rds",
+  "data/cadastro_nacional_consolidado_app.rds",
+  "data/mides_nacional_movimentos_app.rds",
+  "data/brasil_municipios_mides_sf_web.rds",
+  "data/brasil_estados_contorno_sf_web.rds",
+  "data/brasil_contorno_sf_web.rds",
+  "data/mides_nacional_cobertura_app.rds",
+  "data/mides_nacional_sem_municipio_app.rds"
 )
 
 app_dir <- "C:/_ideiaMides_deploy/base1_shiny"
