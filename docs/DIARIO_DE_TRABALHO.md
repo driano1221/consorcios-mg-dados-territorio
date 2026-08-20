@@ -539,3 +539,40 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 
 - Revisar documentalmente os 23 casos, com prioridade para filiais e observacoes pontuais.
 - Decidir matriz/filial com os superiores antes de consolidar CNPJs ou recalcular valores.
+
+---
+
+## 2026-08-20 - Identidade CNPJ E Primeira Base MIDES Nacional
+
+### Objetivo
+
+- Consolidar matriz e filiais pela raiz de oito digitos sem perder a identidade original.
+- Ampliar a extracao MIDES para todos os CNPJs do cadastro IPEA e todas as UFs com correspondencia.
+- Executar a implementacao em camada separada, sem alterar o dashboard MG antes da validacao.
+
+### Entregas
+
+- Criados crosswalk nacional e cadastro consolidado para 1.194 CNPJs e 1.159 entidades.
+- Identificadas 23 raizes com matriz e filial e incorporadas 35 filiais.
+- Baixadas 1.300.862 transacoes MIDES de oito UFs pagadoras.
+- Materializados paineis anuais por CNPJ original e por raiz consolidada.
+- Preservados os CNPJs e nomes de origem em cada agregacao.
+- Criadas EDA, amostras, comparacao por UF, lista de colisoes e grafico de cobertura.
+- Documentada a metodologia e criado relatorio de validacao para revisao humana.
+
+### Validacao
+
+- 512 CNPJs MIDES foram consolidados em 505 raizes.
+- 40.535 linhas anuais originais passaram a 40.486 linhas consolidadas.
+- 7.587 pares originais passaram a 7.560 pares consolidados.
+- Seis raizes e 49 chaves municipio-ano foram efetivamente afetadas.
+- R$ 15.168.694.503,38 foram integralmente conservados no painel municipal.
+- As 15.135 linhas do painel MG anterior foram reproduzidas exatamente antes da consolidacao.
+- 681 registros catarinenses sem municipio foram preservados fora da camada municipal.
+
+### Pendencias
+
+- Validacao substantiva das seis raizes afetadas no MIDES.
+- Definicao da janela temporal nacional comparavel.
+- Decisao sobre os registros de SC sem chave municipal.
+- Integracao futura ao dashboard, movimentos, classificacoes e modelos somente apos aprovacao.

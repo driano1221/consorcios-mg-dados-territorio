@@ -2,6 +2,15 @@
 
 As sessões detalhadas estão em `docs/DIARIO_DE_TRABALHO.md`. Este arquivo registra apenas marcos do produto.
 
+## 2026-08-20
+
+- criada a camada nacional de identidade para os 1.194 CNPJs do cadastro IPEA;
+- consolidadas 35 filiais em 23 raízes, resultando em 1.159 entidades;
+- baixadas e processadas 1.300.862 transações MIDES correspondentes em oito UFs;
+- materializados painéis anuais por CNPJ original e por raiz consolidada;
+- comprovada a conservação financeira e a reprodução exata do painel MG anterior;
+- documentadas cobertura, exceções territoriais, amostras e pontos de validação.
+
 ## 2026-07-29
 
 - adotada a identidade `Consórcios MG: Dados e Território`, com o dashboard denominado `Painel Consórcios MG`;

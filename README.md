@@ -18,6 +18,7 @@ Projeto de pesquisa para organizar, auditar e analisar evidências sobre consór
 | Próximas decisões | [`docs/PROXIMOS_PASSOS.md`](docs/PROXIMOS_PASSOS.md) |
 | Metodologia da Base 1 | [`analises/base_1_2015_2019/METODOLOGIA.md`](analises/base_1_2015_2019/METODOLOGIA.md) |
 | Movimentos espaciais | [`analises/movimentos_espaciais/README.md`](analises/movimentos_espaciais/README.md) |
+| Base nacional consolidada | [`analises/base_nacional/README.md`](analises/base_nacional/README.md) |
 | Classificação de políticas | [`docs/METODOLOGIA_CLASSIFICACAO_ATUAL.md`](docs/METODOLOGIA_CLASSIFICACAO_ATUAL.md) |
 | Diário técnico | [`docs/DIARIO_DE_TRABALHO.md`](docs/DIARIO_DE_TRABALHO.md) |
 
@@ -52,6 +53,11 @@ O piloto cobre os **853 municípios de Minas Gerais** e contém:
 - modelos exploratórios de entrada e saída com exposição espacial em `t-1`;
 - mapas interativos, exportação cartográfica e trajetória longitudinal por consórcio.
 
+Em paralelo ao dashboard mineiro, foi materializada uma primeira camada
+nacional auditável. Ela consolida os **1.194 CNPJs** do cadastro IPEA em
+**1.159 entidades** pela raiz de oito dígitos e processa os pagamentos MIDES
+localizados em oito UFs. Essa camada ainda não foi integrada ao dashboard.
+
 ### Produtos
 
 | Produto | Unidade | Conteúdo |
@@ -61,6 +67,7 @@ O piloto cobre os **853 municípios de Minas Gerais** e contém:
 | **MIDES completo** | município × CNPJ × ano | Pagamentos, movimentos, recorrência e trajetória 2014–2021 |
 | **Camada espacial** | município × CNPJ × ano | Vizinhança, borda, isolamento e universos de risco |
 | **Dashboard Shiny** | consulta interativa | Tabelas, filtros, mapas, auditorias e documentação |
+| **Base nacional v0.1** | município pagador × raiz CNPJ × ano | Matriz e filiais consolidadas, com CNPJs originais preservados |
 
 ## Arquitetura
 
@@ -78,6 +85,9 @@ flowchart LR
     D --> J
     I --> J
     H --> J
+    G --> K["Identidade nacional por raiz CNPJ"]
+    A --> L["MIDES nacional por UF pagadora"]
+    K --> L
 ```
 
 ```text
@@ -85,7 +95,8 @@ consorcios-mg-dados-territorio/
 |-- analises/
 |   |-- base_1_2015_2019/        # Recorte comparável e validação SICONFI
 |   |-- classificacao_politicas/ # Taxonomia, auditorias e decisões versionadas
-|   `-- movimentos_espaciais/    # Painel anual, vizinhança e modelos de risco
+|   |-- movimentos_espaciais/    # Painel anual, vizinhança e modelos de risco
+|   `-- base_nacional/            # Identidade CNPJ e MIDES nacional consolidado
 |-- dashboards/base1_shiny/      # Aplicação, documentação incorporada e testes
 |-- docs/                         # Memória, atas, diário e decisões metodológicas
 |-- scripts/                      # Pipeline histórico do painel universal MG
@@ -128,6 +139,9 @@ Rscript dashboards/base1_shiny/tests/test_classificacao_v0_5.R
 Rscript dashboards/base1_shiny/tests/test_movimentos_mapas_export.R
 Rscript dashboards/base1_shiny/tests/test_trajetoria_longitudinal.R
 
+Rscript analises/base_nacional/tests/01_validar_identidade_cnpj.R
+Rscript analises/base_nacional/tests/02_validar_mides_nacional.R
+
 Push-Location dashboards/base1_shiny
 Rscript tests/test_documentacao_movimentos.R
 Pop-Location
@@ -138,7 +152,9 @@ Pop-Location
 - Presença no MIDES significa **pagamento positivo observado**, não filiação jurídica.
 - Entrada e saída representam mudança de presença financeira entre anos consecutivos.
 - O SICONFI valida o total municipal anual; ele não identifica o consórcio de destino.
-- CNPJ matriz e filiais continuam separados em valores e movimentos até decisão metodológica formal.
+- A camada nacional v0.1 consolida matriz e filiais pela raiz de oito dígitos,
+  preservando os estabelecimentos originais em um crosswalk auditável. O
+  dashboard MG publicado ainda usa a estrutura anterior.
 - Os modelos espaciais atuais são associativos e exploratórios, não causais.
 - Toda inferência setorial deve preservar fonte, regra, status e justificativa.
 
@@ -150,7 +166,8 @@ Consulte [`CONTRIBUTING.md`](CONTRIBUTING.md) antes de alterar código ou metodo
 
 ## Limitações e decisões pendentes
 
-- consolidar ou não matriz e filiais pela raiz do CNPJ;
+- validar substantivamente as entidades matriz-filial consolidadas e decidir
+  quando migrar o dashboard MG para a nova identidade;
 - ampliar os modelos com controles municipais, fiscais, políticos e setoriais;
 - incorporar o primeiro recorte territorial externo, com prioridade para regiões de saúde;
 - definir ambiente reprodutível de dependências, por exemplo com `renv`;

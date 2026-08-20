@@ -1,6 +1,6 @@
 # Proximos Passos - Consorcios MG: Dados e Territorio
 
-**Atualizado em:** 2026-08-12
+**Atualizado em:** 2026-08-20
 **Uso:** roteiro curto do estado atual, decisoes pendentes e proximas entregas possiveis.
 
 ---
@@ -36,10 +36,11 @@ O projeto tem hoje tres blocos principais funcionando:
    - aba `MIDES completo > Trajetoria 2014-2021` compara os oito anos por consorcio e abre sob demanda linha do tempo, tabela anual e matriz municipio-ano para qualquer linha, sem exigir filtro previo;
    - mapas foram refinados visualmente com fundo branco, divisas municipais continuas, paletas mais legiveis, zoom/tela cheia e filtros integrados.
 
-3. **Auditorias cadastrais**
-   - auditoria por raiz de CNPJ identifica possiveis matriz/filiais;
-   - regra de consolidacao ainda nao foi aplicada;
-   - resultados servem para validacao humana antes de recalcular valores.
+3. **Auditoria e camada nacional de identidade**
+   - a regra por raiz de oito digitos foi aplicada em camada tecnica separada;
+   - os 1.194 CNPJs formam 1.159 entidades, com 35 filiais em 23 raizes;
+   - o MIDES nacional foi processado para oito UFs, preservando CNPJs originais e valores;
+   - o dashboard MG continua inalterado ate a validacao substantiva da nova camada.
 
 4. **Mapas e visualizacoes territoriais**
    - mapa MIDES completo mostra intensidade municipal por valor, consorcios ou transacoes;
@@ -58,10 +59,13 @@ O projeto tem hoje tres blocos principais funcionando:
    - a auditoria gera hipoteses para revisao, mas nao exclui casos nem altera o modelo;
    - a coluna anual ambigua de recorrencia foi retirada; o total longitudinal permanece na trajetoria do consorcio.
 
-1. **Matriz e filiais**
-   - decidir com superiores se matriz/filiais devem ser consolidadas por raiz de 8 digitos do CNPJ;
-   - se aprovado, criar tabela `cnpj_original -> cnpj_matriz`;
-   - depois recalcular MIDES/SICONFI usando CNPJ consolidado.
+1. **Matriz, filiais e expansao nacional**
+   - crosswalk `cnpj_original -> cnpj_matriz` concluido e testado;
+   - MIDES nacional consolidado concluido para as oito UFs com correspondencia;
+   - validar com a equipe as seis raizes efetivamente afetadas nos pagamentos;
+   - decidir a janela temporal comparavel entre UFs;
+   - decidir quando migrar o dashboard, movimentos, classificacoes e modelos;
+   - investigar ou manter em anexo as 681 transacoes de SC sem municipio.
 
 2. **Regra definitiva do SICONFI**
    - regra atual recomendada: `consorcio_pagas`;
@@ -76,18 +80,19 @@ O projeto tem hoje tres blocos principais funcionando:
 
 ## Proximos Passos Priorizados
 
-### 1. Consolidar auditoria matriz/filial
+### 1. Validar e integrar a camada nacional matriz/filial
 
-**Status:** aguardando validacao dos superiores.
+**Status:** camada tecnica concluida; integracao aos produtos ainda nao aplicada.
 
-O que fazer se for aprovado:
+O que falta decidir:
 
-- criar tabela de correspondencia entre CNPJ observado e CNPJ matriz;
-- somar valores MIDES de filiais na matriz;
-- revisar se SICONFI precisa ser recalculado na mesma chave;
-- atualizar dashboard e metodologia com a regra aplicada.
+- revisar as seis raizes afetadas no MIDES e os aliases das filiais;
+- definir periodo nacional comum ou estrategia por cobertura de UF;
+- definir tratamento das transacoes sem chave municipal;
+- atualizar dashboard e modelos somente depois dessa validacao;
+- avaliar separadamente a aplicacao da identidade consolidada ao SICONFI e MUNIC.
 
-Nao aplicar automaticamente antes da validacao.
+Nao substituir silenciosamente os produtos MG existentes.
 
 ### 1.1 Revisar documentalmente os 23 CNPJs de baixa escala
 
