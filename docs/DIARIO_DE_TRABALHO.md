@@ -606,3 +606,22 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Testes nacionais, filtros MG/CIMVA, todas as paginas, desktop e viewport movel foram verificados sem erros Shiny.
 - A legenda do mapa nacional foi convertida em cinco classes para evitar sobreposicao.
 - A versao foi publicada no shinyapps.io e as seis paginas principais, a visao Brasil, a auditoria nacional e a documentacao foram novamente verificadas na URL publica.
+
+---
+
+## 2026-08-27 - Preservacao Das Pendencias
+
+### Decisao
+
+- O estado tecnico publicado em 20/08 foi mantido sem novas alteracoes no dashboard.
+- As pendencias existentes continuam documentadas, mas foram colocadas em espera.
+- Novas demandas serao avaliadas antes de redefinir a ordem de execucao.
+
+### Pendencias Preservadas
+
+1. Validar a visao Brasil e as seis raizes matriz-filial efetivamente afetadas.
+2. Decidir a migracao da identidade consolidada para Base 1, MUNIC, SICONFI, classificacao e modelos.
+3. Confirmar a leitura da cobertura por UF e o tratamento das 681 transacoes de SC sem municipio.
+4. Revisar os 23 CNPJs de baixa escala.
+5. Definir controles e universo territorial dos proximos modelos.
+6. Avaliar o primeiro recorte territorial externo.

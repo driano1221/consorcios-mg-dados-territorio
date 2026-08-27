@@ -1,7 +1,9 @@
 # Proximos Passos - Consorcios MG: Dados e Territorio
 
-**Atualizado em:** 2026-08-20
+**Atualizado em:** 2026-08-27
 **Uso:** roteiro curto do estado atual, decisoes pendentes e proximas entregas possiveis.
+
+> **Prioridade em 27/08/2026:** as pendencias tecnicas existentes foram preservadas, mas estao em espera. Novas demandas serao avaliadas antes de redefinir a ordem de execucao.
 
 ---
 
@@ -53,6 +55,8 @@ O projeto tem hoje tres blocos principais funcionando:
 ---
 
 ## Decisoes Pendentes
+
+As pendencias abaixo continuam validas e documentadas. Nenhuma sera iniciada automaticamente enquanto as novas demandas nao forem registradas e priorizadas.
 
 0. **Auditoria de baixa escala e recorrencia - implementado em 12/08**
    - a aba `Auditoria > Baixa escala MIDES` organiza 23 CNPJs com no maximo dois municipios pagantes em qualquer ano;

@@ -1,7 +1,7 @@
 # Memoria - Projeto Consorcios MG: Dados e Territorio
 
-**Ultima atualizacao:** 2026-08-20
-**Status:** frentes 1 a 8 entregues em nivel exploratorio; identidade nacional matriz/filial materializada, validada e integrada em uma visao Brasil separada no dashboard; controles adicionais permanecem pendentes.
+**Ultima atualizacao:** 2026-08-27
+**Status:** frentes 1 a 8 entregues em nivel exploratorio; identidade nacional matriz/filial materializada, validada e integrada em uma visao Brasil separada no dashboard. As pendencias tecnicas foram preservadas em espera ate a priorizacao das novas demandas.
 
 ---
 
@@ -17,7 +17,18 @@
 - Seis raizes foram efetivamente afetadas no MIDES e 49 chaves municipio-ano somaram matriz e filial.
 - Foram preservadas separadamente 681 transacoes de SC sem codigo municipal, no valor de R$ 11.145.961,39.
 - O recorte MG anterior foi reproduzido exatamente antes da consolidacao: 15.135 linhas, chaves, valores e transacoes iguais.
-- Essa camada ainda nao altera o dashboard publicado nem os modelos MG; aguarda validacao substantiva e decisao sobre migracao.
+- A camada nacional ja esta integrada ao dashboard em uma visao Brasil separada. Base 1, MUNIC, SICONFI, classificacao v0.5 e modelos MG permanecem inalterados e aguardam decisao especifica de migracao.
+
+## Pendencias Preservadas Em 27/08
+
+1. Validar a leitura da visao Brasil e as seis raizes matriz-filial efetivamente afetadas no MIDES.
+2. Decidir quando aplicar a identidade consolidada a Base 1, MUNIC, SICONFI, classificacao e modelos.
+3. Manter explicita a cobertura desigual entre UFs e confirmar o tratamento financeiro das 681 transacoes de SC sem municipio.
+4. Revisar documentalmente os 23 CNPJs de baixa escala.
+5. Definir controles, forma funcional e universo territorial dos proximos modelos.
+6. Avaliar o primeiro recorte territorial externo, com prioridade preliminar para regioes de saude.
+
+Essas frentes nao foram canceladas. Permanecem em espera para que as novas demandas sejam registradas e comparadas antes da retomada.
 
 Documentacao: `analises/base_nacional/METODOLOGIA.md` e
 `analises/base_nacional/checks/VALIDACAO_BASE_NACIONAL_V0_1.md`.
