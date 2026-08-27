@@ -660,3 +660,12 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Confirmar a retirada do CODEMA e a perda das areas do CIDS FLORESTA na fonte CNM.
 - Somente depois expandir o cotejamento ou iniciar a regionalizacao da saude.
 - A trilha foi pausada nesse ponto para tratar uma demanda paralela; esta e a ordem de retomada registrada.
+
+---
+
+## 2026-08-27 - Reuniao Do Modelo Gravitacional De Saude
+
+- Transcricao revisada e ata tecnica criada em `docs/reunioes/2026-08-27-modelo-gravitacional-saude.md`.
+- Consolidado o novo recorte: MG, saude, MIDES e unidade municipio-consorcio-ano.
+- Separadas decisoes confirmadas de hipoteses ainda abertas sobre valor pago, capacidade assistencial e sobrevivencia.
+- Nenhuma base, estimativa ou tela do dashboard foi alterada.

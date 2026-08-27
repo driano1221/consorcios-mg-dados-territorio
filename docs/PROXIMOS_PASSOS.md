@@ -7,6 +7,19 @@
 
 > **Ponto de retomada:** a trilha CNM fica temporariamente pausada enquanto outra demanda e tratada. Ao retomar, revisar as 72 identidades sem pareamento automatico e confirmar CODEMA/CIDS FLORESTA antes de iniciar a regionalizacao da saude.
 
+> **Nova prioridade definida em 27/08/2026:** preparar o modelo gravitacional de consorcios de saude em MG. O MIDES sera a fonte longitudinal principal e a unidade sera `municipio x consorcio x ano`, com multiplos consorcios permitidos.
+
+### Modelo gravitacional de saude - proxima sequencia
+
+1. validar o universo saude-MG, a identidade CNPJ e os pagamentos MIDES;
+2. confrontar MIDES 2019 com MUNIC 2019 e evidencias documentais;
+3. definir o polo assistencial e a medida de capacidade de atracao;
+4. integrar tempo rodoviario e dados CNES;
+5. definir o modelo de intensidade e o risco anual de interrupcao;
+6. executar EDA e validacao antes de estimar ou publicar resultados.
+
+Pontos ainda nao decididos: denominador do valor pago, forma da sobrevivencia, conjunto de alternativas e tratamento da censura dos pares presentes em 2014.
+
 ---
 
 ## Estado Atual

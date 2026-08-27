@@ -16,6 +16,7 @@ Este diretorio guarda uma ata por reuniao. A ata preserva contexto, discussoes, 
 |---|---|---|
 | 2026-05-29 | Temporalidade das fontes, SICONFI e bases analiticas | Registro historico em `docs/ATAS_REUNIOES.md` |
 | 2026-08-06 | Validacao dos movimentos MIDES e universo do modelo | Data inferida; aguardando confirmacao |
+| 2026-08-27 | Modelo gravitacional para consorcios de saude | Registrada |
 
 ## Regras De Leitura
 

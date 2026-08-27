@@ -663,6 +663,17 @@ Leitura da procedencia e confianca da v0.2:
 - A marca CNM permanece fotografia de 27/08/2026; ela nao foi retroagida como filiacao historica.
 - Scripts, testes, mapa, linha do tempo e metodologia foram organizados em `analises/cnm_mides/`. O proximo passo depende de validacao humana do piloto e das identidades pendentes.
 
+## Reuniao Do Modelo Gravitacional De Saude - 2026-08-27
+
+- A equipe definiu Minas Gerais e o setor saude como primeiro recorte da nova modelagem.
+- MIDES sera a fonte longitudinal principal, interpretada como pagamento observado.
+- A unidade permanece `municipio x consorcio x ano`, permitindo multiplos consorcios simultaneos; nao foi adotada escolha multinomial exclusiva.
+- O nucleo gravitacional combinara capacidade de atracao do polo e impedancia por tempo de viagem.
+- Antes da estimacao, o universo saude-MG sera validado com documentos e comparacao MIDES-MUNIC em 2019.
+- Entrada/presenca financeira e continuidade do vinculo serao estudadas separadamente.
+- Permanecem abertas a medida do valor, a forma da sobrevivencia, a definicao do polo/capacidade e o conjunto de alternativas.
+- Nenhum modelo novo foi estimado; a reuniao alterou o planejamento metodologico, nao os resultados existentes.
+
 ## Documentos Historicos
 
 Arquivos antigos continuam uteis como registro de processo, mas nao devem ser usados como estado atual:
