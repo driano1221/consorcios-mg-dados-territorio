@@ -651,6 +651,18 @@ Leitura da procedencia e confianca da v0.2:
 - As novas variaveis nao alteram automaticamente os modelos atuais; cada camada exigira EDA, auditoria de cobertura e validacao substantiva.
 - As pendencias da camada nacional MIDES, baixa escala, classificacao e modelos foram preservadas em segundo plano.
 
+## Primeira Entrega CNM Atualizada - 2026-08-27
+
+- A plataforma CNM foi raspada novamente: 727 consorcios, 4.816 municipios unicos, 13.133 vinculos brutos e 13.109 pares unicos.
+- O snapshot de maio foi preservado em `C:\IPEA\dados cnm\snapshots\2026-05-14`; a nova fotografia esta em `C:\IPEA\dados cnm\snapshots\2026-08-27`, ambas com manifesto e hash dos arquivos centrais.
+- Entre maio e agosto houve um consorcio removido, 23 vinculos adicionados, nove removidos, uma mudanca de nome e uma mudanca de areas. O CIDS FLORESTA passou de 42 areas para lista vazia na resposta da CNM; isso exige confirmacao documental.
+- Auditorias: um CNPJ invalido, nenhum CNPJ repetido, nenhum codigo IBGE invalido e 24 chaves de vinculo duplicadas, todas repeticoes idênticas em duas linhas.
+- O crosswalk CNM x cadastro IPEA cobre os 727 consorcios: 655 CNPJs exatos, tres sugestoes nominais sem uso automatico e 69 nao encontrados.
+- O piloto CNM x MIDES em MG gerou 28.283 observacoes anuais e 3.912 pares do periodo: 2.163 `CNM+MIDES`, 914 `somente CNM`, 658 `somente MIDES` e 177 `nao pareado`.
+- Abaete x COMASF foi validado como caso real: CNPJ exato, cadastro CNM atual e pagamentos MIDES em todos os anos de 2014 a 2021.
+- A marca CNM permanece fotografia de 27/08/2026; ela nao foi retroagida como filiacao historica.
+- Scripts, testes, mapa, linha do tempo e metodologia foram organizados em `analises/cnm_mides/`. O proximo passo depende de validacao humana do piloto e das identidades pendentes.
+
 ## Documentos Historicos
 
 Arquivos antigos continuam uteis como registro de processo, mas nao devem ser usados como estado atual:

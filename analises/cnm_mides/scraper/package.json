@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "scrape": "node scripts/scrape-cnm.js",
+    "scrape:sample": "node scripts/scrape-cnm.js --sample=5",
+    "build:unified": "node scripts/build-unified.js",
+    "build:areas": "python scripts/build-area-aggregates.py",
+    "eda": "python scripts/eda-cnm.py",
+    "audit:merge": "python scripts/audit-merge-integrado.py"
+  },
+  "dependencies": {
+    "playwright": "^1.60.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.3"
+  }
+}

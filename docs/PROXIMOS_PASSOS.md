@@ -3,7 +3,7 @@
 **Atualizado em:** 2026-08-27
 **Uso:** roteiro curto do estado atual, decisoes pendentes e proximas entregas possiveis.
 
-> **Prioridade em 27/08/2026:** iniciar a nova trilha CNM e variaveis territoriais. As pendencias tecnicas anteriores permanecem preservadas em segundo plano.
+> **Prioridade em 27/08/2026:** validar o piloto CNM x MIDES em MG e, depois, iniciar regionalizacao da saude. As pendencias tecnicas anteriores permanecem preservadas em segundo plano.
 
 ---
 
@@ -95,19 +95,20 @@ As pendencias abaixo continuam validas e documentadas. Nenhuma sera iniciada aut
 
 Ordem de execucao:
 
-1. **Atualizar e versionar a CNM**
-   - executar nova raspagem sem sobrescrever maio;
-   - gerar manifesto da coleta e EDA;
-   - comparar consorcios, CNPJs, sedes, situacoes, areas e municipios entre snapshots.
+1. **Atualizar e versionar a CNM - concluido em 27/08**
+   - snapshot integral salvo em `C:\IPEA\dados cnm\snapshots\2026-08-27`, sem sobrescrever maio;
+   - manifesto, EDA, auditorias e comparacao maio-agosto gerados;
+   - resultado: 727 consorcios, 4.816 municipios e 13.109 pares unicos.
 
-2. **Construir crosswalk CNM x Cadastro IPEA x MIDES**
-   - preservar CNPJ original, raiz, matriz, UUID CNM, nomes e regra de pareamento;
-   - classificar matches exatos, por raiz, provaveis e nao encontrados.
+2. **Construir crosswalk CNM x Cadastro IPEA x MIDES - concluido em 27/08**
+   - CNPJ original, raiz, identidade canonica, UUID, nomes e regra de pareamento preservados;
+   - 655 identidades exatas, 3 sugestoes nominais para revisao e 69 nao encontradas;
+   - somente identidade exata/raiz entra automaticamente no cotejamento.
 
-3. **Cotejar CNM x MIDES**
-   - piloto em MG antes da expansao aos estados cobertos pelo MIDES;
-   - tabela e mapa com `CNM+MIDES`, `somente CNM`, `somente MIDES` e `nao pareado`;
-   - distinguir cadastro atual CNM de pagamento anual MIDES.
+3. **Cotejar CNM x MIDES - piloto MG concluido, validacao humana pendente**
+   - tabela anual, resumo por par e consorcio, mapa e linha do tempo produzidos;
+   - 3.912 pares: 2.163 `CNM+MIDES`, 914 `somente CNM`, 658 `somente MIDES` e 177 `nao pareado`;
+   - revisar as 72 identidades sem match automatico e validar o piloto antes de expandir.
 
 4. **Regionalizacao da saude**
    - integrar municipio, regiao e macrorregiao de saude por codigo IBGE;

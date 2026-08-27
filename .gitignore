@@ -4,6 +4,7 @@ dados/processado/
 outputs/
 analises/**/outputs/
 analises/**/node_modules/
+analises/**/.playwright-profile/
 analises/**/checks/*.csv
 analises/**/checks/*.xlsx
 dashboards/base1_shiny/data/
@@ -21,6 +22,8 @@ slides/*.png
 .Rhistory
 .RData
 .Rproj.user/
+**/__pycache__/
+*.pyc
 
 # Sistema e editores.
 .DS_Store

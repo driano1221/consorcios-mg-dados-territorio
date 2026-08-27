@@ -625,3 +625,37 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 4. Revisar os 23 CNPJs de baixa escala.
 5. Definir controles e universo territorial dos proximos modelos.
 6. Avaliar o primeiro recorte territorial externo.
+
+---
+
+## 2026-08-27 - Atualizacao CNM E Piloto CNM x MIDES
+
+### Entregas
+
+- Preservada a coleta CNM de maio e criada nova fotografia integral datada de 27/08.
+- Adaptados e testados os scripts de raspagem para aceitar diretorio de snapshot sem sobrescrever dados anteriores.
+- Processadas as bases de consorcios, municipios, areas, finalidades, sedes e situacoes cadastrais.
+- Comparados os snapshots de maio e agosto, com auditorias de CNPJ, IBGE e duplicidade de vinculos.
+- Criado crosswalk CNM x cadastro IPEA com identidade automatica somente por CNPJ exato ou raiz.
+- Materializado piloto MG por municipio x consorcio x ano, com tabela, resumo, mapa de predominancia e linha do tempo.
+- Documentada a metodologia em `analises/cnm_mides/RELATORIO_ENTREGA_1_3.md`.
+
+### Resultados
+
+- CNM atual: 727 consorcios, 4.816 municipios e 13.109 pares unicos.
+- Crosswalk: 655 identidades exatas, tres sugestoes para revisao e 69 nao encontradas.
+- Piloto MG: 3.912 pares, sendo 2.163 CNM+MIDES, 914 somente CNM, 658 somente MIDES e 177 nao pareados.
+- Abaete x COMASF conferido ponta a ponta como CNM+MIDES em 2014-2021.
+
+### Validacao
+
+- Corrigida a auditoria IBGE para o codigo municipal de seis digitos entregue pela CNM.
+- Consolidado o resumo por chave canonica: 180 identidades, sem duplicacao por variante de nome.
+- Figuras inspecionadas visualmente e corrigidas para predominancia municipal e periodo 2014-2021.
+- Testes automatizados de snapshots, crosswalk, chaves, exemplo real e imagens concluidos com sucesso.
+
+### Pendencias
+
+- Validar com a equipe o piloto MG e as 72 identidades sem pareamento automatico.
+- Confirmar a retirada do CODEMA e a perda das areas do CIDS FLORESTA na fonte CNM.
+- Somente depois expandir o cotejamento ou iniciar a regionalizacao da saude.
