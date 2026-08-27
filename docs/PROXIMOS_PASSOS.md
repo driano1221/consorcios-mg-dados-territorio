@@ -5,6 +5,8 @@
 
 > **Prioridade em 27/08/2026:** validar o piloto CNM x MIDES em MG e, depois, iniciar regionalizacao da saude. As pendencias tecnicas anteriores permanecem preservadas em segundo plano.
 
+> **Ponto de retomada:** a trilha CNM fica temporariamente pausada enquanto outra demanda e tratada. Ao retomar, revisar as 72 identidades sem pareamento automatico e confirmar CODEMA/CIDS FLORESTA antes de iniciar a regionalizacao da saude.
+
 ---
 
 ## Estado Atual

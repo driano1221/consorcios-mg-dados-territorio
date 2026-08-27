@@ -659,3 +659,4 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Validar com a equipe o piloto MG e as 72 identidades sem pareamento automatico.
 - Confirmar a retirada do CODEMA e a perda das areas do CIDS FLORESTA na fonte CNM.
 - Somente depois expandir o cotejamento ou iniciar a regionalizacao da saude.
+- A trilha foi pausada nesse ponto para tratar uma demanda paralela; esta e a ordem de retomada registrada.
