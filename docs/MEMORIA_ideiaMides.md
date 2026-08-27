@@ -638,6 +638,19 @@ Leitura da procedencia e confianca da v0.2:
 - nao foi aprovada exclusao automatica de CNPJs com no maximo 1 ou 2 municipios;
 - SICONFI permanece sem CNPJ destinatario e nao valida diretamente o par municipio-consorcio.
 
+## Nova Trilha CNM E Variaveis Territoriais - 2026-08-27
+
+- Demandas encaminhadas por Paulo em 20–21/08/2026 passaram a orientar a proxima sequencia de trabalho.
+- A base CNM existente em `C:\IPEA\dados cnm` e uma fotografia cadastral coletada em maio de 2026. A proxima coleta deve ser versionada e comparada com maio, nunca sobrescrita.
+- `data_constituicao` e os filtros de ano da plataforma indicam a criacao do consorcio; nao reconstroem a composicao municipal anual. A lista atual de municipios nao deve ser retroagida.
+- Ordem aprovada para planejamento: nova raspagem CNM; crosswalk CNM x Cadastro IPEA x MIDES; cotejamento piloto em MG; regionalizacao da saude; bacias ANA/BHO6; confirmacao da `arvore dos municipios`; piloto de tempo de viagem; associacoes municipais; integracao posterior aos modelos.
+- O cotejamento devera separar `CNM+MIDES`, `somente CNM`, `somente MIDES` e `nao pareado`, distinguindo cadastro atual de pagamento anual observado.
+- A hipotese preliminar para `arvore dos municipios` e a hierarquia urbana REGIC, mas a definicao precisa ser confirmada com Paulo.
+- O tempo de viagem sera calculado somente depois da validacao de pares e sedes. A escolha entre rota estatica e Google com trafego previsto para sabado as 10h30 permanece pendente.
+- Regioes de saude e bacias hidrograficas sao as primeiras camadas externas recomendadas por terem fontes oficiais estruturadas.
+- As novas variaveis nao alteram automaticamente os modelos atuais; cada camada exigira EDA, auditoria de cobertura e validacao substantiva.
+- As pendencias da camada nacional MIDES, baixa escala, classificacao e modelos foram preservadas em segundo plano.
+
 ## Documentos Historicos
 
 Arquivos antigos continuam uteis como registro de processo, mas nao devem ser usados como estado atual:

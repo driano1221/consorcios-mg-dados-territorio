@@ -3,7 +3,7 @@
 **Atualizado em:** 2026-08-27
 **Uso:** roteiro curto do estado atual, decisoes pendentes e proximas entregas possiveis.
 
-> **Prioridade em 27/08/2026:** as pendencias tecnicas existentes foram preservadas, mas estao em espera. Novas demandas serao avaliadas antes de redefinir a ordem de execucao.
+> **Prioridade em 27/08/2026:** iniciar a nova trilha CNM e variaveis territoriais. As pendencias tecnicas anteriores permanecem preservadas em segundo plano.
 
 ---
 
@@ -86,6 +86,63 @@ As pendencias abaixo continuam validas e documentadas. Nenhuma sera iniciada aut
 ---
 
 ## Proximos Passos Priorizados
+
+### 0. Nova trilha CNM e variaveis territoriais
+
+**Origem:** demandas enviadas por Paulo em 20–21/08/2026 e organizadas metodologicamente em 27/08/2026.
+
+**Regra central:** a plataforma CNM e uma fotografia cadastral na data da raspagem. `data_constituicao` e os filtros de ano indicam a criacao do consorcio; nao comprovam a composicao municipio-consorcio em cada ano. A lista atual nao deve ser retroagida.
+
+Ordem de execucao:
+
+1. **Atualizar e versionar a CNM**
+   - executar nova raspagem sem sobrescrever maio;
+   - gerar manifesto da coleta e EDA;
+   - comparar consorcios, CNPJs, sedes, situacoes, areas e municipios entre snapshots.
+
+2. **Construir crosswalk CNM x Cadastro IPEA x MIDES**
+   - preservar CNPJ original, raiz, matriz, UUID CNM, nomes e regra de pareamento;
+   - classificar matches exatos, por raiz, provaveis e nao encontrados.
+
+3. **Cotejar CNM x MIDES**
+   - piloto em MG antes da expansao aos estados cobertos pelo MIDES;
+   - tabela e mapa com `CNM+MIDES`, `somente CNM`, `somente MIDES` e `nao pareado`;
+   - distinguir cadastro atual CNM de pagamento anual MIDES.
+
+4. **Regionalizacao da saude**
+   - integrar municipio, regiao e macrorregiao de saude por codigo IBGE;
+   - testar sobreposicao principalmente em consorcios de saude.
+
+5. **Bacias hidrograficas**
+   - usar ANA/BHO6;
+   - preservar bacia dominante, bacia da sede e percentuais de area;
+   - nao criar `alto/medio/baixo rio` sem regra e rio de referencia aprovados.
+
+6. **Arvore dos municipios**
+   - confirmar com Paulo se significa REGIC, hierarquia administrativa ou vizinhanca;
+   - recomendacao preliminar: REGIC, por representar hierarquia e influencia urbana.
+
+7. **Tempo de viagem**
+   - executar depois da validacao de pares e sedes;
+   - piloto MG;
+   - decidir entre Google com trafego previsto para sabado as 10h30 e rota estatica reproduzivel;
+   - registrar data, horario, fuso, motor e versao da consulta.
+
+8. **Associacoes municipais**
+   - primeiro cadastro de entidades estaduais;
+   - depois associacoes regionais e composicao municipio-associacao.
+
+9. **Modelagem**
+   - nenhuma nova feature entra automaticamente nos modelos atuais;
+   - executar EDA, cobertura, missingness e validacao substantiva antes da integracao.
+
+Decisoes a confirmar:
+
+- significado de `arvore dos municipios`;
+- rota com trafego previsto ou rota estatica;
+- composicao juridica anual versus fotografia CNM + evidencia financeira MIDES;
+- regra de alto/medio/baixo rio;
+- aprovacao do piloto MG antes da expansao nacional.
 
 ### 1. Validar e integrar a camada nacional matriz/filial
 
