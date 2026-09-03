@@ -115,6 +115,33 @@ Os dois estabelecimentos com leitos existentes sao:
 | CIS/CEN | Tres vacimoveis e nenhuma unidade fixa | Sem polo rodoviario fixo |
 | CIMES | Um vacimovel e nenhuma unidade fixa | Sem polo rodoviario fixo |
 
+### Contrafactual: O Erro De Usar Somente Leitos SUS
+
+Considere a forma gravitacional simplificada:
+
+`A_ij proporcional a M_j x f(t_ij)`, em que `M_j` e a massa do consorcio e
+`f(t_ij)` diminui com o tempo de viagem entre o municipio `i` e o destino `j`.
+
+Se for imposto `M_j = leitos_SUS_j`, o resultado substantivo seria:
+
+| Entidade | Leitos SUS diretos | Outra evidencia de oferta | Consequencia incorreta da massa unica |
+|---|---:|---|---|
+| CISMAS | 0 | clinica fixa e 10 CBOs medicos somados | atracao forçada a zero, qualquer que seja o tempo |
+| CISMARPA | 0 | clinica fixa e 18 CBOs medicos somados | atracao forçada a zero, apesar do escopo profissional |
+| CISVER | 0 | uma unidade fixa e 33 CBOs medicos somados | rede tratada como se nao tivesse oferta |
+| CISMEP | 32 | duas unidades fixas e 22 CBOs medicos somados | unica massa positiva; dominancia mecanica sobre as demais |
+
+Portanto, o problema nao e apenas estatistico. A medida confundiria
+**internacao** com toda a **capacidade assistencial**. Na amostra atual, 45 das
+46 entidades com oferta fixa direta possuem zero leito SUS sob o proprio CNPJ.
+O logaritmo de zero e indefinido; `log(1 + leitos_SUS)` resolve a operacao, mas
+nao cria informacao: as 45 entidades continuam empatadas em zero.
+
+Os 36 casos sem unidade diretamente registrada exigem cuidado adicional. Eles
+nao possuem `leitos_SUS = 0`; possuem capacidade direta **nao observada** nesta
+etapa (`NA`). Transformar esse `NA` em zero confundiria falta de pareamento com
+ausencia real de oferta.
+
 ## Uso No Modelo Futuro
 
 As especificacoes deverao testar, separadamente, leitos SUS, escopo medico

@@ -60,5 +60,8 @@ stopifnot(sum(entities$capacidade_status == "sem_unidade_cnes_direta_nao_interpr
 stopifnot(sum(entities$capacidade_status == "somente_unidades_moveis_sem_polo_fixo") == 2L)
 direct <- entities$capacidade_status == "capacidade_direta_cnes_atual"
 stopifnot(all(entities$cbo_medicos_sus_ativos_rede_direta[direct] > 0L))
+stopifnot(!any(is.na(entities$leitos_sus_rede_direta[direct])))
+stopifnot(sum(entities$leitos_sus_rede_direta[direct] > 0L) == 1L)
+stopifnot(sum(entities$leitos_sus_rede_direta[direct] == 0L) == 45L)
 
 cat("OK: capacidade CNES validada para", nrow(entities), "entidades e", nrow(units), "unidades diretamente vinculadas.\n")

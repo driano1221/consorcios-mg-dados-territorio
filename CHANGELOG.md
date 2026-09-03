@@ -10,6 +10,7 @@ As sessões detalhadas estão em `docs/DIARIO_DE_TRABALHO.md`. Este arquivo regi
 - construída a capacidade assistencial direta para 639 unidades CNES, separando 366 fixas e 273 móveis, com recuperação seletiva de falhas e sem reter microdados nominais de profissionais;
 - identificadas 46 entidades com oferta fixa direta, 36 sem unidade sob o próprio CNPJ e duas compostas somente por unidades móveis; leitos SUS foram descartados como medida única por cobertura insuficiente;
 - adicionados scripts reprocessáveis, testes automatizados e documentação dos passos 3 e 4, sem alterar o dashboard nem estimar um novo modelo.
+- ampliado o README como dicionário único de arquivos, fontes, extrações e produtos dos passos 1 a 4, com exemplos do viés produzido por uma massa baseada somente em leitos SUS.
 
 ## 2026-08-20
 

@@ -838,3 +838,12 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Leitos nao serao a massa unica. Unidades, CBOs medicos, ambulatorio, SADT e
   leitos serao testados separadamente, sem indice composto precoce.
 - Dashboard e modelos existentes permaneceram inalterados.
+
+### Organizacao E Dicionario Da Trilha
+
+- O `README.md` da pasta do modelo passou a ser o indice unico dos passos 1 a
+  4, com mapa das subpastas, scripts, testes, checks, produtos e chaves.
+- Foi registrado como cada fonte entrou no pipeline, o periodo que representa
+  e a limitacao de leitura de MIDES, MUNIC, classificacao, crosswalk e CNES.
+- A documentacao passou a demonstrar com CISMAS, CISMARPA, CISVER e CISMEP por
+  que leitos SUS isoladamente gerariam uma massa de atracao enviesada.

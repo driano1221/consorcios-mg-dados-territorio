@@ -17,6 +17,15 @@ Capacidade foi executada antes do tempo rodoviario. Calcular distancia ate uma
 sede administrativa sem saber onde esta a oferta assistencial produziria uma
 impedancia sem interpretacao substantiva.
 
+### Antes E Depois Dos Quatro Passos
+
+| Passo | Antes | Agora |
+|---|---|---|
+| 1. Universo | 100 CNPJs de saude podiam representar matriz e filiais como instituicoes distintas | 84 entidades por raiz, com CNPJs originais preservados; o CISMEP ilustra a consolidacao da raiz `05802877` |
+| 2. Vinculos | pagamento MIDES e declaracao MUNIC podiam ser confundidos com a mesma evidencia | 1.311 pares de 2019 separados em 630 comuns, 658 somente MIDES e 23 somente MUNIC; 50 divergencias receberam revisao |
+| 3. Polo/rede | sede administrativa podia ser usada automaticamente como destino | 639 unidades diretamente mantidas foram separadas em rede fixa, polo unico, movel ou sem unidade; CISVER, por exemplo, tem quatro moveis e uma fixa |
+| 4. Capacidade | unidade CNES indicava localizacao, mas nao a oferta registrada | ficha, leitos, atendimento e CBOs foram medidos separadamente; CISMAS tem zero leito e 10 CBOs medicos somados |
+
 ## Fluxo Reprocessavel
 
 ```mermaid
@@ -30,6 +39,22 @@ flowchart LR
   G --> H[Capacidade por unidade fixa]
   H --> I[Proximo: tempo rodoviario]
 ```
+
+## Como Navegar Nesta Pasta
+
+O `README.md` e o ponto de entrada. Os arquivos foram separados por funcao:
+
+| Local | Conteudo | Quando consultar |
+|---|---|---|
+| raiz da pasta | scripts e metodologias dos passos 1 a 4 | entender ou reprocessar o pipeline |
+| `tests/` | uma validacao automatizada por script | confirmar chaves, contagens e invariantes |
+| `checks/` | relatorios curtos com resultados validados | consultar numeros sem abrir os dados |
+| `evidencias/` | catalogo versionado de fontes documentais | auditar decisoes humanas do passo 2 |
+| `outputs/` | CSV/RDS derivados e caches locais | analisar linhas e continuar o modelo; nao entra no Git |
+
+Cada passo deve ser lido na ordem: **script -> teste -> check -> metodologia**.
+Os dados brutos e processados das demais pastas do projeto permanecem
+inalterados.
 
 ## Mapa De Scripts, Testes E Documentos
 
@@ -50,6 +75,16 @@ isso o quarto bloco cientifico e executado pelo script `05`.
 | `METODOLOGIA_PASSO_3_POLO_ATRACAO.md` | Explica polo versus sede/rede | passo 3 | regras territoriais |
 | `METODOLOGIA_PASSO_4_CAPACIDADE_ASSISTENCIAL.md` | Explica capacidade e EDA | passo 4 | medidas, resultados e limites |
 
+### Dicionario Por Passo
+
+| Passo | Unidade/chave | Script | Produtos principais | Teste e relatorio |
+|---|---|---|---|---|
+| 1. Universo | entidade por raiz de oito digitos e CNPJ original | `01_fechar_universo_saude_mg.R` | `universo_saude_mg_entidades.rds`; `universo_saude_mg_estabelecimentos.rds` | `tests/01_validar_universo_saude_mg.R`; `checks/VALIDACAO_UNIVERSO_SAUDE_MG.md` |
+| 2. Vinculos | municipio x entidade em 2019 | `02_cotejar_mides_munic_saude_2019.R` | `cotejamento_mides_munic_saude_mg_2019.rds`; divergencias e resumo | `tests/02_validar_cotejamento_mides_munic_saude_2019.R`; `checks/VALIDACAO_COTEJAMENTO_MIDES_MUNIC_SAUDE_2019.md` |
+| 2. Revisao | par municipio x entidade priorizado | `03_revisar_divergencias_documentais_2019.R` | `revisao_documental_divergencias_saude_mg_2019.csv` | `tests/03_validar_revisao_documental_2019.R`; `checks/VALIDACAO_DOCUMENTAL_DIVERGENCIAS_2019.md` |
+| 3. Polo/rede | entidade e unidade CNES | `04_definir_polos_atracao_saude.R` | `polos_atracao_saude_mg.rds`; `unidades_cnes_vinculadas_saude_mg.csv` | `tests/04_validar_polos_atracao_saude.R`; `checks/VALIDACAO_POLOS_ATRACAO_SAUDE_MG.md` |
+| 4. Capacidade | unidade CNES e entidade agregada | `05_construir_capacidade_assistencial_saude.R` | `capacidade_unidades_cnes_saude_mg.csv`; `capacidade_entidades_saude_mg.rds` | `tests/05_validar_capacidade_assistencial_saude.R`; `checks/VALIDACAO_CAPACIDADE_ASSISTENCIAL_SAUDE_MG.md` |
+
 `outputs/` contem derivados locais e cache, e esta fora do Git. Nada nessa
 pasta altera MIDES, MUNIC, CNM, SICONFI ou o dashboard.
 
@@ -65,14 +100,26 @@ pasta altera MIDES, MUNIC, CNM, SICONFI ou o dashboard.
 | Catalogo de evidencias | `evidencias/catalogo_revisao_documental_2019.csv` | 2 | fonte, ano e alcance; fonte posterior nao retroage 2019 |
 | CNES/DATASUS | https://cnes2.datasus.gov.br/ | 3 e 4 | fotografia atual de estabelecimentos sob o CNPJ mantenedor |
 
+### Registro Das Extracoes
+
+| Fonte | Como entrou no pipeline | Data/periodo representado | Limitacao que deve acompanhar o uso |
+|---|---|---|---|
+| Classificacao v0.5 | leitura do CSV local produzido pela trilha de classificacao | versao tecnica vigente em 03/09/2026 | classifica area; nao prova vinculo municipal |
+| Crosswalk matriz/filial | leitura do RDS nacional, com raiz de oito digitos e CNPJ canonico | fotografia cadastral processada antes desta trilha | raiz comum aproxima identidade institucional, mas alertas permanecem auditaveis |
+| MIDES MG | leitura do painel anual local e selecao de valor total positivo | 2014-2021 | evidencia pagamento, nao adesao juridica |
+| MUNIC | leitura da Base 1 e preservacao da declaracao separada | 2019 | autodeclaracao pontual, nao painel anual |
+| Evidencia documental | catalogo CSV com URL, titulo, ano e interpretacao | varia por documento | documento posterior nao e retroagido automaticamente a 2019 |
+| CNES/DATASUS | requisicao HTTP publica por CNPJ mantenedor e por codigo CNES; cache local | fotografia coletada em 03/09/2026 | cadastro atual, nao capacidade historica de 2014-2021 |
+
 ### Modulos CNES Consultados
 
-| Modulo publico | Campos aproveitados |
-|---|---|
-| `Exibe_Ficha_Estabelecimento.asp` | municipio, IBGE, UF, tipo e dependencia |
-| `Mod_Hospitalar.asp` | leitos existentes e leitos SUS |
-| `Mod_Bas_Atendimento.asp` | ambulatorial, internacao e SADT SUS |
-| `Mod_Profissional.asp` | contagens de vinculos e CBOs SUS ativos |
+| Modulo publico | Endpoint relativo | Campos aproveitados |
+|---|---|---|
+| Lista de mantidas | `Listar_Mantidas.asp?VCnpj=...&VEstado=31` | unidades diretamente registradas sob cada matriz/filial em MG |
+| Ficha do estabelecimento | `Exibe_Ficha_Estabelecimento.asp?VCo_Unidade=...` | municipio, IBGE, UF, tipo e dependencia |
+| Hospitalar | `Mod_Hospitalar.asp?VCo_Unidade=...` | leitos existentes e leitos SUS |
+| Atendimento | `Mod_Bas_Atendimento.asp?VCo_Unidade=...` | ambulatorial, internacao e SADT SUS |
+| Profissionais | `Mod_Profissional.asp?VCo_Unidade=...` | contagens de vinculos e CBOs SUS ativos |
 
 Nomes e CNS de profissionais nao sao gravados. Somente contagens agregadas
 permanecem no produto. O cache local preserva as respostas processadas, nao os
@@ -118,6 +165,30 @@ Rscript analises/modelo_gravitacional_saude/tests/05_validar_capacidade_assisten
 Logo, leitos nao devem ser usados como massa unica. Quantidade de unidades,
 CBOs medicos, atendimento ambulatorial e SADT devem ser testados separadamente.
 Nao foi criado indice composto e ainda nao foi estimado modelo novo.
+
+### Por Que Leitos SUS Nao Podem Ser A Massa Unica
+
+Em uma formulacao gravitacional simples, a atracao do consorcio `j` teria um
+termo proporcional a sua massa:
+
+`atracao_ij proporcional a massa_j x impedancia(tempo_ij)`.
+
+Se `massa_j = leitos_SUS_j`, 45 das 46 entidades com oferta fixa direta
+receberiam massa zero. Isso produziria tres problemas:
+
+1. CISMAS teria atracao zero apesar de possuir clinica fixa e 10 CBOs medicos
+   SUS somados; CISMARPA teria o mesmo problema com 18 CBOs medicos;
+2. somente o CISMEP, com 32 leitos SUS diretos, teria massa hospitalar positiva
+   e dominaria artificialmente a comparacao;
+3. usar `log(leitos_SUS)` seria indefinido para os zeros; usar
+   `log(1 + leitos_SUS)` evitaria o erro numerico, mas ainda deixaria 45
+   entidades indistinguiveis pela medida.
+
+Zero leito significa **ausencia de leito no modulo hospitalar daquele CNPJ**,
+nao ausencia de atendimento, profissionais ou servicos ambulatoriais. E as 36
+entidades sem unidade diretamente registrada nem sequer recebem zero: ficam
+`NA`, porque sua oferta pode estar em hospital municipal, contratado ou outro
+CNPJ ainda nao documentado.
 
 ## Limites E Proximo Passo
 
