@@ -723,6 +723,12 @@ Leitura da procedencia e confianca da v0.2:
   padrao compativel com mudanca temporal e nao com erro automatico da MUNIC.
 - A revisao nao alterou MIDES, MUNIC, dashboard ou modelos. Fontes posteriores
   ficam em sensibilidade e pagamento nao foi convertido em adesao juridica.
+- Em validacao humana, foi confirmado que pagamento MIDES deve ser tratado
+  como forte indicio de relacao real, mas nao como prova juridica. O cenario
+  estrito usara evidencia temporal compativel e o ampliado aceitara
+  corroboracao posterior; estabilidade entre ambos sera criterio de robustez.
+- A revisao humana tambem nao encontrou evidencia de `Sao Miguel do Anta x
+  SIMSAUDE`; o par permanece divergente e nao confirmado.
 - Proximo passo metodologico: definir o polo assistencial e a medida de
   capacidade de atracao antes de integrar CNES e tempo rodoviario.
 

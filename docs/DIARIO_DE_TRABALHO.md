@@ -761,3 +761,12 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - A pesquisa na internet ocorreu somente nesta qualificacao documental; os
   produtos estatisticos dos passos 1 e 2 continuam derivados das bases locais.
 - Nenhum dado do dashboard ou modelo existente foi alterado.
+
+### Validacao Humana
+
+- Aprovada a regra de que pagamento MIDES e forte indicio de relacao, mas nao
+  prova juridica de filiacao.
+- Aprovada a separacao entre cenario estrito, com evidencia compativel com
+  2019, e cenario ampliado, com corroboracao oficial posterior.
+- A revisao humana tambem nao encontrou evidencia de Sao Miguel do Anta no
+  SIMSAUDE; o caso permanece nao confirmado.

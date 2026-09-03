@@ -352,6 +352,8 @@ Primeiro output sugerido:
    prioritarios. Foram encontrados 14 pares com evidencia ate 2019, 33 apenas
    corroborados por fonte posterior, um historicamente compativel, um caso de
    servico sem filiacao comprovada e um caso para revisao humana prioritaria.
+   A regra foi validada: pagamento MIDES e forte indicio de relacao, mas nao
+   prova filiacao; fontes posteriores entram apenas no cenario ampliado.
 4. **Definir polo assistencial e capacidade de atracao:** proxima etapa.
    Confirmar sede operacional, hospital de referencia,
    leitos e especialidades antes de calcular tempo de viagem.

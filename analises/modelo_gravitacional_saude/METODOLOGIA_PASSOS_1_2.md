@@ -73,6 +73,33 @@ corrobora a plausibilidade do vinculo, mas nao reconstitui automaticamente a
 composicao naquele ano. Pagamento no MIDES tambem nao foi convertido em prova
 de filiacao.
 
+**Resultados da revisao**
+
+- 14 pares possuem evidencia anterior ou contemporanea a 2019;
+- 33 pares foram corroborados somente por fonte posterior;
+- um par e historicamente compativel, mas sem prova anual exata;
+- `Juiz de Fora x ACISPES` indica relacao financeira ou assistencial sem
+  filiacao comprovada;
+- `Sao Miguel do Anta x SIMSAUDE` nao foi corroborado nem na pesquisa tecnica
+  nem na revisao humana e permanece como divergencia nao confirmada.
+
+**Decisoes validadas**
+
+1. Pagamento MIDES e um forte indicio de relacao real com o consorcio e pode,
+   em muitos casos, acompanhar a filiacao. Mesmo assim, nao e prova juridica
+   suficiente: o municipio pode apenas comprar servicos ou transferir recursos.
+2. Os 33 pares corroborados apenas depois de 2019 nao serao rotulados como
+   filiacao confirmada em 2019. Eles permanecem no modelo financeiro quando
+   houver pagamento MIDES e entram em um cenario ampliado de sensibilidade
+   quando a analise exigir vinculo institucional.
+3. A sensibilidade compara pelo menos dois cenarios: `estrito`, com evidencia
+   temporal compativel com 2019, e `ampliado`, incluindo corroboracao oficial
+   posterior. Resultado semelhante entre os cenarios indica robustez; mudanca
+   relevante de sinal, magnitude ou incerteza exige interpretacao cautelosa.
+4. `Sao Miguel do Anta x SIMSAUDE` nao sera promovido a vinculo confirmado sem
+   nova evidencia documental. O registro MUNIC e preservado como fonte
+   original e como caso divergente.
+
 ## Fontes E Limites
 
 Os produtos principais dos dois passos foram executados com bases locais ja
@@ -82,6 +109,11 @@ interpretacao de cada fonte. MIDES significa pagamento observado, enquanto
 MUNIC significa participacao declarada. Divergencia entre as fontes nao e
 tratada automaticamente como erro. Documentos sem referencia temporal
 compativel nao comprovam a composicao municipal de 2019.
+
+A amostra dos 27 maiores pagamentos somente MIDES apresentou ampla
+corroboracao de alguma relacao institucional ou assistencial, mas ela foi
+selecionada por valor e nao permite estimar que uma porcentagem fixa dos
+pagamentos MIDES represente filiacao no universo completo.
 
 Scripts, testes e relatorios auditaveis estao neste mesmo diretorio. Os
 resultados reprocessaveis ficam em `outputs/`, fora do Git por tamanho e por
