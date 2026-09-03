@@ -2,6 +2,13 @@
 
 As sessões detalhadas estão em `docs/DIARIO_DE_TRABALHO.md`. Este arquivo registra apenas marcos do produto.
 
+## 2026-09-03
+
+- fechado o universo saúde–MG: 100 CNPJs em 84 entidades consolidadas, com MIDES, MUNIC e revisão documental preparados para o novo modelo;
+- definido o polo assistencial por consulta CNES para matriz e filiais, distinguindo estabelecimento fixo, rede, serviço móvel e sede administrativa de sensibilidade;
+- documentada a regra de não reduzir redes a uma sede antes da capacidade e da agregação explícita;
+- adicionados script reprocessável, teste automatizado e documentação do passo 3, sem alterar o dashboard nem estimar um novo modelo.
+
 ## 2026-08-20
 
 - criada a camada nacional de identidade para os 1.194 CNPJs do cadastro IPEA;

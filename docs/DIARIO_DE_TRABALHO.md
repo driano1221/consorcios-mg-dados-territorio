@@ -779,3 +779,25 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Foi registrada a ressalva operacional da CNM: a fotografia atual ja existe,
   mas ainda nao foi materializada como marcador na tabela especifica de saude
   de 2019 e nao deve ser retroagida como filiacao historica.
+
+## Definicao Do Polo Assistencial - 2026-09-03
+
+- Foi concluido o passo 3 da trilha do modelo gravitacional de saude, em pasta
+  analitica separada do dashboard.
+- Foram consultados no CNES/DATASUS os 100 CNPJs de matriz e filial das 84
+  entidades consolidadas; a coleta final nao teve erro de consulta e retornou
+  639 unidades vinculadas pelo CNPJ da mantenedora.
+- Resultado da regra: 45 entidades sao redes CNES, 36 nao possuem unidade
+  listada pelo proprio CNPJ, uma possui somente servico movel e duas possuem
+  uma unica clinica fixa diretamente vinculada.
+- Os dois polos fixos identificados sao CISMAS (Itajuba, CNES 6776434) e
+  CISMARPA (Pocos de Caldas, CNES 5796601). O CIMES foi separado: sua unidade
+  unica e um vacimovel e nao sera destino geografico fixo.
+- A sede administrativa foi preservada para todas as entidades, mas apenas como
+  ancora de sensibilidade quando nao existe polo assistencial definido.
+- O resultado impede um atalho: para redes, a proxima etapa precisa definir a
+  capacidade e a regra de agregacao antes de calcular tempo rodoviario.
+- Criados script, teste e metodologia em
+  `analises/modelo_gravitacional_saude/04_definir_polos_atracao_saude.R`;
+  `tests/04_validar_polos_atracao_saude.R`; e
+  `METODOLOGIA_PASSO_3_POLO_ATRACAO.md`.

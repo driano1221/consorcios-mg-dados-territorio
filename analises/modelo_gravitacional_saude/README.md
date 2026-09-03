@@ -66,6 +66,21 @@ O catalogo de fontes fica em
 `evidencias/catalogo_revisao_documental_2019.csv`; o relatorio auditavel fica
 em `checks/VALIDACAO_DOCUMENTAL_DIVERGENCIAS_2019.md`.
 
+## Polo De Atracao Assistencial
+
+O terceiro passo separa sede administrativa de polo assistencial e consulta o
+CNES pelo CNPJ de cada matriz e filial consolidada. Uma unidade fixa unica
+vinculada pode ser usada como polo; uma rede de unidades e mantida como rede;
+uma unidade movel nao se torna polo fixo; ausencia de unidade no CNPJ nao vira
+evidencia de ausencia de servico e deixa a sede apenas como ancora de
+sensibilidade. A metodologia esta em
+[`METODOLOGIA_PASSO_3_POLO_ATRACAO.md`](METODOLOGIA_PASSO_3_POLO_ATRACAO.md).
+
+```powershell
+Rscript analises/modelo_gravitacional_saude/04_definir_polos_atracao_saude.R
+Rscript analises/modelo_gravitacional_saude/tests/04_validar_polos_atracao_saude.R
+```
+
 ## Limite
 
 Este passo identifica e organiza o universo. A entrada definitiva de cada

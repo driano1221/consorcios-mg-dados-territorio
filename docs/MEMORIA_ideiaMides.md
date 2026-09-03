@@ -736,6 +736,22 @@ Leitura da procedencia e confianca da v0.2:
 - Proximo passo metodologico: definir o polo assistencial e a medida de
   capacidade de atracao antes de integrar CNES e tempo rodoviario.
 
+## Polo Assistencial E CNES - 2026-09-03
+
+- O passo 3 foi concluido fora do dashboard: as 84 entidades de saude MG
+  receberam sede administrativa canonica e situacao de polo assistencial.
+- O CNES/DATASUS foi consultado para 100 CNPJs de matriz e filial, sem erro
+  final. Foram retornadas 639 unidades registradas sob o CNPJ da mantenedora.
+- A decisao e estritamente cadastral: 45 entidades sao redes vinculadas, 36
+  nao possuem unidade CNES no proprio CNPJ, uma tem apenas unidade movel e duas
+  possuem um estabelecimento fixo unico. Sede administrativa nao foi promovida
+  automaticamente a hospital ou rede.
+- CISMAS (Itajuba, CNES 6776434) e CISMARPA (Pocos de Caldas, CNES 5796601)
+  sao os dois polos fixos unicos. CIMES possui um vacimovel e fica fora da
+  medida principal de distancia fixa.
+- Proxima ordem recomendada: definir capacidade e agregacao das redes no CNES,
+  depois calcular tempos rodoviarios ao polo ou conjunto realmente definido.
+
 ## Documentos Historicos
 
 Arquivos antigos continuam uteis como registro de processo, mas nao devem ser usados como estado atual:
