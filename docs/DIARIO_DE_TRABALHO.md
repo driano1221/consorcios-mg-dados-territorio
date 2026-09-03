@@ -901,3 +901,18 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Os universos estaduais foram rotulados como preliminares; populacao, RCL,
   regioes de saude, bacias e mandato nao foram inventados nem imputados.
 - Dashboard e modelos existentes permaneceram inalterados.
+
+## Organizacao Da Trilha Do Modelo De Saude - 2026-09-03
+
+- O `README.md` passou a ser uma porta de entrada curta com rotas de leitura.
+- Criado `DICIONARIO_TECNICO.md`, inventariando scripts, testes, checks,
+  produtos, fontes, links, datas de coleta e limitacoes dos passos 1 a 6.
+- Criado `LINHA_DO_TEMPO_PASSOS.md`, mostrando a evolucao do universo ate o
+  painel anual com o caso real `Igarape x CISMEP` atravessando todos os passos.
+- O exemplo foi conferido nos RDS: quatro CNPJs cadastrais na raiz CISMEP,
+  concordancia MIDES+MUNIC em 2019, rede de 13 unidades, duas unidades fixas,
+  tempos de 0 a 8,4 minutos e permanencia financeira entre 2014 e 2021.
+- O documento explicita por que o caso nao e automaticamente generalizavel:
+  CISMEP e excecao na cobertura de leitos e Igarape possui oferta local.
+- Os oito caminhos de fontes locais foram verificados e os sete testes da
+  trilha passaram novamente. Nenhum dado ou modelo foi recalculado.

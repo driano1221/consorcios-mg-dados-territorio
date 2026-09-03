@@ -1,0 +1,230 @@
+# Dicionario Tecnico - Modelo Gravitacional De Saude
+
+Este documento e o inventario oficial da pasta. Ele responde quatro perguntas:
+
+1. qual arquivo executa cada passo;
+2. quais dados entram e de onde vieram;
+3. qual produto deve ser aberto;
+4. qual teste comprova que o passo fechou corretamente.
+
+O `README.md` continua sendo a porta de entrada. A evolucao substantiva dos
+passos esta em `LINHA_DO_TEMPO_PASSOS.md`.
+
+## Numeracao
+
+Ha seis passos cientificos e sete scripts. O passo 2 usa dois scripts porque a
+comparacao quantitativa e a revisao documental sao operacoes diferentes.
+
+| Passo cientifico | Script tecnico | Conteudo |
+|---:|---|---|
+| 1 | `01` | universo de saude e identidade matriz/filial |
+| 2 | `02` e `03` | cotejamento MIDES-MUNIC e revisao documental |
+| 3 | `04` | polo ou rede assistencial diretamente vinculada |
+| 4 | `05` | capacidade assistencial atual no CNES |
+| 5 | `06` | tempo rodoviario ate a oferta fixa |
+| 6 | `07` | painel municipio-entidade-ano e eventos |
+
+## Mapa Da Pasta
+
+| Local | O que contem | Regra de uso |
+|---|---|---|
+| `README.md` | estado atual e ordem de leitura | abrir primeiro |
+| `DICIONARIO_TECNICO.md` | arquivos, fontes, extracoes e produtos | consultar para localizar ou reproduzir |
+| `LINHA_DO_TEMPO_PASSOS.md` | evolucao dos passos e exemplo real | consultar para explicar o projeto |
+| `METODOLOGIA_*.md` | regra detalhada de cada bloco | consultar para defender decisoes |
+| `01...07...R` | scripts reprocessaveis | executar na ordem numerica |
+| `tests/` | testes de chaves, contagens e invariantes | executar depois do respectivo script |
+| `checks/` | resultados quantitativos validados | consultar numeros sem abrir bases |
+| `evidencias/` | fontes da revisao humana | auditar decisoes documentais do passo 2 |
+| `outputs/` | dados derivados, snapshots e caches | uso analitico local; nao versionado no Git |
+
+## Scripts, Entradas E Saidas
+
+### Passo 1 - Universo De Saude
+
+| Arquivo | Funcao |
+|---|---|
+| `01_fechar_universo_saude_mg.R` | seleciona areas de saude, consolida matriz/filiais e liga o universo ao MIDES |
+| `tests/01_validar_universo_saude_mg.R` | valida 100 CNPJs, 84 entidades, identidade e conservacao financeira |
+| `checks/VALIDACAO_UNIVERSO_SAUDE_MG.md` | registra contagens, alertas e amostras |
+
+Entradas:
+
+| Arquivo local | Papel |
+|---|---|
+| `analises/classificacao_politicas/outputs/classificacao_areas_politica_mg_v0_5_completa.csv` | informa area, macrogrupo, perfil e validacao |
+| `analises/base_nacional/outputs/crosswalk_cnpj_matriz_filial_nacional.rds` | fornece raiz, matriz canonica e filiais |
+| `dados/processado/painel_mg_anual.rds` | informa pagamentos MIDES anuais de 2014 a 2021 |
+
+Produtos principais:
+
+| Produto | Unidade | Uso |
+|---|---|---|
+| `universo_saude_mg_estabelecimentos.rds` | CNPJ original | auditar matriz e filial sem perder identidade |
+| `universo_saude_mg_entidades.rds` | raiz de oito digitos | universo canonico das 84 entidades |
+| `casos_revisao_universo_saude_mg.csv` | entidade com alerta | revisao humana de escopo ou situacao |
+| `resumo_universo_saude_mg.csv` | indicador | consulta rapida das contagens |
+
+### Passo 2 - Vinculos E Evidencias
+
+| Arquivo | Funcao |
+|---|---|
+| `02_cotejar_mides_munic_saude_2019.R` | compara pagamento MIDES e declaracao MUNIC em 2019 |
+| `03_revisar_divergencias_documentais_2019.R` | qualifica documentalmente os 50 casos priorizados |
+| `tests/02_validar_cotejamento_mides_munic_saude_2019.R` | valida uniao, grupos e valores |
+| `tests/03_validar_revisao_documental_2019.R` | valida cobertura do catalogo e regras temporais |
+| `checks/VALIDACAO_COTEJAMENTO_MIDES_MUNIC_SAUDE_2019.md` | resultados do cotejamento |
+| `checks/VALIDACAO_DOCUMENTAL_DIVERGENCIAS_2019.md` | resultados da revisao humana |
+
+Entradas adicionais:
+
+| Arquivo local | Papel |
+|---|---|
+| `dashboards/base1_shiny/data/base_1_vinculos_2015_2019.rds` | preserva MIDES e MUNIC separadamente em 2019 |
+| `dashboards/base1_shiny/data/cadastro_base.rds` | nomes e contexto cadastral |
+| `evidencias/catalogo_revisao_documental_2019.csv` | URL, ano, alcance e interpretacao de cada evidencia |
+
+Produtos principais:
+
+| Produto | Unidade | Uso |
+|---|---|---|
+| `cotejamento_mides_munic_saude_mg_2019.rds` | municipio x entidade | distinguir `MIDES+MUNIC`, somente fonte e divergencia |
+| `resumo_entidades_mides_munic_saude_mg_2019.rds` | entidade | cobertura por consorcio |
+| `divergencias_mides_munic_saude_mg_2019.csv` | par divergente | auditoria completa |
+| `amostra_revisao_mides_munic_saude_mg_2019.csv` | par priorizado | 23 somente MUNIC e 27 maiores somente MIDES |
+| `revisao_documental_divergencias_saude_mg_2019.csv` | par priorizado | decisao estrita, ampliada ou nao confirmada |
+
+### Passo 3 - Polo Ou Rede Assistencial
+
+| Arquivo | Funcao |
+|---|---|
+| `04_definir_polos_atracao_saude.R` | consulta os CNPJs no CNES e separa sede, polo unico, rede, movel ou sem unidade |
+| `tests/04_validar_polos_atracao_saude.R` | valida 84 entidades e 639 unidades |
+| `checks/VALIDACAO_POLOS_ATRACAO_SAUDE_MG.md` | registra cobertura e decisoes territoriais |
+| `METODOLOGIA_PASSO_3_POLO_ATRACAO.md` | explica por que sede administrativa nao e automaticamente hospital |
+
+Produtos principais:
+
+| Produto | Unidade | Uso |
+|---|---|---|
+| `consultas_cnes_polo_saude_mg.csv` | CNPJ consultado | auditoria da consulta por matriz e filial |
+| `unidades_cnes_vinculadas_saude_mg.csv` | unidade CNES | lista de estabelecimentos mantidos pelo CNPJ |
+| `polos_atracao_saude_mg.rds` | entidade | decisao de polo, rede ou ausencia de unidade direta |
+| arquivos com sufixo `2026_09_03` | snapshot datado | preservar a fotografia usada na analise |
+
+### Passo 4 - Capacidade Assistencial
+
+| Arquivo | Funcao |
+|---|---|
+| `05_construir_capacidade_assistencial_saude.R` | consulta ficha, leitos, atendimento e profissionais das unidades CNES |
+| `tests/05_validar_capacidade_assistencial_saude.R` | valida cobertura, tipos, zeros e ausencias |
+| `checks/VALIDACAO_CAPACIDADE_ASSISTENCIAL_SAUDE_MG.md` | registra EDA e exemplos auditados |
+| `METODOLOGIA_PASSO_4_CAPACIDADE_ASSISTENCIAL.md` | explica medidas e por que leitos nao sao massa unica |
+
+Produtos principais:
+
+| Produto | Unidade | Uso |
+|---|---|---|
+| `capacidade_unidades_cnes_saude_mg.csv` | unidade fixa ou movel | camada primaria da oferta direta |
+| `capacidade_entidades_saude_mg.rds` | entidade | agregacao das unidades fixas diretamente vinculadas |
+| `cache_cnes_capacidade/` | unidade CNES | evitar nova consulta integral e recuperar falhas seletivamente |
+| arquivos com sufixo `2026_09_03` | snapshot datado | preservar a coleta utilizada |
+
+### Passo 5 - Tempo Rodoviario
+
+| Arquivo | Funcao |
+|---|---|
+| `06_integrar_tempo_rodoviario_saude.R` | liga os 853 municipios as unidades fixas por OSRM/OpenStreetMap |
+| `tests/06_validar_tempo_rodoviario_saude.R` | valida cobertura, diagonal, simetria e ausencia de rotas faltantes |
+| `checks/VALIDACAO_TEMPO_RODOVIARIO_SAUDE_MG.md` | registra EDA, velocidades implicitas e limites |
+| `METODOLOGIA_PASSO_5_TEMPO_RODOVIARIO.md` | explica origem, agregacao e interpretacao do tempo |
+
+Produtos principais:
+
+| Produto | Unidade | Uso |
+|---|---|---|
+| `tempo_rodoviario_municipio_destino_saude_mg.rds` | municipio x municipio de oferta | grade territorial basica |
+| `tempo_rodoviario_municipio_unidade_saude_mg.rds` | municipio x unidade fixa | camada primaria de impedancia |
+| `tempo_rodoviario_municipio_entidade_saude_mg.rds` | municipio x entidade | minimo, mediana e maximo para EDA/sensibilidade |
+
+### Passo 6 - Painel Analitico
+
+| Arquivo | Funcao |
+|---|---|
+| `07_montar_painel_analitico_saude.R` | consolida pagamentos e cria a grade municipio-entidade-ano |
+| `tests/07_validar_painel_analitico_saude.R` | valida 573.216 chaves, eventos e valor conservado |
+| `checks/VALIDACAO_PAINEL_ANALITICO_SAUDE_MG.md` | registra eventos e universos preliminares |
+| `METODOLOGIA_PASSO_6_PAINEL_ANALITICO.md` | explica censura, eventos e limites do conjunto estadual |
+
+Produtos principais:
+
+| Produto | Unidade | Uso |
+|---|---|---|
+| `painel_analitico_saude_mg.rds` | municipio x entidade x ano | fonte analitica completa, inclusive zeros |
+| `mides_saude_mg_consolidado_entidade_ano.rds` | observacao MIDES consolidada | auditar matriz/filiais e valores |
+| `painel_analitico_saude_mg_eventos.csv` | linha com presenca ou transicao | inspecao dos eventos |
+| `painel_analitico_saude_mg_resumo_par.rds` | municipio x entidade | trajetoria e recorrencia |
+| `painel_analitico_saude_mg_resumo_ano.csv` | ano | resumo temporal |
+| `painel_analitico_saude_mg_resumo_entidade.csv` | entidade | resumo institucional |
+| `DICIONARIO_PAINEL_ANALITICO_SAUDE_MG.csv` | variavel | definicoes das colunas centrais do painel |
+
+## Fontes E Proveniencia
+
+| Fonte | Origem ou link | Arquivo local utilizado | Periodo/data | Passos | Leitura correta |
+|---|---|---|---|---:|---|
+| Cadastro/classificacao IPEA v0.5 | pipeline interno versionado | `classificacao_areas_politica_mg_v0_5_completa.csv` | versao vigente em 03/09/2026 | 1 | identifica area e perfil; nao prova vinculo municipal |
+| Identidade matriz/filial | pipeline nacional interno | `crosswalk_cnpj_matriz_filial_nacional.rds` | fotografia cadastral anterior ao recorte de saude | 1 | raiz comum define entidade analitica, preservando CNPJs originais |
+| MIDES | [Base dos Dados](https://basedosdados.org/dataset/d3874769-bcbd-4ece-a38a-157ba1021514?table=14c5d05b-9830-4710-b7ac-7e0ca1bf9d8b), tabela `world_wb_mides.pagamento` | `dados/processado/painel_mg_anual.rds` | 2014-2021; data da extracao nao e registrada nesta trilha | 1, 2 e 6 | pagamento observado, nao filiacao juridica |
+| MUNIC/IBGE | [Pesquisa MUNIC](https://www.ibge.gov.br/estatisticas/sociais/saude/10586-pesquisa-de-informacoes-basicas-municipais.html) | `base_1_vinculos_2015_2019.rds` | recorte de 2019 no passo 2 | 2 | declaracao pontual, nao painel anual |
+| Cadastro auxiliar | pipeline do dashboard | `cadastro_base.rds` | fotografia processada vigente | 2 | nomes e contexto, nao evidencia temporal isolada |
+| Evidencias documentais | URLs por linha em `evidencias/catalogo_revisao_documental_2019.csv` | catalogo CSV versionado | documentos de anos distintos | 2 | fonte posterior nao retroage automaticamente para 2019 |
+| CNES/DATASUS | [CNES](https://cnes2.datasus.gov.br/) | snapshots e cache em `outputs/` | coletado em 03/09/2026 | 3 e 4 | fotografia atual de unidades sob o CNPJ mantenedor |
+| Distbrasil | [pagina metodologica](https://rfsaldanha.github.io/data-projects/brazil_road_distances.html), [Zenodo 11400243](https://zenodo.org/records/11400243), [codigo](https://github.com/rfsaldanha/distbrasil) | `dados/bruto/externo/distbrasil/dist_brasil_zenodo_11400243.rds` | publicado em 31/05/2024; integrado em 03/09/2026 | 5 | rota estatica e simetrica entre sedes municipais |
+| Malha municipal MG | produto cartografico local do dashboard | `dashboards/base1_shiny/data/mg_municipios_sf_web.rds` | referencia municipal usada no projeto | 5 | nomes/codigos e geometria; nao produz o tempo rodoviario |
+
+### Endpoints CNES Consultados
+
+| Endpoint relativo | Conteudo aproveitado |
+|---|---|
+| `Listar_Mantidas.asp?VCnpj=...&VEstado=31` | unidades diretamente registradas sob matriz ou filial |
+| `Exibe_Ficha_Estabelecimento.asp?VCo_Unidade=...` | municipio, codigo IBGE, tipo e dependencia |
+| `Mod_Hospitalar.asp?VCo_Unidade=...` | leitos existentes e SUS |
+| `Mod_Bas_Atendimento.asp?VCo_Unidade=...` | ambulatorio, internacao e SADT SUS |
+| `Mod_Profissional.asp?VCo_Unidade=...` | contagens de vinculos e CBOs SUS ativos |
+
+Nomes e CNS de profissionais nao sao retidos. Apenas contagens agregadas ficam
+nos produtos.
+
+## O Que Nao Entrou
+
+- A CNM nao altera os passos 1 a 6: ela e fotografia cadastral atual e ainda
+  nao foi materializada como composicao historica da tabela de saude.
+- SICONFI nao identifica o CNPJ destinatario e nao entra como vinculo do par.
+- Populacao, RCL, regiao de saude, bacia e mandato aguardam fontes anuais
+  validadas.
+- Os 36 casos sem unidade direta e os dois somente moveis permanecem com tempo
+  `NA`; nenhum destino foi inventado.
+
+## Ordem De Reproducao
+
+Na raiz do repositorio, execute cada script e seu teste antes de seguir:
+
+```powershell
+Rscript analises/modelo_gravitacional_saude/01_fechar_universo_saude_mg.R
+Rscript analises/modelo_gravitacional_saude/tests/01_validar_universo_saude_mg.R
+Rscript analises/modelo_gravitacional_saude/02_cotejar_mides_munic_saude_2019.R
+Rscript analises/modelo_gravitacional_saude/tests/02_validar_cotejamento_mides_munic_saude_2019.R
+Rscript analises/modelo_gravitacional_saude/03_revisar_divergencias_documentais_2019.R
+Rscript analises/modelo_gravitacional_saude/tests/03_validar_revisao_documental_2019.R
+Rscript analises/modelo_gravitacional_saude/04_definir_polos_atracao_saude.R
+Rscript analises/modelo_gravitacional_saude/tests/04_validar_polos_atracao_saude.R
+Rscript analises/modelo_gravitacional_saude/05_construir_capacidade_assistencial_saude.R
+Rscript analises/modelo_gravitacional_saude/tests/05_validar_capacidade_assistencial_saude.R
+Rscript analises/modelo_gravitacional_saude/06_integrar_tempo_rodoviario_saude.R
+Rscript analises/modelo_gravitacional_saude/tests/06_validar_tempo_rodoviario_saude.R
+Rscript analises/modelo_gravitacional_saude/07_montar_painel_analitico_saude.R
+Rscript analises/modelo_gravitacional_saude/tests/07_validar_painel_analitico_saude.R
+```
+
+Os produtos pesados em `outputs/` sao derivados e ignorados pelo Git. Codigo,
+testes, checks, metodologias e evidencias pequenas sao versionados.

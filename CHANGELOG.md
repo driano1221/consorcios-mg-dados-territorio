@@ -17,6 +17,7 @@ As sessões detalhadas estão em `docs/DIARIO_DE_TRABALHO.md`. Este arquivo regi
 - materializado o painel de saude com 573.216 linhas (`853 x 84 x 8`), consolidando matriz/filiais e preservando integralmente R$ 3,102 bilhoes do MIDES;
 - separados estoque inicial, primeiro pagamento, retorno, permanencia e interrupcao, com universos preliminares de entrada, continuidade e intensidade;
 - adicionados teste, dicionario, relatorio EDA e metodologia do passo 6; dashboard e modelos existentes continuam inalterados.
+- reorganizada a pasta do modelo de saude com dicionario tecnico de arquivos/fontes/extracoes e linha do tempo dos passos 1 a 6, ilustrada pelo caso real Igarape x CISMEP.
 
 ## 2026-08-20
 

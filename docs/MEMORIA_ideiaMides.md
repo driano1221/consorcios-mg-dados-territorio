@@ -821,3 +821,7 @@ Arquivos antigos continuam uteis como registro de processo, mas nao devem ser us
   `tests/07_validar_painel_analitico_saude.R`,
   `checks/VALIDACAO_PAINEL_ANALITICO_SAUDE_MG.md` e
   `METODOLOGIA_PASSO_6_PAINEL_ANALITICO.md`.
+- A pasta passou a ter um inventario unico em `DICIONARIO_TECNICO.md` e uma
+  narrativa ponta a ponta em `LINHA_DO_TEMPO_PASSOS.md`. O caso real Igarape x
+  CISMEP documenta a passagem de CNPJs para entidade, evidencias, rede,
+  capacidade, tempo e observacoes anuais sem alterar resultados.

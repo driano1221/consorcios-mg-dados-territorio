@@ -1,0 +1,175 @@
+# Linha Do Tempo Dos Passos - Modelo Gravitacional De Saude
+
+## Visao Geral
+
+O trabalho avancou do cadastro para uma observacao anual pronta para EDA. Cada
+passo resolveu uma pergunta que precisava estar fechada antes do seguinte.
+
+```mermaid
+flowchart LR
+  P1["1. Quem e saude?<br/>84 entidades"] --> P2["2. Que evidencia liga<br/>municipio e entidade?"]
+  P2 --> P3["3. Onde esta a oferta?<br/>polo, rede ou ausente"]
+  P3 --> P4["4. Qual capacidade<br/>esta registrada?"]
+  P4 --> P5["5. Qual a impedancia<br/>rodoviaria?"]
+  P5 --> P6["6. O que ocorreu<br/>em cada ano?"]
+  P6 --> P7["Proximo: alternativas<br/>e controles anuais"]
+```
+
+## Evolucao Do Projeto
+
+| Passo | Pergunta | Antes | Entrega | Resultado central |
+|---:|---|---|---|---|
+| 1 | quais CNPJs representam consorcios de saude? | matriz e filiais podiam contar separadamente | universo por CNPJ original e por raiz | 100 CNPJs em 84 entidades; 66 observadas no MIDES |
+| 2 | pagamento e declaracao contam a mesma historia? | MIDES e MUNIC podiam ser lidos como vinculo equivalente | cotejamento e revisao documental | 1.311 pares: 630 comuns, 658 somente MIDES e 23 somente MUNIC |
+| 3 | sede administrativa e destino assistencial? | distancia poderia apontar para um escritorio | unidades CNES e decisao de polo/rede | 639 unidades; 36 entidades sem unidade direta |
+| 4 | como medir poder de atracao? | leitos eram uma hipotese ainda nao testada | capacidade por unidade e entidade | 366 fixas, 273 moveis; apenas uma entidade com leitos SUS diretos |
+| 5 | como medir a resistencia espacial? | nao havia impedancia integrada | tempo por destino, unidade e entidade | 363.378 pares MG completos; 46 entidades com tempo |
+| 6 | como representar a trajetoria anual? | pagamentos, tempo e capacidade estavam separados | grade anual com eventos e defasagens | 573.216 linhas; 426 primeiros pagamentos, 252 retornos e 533 interrupcoes |
+
+## Exemplo Real Continuo: Igarape x CISMEP
+
+O caso usa a entidade de raiz `05802877` e o municipio de Igarape
+(`id_municipio = 3130101`). Ele foi escolhido porque atravessa todos os passos
+sem preencher lacunas por inferencia.
+
+### Passo 1 - Da Lista De CNPJs Para Uma Entidade
+
+Antes, os CNPJs poderiam ser tratados como consorcios diferentes. A raiz
+`05802877` possui:
+
+- matriz `05802877000110`;
+- filiais `05802877000209`, `05802877000381` e `05802877000462`;
+- quatro estabelecimentos cadastrais, sendo tres filiais;
+- dois CNPJs observados no MIDES: matriz e filial `0002`.
+
+Depois do passo 1, todos continuam auditaveis, mas a unidade analitica passa a
+ser uma entidade: **CISMEP**, classificada como saude setorial e incluida no
+nucleo principal preliminar. No periodo completo, a raiz aparece com 58
+municipios e R$ 1.056.809.423,16 no MIDES.
+
+```mermaid
+flowchart LR
+  A["4 CNPJs cadastrais"] --> B["raiz 05802877"]
+  B --> C["1 entidade: CISMEP"]
+  C --> D["CNPJs originais preservados"]
+```
+
+### Passo 2 - Duas Evidencias Mantidas Separadas
+
+Em 2019, `Igarape x CISMEP` aparece nas duas fontes:
+
+| Evidencia | Resultado |
+|---|---|
+| MIDES | R$ 4.740.790,51 pagos a matriz e filial `0002` |
+| MUNIC | declaracao na area de saude para a matriz |
+| Grupo | `MIDES+MUNIC` |
+
+O passo nao transformou pagamento em prova juridica. Ele mostrou que, nesse
+ano, ha concordancia entre evidencia financeira e declarada. Como o par nao e
+divergente, ele nao precisou entrar na amostra documental dos 50 casos.
+
+### Passo 3 - Sede Nao Virou Hospital Automaticamente
+
+A ancora administrativa do CISMEP e Sao Joaquim de Bicas. A consulta dos CNPJs
+no CNES retornou 13 unidades diretamente vinculadas. O resultado nao foi
+"hospital da sede", mas **rede vinculada sem polo unico**.
+
+Isso muda a pergunta de distancia. Em vez de calcular apenas
+`Igarape -> sede administrativa`, o projeto preserva os destinos assistenciais
+diretamente documentados.
+
+### Passo 4 - A Rede Recebe Medidas De Capacidade
+
+A consulta detalhada mostrou:
+
+| Componente atual do CISMEP | Valor |
+|---|---:|
+| unidades vinculadas | 13 |
+| unidades moveis/itinerantes | 11 |
+| unidades fixas | 2 |
+| municipios com oferta fixa | 2: Igarape e Sao Joaquim de Bicas |
+| unidades com ambulatorio SUS | 2 |
+| unidades com SADT SUS | 2 |
+| unidades com internacao SUS | 1 |
+| leitos SUS diretos | 32 |
+| vinculos medicos SUS ativos | 130 |
+| CBOs medicos SUS somados por unidade | 22 |
+
+O CISMEP possui leitos, mas e excecao: somente uma das 46 entidades com oferta
+fixa direta registra leitos SUS. Por isso o caso nao autoriza usar leitos como
+massa unica para todos os consorcios.
+
+### Passo 5 - O Tempo E Calculado Ate A Rede
+
+Para Igarape, a camada municipio-entidade registra:
+
+| Medida | Resultado |
+|---|---:|
+| menor tempo ate oferta fixa CISMEP | 0 minuto |
+| tempo mediano entre os dois destinos | 4,2 minutos |
+| maior tempo | 8,4 minutos |
+| distancia mediana | 3,733 km |
+| destino mais proximo | Igarape |
+
+O zero nao significa viagem instantanea de um paciente. Significa que origem e
+uma unidade fixa estao no mesmo municipio e a fonte usa sedes municipais como
+pontos de referencia. A segunda unidade, em Sao Joaquim de Bicas, preserva a
+amplitude da rede.
+
+### Passo 6 - A Observacao Vira Uma Trajetoria Anual
+
+| Ano | Valor MIDES | CNPJs no ano | Evento |
+|---:|---:|---:|---|
+| 2014 | R$ 722.807,02 | 1 | estoque inicial de 2014 |
+| 2015 | R$ 450.192,57 | 1 | permanencia |
+| 2016 | R$ 490.080,31 | 1 | permanencia |
+| 2017 | R$ 485.363,10 | 1 | permanencia |
+| 2018 | R$ 4.096.281,81 | 1 | permanencia |
+| 2019 | R$ 4.740.790,51 | 2 | permanencia; matriz e filial consolidadas |
+| 2020 | R$ 5.539.460,17 | 1 | permanencia |
+| 2021 | R$ 6.586.529,43 | 1 | permanencia |
+
+O pagamento de 2014 e `estoque_inicial_2014`, nao entrada, porque o inicio real
+pode ter ocorrido antes da janela. De 2015 a 2021 o par e classificado como
+permanencia financeira. Em 2019 os dois CNPJs sao somados antes de classificar
+o movimento, evitando duplicar o par.
+
+```mermaid
+flowchart LR
+  A["2014<br/>estoque inicial"] --> B["2015-2018<br/>permanencia"]
+  B --> C["2019<br/>matriz + filial<br/>R$ 4,74 mi"]
+  C --> D["2020-2021<br/>permanencia"]
+```
+
+## O Que O Exemplo Demonstra
+
+1. entidade e raiz de CNPJ, nao uma linha isolada de estabelecimento;
+2. MIDES e MUNIC podem concordar, mas continuam evidencias diferentes;
+3. sede administrativa, polo e rede nao sao sinonimos;
+4. capacidade possui varios componentes e uma fotografia atual;
+5. tempo deve respeitar a rede documentada;
+6. movimento anual descreve pagamento, nao ato juridico.
+
+## Onde O Exemplo Nao Pode Ser Generalizado
+
+- CISMEP e a unica entidade com leitos SUS diretamente registrados; os 32
+  leitos nao representam a cobertura das demais.
+- Igarape possui unidade no proprio municipio; muitos pares tem tempo positivo.
+- Trinta e seis entidades nao possuem unidade direta e duas tem somente oferta
+  movel; elas permanecem com tempo `NA`.
+- A capacidade CNES foi coletada em 2026 e nao comprova a mesma estrutura em
+  todos os anos de 2014 a 2021.
+- `MIDES+MUNIC` em 2019 fortalece a evidencia, mas nao fornece sozinho a data
+  juridica de entrada.
+
+## Proximo Marco
+
+O painel ja existe, mas a grade estadual ainda oferece entidades demais a cada
+municipio. O passo seguinte deve:
+
+1. definir alternativas plausiveis por tempo, regiao de saude ou regra
+   institucional;
+2. integrar populacao, RCL, regiao de saude, bacia e mandato com fontes anuais
+   validadas;
+3. executar EDA dos universos finais;
+4. somente depois estimar entrada, intensidade e interrupcao.

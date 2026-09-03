@@ -4,6 +4,19 @@ Esta pasta prepara, fora do dashboard, o recorte de Minas Gerais definido na
 reuniao de 27/08/2026. O objetivo e construir uma base defensavel antes de
 estimar novos modelos.
 
+## Leitura Rapida
+
+| Necessidade | Arquivo |
+|---|---|
+| saber o estado atual | `README.md` |
+| localizar scripts, fontes, links, extracoes e produtos | `DICIONARIO_TECNICO.md` |
+| entender a evolucao dos passos com um caso real | `LINHA_DO_TEMPO_PASSOS.md` |
+| defender uma decisao metodologica | `METODOLOGIA_*.md` |
+| consultar resultados ja validados | `checks/` |
+
+O dicionario tecnico e a referencia unica para a funcao de cada arquivo e a
+proveniencia das fontes. O README resume; nao substitui o inventario.
+
 ## Estado Dos Seis Blocos
 
 | Passo cientifico | Estado | Resultado principal |
@@ -84,6 +97,8 @@ isso os blocos cientificos 3 a 6 sao executados pelos scripts `04` a `07`.
 | `METODOLOGIA_PASSO_4_CAPACIDADE_ASSISTENCIAL.md` | Explica capacidade e EDA | passo 4 | medidas, resultados e limites |
 | `METODOLOGIA_PASSO_5_TEMPO_RODOVIARIO.md` | Explica fonte, agregacao e EDA de tempo | passo 5 | impedancia estatica e limites |
 | `METODOLOGIA_PASSO_6_PAINEL_ANALITICO.md` | Explica grade, censura e eventos | passo 6 | painel e universos preliminares |
+| `DICIONARIO_TECNICO.md` | Inventaria arquivos, fontes, links e datas | passos 1 a 6 | referencia de localizacao e reproducao |
+| `LINHA_DO_TEMPO_PASSOS.md` | Mostra a evolucao com Igarape x CISMEP | passos 1 a 6 | explicacao didatica ponta a ponta |
 
 ### Dicionario Por Passo
 
