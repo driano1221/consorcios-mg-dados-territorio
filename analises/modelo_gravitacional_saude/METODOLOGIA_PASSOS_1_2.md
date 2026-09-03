@@ -1,4 +1,4 @@
-# Passos 1 E 2 - Preparacao Da Base De Saude
+# Passos 1 A 3 - Preparacao Da Base De Saude
 
 ## Objetivo
 
@@ -8,6 +8,8 @@ ou probabilidade de entrada, foi necessario responder duas perguntas simples:
 
 1. quais instituicoes de saude existem no universo analitico?
 2. que tipo de evidencia existe para cada vinculo municipio-consorcio em 2019?
+3. qual estabelecimento, rede ou ancora administrativa pode representar a
+   oferta assistencial de cada entidade?
 
 O MIDES continua significando **pagamento observado** e a MUNIC,
 **participacao declarada**. Nenhuma das duas fontes e alterada por esta
@@ -20,6 +22,7 @@ preparacao.
 | 1. Fechar o universo de saude | Concluido | 84 entidades consolidadas e auditadas |
 | 2a. Comparar MIDES, MUNIC e documentos | Concluido | 1.311 pares em 2019 e revisao de 50 divergencias |
 | 2b. Usar CNM como fotografia atual no recorte saude | Disponivel, mas ainda nao materializado na tabela de saude | Snapshot CNM de 27/08 e piloto CNM x MIDES ja existem em outra frente |
+| 3. Definir polo de atracao assistencial | Concluido | 84 entidades consultadas no CNES e regra rastreavel de polo/rede |
 
 O item 2b nao bloqueia a proxima etapa: a CNM e uma fotografia atual e nao
 prova a composicao em 2019. Caso seja integrada, ela entrara como marcador
@@ -188,14 +191,97 @@ descricao e sensibilidade, sem alterar a leitura historica do ano de 2019.
 
 ---
 
+## Passo 3 - Definir O Polo De Atracao Assistencial
+
+### Em Que Consistiu
+
+Separar a **sede administrativa** de um possivel destino assistencial. A sede
+do CNPJ nao foi assumida como hospital, clinica ou rede de atendimento. Cada
+matriz e filial do universo consolidado foi consultada na pagina publica do
+[CNES/DATASUS](https://cnes2.datasus.gov.br/) de estabelecimentos mantidos
+pelo CNPJ.
+
+### Antes
+
+- a distancia poderia ser calculada ate a sede administrativa do consorcio,
+  ainda que ela fosse escritorio ou nao tivesse unidade propria;
+- uma rede com unidades em municipios distintos poderia ser artificialmente
+  comprimida em um unico municipio;
+- a ausencia de estabelecimento sob o CNPJ poderia ser confundida com ausencia
+  de atendimento, embora o consorcio possa operar por prestador contratado ou
+  outro CNPJ.
+
+### Pipeline
+
+```mermaid
+flowchart LR
+    A["84 entidades de saude<br/>consolidadas"] --> B["Consultar 100 CNPJs<br/>matriz e filial no CNES"]
+    B --> C{"Unidades diretamente<br/>mantidas pelo CNPJ?"}
+    C -->|"Uma fixa"| D["Polo: estabelecimento CNES unico"]
+    C -->|"Duas ou mais"| E["Rede vinculada:<br/>preservar todas as unidades"]
+    C -->|"Uma movel"| F["Sem polo geografico fixo"]
+    C -->|"Nenhuma"| G["Sede: ancora apenas<br/>para sensibilidade"]
+    D --> H["Passo 5: capacidade direta"]
+    E --> I["Passo 5: regra de agregacao da rede"]
+    F --> I
+    G --> J["Auditoria documental de prestador/rede"]
+```
+
+### Depois
+
+| Decisao de polo | Entidades | Leitura e proxima acao |
+|---|---:|---|
+| Estabelecimento fixo unico | 2 | A localizacao CNES pode ser usada como polo; a capacidade ainda sera medida no passo 5. |
+| Rede vinculada, sem polo unico | 45 | Manter todas as unidades; definir tempo e capacidade por rede, sem escolher uma sede arbitraria. |
+| Sem unidade CNES pelo CNPJ | 36 | Nao inferir ausencia de atendimento; auditar rede propria, contrato ou prestador externo. |
+| Unidade movel, sem polo fixo | 1 | Nao usar o endereco cadastral como destino de viagem. |
+
+Foram consultados os 100 CNPJs matriz/filial das 84 entidades e retornaram
+639 unidades CNES diretamente vinculadas. A coleta final nao teve erro de
+consulta. Entre as 64 entidades do nucleo setorial com pagamento MIDES, ha 2
+polos fixos unicos, 43 redes, 18 casos sem unidade direta e 1 unidade movel.
+
+### Exemplos Reais
+
+| Entidade | Evidencia encontrada | Decisao |
+|---|---|---|
+| CISMAS | Uma clinica/centro de especialidade CNES em Itajuba | Polo fixo unico; apto a receber medida de capacidade no passo 5. |
+| CISMARPA | Uma clinica/centro de especialidade CNES em Pocos de Caldas | Polo fixo unico; apto a receber medida de capacidade no passo 5. |
+| CISVER | Cinco unidades CNES diretamente vinculadas | Rede; nao se escolhe uma unidade isolada como destino do consorcio. |
+| CIMES | Uma unidade movel VACIMOVEL | Sem polo fixo; endereco cadastral nao representa destino assistencial. |
+
+### Decisao Metodologica Para Redes E Casos Sem Unidade Direta
+
+O proximo produto nao sera ainda uma matriz de tempo. Primeiro sera criado um
+cadastro de oferta assistencial. Para cada uma das 45 redes, as unidades serao
+mantidas como destinos possiveis. Para os 36 sem unidade sob o proprio CNPJ,
+sera buscada evidencia de rede propria, prestador contratado ou estabelecimento
+operado sob outro CNPJ. Cada caso recebera uma destas saidas:
+
+1. `polo_rede_documentada`: entra na analise principal de capacidade e tempo;
+2. `prestador_externo_documentado`: entra somente em especificacao explicitamente
+   identificada como complementar;
+3. `sede_apenas_sensibilidade`: nao entra na medida principal de capacidade;
+4. `evidencia_insuficiente`: permanece fora das variaveis de polo/capacidade.
+
+Nao sera imputado o hospital mais proximo nem assumida a sede administrativa
+como local de atendimento. Isso preserva a validade do futuro modelo
+gravitacional: distancia e capacidade so serao calculadas contra oferta
+assistencial documentada.
+
+---
+
 ## Reproducibilidade E Limites
 
-Os produtos quantitativos dos passos 1 e 2 usam bases locais processadas do
+Os produtos quantitativos dos passos 1 a 3 usam bases locais processadas do
 projeto. A qualificacao documental da amostra usou fontes oficiais ou
 institucionais na internet, com URL e interpretacao preservadas. Scripts,
 testes e relatorios estao em `analises/modelo_gravitacional_saude/`; resultados
 derivados locais ficam em `outputs/`.
 
-O proximo passo substantivo e definir o polo assistencial e a medida de
-capacidade de atracao. A integracao opcional do marcador CNM pode ocorrer em
-paralelo e nao deve atrasar CNES ou tempo rodoviario.
+Os scripts `01` a `04`, seus testes e o relatorio de validacao do passo 3 estao
+em `analises/modelo_gravitacional_saude/`. O proximo passo substantivo e
+construir a capacidade assistencial e a regra de agregacao das redes; so depois
+sera calculado o tempo rodoviario ate polos ou unidades documentadas. A
+integracao opcional do marcador CNM pode ocorrer em paralelo e nao deve alterar
+a leitura historica do MIDES/MUNIC.
