@@ -847,3 +847,29 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
   e a limitacao de leitura de MIDES, MUNIC, classificacao, crosswalk e CNES.
 - A documentacao passou a demonstrar com CISMAS, CISMARPA, CISVER e CISMEP por
   que leitos SUS isoladamente gerariam uma massa de atracao enviesada.
+
+## Tempo Rodoviario Da Oferta Fixa - 2026-09-03
+
+### Entregas
+
+- Baixada e validada por MD5 a matriz nacional OSRM/OpenStreetMap publicada no
+  Zenodo 11400243.
+- Criado `06_integrar_tempo_rodoviario_saude.R`, com download reprodutivel,
+  crosswalk IBGE de seis para sete digitos e produtos em tres granularidades.
+- Criados teste automatizado, relatorio EDA e metodologia do passo 5.
+
+### Resultados E Validacao
+
+- Os 363.378 pares internos de MG estao completos, sem distancia ou duracao
+  ausente.
+- Foram materializadas 197.896 rotas municipio-destino, 312.198 linhas
+  municipio-unidade e 71.652 municipio-entidade.
+- A cobertura inclui 853 origens, 232 municipios de oferta, 366 unidades fixas
+  e 46 entidades com tempo disponivel.
+- Trinta e seis entidades sem unidade direta e duas somente moveis permanecem
+  `NA`; nenhum destino foi inventado.
+- A velocidade implicita ficou entre 25,4 e 85,9 km/h e a simetria declarada
+  pela fonte foi reproduzida integralmente.
+- Foi documentado que a fonte e estatica, usa sedes municipais e nao representa
+  uma partida as 10h30 de sabado.
+- Dashboard e modelos existentes permaneceram inalterados.

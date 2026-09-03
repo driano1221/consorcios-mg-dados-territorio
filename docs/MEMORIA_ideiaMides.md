@@ -777,5 +777,22 @@ Arquivos antigos continuam uteis como registro de processo, mas nao devem ser us
   ambulatorial, SADT e leitos. Nao foi criado indice composto.
 - A coleta passou a suportar cache, faixas de coleta e recuperacao apenas dos
   modulos com erro. Nomes e CNS de profissionais nao sao retidos.
-- Proximo passo: integrar tempo rodoviario ate unidades fixas documentadas e
-  auditar rede/prestador dos 36 casos sem unidade direta.
+- O tempo rodoviario foi integrado no passo seguinte. A auditoria de
+  rede/prestador dos 36 casos sem unidade direta permanece pendente.
+
+## Tempo Rodoviario Da Oferta Fixa - 2026-09-03
+
+- O quinto bloco cientifico da trilha saude foi concluido fora do dashboard.
+- A fonte `dist_brasil.rds` do Zenodo 11400243 foi validada pelo MD5 publicado
+  e filtrada para os 363.378 pares entre os 853 municipios de MG, sem rota
+  ausente.
+- Foram geradas tres camadas: 197.896 linhas municipio-destino, 312.198
+  municipio-unidade e 71.652 municipio-entidade.
+- Quarenta e seis entidades possuem tempo para unidades fixas; 36 sem unidade
+  direta e CIS/CEN/CIMES permanecem com tempo `NA`.
+- Redes mantem as unidades como fonte principal. Minimo, mediana e maximo sao
+  resumos de sensibilidade e nao substituem a oferta por especialidade.
+- A fonte usa sedes municipais IBGE 2010, assume simetria e nao considera
+  transito ou partida as 10h30 de sabado.
+- Proximo passo: painel `municipio x entidade x ano` e definicao do conjunto de
+  alternativas plausiveis antes da estimacao.

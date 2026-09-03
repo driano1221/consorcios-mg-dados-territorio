@@ -15,9 +15,12 @@
 2. **concluido em 03/09, com ressalva CNM:** confrontar MIDES 2019 com MUNIC 2019 e revisar documentalmente a amostra prioritaria. A fotografia CNM esta pronta, mas ainda nao foi materializada como marcador na tabela especifica de saude;
 3. **concluido em 03/09:** definir a sede administrativa, consultar as unidades CNES vinculadas por CNPJ e separar polo fixo, rede, servico movel e ancora de sensibilidade;
 4. **concluido em 03/09:** construir a capacidade assistencial e a regra de agregacao das redes CNES;
-5. integrar tempo rodoviario entre municipio e as unidades fixas documentadas no passo anterior;
-6. definir o modelo de intensidade e o risco anual de interrupcao;
-7. executar EDA e validacao antes de estimar ou publicar resultados.
+5. **concluido em 03/09:** integrar tempo rodoviario entre os 853 municipios e as 366 unidades fixas documentadas;
+6. montar o painel `municipio x entidade x ano`, com pagamentos, movimentos, tempo e capacidade;
+7. definir o conjunto de alternativas plausiveis e executar EDA antes da estimacao;
+8. estimar entrada/presenca, intensidade financeira e interrupcao;
+9. testar robustez de capacidade, tempo, normalizacao financeira e universo;
+10. integrar resultados validados ao dashboard.
 
 Pontos ainda nao decididos: denominador do valor pago, forma da sobrevivencia, conjunto de alternativas e tratamento da censura dos pares presentes em 2014.
 
@@ -25,7 +28,9 @@ Pontos ainda nao decididos: denominador do valor pago, forma da sobrevivencia, c
 
 **Resultado do passo 3:** o CNES foi consultado para os 100 CNPJs de matriz e filial. Das 84 entidades, 45 foram inicialmente identificadas como redes, 36 nao possuem unidade listada sob esses CNPJs, uma possui apenas unidade movel e duas possuem uma unica clinica fixa diretamente vinculada. O passo 4 refinou uma das redes: CIS/CEN possui tres vacimoveis e nenhuma unidade fixa.
 
-**Resultado do passo 4:** as 639 unidades foram consultadas nos modulos de ficha, leitos, atendimento e profissionais. Ha 366 unidades fixas e 273 moveis/itinerantes. Quarenta e seis entidades possuem oferta fixa direta, 36 permanecem sem unidade no proprio CNPJ e duas possuem somente unidades moveis. Todas as 46 com oferta fixa possuem CBO medico SUS ativo; apenas uma possui leitos SUS diretamente registrados. Leitos nao serao usados como massa unica. O proximo produto e a matriz de tempo ate unidades fixas documentadas; os 36 casos sem unidade direta exigem auditoria complementar de rede/prestador.
+**Resultado do passo 4:** as 639 unidades foram consultadas nos modulos de ficha, leitos, atendimento e profissionais. Ha 366 unidades fixas e 273 moveis/itinerantes. Quarenta e seis entidades possuem oferta fixa direta, 36 permanecem sem unidade no proprio CNPJ e duas possuem somente unidades moveis. Todas as 46 com oferta fixa possuem CBO medico SUS ativo; apenas uma possui leitos SUS diretamente registrados. Leitos nao serao usados como massa unica. A matriz de tempo foi construida no passo 5; os 36 casos sem unidade direta ainda exigem auditoria complementar de rede/prestador.
+
+**Resultado do passo 5:** a matriz Zenodo/OSRM foi validada por checksum e contem os 363.378 pares internos de MG sem rota ausente. Foram materializadas 197.896 linhas municipio-destino, 312.198 municipio-unidade e 71.652 municipio-entidade. Quarenta e seis entidades possuem tempo disponivel; 36 sem unidade direta e duas somente moveis permanecem `NA`. A fonte e estatica, simetrica, usa sedes municipais IBGE 2010 e nao representa especificamente 10h30 de sabado. O proximo produto e o painel anual com regra explicita de alternativas plausiveis.
 
 ---
 

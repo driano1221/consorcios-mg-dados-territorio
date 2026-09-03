@@ -2,9 +2,9 @@
 
 Esta pasta prepara, fora do dashboard, o recorte de Minas Gerais definido na
 reuniao de 27/08/2026. O objetivo e construir uma base defensavel antes de
-calcular tempo rodoviario ou estimar novos modelos.
+estimar novos modelos.
 
-## Estado Dos Quatro Blocos
+## Estado Dos Cinco Blocos
 
 | Passo cientifico | Estado | Resultado principal |
 |---|---|---|
@@ -12,12 +12,13 @@ calcular tempo rodoviario ou estimar novos modelos.
 | 2. Auditar vinculos | Concluido | 1.311 pares MIDES/MUNIC em 2019 e 50 divergencias revisadas |
 | 3. Definir polo/rede | Concluido | 639 unidades CNES; sede separada de oferta assistencial |
 | 4. Construir capacidade | Concluido | 46 entidades com oferta fixa direta, 36 sem unidade direta e 2 somente moveis |
+| 5. Integrar tempo rodoviario | Concluido | 853 origens, 366 unidades fixas e 46 entidades com tempo disponivel |
 
 Capacidade foi executada antes do tempo rodoviario. Calcular distancia ate uma
 sede administrativa sem saber onde esta a oferta assistencial produziria uma
 impedancia sem interpretacao substantiva.
 
-### Antes E Depois Dos Quatro Passos
+### Antes E Depois Dos Cinco Passos
 
 | Passo | Antes | Agora |
 |---|---|---|
@@ -25,6 +26,7 @@ impedancia sem interpretacao substantiva.
 | 2. Vinculos | pagamento MIDES e declaracao MUNIC podiam ser confundidos com a mesma evidencia | 1.311 pares de 2019 separados em 630 comuns, 658 somente MIDES e 23 somente MUNIC; 50 divergencias receberam revisao |
 | 3. Polo/rede | sede administrativa podia ser usada automaticamente como destino | 639 unidades diretamente mantidas foram separadas em rede fixa, polo unico, movel ou sem unidade; CISVER, por exemplo, tem quatro moveis e uma fixa |
 | 4. Capacidade | unidade CNES indicava localizacao, mas nao a oferta registrada | ficha, leitos, atendimento e CBOs foram medidos separadamente; CISMAS tem zero leito e 10 CBOs medicos somados |
+| 5. Tempo | nao havia impedancia integrada e redes poderiam ser reduzidas a uma sede | 853 municipios foram ligados a 366 unidades fixas; redes preservam minimo, mediana e maximo |
 
 ## Fluxo Reprocessavel
 
@@ -37,7 +39,8 @@ flowchart LR
   B --> F[CNES por matriz e filiais]
   F --> G[Polo fixo, rede, movel ou sem unidade]
   G --> H[Capacidade por unidade fixa]
-  H --> I[Proximo: tempo rodoviario]
+  H --> I[Tempo rodoviario por unidade]
+  I --> J[Proximo: painel municipio x entidade x ano]
 ```
 
 ## Como Navegar Nesta Pasta
@@ -46,7 +49,7 @@ O `README.md` e o ponto de entrada. Os arquivos foram separados por funcao:
 
 | Local | Conteudo | Quando consultar |
 |---|---|---|
-| raiz da pasta | scripts e metodologias dos passos 1 a 4 | entender ou reprocessar o pipeline |
+| raiz da pasta | scripts e metodologias dos passos 1 a 5 | entender ou reprocessar o pipeline |
 | `tests/` | uma validacao automatizada por script | confirmar chaves, contagens e invariantes |
 | `checks/` | relatorios curtos com resultados validados | consultar numeros sem abrir os dados |
 | `evidencias/` | catalogo versionado de fontes documentais | auditar decisoes humanas do passo 2 |
@@ -59,7 +62,7 @@ inalterados.
 ## Mapa De Scripts, Testes E Documentos
 
 O numero do script e tecnico. O passo 2 usa dois scripts (`02` e `03`), por
-isso o quarto bloco cientifico e executado pelo script `05`.
+isso os blocos cientificos 4 e 5 sao executados pelos scripts `05` e `06`.
 
 | Arquivo | Papel | Entrada principal | Saida/checagem |
 |---|---|---|---|
@@ -68,12 +71,14 @@ isso o quarto bloco cientifico e executado pelo script `05`.
 | `03_revisar_divergencias_documentais_2019.R` | Aplica evidencias aos 50 casos priorizados | amostra do passo 2 e catalogo versionado | cenarios estrito e ampliado |
 | `04_definir_polos_atracao_saude.R` | Consulta estabelecimentos mantidos pelos CNPJs | universo do passo 1 e CNES | polo, rede, movel ou ancora de sede |
 | `05_construir_capacidade_assistencial_saude.R` | Mede oferta atual diretamente vinculada | unidades do passo 3 e modulos CNES | capacidade por unidade e entidade |
-| `tests/01...05...R` | Protege chaves, contagens e invariantes | respectivas saidas locais | falha explicita ou mensagem `OK` |
+| `06_integrar_tempo_rodoviario_saude.R` | Integra impedancia rodoviaria a oferta fixa | capacidade, mapa MG e Zenodo 11400243 | tempo por destino, unidade e entidade |
+| `tests/01...06...R` | Protege chaves, contagens e invariantes | respectivas saidas locais | falha explicita ou mensagem `OK` |
 | `checks/*.md` | Guarda os resultados auditaveis | calculado pelos scripts | relatorio versionado no Git |
 | `evidencias/catalogo_revisao_documental_2019.csv` | Preserva URL, ano e interpretacao documental | fontes oficiais/institucionais | rastreabilidade da revisao humana |
 | `METODOLOGIA_PASSOS_1_2.md` | Explica universo e auditoria de vinculos | passos 1 e 2 | antes/depois, exemplos e limites |
 | `METODOLOGIA_PASSO_3_POLO_ATRACAO.md` | Explica polo versus sede/rede | passo 3 | regras territoriais |
 | `METODOLOGIA_PASSO_4_CAPACIDADE_ASSISTENCIAL.md` | Explica capacidade e EDA | passo 4 | medidas, resultados e limites |
+| `METODOLOGIA_PASSO_5_TEMPO_RODOVIARIO.md` | Explica fonte, agregacao e EDA de tempo | passo 5 | impedancia estatica e limites |
 
 ### Dicionario Por Passo
 
@@ -84,6 +89,7 @@ isso o quarto bloco cientifico e executado pelo script `05`.
 | 2. Revisao | par municipio x entidade priorizado | `03_revisar_divergencias_documentais_2019.R` | `revisao_documental_divergencias_saude_mg_2019.csv` | `tests/03_validar_revisao_documental_2019.R`; `checks/VALIDACAO_DOCUMENTAL_DIVERGENCIAS_2019.md` |
 | 3. Polo/rede | entidade e unidade CNES | `04_definir_polos_atracao_saude.R` | `polos_atracao_saude_mg.rds`; `unidades_cnes_vinculadas_saude_mg.csv` | `tests/04_validar_polos_atracao_saude.R`; `checks/VALIDACAO_POLOS_ATRACAO_SAUDE_MG.md` |
 | 4. Capacidade | unidade CNES e entidade agregada | `05_construir_capacidade_assistencial_saude.R` | `capacidade_unidades_cnes_saude_mg.csv`; `capacidade_entidades_saude_mg.rds` | `tests/05_validar_capacidade_assistencial_saude.R`; `checks/VALIDACAO_CAPACIDADE_ASSISTENCIAL_SAUDE_MG.md` |
+| 5. Tempo | municipio x destino/unidade/entidade | `06_integrar_tempo_rodoviario_saude.R` | tres camadas `tempo_rodoviario_*` | `tests/06_validar_tempo_rodoviario_saude.R`; `checks/VALIDACAO_TEMPO_RODOVIARIO_SAUDE_MG.md` |
 
 `outputs/` contem derivados locais e cache, e esta fora do Git. Nada nessa
 pasta altera MIDES, MUNIC, CNM, SICONFI ou o dashboard.
@@ -99,6 +105,7 @@ pasta altera MIDES, MUNIC, CNM, SICONFI ou o dashboard.
 | Cadastro processado | `dashboards/base1_shiny/data/cadastro_base.rds` | 2 | nomes e contexto documental |
 | Catalogo de evidencias | `evidencias/catalogo_revisao_documental_2019.csv` | 2 | fonte, ano e alcance; fonte posterior nao retroage 2019 |
 | CNES/DATASUS | https://cnes2.datasus.gov.br/ | 3 e 4 | fotografia atual de estabelecimentos sob o CNPJ mantenedor |
+| Distbrasil/Zenodo | https://zenodo.org/records/11400243 | 5 | distancia e duracao OSRM entre sedes municipais, perfil automovel |
 
 ### Registro Das Extracoes
 
@@ -110,6 +117,7 @@ pasta altera MIDES, MUNIC, CNM, SICONFI ou o dashboard.
 | MUNIC | leitura da Base 1 e preservacao da declaracao separada | 2019 | autodeclaracao pontual, nao painel anual |
 | Evidencia documental | catalogo CSV com URL, titulo, ano e interpretacao | varia por documento | documento posterior nao e retroagido automaticamente a 2019 |
 | CNES/DATASUS | requisicao HTTP publica por CNPJ mantenedor e por codigo CNES; cache local | fotografia coletada em 03/09/2026 | cadastro atual, nao capacidade historica de 2014-2021 |
+| Distbrasil | download do RDS Zenodo, checksum MD5 e filtro dos pares de MG | publicado em 31/05/2024; sedes IBGE 2010 | tempo estatico, simetrico e sem transito por horario |
 
 ### Modulos CNES Consultados
 
@@ -136,6 +144,9 @@ microdados nominais da pagina.
 | `unidades_cnes_vinculadas_saude_mg.csv` | unidade CNES | localizacao e vinculo direto por CNPJ |
 | `capacidade_unidades_cnes_saude_mg.csv` | unidade CNES | componentes atuais de oferta |
 | `capacidade_entidades_saude_mg.rds` | entidade | agregacao apenas das unidades fixas diretas |
+| `tempo_rodoviario_municipio_destino_saude_mg.rds` | municipio x municipio de oferta | grade municipal de 197.896 rotas |
+| `tempo_rodoviario_municipio_unidade_saude_mg.rds` | municipio x unidade fixa | tempo preservado para 366 unidades |
+| `tempo_rodoviario_municipio_entidade_saude_mg.rds` | municipio x entidade | minimo, mediana e maximo; `NA` sem destino fixo |
 
 ## Execucao Completa
 
@@ -152,6 +163,8 @@ Rscript analises/modelo_gravitacional_saude/04_definir_polos_atracao_saude.R
 Rscript analises/modelo_gravitacional_saude/tests/04_validar_polos_atracao_saude.R
 Rscript analises/modelo_gravitacional_saude/05_construir_capacidade_assistencial_saude.R
 Rscript analises/modelo_gravitacional_saude/tests/05_validar_capacidade_assistencial_saude.R
+Rscript analises/modelo_gravitacional_saude/06_integrar_tempo_rodoviario_saude.R
+Rscript analises/modelo_gravitacional_saude/tests/06_validar_tempo_rodoviario_saude.R
 ```
 
 ## Resultado Metodologico Do Passo 4
@@ -190,14 +203,28 @@ entidades sem unidade diretamente registrada nem sequer recebem zero: ficam
 `NA`, porque sua oferta pode estar em hospital municipal, contratado ou outro
 CNPJ ainda nao documentado.
 
+## Resultado Metodologico Do Passo 5
+
+- os 363.378 pares entre municipios de MG existem na fonte, sem rota ausente;
+- 853 municipios foram ligados a 232 municipios de oferta e 366 unidades;
+- 46 entidades possuem tempo disponivel; 36 sem unidade direta e duas somente
+  moveis permanecem com `NA`;
+- a camada por unidade e a fonte principal; minimo, mediana e maximo por
+  entidade sao medidas de sensibilidade;
+- a duracao e estatica, simetrica e nao representa uma partida as 10h30 de
+  sabado.
+
 ## Limites E Proximo Passo
 
 - CNES e fotografia de 03/09/2026; nao reconstroi automaticamente 2014-2021;
 - CBO distinto por unidade e proxy cadastral, nao especialidade unica da rede;
 - unidade de prefeitura ou terceiro nao entra sem evidencia documental;
 - 36 entidades sem unidade direta precisam de auditoria de prestador/rede;
-- CIS/CEN e CIMES possuem somente unidades moveis e nao recebem polo fixo.
+- CIS/CEN e CIMES possuem somente unidades moveis e nao recebem polo fixo;
+- o menor tempo ate uma rede pode apontar para unidade sem a especialidade
+  relevante;
+- a grade estadual ainda nao define o conjunto de escolha plausivel.
 
-O proximo passo e integrar tempo rodoviario entre cada municipio e as unidades
-fixas documentadas. Para redes, a regra de distancia deve preservar as
-unidades, em vez de usar automaticamente a sede administrativa.
+O proximo passo e montar o painel `municipio x entidade x ano`, integrando
+pagamento, movimentos, tempo, capacidade e regras explicitas para o conjunto
+de alternativas de cada municipio.

@@ -1,10 +1,10 @@
-# Passos 1 A 4 - Preparacao Da Base De Saude
+# Passos 1 A 5 - Preparacao Da Base De Saude
 
 ## Objetivo
 
 Preparar uma base defensavel para o futuro modelo gravitacional de consorcios
 de saude em Minas Gerais. Antes de estimar distancia, capacidade assistencial
-ou probabilidade de entrada, foi necessario responder quatro perguntas:
+ou probabilidade de entrada, foi necessario responder cinco perguntas:
 
 1. quais instituicoes de saude existem no universo analitico?
 2. que tipo de evidencia existe para cada vinculo municipio-consorcio em 2019?
@@ -12,6 +12,8 @@ ou probabilidade de entrada, foi necessario responder quatro perguntas:
    oferta assistencial de cada entidade?
 4. quais componentes de capacidade estao registrados diretamente sob os CNPJs
    dos consorcios e podem ser usados sem inventar oferta?
+5. qual a impedancia rodoviaria entre cada municipio e a oferta fixa
+   documentada, sem reduzir redes a uma sede administrativa?
 
 O MIDES continua significando **pagamento observado** e a MUNIC,
 **participacao declarada**. Nenhuma das duas fontes e alterada por esta
@@ -26,6 +28,7 @@ preparacao.
 | 2b. Usar CNM como fotografia atual no recorte saude | Disponivel, mas ainda nao materializado na tabela de saude | Snapshot CNM de 27/08 e piloto CNM x MIDES ja existem em outra frente |
 | 3. Definir polo de atracao assistencial | Concluido | 84 entidades consultadas no CNES e regra rastreavel de polo/rede |
 | 4. Construir capacidade assistencial | Concluido | 639 unidades consultadas; medidas separadas para 46 entidades com oferta fixa direta |
+| 5. Integrar tempo rodoviario | Concluido | 853 origens, 366 unidades fixas e tres camadas de impedancia |
 
 O item 2b nao bloqueia a proxima etapa: a CNM e uma fotografia atual e nao
 prova a composicao em 2019. Caso seja integrada, ela entrara como marcador
@@ -342,14 +345,15 @@ capacidade historica.
 
 ## Reproducibilidade E Limites
 
-Os produtos quantitativos dos passos 1 a 4 usam bases locais processadas do
+Os produtos quantitativos dos passos 1 a 5 usam bases locais processadas do
 projeto. A qualificacao documental da amostra usou fontes oficiais ou
 institucionais na internet, com URL e interpretacao preservadas. Scripts,
 testes e relatorios estao em `analises/modelo_gravitacional_saude/`; resultados
 derivados locais ficam em `outputs/`.
 
-Os scripts `01` a `05`, seus testes e os relatorios de validacao estao em
-`analises/modelo_gravitacional_saude/`. O proximo passo substantivo e calcular
-tempo rodoviario ate polos ou unidades fixas documentadas. A
-integracao opcional do marcador CNM pode ocorrer em paralelo e nao deve alterar
-a leitura historica do MIDES/MUNIC.
+Os scripts `01` a `06`, seus testes e os relatorios de validacao estao em
+`analises/modelo_gravitacional_saude/`. O proximo passo substantivo e montar o
+painel `municipio x entidade x ano`, preservando a camada por unidade e
+definindo o conjunto de alternativas plausiveis. A integracao opcional do
+marcador CNM pode ocorrer em paralelo e nao deve alterar a leitura historica do
+MIDES/MUNIC.

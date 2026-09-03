@@ -11,6 +11,9 @@ As sessões detalhadas estão em `docs/DIARIO_DE_TRABALHO.md`. Este arquivo regi
 - identificadas 46 entidades com oferta fixa direta, 36 sem unidade sob o próprio CNPJ e duas compostas somente por unidades móveis; leitos SUS foram descartados como medida única por cobertura insuficiente;
 - adicionados scripts reprocessáveis, testes automatizados e documentação dos passos 3 e 4, sem alterar o dashboard nem estimar um novo modelo.
 - ampliado o README como dicionário único de arquivos, fontes, extrações e produtos dos passos 1 a 4, com exemplos do viés produzido por uma massa baseada somente em leitos SUS.
+- integrada a matriz rodoviária OSRM/Zenodo para os 853 municípios de MG e 366 unidades fixas, preservando camadas por destino, unidade e entidade;
+- documentadas as limitações de sede municipal, simetria e ausência de trânsito por horário, mantendo 36 casos sem unidade e dois somente móveis como tempo não observado;
+- adicionados script reprocessável, teste de cobertura/simetria e relatório EDA do passo 5, sem alterar o dashboard ou estimar modelos.
 
 ## 2026-08-20
 
