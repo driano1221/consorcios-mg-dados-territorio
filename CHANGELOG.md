@@ -18,6 +18,7 @@ As sessões detalhadas estão em `docs/DIARIO_DE_TRABALHO.md`. Este arquivo regi
 - separados estoque inicial, primeiro pagamento, retorno, permanencia e interrupcao, com universos preliminares de entrada, continuidade e intensidade;
 - adicionados teste, dicionario, relatorio EDA e metodologia do passo 6; dashboard e modelos existentes continuam inalterados.
 - reorganizada a pasta do modelo de saude com dicionario tecnico de arquivos/fontes/extracoes e linha do tempo dos passos 1 a 6, ilustrada pelo caso real Igarape x CISMEP.
+- consolidadas as cinco notas metodologicas em `METODOLOGIA_GERAL.md`, deixando uma unica fonte para os passos 1 a 6.
 
 ## 2026-08-20
 

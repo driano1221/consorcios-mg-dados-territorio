@@ -729,8 +729,8 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 
 ### Documentacao Dos Passos 1 E 2
 
-- Criada `analises/modelo_gravitacional_saude/METODOLOGIA_PASSOS_1_2.md` com
-  uma sintese das bases, do pipeline, dos resultados e dos limites.
+- Criada a metodologia dos primeiros passos, posteriormente consolidada no
+  arquivo unico `analises/modelo_gravitacional_saude/METODOLOGIA_GERAL.md`.
 - Registrado explicitamente que os dois passos usaram bases locais do projeto
   e nao exigiram pesquisa na internet.
 
@@ -800,7 +800,7 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Criados script, teste e metodologia em
   `analises/modelo_gravitacional_saude/04_definir_polos_atracao_saude.R`;
   `tests/04_validar_polos_atracao_saude.R`; e
-  `METODOLOGIA_PASSO_3_POLO_ATRACAO.md`.
+  metodologia atualmente consolidada em `METODOLOGIA_GERAL.md`.
 
 ## Capacidade Assistencial Direta - 2026-09-03
 
@@ -916,3 +916,12 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
   CISMEP e excecao na cobertura de leitos e Igarape possui oferta local.
 - Os oito caminhos de fontes locais foram verificados e os sete testes da
   trilha passaram novamente. Nenhum dado ou modelo foi recalculado.
+
+## Consolidacao Da Metodologia - 2026-09-03
+
+- As cinco notas metodologicas concorrentes foram substituidas por
+  `analises/modelo_gravitacional_saude/METODOLOGIA_GERAL.md`.
+- O documento unico cobre os passos 1 a 6, incluindo fontes, pipelines,
+  resultados, exemplos, limitacoes e ordem de reproducao.
+- README, dicionario tecnico e memoria foram atualizados para apontar somente
+  para a fonte canonica. Nenhum dado, script, resultado ou dashboard mudou.

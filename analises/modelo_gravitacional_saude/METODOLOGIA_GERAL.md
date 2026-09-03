@@ -1,10 +1,10 @@
-# Passos 1 A 5 - Preparacao Da Base De Saude
+# Metodologia Geral - Modelo Gravitacional De Saude
 
 ## Objetivo
 
 Preparar uma base defensavel para o futuro modelo gravitacional de consorcios
 de saude em Minas Gerais. Antes de estimar distancia, capacidade assistencial
-ou probabilidade de entrada, foi necessario responder cinco perguntas:
+ou probabilidade de entrada, foi necessario responder seis perguntas:
 
 1. quais instituicoes de saude existem no universo analitico?
 2. que tipo de evidencia existe para cada vinculo municipio-consorcio em 2019?
@@ -14,6 +14,8 @@ ou probabilidade de entrada, foi necessario responder cinco perguntas:
    dos consorcios e podem ser usados sem inventar oferta?
 5. qual a impedancia rodoviaria entre cada municipio e a oferta fixa
    documentada, sem reduzir redes a uma sede administrativa?
+6. como organizar pagamentos, ausencias e movimentos em um painel anual
+   completo sem confundir evidencia financeira com adesao juridica?
 
 O MIDES continua significando **pagamento observado** e a MUNIC,
 **participacao declarada**. Nenhuma das duas fontes e alterada por esta
@@ -29,6 +31,7 @@ preparacao.
 | 3. Definir polo de atracao assistencial | Concluido | 84 entidades consultadas no CNES e regra rastreavel de polo/rede |
 | 4. Construir capacidade assistencial | Concluido | 639 unidades consultadas; medidas separadas para 46 entidades com oferta fixa direta |
 | 5. Integrar tempo rodoviario | Concluido | 853 origens, 366 unidades fixas e tres camadas de impedancia |
+| 6. Montar o painel analitico anual | Concluido | 573.216 observacoes municipio x entidade x ano |
 
 O item 2b nao bloqueia a proxima etapa: a CNM e uma fotografia atual e nao
 prova a composicao em 2019. Caso seja integrada, ela entrara como marcador
@@ -341,6 +344,226 @@ medicos SUS, atendimento ambulatorial, SADT e leitos. Nao foi criado indice
 composto. CBO e proxy cadastral atual, nao especialidade unica, producao ou
 capacidade historica.
 
+### Por Que Leitos SUS Nao Podem Ser A Massa Unica
+
+Na fotografia atual, 45 das 46 entidades com oferta fixa direta possuem zero
+leito SUS sob o proprio CNPJ. Isso nao significa ausencia de servico: clinicas
+especializadas podem ter profissionais, atendimento ambulatorial e SADT sem
+internacao.
+
+| Entidade | Leitos SUS diretos | Outra evidencia de oferta | Erro se a massa fosse apenas leitos |
+|---|---:|---|---|
+| CISMAS | 0 | clinica fixa e 10 CBOs medicos somados | atracao seria forçada a zero |
+| CISMARPA | 0 | clinica fixa e 18 CBOs medicos somados | estrutura ambulatorial seria ignorada |
+| CISVER | 0 | uma unidade fixa e 33 CBOs medicos somados | rede seria tratada como sem oferta |
+| CISMEP | 32 | duas unidades fixas e 22 CBOs medicos somados | seria a unica entidade com massa positiva |
+
+Usar `log(1 + leitos_SUS)` evita o logaritmo de zero, mas nao corrige a falta
+de informacao. Os 36 casos sem unidade direta tambem nao possuem capacidade
+zero: possuem capacidade nao observada nesta etapa (`NA`).
+
+---
+
+## Passo 5 - Integrar O Tempo Rodoviario
+
+### Em Que Consistiu
+
+Ligar os 853 municipios de Minas Gerais aos municipios das 366 unidades CNES
+fixas diretamente vinculadas aos consorcios. A impedancia e calculada ate a
+oferta documentada, nao automaticamente ate a sede administrativa.
+
+### Fonte
+
+Foi usada a [matriz de distancias rodoviarias e duracao de viagens para
+municipios brasileiros](https://rfsaldanha.github.io/data-projects/brazil_road_distances.html),
+depositada no [Zenodo 11400243](https://zenodo.org/records/11400243). A fonte
+usa sedes municipais IBGE 2010 e rotas OSRM/OpenStreetMap com perfil de
+automovel. O arquivo `dist_brasil.rds` foi validado pelo MD5 oficial
+`39f71b10ddf9fda7c53e2b39fa6bd202`.
+
+### Antes
+
+- havia localizacao das unidades, mas nenhuma medida rodoviaria integrada;
+- redes podiam ser reduzidas incorretamente a uma sede;
+- unidades moveis e entidades sem unidade direta podiam receber destinos
+  artificiais;
+- o pedido original de viagem as 10h30 de sabado nao era atendido pela fonte
+  estatica disponivel.
+
+### Pipeline
+
+```mermaid
+flowchart LR
+    A["Matriz nacional OSRM"] --> B["Filtrar 363.378 pares de MG"]
+    C["853 municipios"] --> D["Crosswalk IBGE 6 para 7 digitos"]
+    E["366 unidades fixas"] --> F["232 municipios de oferta"]
+    B --> G["Municipio origem x municipio de oferta"]
+    D --> G
+    F --> G
+    G --> H["197.896 rotas municipais"]
+    H --> I["312.198 linhas municipio x unidade"]
+    I --> J["Minimo, mediana e maximo por entidade"]
+    K["36 sem unidade + 2 somente moveis"] --> L["Tempo NA"]
+    J --> M["71.652 linhas municipio x entidade"]
+    L --> M
+```
+
+### Regras
+
+1. Todos os 853 municipios entram como origens, inclusive os que nao possuem
+   pagamento de saude no MIDES.
+2. Somente unidades fixas diretamente vinculadas entram como destinos.
+3. A rota e entre sedes municipais; nao representa deslocamento porta a porta.
+4. Origem e destino no mesmo municipio recebem zero e a flag
+   `mesmo_municipio_destino = TRUE`.
+5. A camada por unidade e a fonte de verdade. Minimo, mediana e maximo sao
+   resumos de sensibilidade para redes com varios destinos.
+6. Ausencia de unidade fixa recebe `NA`, nunca zero.
+
+### Resultado
+
+| Produto | Unidade da linha | Linhas |
+|---|---|---:|
+| municipio-destino | municipio x municipio de oferta | 197.896 |
+| municipio-unidade | municipio x unidade CNES fixa | 312.198 |
+| municipio-entidade | municipio x entidade consolidada | 71.652 |
+
+Os 363.378 pares rodoviarios entre os 853 municipios de MG estao completos.
+A cobertura final possui 232 municipios de oferta, 366 unidades fixas e 46
+entidades com tempo. Trinta e seis entidades sem unidade direta e duas somente
+moveis permanecem com tempo ausente.
+
+### Exemplos Reais
+
+| Origem | Entidade | Resultado | Leitura |
+|---|---|---:|---|
+| Igarape | CISMEP | minimo 0; mediana 4,2; maximo 8,4 min | rede com unidades em Igarape e Sao Joaquim de Bicas |
+| Para de Minas | CISMEP | minimo 58,3 min | unidade mais proxima pode diferir da sede administrativa |
+| Itajuba | CISMAS | 0 min | mesma cidade; nao significa viagem porta a porta nula |
+| Abaete | CISVER | 252,2 min | somente a unidade fixa entra; quatro vacimoveis ficam fora |
+
+### Limites
+
+- a duracao e estatica e nao representa transito as 10h30 de sabado;
+- a matriz assume ida e volta com a mesma duracao;
+- usa a sede municipal IBGE 2010, nao o endereco exato do CNES;
+- nao reconstroi mudancas viarias anuais entre 2014 e 2021;
+- a unidade mais proxima pode nao oferecer a especialidade procurada;
+- ainda falta definir quais entidades eram alternativas plausiveis para cada
+  municipio.
+
+---
+
+## Passo 6 - Montar O Painel Analitico Anual
+
+### Em Que Consistiu
+
+Transformar pagamentos MIDES, identidade matriz-filial, capacidade CNES e
+tempo rodoviario em uma base longitudinal com unidade:
+
+`municipio i x entidade consolidada j x ano t`.
+
+O painel prepara a EDA e os modelos. Ele nao afirma que todas as 84 entidades
+eram escolhas reais para todos os municipios.
+
+### Antes
+
+- pagamentos apareciam apenas quando observados;
+- matriz e filial podiam gerar linhas separadas;
+- ausencias, retornos e interrupcoes nao estavam no mesmo produto;
+- um pagamento em 2014 podia ser confundido com entrada;
+- tempo e capacidade estavam em tabelas separadas.
+
+### Pipeline
+
+```mermaid
+flowchart LR
+    A["MIDES MG 2014-2021"] --> B["Selecionar CNPJs do universo saude"]
+    C["Crosswalk matriz-filial"] --> B
+    B --> D["Somar por municipio, raiz e ano"]
+    D --> E["Conservar valores e CNPJs originais"]
+    F["853 municipios"] --> G["Grade 853 x 84 x 8"]
+    H["84 entidades"] --> G
+    E --> G
+    I["Capacidade CNES"] --> G
+    J["Tempo rodoviario"] --> G
+    G --> K["Estoque, primeiro pagamento, retorno, permanencia e interrupcao"]
+    K --> L["Universos preliminares para EDA e modelos"]
+```
+
+### Regra Temporal
+
+Seja `P_ijt = 1` quando existe valor MIDES positivo do municipio `i` para a
+entidade `j` no ano `t`.
+
+| Condicao | Evento | Leitura |
+|---|---|---|
+| 2014 e `P_ijt = 1` | estoque inicial | havia pagamento no inicio da janela; a entrada real e desconhecida |
+| `P_ijt = 1` e `P_ij,t-1 = 1` | permanencia | pagamento positivo consecutivo |
+| `P_ijt = 1`, anterior zero e nunca houve pagamento | primeiro pagamento | primeira aparicao financeira observada |
+| `P_ijt = 1`, anterior zero e ja houve pagamento | retorno | pagamento reaparece apos ausencia |
+| `P_ijt = 0` e `P_ij,t-1 = 1` | interrupcao | deixa de haver pagamento positivo |
+| demais casos | ausencia | sem pagamento positivo |
+
+Esses eventos descrevem pagamentos. Nao provam adesao, desligamento ou retorno
+juridico.
+
+### Consolidacao Matriz-Filial
+
+Quando um municipio paga para matriz e filial da mesma raiz no mesmo ano, os
+valores sao somados em uma linha da entidade e os CNPJs originais permanecem
+registrados. Isso ocorreu em 21 combinacoes municipio-entidade-ano.
+
+### Resultados Validados
+
+| Medida | Resultado |
+|---|---:|
+| grade completa | 573.216 linhas |
+| linhas MIDES de saude antes da consolidacao | 10.080 |
+| linhas municipio-entidade-ano consolidadas | 10.059 |
+| pares municipio-entidade com algum pagamento | 1.618 |
+| estoque positivo em 2014 | 1.192 |
+| primeiros pagamentos depois de 2014 | 426 |
+| retornos observados | 252 |
+| permanencias observadas | 8.188 |
+| interrupcoes observadas | 533 |
+| pares com mais de uma transicao | 329 |
+| valor financeiro preservado | R$ 3.101.980.422,83 |
+
+Dos 853 municipios, 843 possuem alguma linha MIDES de saude. Os dez restantes
+continuam na grade com zeros para evitar selecionar o universo pela resposta.
+
+### Exemplos Reais
+
+| Caso | Sequencia observada | Interpretacao |
+|---|---|---|
+| Sete Lagoas x CISMEP, 2016 | primeiro valor positivo: R$ 12,70 milhoes | primeiro pagamento observado, nao data juridica de adesao |
+| Muriae x CISLESTE, 2021 | pagamento anterior, zero em 2020 e R$ 4,16 milhoes em 2021 | retorno financeiro observado |
+| Aguanil x CISMARG | positivo em 2018, zero em 2019 e positivo em 2020 | interrupcao seguida de retorno |
+| Igarape x CISMEP, 2019 | matriz e filial somam R$ 4,74 milhoes | uma entidade com dois CNPJs originais preservados |
+
+### Universos Preliminares
+
+| Bloco futuro | Marcador atual | Pendencia |
+|---|---|---|
+| primeiro pagamento | sem pagamento anterior e entidade ativa em `t-1` | limitar alternativas territoriais |
+| entrada ou retorno | ausente em `t-1` e entidade ativa em `t-1` | decidir se retorno sera separado |
+| interrupcao | pagamento em `t-1` | definir sobrevivencia e censura |
+| intensidade | pagamento positivo em `t` | escolher deflacao e normalizacao |
+
+O universo estadual e apenas um limite superior. Oferecer todos os consorcios
+ativos de MG a todo municipio nao e uma hipotese substantiva pronta para
+estimacao.
+
+### Limites
+
+1. Presenca significa pagamento MIDES, nao filiacao juridica.
+2. Pares positivos em 2014 sao censurados a esquerda.
+3. CNES e capacidade sao fotografia de 2026, nao serie 2014-2021.
+4. Trinta e oito entidades permanecem sem tempo fixo diretamente documentado.
+5. Populacao, RCL, regiao de saude, bacia e mandato ainda nao foram integrados.
+6. O conjunto final de alternativas ainda precisa de regra substantiva.
+
 ---
 
 ## Reproducibilidade E Limites
@@ -351,10 +574,27 @@ institucionais na internet, com URL e interpretacao preservadas. Scripts,
 testes e relatorios estao em `analises/modelo_gravitacional_saude/`; resultados
 derivados locais ficam em `outputs/`.
 
-Os scripts `01` a `07`, seus testes e os relatorios de validacao estao em
-`analises/modelo_gravitacional_saude/`. O painel do passo 6 possui 573.216
-linhas e esta detalhado em `METODOLOGIA_PASSO_6_PAINEL_ANALITICO.md`. O proximo
-passo substantivo e definir o conjunto de alternativas plausiveis e integrar
-controles anuais validados antes da estimacao. A integracao opcional do
-marcador CNM pode ocorrer em paralelo e nao deve alterar a leitura historica do
-MIDES/MUNIC.
+### Ordem De Execucao
+
+```powershell
+Rscript analises/modelo_gravitacional_saude/01_fechar_universo_saude_mg.R
+Rscript analises/modelo_gravitacional_saude/02_cotejar_mides_munic_saude_2019.R
+Rscript analises/modelo_gravitacional_saude/03_revisar_documental_divergencias_saude.R
+Rscript analises/modelo_gravitacional_saude/04_definir_polos_atracao_saude.R
+Rscript analises/modelo_gravitacional_saude/05_construir_capacidade_assistencial_saude.R
+Rscript analises/modelo_gravitacional_saude/06_integrar_tempo_rodoviario_saude.R
+Rscript analises/modelo_gravitacional_saude/07_montar_painel_analitico_saude.R
+```
+
+Cada script possui um teste correspondente em `tests/`. Os resultados locais
+ficam em `outputs/`, as auditorias em `checks/` e as evidencias documentais em
+`evidencias/`. O [`DICIONARIO_TECNICO.md`](DICIONARIO_TECNICO.md) identifica
+entradas e saidas; a [`LINHA_DO_TEMPO_PASSOS.md`](LINHA_DO_TEMPO_PASSOS.md)
+acompanha o caso Igarape x CISMEP ao longo dos seis passos.
+
+### Proximo Passo
+
+Definir o conjunto de alternativas plausiveis, completar a auditoria dos 36
+casos sem unidade direta e integrar controles anuais validados antes da EDA e
+da estimacao. A CNM pode entrar como marcador atual de sensibilidade, sem
+retroagir sua composicao para 2019.

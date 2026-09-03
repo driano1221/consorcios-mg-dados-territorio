@@ -31,7 +31,7 @@ comparacao quantitativa e a revisao documental sao operacoes diferentes.
 | `README.md` | estado atual e ordem de leitura | abrir primeiro |
 | `DICIONARIO_TECNICO.md` | arquivos, fontes, extracoes e produtos | consultar para localizar ou reproduzir |
 | `LINHA_DO_TEMPO_PASSOS.md` | evolucao dos passos e exemplo real | consultar para explicar o projeto |
-| `METODOLOGIA_*.md` | regra detalhada de cada bloco | consultar para defender decisoes |
+| `METODOLOGIA_GERAL.md` | metodologia unica dos passos 1 a 6 | consultar para defender decisoes |
 | `01...07...R` | scripts reprocessaveis | executar na ordem numerica |
 | `tests/` | testes de chaves, contagens e invariantes | executar depois do respectivo script |
 | `checks/` | resultados quantitativos validados | consultar numeros sem abrir bases |
@@ -101,7 +101,7 @@ Produtos principais:
 | `04_definir_polos_atracao_saude.R` | consulta os CNPJs no CNES e separa sede, polo unico, rede, movel ou sem unidade |
 | `tests/04_validar_polos_atracao_saude.R` | valida 84 entidades e 639 unidades |
 | `checks/VALIDACAO_POLOS_ATRACAO_SAUDE_MG.md` | registra cobertura e decisoes territoriais |
-| `METODOLOGIA_PASSO_3_POLO_ATRACAO.md` | explica por que sede administrativa nao e automaticamente hospital |
+| `METODOLOGIA_GERAL.md` | explica a regra de polo/rede no passo 3 |
 
 Produtos principais:
 
@@ -119,7 +119,7 @@ Produtos principais:
 | `05_construir_capacidade_assistencial_saude.R` | consulta ficha, leitos, atendimento e profissionais das unidades CNES |
 | `tests/05_validar_capacidade_assistencial_saude.R` | valida cobertura, tipos, zeros e ausencias |
 | `checks/VALIDACAO_CAPACIDADE_ASSISTENCIAL_SAUDE_MG.md` | registra EDA e exemplos auditados |
-| `METODOLOGIA_PASSO_4_CAPACIDADE_ASSISTENCIAL.md` | explica medidas e por que leitos nao sao massa unica |
+| `METODOLOGIA_GERAL.md` | explica capacidade e por que leitos nao sao massa unica no passo 4 |
 
 Produtos principais:
 
@@ -137,7 +137,7 @@ Produtos principais:
 | `06_integrar_tempo_rodoviario_saude.R` | liga os 853 municipios as unidades fixas por OSRM/OpenStreetMap |
 | `tests/06_validar_tempo_rodoviario_saude.R` | valida cobertura, diagonal, simetria e ausencia de rotas faltantes |
 | `checks/VALIDACAO_TEMPO_RODOVIARIO_SAUDE_MG.md` | registra EDA, velocidades implicitas e limites |
-| `METODOLOGIA_PASSO_5_TEMPO_RODOVIARIO.md` | explica origem, agregacao e interpretacao do tempo |
+| `METODOLOGIA_GERAL.md` | explica origem, agregacao e interpretacao do tempo no passo 5 |
 
 Produtos principais:
 
@@ -154,7 +154,7 @@ Produtos principais:
 | `07_montar_painel_analitico_saude.R` | consolida pagamentos e cria a grade municipio-entidade-ano |
 | `tests/07_validar_painel_analitico_saude.R` | valida 573.216 chaves, eventos e valor conservado |
 | `checks/VALIDACAO_PAINEL_ANALITICO_SAUDE_MG.md` | registra eventos e universos preliminares |
-| `METODOLOGIA_PASSO_6_PAINEL_ANALITICO.md` | explica censura, eventos e limites do conjunto estadual |
+| `METODOLOGIA_GERAL.md` | explica censura, eventos e limites do painel no passo 6 |
 
 Produtos principais:
 

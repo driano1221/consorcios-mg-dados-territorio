@@ -819,9 +819,11 @@ Arquivos antigos continuam uteis como registro de processo, mas nao devem ser us
   bacia e mandato a partir de fontes anuais validadas antes da estimacao.
 - Script, teste, check e metodologia: `07_montar_painel_analitico_saude.R`,
   `tests/07_validar_painel_analitico_saude.R`,
-  `checks/VALIDACAO_PAINEL_ANALITICO_SAUDE_MG.md` e
-  `METODOLOGIA_PASSO_6_PAINEL_ANALITICO.md`.
+  `checks/VALIDACAO_PAINEL_ANALITICO_SAUDE_MG.md` e a metodologia unica
+  `METODOLOGIA_GERAL.md`.
 - A pasta passou a ter um inventario unico em `DICIONARIO_TECNICO.md` e uma
   narrativa ponta a ponta em `LINHA_DO_TEMPO_PASSOS.md`. O caso real Igarape x
   CISMEP documenta a passagem de CNPJs para entidade, evidencias, rede,
   capacidade, tempo e observacoes anuais sem alterar resultados.
+- `METODOLOGIA_GERAL.md` e a unica fonte metodologica dos passos 1 a 6; as
+  antigas notas separadas foram removidas para evitar versoes concorrentes.

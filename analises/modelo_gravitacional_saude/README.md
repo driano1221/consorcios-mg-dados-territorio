@@ -11,7 +11,7 @@ estimar novos modelos.
 | saber o estado atual | `README.md` |
 | localizar scripts, fontes, links, extracoes e produtos | `DICIONARIO_TECNICO.md` |
 | entender a evolucao dos passos com um caso real | `LINHA_DO_TEMPO_PASSOS.md` |
-| defender uma decisao metodologica | `METODOLOGIA_*.md` |
+| defender uma decisao metodologica | `METODOLOGIA_GERAL.md` |
 | consultar resultados ja validados | `checks/` |
 
 O dicionario tecnico e a referencia unica para a funcao de cada arquivo e a
@@ -65,13 +65,14 @@ O `README.md` e o ponto de entrada. Os arquivos foram separados por funcao:
 
 | Local | Conteudo | Quando consultar |
 |---|---|---|
-| raiz da pasta | scripts e metodologias dos passos 1 a 6 | entender ou reprocessar o pipeline |
+| raiz da pasta | scripts e metodologia unica dos passos 1 a 6 | entender ou reprocessar o pipeline |
 | `tests/` | uma validacao automatizada por script | confirmar chaves, contagens e invariantes |
 | `checks/` | relatorios curtos com resultados validados | consultar numeros sem abrir os dados |
 | `evidencias/` | catalogo versionado de fontes documentais | auditar decisoes humanas do passo 2 |
 | `outputs/` | CSV/RDS derivados e caches locais | analisar linhas e continuar o modelo; nao entra no Git |
 
-Cada passo deve ser lido na ordem: **script -> teste -> check -> metodologia**.
+Cada passo deve ser lido na ordem: **script -> teste -> check -> secao
+correspondente em `METODOLOGIA_GERAL.md`**.
 Os dados brutos e processados das demais pastas do projeto permanecem
 inalterados.
 
@@ -92,11 +93,7 @@ isso os blocos cientificos 3 a 6 sao executados pelos scripts `04` a `07`.
 | `tests/01...07...R` | Protege chaves, contagens e invariantes | respectivas saidas locais | falha explicita ou mensagem `OK` |
 | `checks/*.md` | Guarda os resultados auditaveis | calculado pelos scripts | relatorio versionado no Git |
 | `evidencias/catalogo_revisao_documental_2019.csv` | Preserva URL, ano e interpretacao documental | fontes oficiais/institucionais | rastreabilidade da revisao humana |
-| `METODOLOGIA_PASSOS_1_2.md` | Explica universo e auditoria de vinculos | passos 1 e 2 | antes/depois, exemplos e limites |
-| `METODOLOGIA_PASSO_3_POLO_ATRACAO.md` | Explica polo versus sede/rede | passo 3 | regras territoriais |
-| `METODOLOGIA_PASSO_4_CAPACIDADE_ASSISTENCIAL.md` | Explica capacidade e EDA | passo 4 | medidas, resultados e limites |
-| `METODOLOGIA_PASSO_5_TEMPO_RODOVIARIO.md` | Explica fonte, agregacao e EDA de tempo | passo 5 | impedancia estatica e limites |
-| `METODOLOGIA_PASSO_6_PAINEL_ANALITICO.md` | Explica grade, censura e eventos | passo 6 | painel e universos preliminares |
+| `METODOLOGIA_GERAL.md` | Explica todo o percurso metodologico | passos 1 a 6 | fontes, regras, resultados, exemplos, limites e reproducao |
 | `DICIONARIO_TECNICO.md` | Inventaria arquivos, fontes, links e datas | passos 1 a 6 | referencia de localizacao e reproducao |
 | `LINHA_DO_TEMPO_PASSOS.md` | Mostra a evolucao com Igarape x CISMEP | passos 1 a 6 | explicacao didatica ponta a ponta |
 
