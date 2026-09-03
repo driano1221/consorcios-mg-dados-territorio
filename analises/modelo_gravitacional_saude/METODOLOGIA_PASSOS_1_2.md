@@ -64,13 +64,24 @@ Base 1 em 2019
 - amostra prioritaria de 50 divergencias: os 23 pares somente MUNIC e os 27
   maiores pagamentos somente MIDES.
 
+**Revisao documental da amostra**
+
+As 50 divergencias prioritarias foram pesquisadas em fontes oficiais ou
+institucionais e classificadas por cobertura temporal e forca da evidencia.
+O resultado preserva uma diferenca essencial: documento posterior a 2019
+corrobora a plausibilidade do vinculo, mas nao reconstitui automaticamente a
+composicao naquele ano. Pagamento no MIDES tambem nao foi convertido em prova
+de filiacao.
+
 ## Fontes E Limites
 
-Os dois passos foram executados com bases locais ja processadas e auditadas no
-projeto; nao houve pesquisa na internet nesta etapa. MIDES significa pagamento
-observado, enquanto MUNIC significa participacao declarada. Divergencia entre
-as fontes nao e tratada automaticamente como erro. Documentos sem data
-explicita nao comprovam a composicao municipal de 2019.
+Os produtos principais dos dois passos foram executados com bases locais ja
+processadas e auditadas no projeto. A qualificacao da amostra divergente usou
+pesquisa documental na internet e preserva em catalogo a URL, o ano e a
+interpretacao de cada fonte. MIDES significa pagamento observado, enquanto
+MUNIC significa participacao declarada. Divergencia entre as fontes nao e
+tratada automaticamente como erro. Documentos sem referencia temporal
+compativel nao comprovam a composicao municipal de 2019.
 
 Scripts, testes e relatorios auditaveis estao neste mesmo diretorio. Os
 resultados reprocessaveis ficam em `outputs/`, fora do Git por tamanho e por

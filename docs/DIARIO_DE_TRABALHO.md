@@ -733,3 +733,31 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
   uma sintese das bases, do pipeline, dos resultados e dos limites.
 - Registrado explicitamente que os dois passos usaram bases locais do projeto
   e nao exigiram pesquisa na internet.
+
+## 2026-09-03 - Revisao Documental Das Divergencias De 2019
+
+### Entregas
+
+- Pesquisados os 50 pares prioritarios do cotejamento MIDES x MUNIC em fontes
+  oficiais ou institucionais.
+- Criado catalogo versionado com URL, ano da evidencia, cobertura temporal,
+  grau de evidencia e interpretacao por entidade, incluindo excecao por par.
+- Criado script reprocessavel que aplica o catalogo a amostra sem alterar as
+  bases originais e gera resultado detalhado e relatorio de validacao.
+
+### Resultados
+
+- 14 pares possuem evidencia anterior ou contemporanea a 2019.
+- 33 pares sao corroborados apenas por fontes posteriores e permanecem em
+  sensibilidade temporal.
+- Um par e historicamente compativel; um representa relacao financeira sem
+  filiacao comprovada; um exige revisao humana prioritaria.
+- Casos criticos: Juiz de Fora x ACISPES, Sao Miguel do Anta x SIMSAUDE e
+  Itabira x CIAS.
+
+### Validacao E Limite
+
+- Os testes dos passos 1, 2 e da nova revisao documental passaram em conjunto.
+- A pesquisa na internet ocorreu somente nesta qualificacao documental; os
+  produtos estatisticos dos passos 1 e 2 continuam derivados das bases locais.
+- Nenhum dado do dashboard ou modelo existente foi alterado.

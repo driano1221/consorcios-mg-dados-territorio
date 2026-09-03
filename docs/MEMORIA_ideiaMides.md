@@ -705,6 +705,27 @@ Leitura da procedencia e confianca da v0.2:
 - Nenhum resultado foi integrado ao dashboard e nenhum modelo novo foi
   estimado.
 
+## Revisao Documental Das Divergencias De 2019 - 2026-09-03
+
+- Os 50 pares prioritarios foram pesquisados em fontes oficiais ou
+  institucionais, com URL, ano, cobertura temporal e grau de evidencia
+  preservados em catalogo versionado.
+- Quatorze pares possuem evidencia anterior ou contemporanea a 2019; 33 foram
+  apenas corroborados por fonte posterior; um e historicamente compativel sem
+  prova anual exata.
+- `Juiz de Fora x ACISPES` foi classificado como relacao financeira ou
+  assistencial sem filiacao comprovada: a propria ACISPES distingue municipios
+  consorciados de cidades apenas atendidas.
+- `Sao Miguel do Anta x SIMSAUDE` permaneceu em revisao humana prioritaria:
+  nao houve corroboracao localizada e uma fonte municipal posterior aponta
+  parceria com outro consorcio.
+- `Itabira x CIAS` possui evidencia oficial de 2016 e ausencia na lista atual,
+  padrao compativel com mudanca temporal e nao com erro automatico da MUNIC.
+- A revisao nao alterou MIDES, MUNIC, dashboard ou modelos. Fontes posteriores
+  ficam em sensibilidade e pagamento nao foi convertido em adesao juridica.
+- Proximo passo metodologico: definir o polo assistencial e a medida de
+  capacidade de atracao antes de integrar CNES e tempo rodoviario.
+
 ## Documentos Historicos
 
 Arquivos antigos continuam uteis como registro de processo, mas nao devem ser usados como estado atual:

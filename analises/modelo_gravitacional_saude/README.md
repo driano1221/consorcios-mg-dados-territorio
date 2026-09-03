@@ -50,6 +50,22 @@ incluem tabela detalhada, resumo por entidade, divergencias e uma amostra de 50
 pares prioritarios. O relatorio auditavel fica em
 `checks/VALIDACAO_COTEJAMENTO_MIDES_MUNIC_SAUDE_2019.md`.
 
+### Revisao Documental Das Divergencias
+
+A amostra prioritaria do passo 2 foi qualificada com fontes institucionais e
+documentos publicos. A revisao distingue evidencia temporal ate 2019,
+corroboracao apenas posterior, relacao financeira sem filiacao comprovada e
+casos ainda dependentes de revisao humana.
+
+```powershell
+Rscript analises/modelo_gravitacional_saude/03_revisar_divergencias_documentais_2019.R
+Rscript analises/modelo_gravitacional_saude/tests/03_validar_revisao_documental_2019.R
+```
+
+O catalogo de fontes fica em
+`evidencias/catalogo_revisao_documental_2019.csv`; o relatorio auditavel fica
+em `checks/VALIDACAO_DOCUMENTAL_DIVERGENCIAS_2019.md`.
+
 ## Limite
 
 Este passo identifica e organiza o universo. A entrada definitiva de cada

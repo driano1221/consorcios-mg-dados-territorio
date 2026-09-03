@@ -12,7 +12,7 @@
 ### Modelo gravitacional de saude - proxima sequencia
 
 1. **concluido em 03/09:** validar o universo saude-MG, a identidade CNPJ e os pagamentos MIDES;
-2. confrontar MIDES 2019 com MUNIC 2019 e evidencias documentais;
+2. **concluido em 03/09:** confrontar MIDES 2019 com MUNIC 2019 e revisar documentalmente a amostra prioritaria;
 3. definir o polo assistencial e a medida de capacidade de atracao;
 4. integrar tempo rodoviario e dados CNES;
 5. definir o modelo de intensidade e o risco anual de interrupcao;
@@ -348,11 +348,12 @@ Primeiro output sugerido:
 1. **Universo de consorcios de saude em MG:** concluido e testado.
 2. **Cotejamento MIDES x MUNIC em 2019:** concluido tecnicamente em
    `analises/modelo_gravitacional_saude/`.
-3. **Revisao documental das divergencias:** proxima etapa. Priorizar os 23
-   pares somente MUNIC e os 27 maiores pagamentos somente MIDES da amostra
-   reprodutivel; nao classificar divergencia como erro automaticamente.
-4. **Definir polo assistencial e capacidade de atracao:** pendente depois da
-   revisao das fontes. Confirmar sede operacional, hospital de referencia,
+3. **Revisao documental das divergencias:** concluida para os 50 pares
+   prioritarios. Foram encontrados 14 pares com evidencia ate 2019, 33 apenas
+   corroborados por fonte posterior, um historicamente compativel, um caso de
+   servico sem filiacao comprovada e um caso para revisao humana prioritaria.
+4. **Definir polo assistencial e capacidade de atracao:** proxima etapa.
+   Confirmar sede operacional, hospital de referencia,
    leitos e especialidades antes de calcular tempo de viagem.
 5. **Modelo novo:** ainda nao estimado. Dashboard permanece inalterado ate a
    validacao da base analitica.
