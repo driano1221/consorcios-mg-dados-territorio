@@ -5,6 +5,9 @@ Este diretorio prepara o recorte de Minas Gerais definido na reuniao de
 explicita nas areas `saude`, `urgencia_emergencia` ou
 `vigilancia_em_saude` da classificacao v0.5.
 
+Resumo breve das fontes, do pipeline e dos resultados dos dois primeiros
+passos: [`METODOLOGIA_PASSOS_1_2.md`](METODOLOGIA_PASSOS_1_2.md).
+
 ## Camadas Do Universo
 
 | Camada | Definicao |

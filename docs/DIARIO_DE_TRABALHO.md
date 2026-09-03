@@ -726,3 +726,10 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
   calculo sequencial dos subtotais no `summarise`.
 - Testes finais aprovados e subtotais reconciliados com a Base 1.
 - Dashboard e modelos existentes permaneceram intocados.
+
+### Documentacao Dos Passos 1 E 2
+
+- Criada `analises/modelo_gravitacional_saude/METODOLOGIA_PASSOS_1_2.md` com
+  uma sintese das bases, do pipeline, dos resultados e dos limites.
+- Registrado explicitamente que os dois passos usaram bases locais do projeto
+  e nao exigiram pesquisa na internet.
