@@ -4,7 +4,7 @@ Esta pasta prepara, fora do dashboard, o recorte de Minas Gerais definido na
 reuniao de 27/08/2026. O objetivo e construir uma base defensavel antes de
 estimar novos modelos.
 
-## Estado Dos Cinco Blocos
+## Estado Dos Seis Blocos
 
 | Passo cientifico | Estado | Resultado principal |
 |---|---|---|
@@ -13,12 +13,13 @@ estimar novos modelos.
 | 3. Definir polo/rede | Concluido | 639 unidades CNES; sede separada de oferta assistencial |
 | 4. Construir capacidade | Concluido | 46 entidades com oferta fixa direta, 36 sem unidade direta e 2 somente moveis |
 | 5. Integrar tempo rodoviario | Concluido | 853 origens, 366 unidades fixas e 46 entidades com tempo disponivel |
+| 6. Montar painel analitico | Concluido | 573.216 linhas; movimentos e universos preliminares separados |
 
 Capacidade foi executada antes do tempo rodoviario. Calcular distancia ate uma
 sede administrativa sem saber onde esta a oferta assistencial produziria uma
 impedancia sem interpretacao substantiva.
 
-### Antes E Depois Dos Cinco Passos
+### Antes E Depois Dos Seis Passos
 
 | Passo | Antes | Agora |
 |---|---|---|
@@ -27,6 +28,7 @@ impedancia sem interpretacao substantiva.
 | 3. Polo/rede | sede administrativa podia ser usada automaticamente como destino | 639 unidades diretamente mantidas foram separadas em rede fixa, polo unico, movel ou sem unidade; CISVER, por exemplo, tem quatro moveis e uma fixa |
 | 4. Capacidade | unidade CNES indicava localizacao, mas nao a oferta registrada | ficha, leitos, atendimento e CBOs foram medidos separadamente; CISMAS tem zero leito e 10 CBOs medicos somados |
 | 5. Tempo | nao havia impedancia integrada e redes poderiam ser reduzidas a uma sede | 853 municipios foram ligados a 366 unidades fixas; redes preservam minimo, mediana e maximo |
+| 6. Painel | pagamentos, identidade, tempo e capacidade estavam em tabelas distintas | grade `853 x 84 x 8`, com valor conservado, censura em 2014 e eventos financeiros explicitos |
 
 ## Fluxo Reprocessavel
 
@@ -40,7 +42,8 @@ flowchart LR
   F --> G[Polo fixo, rede, movel ou sem unidade]
   G --> H[Capacidade por unidade fixa]
   H --> I[Tempo rodoviario por unidade]
-  I --> J[Proximo: painel municipio x entidade x ano]
+  I --> J[Painel municipio x entidade x ano]
+  J --> K[Proximo: alternativas plausiveis e EDA]
 ```
 
 ## Como Navegar Nesta Pasta
@@ -49,7 +52,7 @@ O `README.md` e o ponto de entrada. Os arquivos foram separados por funcao:
 
 | Local | Conteudo | Quando consultar |
 |---|---|---|
-| raiz da pasta | scripts e metodologias dos passos 1 a 5 | entender ou reprocessar o pipeline |
+| raiz da pasta | scripts e metodologias dos passos 1 a 6 | entender ou reprocessar o pipeline |
 | `tests/` | uma validacao automatizada por script | confirmar chaves, contagens e invariantes |
 | `checks/` | relatorios curtos com resultados validados | consultar numeros sem abrir os dados |
 | `evidencias/` | catalogo versionado de fontes documentais | auditar decisoes humanas do passo 2 |
@@ -62,7 +65,7 @@ inalterados.
 ## Mapa De Scripts, Testes E Documentos
 
 O numero do script e tecnico. O passo 2 usa dois scripts (`02` e `03`), por
-isso os blocos cientificos 4 e 5 sao executados pelos scripts `05` e `06`.
+isso os blocos cientificos 3 a 6 sao executados pelos scripts `04` a `07`.
 
 | Arquivo | Papel | Entrada principal | Saida/checagem |
 |---|---|---|---|
@@ -72,13 +75,15 @@ isso os blocos cientificos 4 e 5 sao executados pelos scripts `05` e `06`.
 | `04_definir_polos_atracao_saude.R` | Consulta estabelecimentos mantidos pelos CNPJs | universo do passo 1 e CNES | polo, rede, movel ou ancora de sede |
 | `05_construir_capacidade_assistencial_saude.R` | Mede oferta atual diretamente vinculada | unidades do passo 3 e modulos CNES | capacidade por unidade e entidade |
 | `06_integrar_tempo_rodoviario_saude.R` | Integra impedancia rodoviaria a oferta fixa | capacidade, mapa MG e Zenodo 11400243 | tempo por destino, unidade e entidade |
-| `tests/01...06...R` | Protege chaves, contagens e invariantes | respectivas saidas locais | falha explicita ou mensagem `OK` |
+| `07_montar_painel_analitico_saude.R` | Materializa a grade longitudinal e seus eventos | MIDES, identidade, capacidade e tempo | painel completo, eventos e universos preliminares |
+| `tests/01...07...R` | Protege chaves, contagens e invariantes | respectivas saidas locais | falha explicita ou mensagem `OK` |
 | `checks/*.md` | Guarda os resultados auditaveis | calculado pelos scripts | relatorio versionado no Git |
 | `evidencias/catalogo_revisao_documental_2019.csv` | Preserva URL, ano e interpretacao documental | fontes oficiais/institucionais | rastreabilidade da revisao humana |
 | `METODOLOGIA_PASSOS_1_2.md` | Explica universo e auditoria de vinculos | passos 1 e 2 | antes/depois, exemplos e limites |
 | `METODOLOGIA_PASSO_3_POLO_ATRACAO.md` | Explica polo versus sede/rede | passo 3 | regras territoriais |
 | `METODOLOGIA_PASSO_4_CAPACIDADE_ASSISTENCIAL.md` | Explica capacidade e EDA | passo 4 | medidas, resultados e limites |
 | `METODOLOGIA_PASSO_5_TEMPO_RODOVIARIO.md` | Explica fonte, agregacao e EDA de tempo | passo 5 | impedancia estatica e limites |
+| `METODOLOGIA_PASSO_6_PAINEL_ANALITICO.md` | Explica grade, censura e eventos | passo 6 | painel e universos preliminares |
 
 ### Dicionario Por Passo
 
@@ -90,6 +95,7 @@ isso os blocos cientificos 4 e 5 sao executados pelos scripts `05` e `06`.
 | 3. Polo/rede | entidade e unidade CNES | `04_definir_polos_atracao_saude.R` | `polos_atracao_saude_mg.rds`; `unidades_cnes_vinculadas_saude_mg.csv` | `tests/04_validar_polos_atracao_saude.R`; `checks/VALIDACAO_POLOS_ATRACAO_SAUDE_MG.md` |
 | 4. Capacidade | unidade CNES e entidade agregada | `05_construir_capacidade_assistencial_saude.R` | `capacidade_unidades_cnes_saude_mg.csv`; `capacidade_entidades_saude_mg.rds` | `tests/05_validar_capacidade_assistencial_saude.R`; `checks/VALIDACAO_CAPACIDADE_ASSISTENCIAL_SAUDE_MG.md` |
 | 5. Tempo | municipio x destino/unidade/entidade | `06_integrar_tempo_rodoviario_saude.R` | tres camadas `tempo_rodoviario_*` | `tests/06_validar_tempo_rodoviario_saude.R`; `checks/VALIDACAO_TEMPO_RODOVIARIO_SAUDE_MG.md` |
+| 6. Painel | municipio x entidade x ano | `07_montar_painel_analitico_saude.R` | painel completo, eventos, pares e resumos | `tests/07_validar_painel_analitico_saude.R`; `checks/VALIDACAO_PAINEL_ANALITICO_SAUDE_MG.md` |
 
 `outputs/` contem derivados locais e cache, e esta fora do Git. Nada nessa
 pasta altera MIDES, MUNIC, CNM, SICONFI ou o dashboard.
@@ -147,6 +153,10 @@ microdados nominais da pagina.
 | `tempo_rodoviario_municipio_destino_saude_mg.rds` | municipio x municipio de oferta | grade municipal de 197.896 rotas |
 | `tempo_rodoviario_municipio_unidade_saude_mg.rds` | municipio x unidade fixa | tempo preservado para 366 unidades |
 | `tempo_rodoviario_municipio_entidade_saude_mg.rds` | municipio x entidade | minimo, mediana e maximo; `NA` sem destino fixo |
+| `painel_analitico_saude_mg.rds` | municipio x entidade x ano | grade completa com zeros, eventos, tempo e capacidade |
+| `painel_analitico_saude_mg_eventos.csv` | observacoes com presenca ou transicao | auditoria dos movimentos sem abrir a grade completa |
+| `painel_analitico_saude_mg_resumo_par.rds` | municipio x entidade | trajetoria, valor e recorrencia do par |
+| `DICIONARIO_PAINEL_ANALITICO_SAUDE_MG.csv` | variavel | definicoes das colunas centrais |
 
 ## Execucao Completa
 
@@ -165,6 +175,8 @@ Rscript analises/modelo_gravitacional_saude/05_construir_capacidade_assistencial
 Rscript analises/modelo_gravitacional_saude/tests/05_validar_capacidade_assistencial_saude.R
 Rscript analises/modelo_gravitacional_saude/06_integrar_tempo_rodoviario_saude.R
 Rscript analises/modelo_gravitacional_saude/tests/06_validar_tempo_rodoviario_saude.R
+Rscript analises/modelo_gravitacional_saude/07_montar_painel_analitico_saude.R
+Rscript analises/modelo_gravitacional_saude/tests/07_validar_painel_analitico_saude.R
 ```
 
 ## Resultado Metodologico Do Passo 4
@@ -214,6 +226,20 @@ CNPJ ainda nao documentado.
 - a duracao e estatica, simetrica e nao representa uma partida as 10h30 de
   sabado.
 
+## Resultado Metodologico Do Passo 6
+
+- 10.080 linhas MIDES de saude foram consolidadas em 10.059 observacoes
+  municipio-entidade-ano; as 21 reducoes sao casos com matriz e filial na mesma
+  combinacao;
+- a grade completa possui 573.216 linhas: 853 municipios, 84 entidades e oito
+  anos, com R$ 3.101.980.422,83 integralmente conservados;
+- 2014 contem 1.192 estoques positivos, tratados como censurados a esquerda;
+- depois de 2014 foram observados 426 primeiros pagamentos, 252 retornos, 8.188
+  permanencias e 533 interrupcoes;
+- 1.618 pares possuem algum pagamento e 329 apresentam mais de uma transicao;
+- os marcadores de risco sao preliminares e nao convertem a grade estadual em
+  conjunto final de alternativas.
+
 ## Limites E Proximo Passo
 
 - CNES e fotografia de 03/09/2026; nao reconstroi automaticamente 2014-2021;
@@ -223,8 +249,10 @@ CNPJ ainda nao documentado.
 - CIS/CEN e CIMES possuem somente unidades moveis e nao recebem polo fixo;
 - o menor tempo ate uma rede pode apontar para unidade sem a especialidade
   relevante;
-- a grade estadual ainda nao define o conjunto de escolha plausivel.
+- a grade estadual ainda nao define o conjunto de escolha plausivel;
+- populacao, RCL, regiao de saude, bacia e mandato ainda exigem fontes anuais
+  validadas antes de integrar o painel.
 
-O proximo passo e montar o painel `municipio x entidade x ano`, integrando
-pagamento, movimentos, tempo, capacidade e regras explicitas para o conjunto
-de alternativas de cada municipio.
+O proximo passo e a EDA dos universos e a definicao do conjunto de alternativas
+plausiveis por tempo, regiao de saude ou regra institucional. Somente depois
+devem ser integrados os controles anuais e estimados os modelos.

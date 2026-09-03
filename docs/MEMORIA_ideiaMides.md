@@ -796,3 +796,28 @@ Arquivos antigos continuam uteis como registro de processo, mas nao devem ser us
   transito ou partida as 10h30 de sabado.
 - Proximo passo: painel `municipio x entidade x ano` e definicao do conjunto de
   alternativas plausiveis antes da estimacao.
+
+## Painel Analitico De Saude - 2026-09-03
+
+- O sexto bloco cientifico foi concluido fora do dashboard. A grade possui
+  573.216 linhas: 853 municipios, 84 entidades consolidadas e oito anos.
+- As 10.080 linhas MIDES de saude foram agregadas em 10.059 combinacoes
+  municipio-entidade-ano. Vinte e uma combinacoes tinham matriz e filial na
+  mesma raiz; R$ 3.101.980.422,83 foram conservados integralmente.
+- O painel diferencia 1.192 estoques positivos em 2014, 426 primeiros
+  pagamentos, 252 retornos, 8.188 permanencias e 533 interrupcoes. Pagamento
+  continua sendo evidencia financeira, nao filiacao juridica.
+- Ha 1.618 pares municipio-entidade com algum pagamento; 329 apresentam mais
+  de uma transicao na janela.
+- Os 843 municipios com alguma linha MIDES de saude e os dez sem linha ficam
+  juntos no universo territorial completo; ausencia nao foi descartada.
+- Entidades sem polo fixo continuam no painel com tempo/capacidade `NA`. Foram
+  criados recortes adicionais `_com_tempo`, sem imputacao nem exclusao
+  silenciosa.
+- O universo estadual para entrada e apenas exploratorio. O proximo passo e
+  definir alternativas plausiveis e integrar populacao, RCL, regiao de saude,
+  bacia e mandato a partir de fontes anuais validadas antes da estimacao.
+- Script, teste, check e metodologia: `07_montar_painel_analitico_saude.R`,
+  `tests/07_validar_painel_analitico_saude.R`,
+  `checks/VALIDACAO_PAINEL_ANALITICO_SAUDE_MG.md` e
+  `METODOLOGIA_PASSO_6_PAINEL_ANALITICO.md`.

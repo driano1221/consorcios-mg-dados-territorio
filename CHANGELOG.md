@@ -14,6 +14,9 @@ As sessões detalhadas estão em `docs/DIARIO_DE_TRABALHO.md`. Este arquivo regi
 - integrada a matriz rodoviária OSRM/Zenodo para os 853 municípios de MG e 366 unidades fixas, preservando camadas por destino, unidade e entidade;
 - documentadas as limitações de sede municipal, simetria e ausência de trânsito por horário, mantendo 36 casos sem unidade e dois somente móveis como tempo não observado;
 - adicionados script reprocessável, teste de cobertura/simetria e relatório EDA do passo 5, sem alterar o dashboard ou estimar modelos.
+- materializado o painel de saude com 573.216 linhas (`853 x 84 x 8`), consolidando matriz/filiais e preservando integralmente R$ 3,102 bilhoes do MIDES;
+- separados estoque inicial, primeiro pagamento, retorno, permanencia e interrupcao, com universos preliminares de entrada, continuidade e intensidade;
+- adicionados teste, dicionario, relatorio EDA e metodologia do passo 6; dashboard e modelos existentes continuam inalterados.
 
 ## 2026-08-20
 

@@ -873,3 +873,31 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Foi documentado que a fonte e estatica, usa sedes municipais e nao representa
   uma partida as 10h30 de sabado.
 - Dashboard e modelos existentes permaneceram inalterados.
+
+## Painel Analitico De Saude - 2026-09-03
+
+### Entregas
+
+- Criado `07_montar_painel_analitico_saude.R` para consolidar CNPJs por raiz,
+  expandir a grade anual e integrar tempo e capacidade.
+- Criados teste automatizado, relatorio EDA, dicionario de variaveis e
+  metodologia especifica do passo 6.
+- Gerados localmente o painel completo em RDS e CSVs auditaveis de eventos,
+  pares, anos e entidades; derivados continuam fora do Git.
+
+### Resultados E Validacao
+
+- As 10.080 linhas MIDES de saude viraram 10.059 linhas consolidadas. As 21
+  reducoes correspondem a municipio-entidade-ano com dois CNPJs da mesma raiz.
+- O valor financeiro foi preservado: R$ 3.101.980.422,83 antes e depois.
+- A grade final tem 573.216 linhas, 853 municipios, 84 entidades e 2014-2021.
+- Foram validados 1.192 estoques iniciais, 426 primeiros pagamentos, 252
+  retornos, 8.188 permanencias e 533 interrupcoes.
+- O teste detectou e documentou que 843 municipios possuem linha MIDES de
+  saude; os outros dez permanecem corretamente no universo com zeros.
+- A EDA identificou 1.618 pares com pagamento e 329 recorrentes. Casos reais
+  conferidos incluem Sete Lagoas x CISMEP, Muriae x CISLESTE, Aguanil x
+  CISMARG e Igarape x CISMEP.
+- Os universos estaduais foram rotulados como preliminares; populacao, RCL,
+  regioes de saude, bacias e mandato nao foram inventados nem imputados.
+- Dashboard e modelos existentes permaneceram inalterados.

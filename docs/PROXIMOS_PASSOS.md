@@ -16,13 +16,13 @@
 3. **concluido em 03/09:** definir a sede administrativa, consultar as unidades CNES vinculadas por CNPJ e separar polo fixo, rede, servico movel e ancora de sensibilidade;
 4. **concluido em 03/09:** construir a capacidade assistencial e a regra de agregacao das redes CNES;
 5. **concluido em 03/09:** integrar tempo rodoviario entre os 853 municipios e as 366 unidades fixas documentadas;
-6. montar o painel `municipio x entidade x ano`, com pagamentos, movimentos, tempo e capacidade;
-7. definir o conjunto de alternativas plausiveis e executar EDA antes da estimacao;
+6. **concluido em 03/09:** montar o painel `municipio x entidade x ano`, com pagamentos, movimentos, tempo e capacidade;
+7. definir o conjunto de alternativas plausiveis, integrar controles anuais validados e executar EDA antes da estimacao;
 8. estimar entrada/presenca, intensidade financeira e interrupcao;
 9. testar robustez de capacidade, tempo, normalizacao financeira e universo;
 10. integrar resultados validados ao dashboard.
 
-Pontos ainda nao decididos: denominador do valor pago, forma da sobrevivencia, conjunto de alternativas e tratamento da censura dos pares presentes em 2014.
+Pontos ainda nao decididos: denominador do valor pago, forma da sobrevivencia e conjunto de alternativas. A censura dos pares presentes em 2014 foi resolvida no painel: eles sao `estoque_inicial_2014`, nunca entrada observada.
 
 **Resultado do passo 1:** 100 estabelecimentos classificados em saude foram consolidados em 84 entidades. Ha 66 entidades com pagamento MIDES em MG, das quais 64 formam o nucleo setorial observado e duas ficam em sensibilidade multiarea. A consolidacao incorporou 16 filiais em 11 raizes. Sete entidades possuem alerta de escopo, situacao temporal ou consistencia de macrogrupo; nenhuma classificacao de saude esta marcada como documentalmente pendente.
 
@@ -31,6 +31,8 @@ Pontos ainda nao decididos: denominador do valor pago, forma da sobrevivencia, c
 **Resultado do passo 4:** as 639 unidades foram consultadas nos modulos de ficha, leitos, atendimento e profissionais. Ha 366 unidades fixas e 273 moveis/itinerantes. Quarenta e seis entidades possuem oferta fixa direta, 36 permanecem sem unidade no proprio CNPJ e duas possuem somente unidades moveis. Todas as 46 com oferta fixa possuem CBO medico SUS ativo; apenas uma possui leitos SUS diretamente registrados. Leitos nao serao usados como massa unica. A matriz de tempo foi construida no passo 5; os 36 casos sem unidade direta ainda exigem auditoria complementar de rede/prestador.
 
 **Resultado do passo 5:** a matriz Zenodo/OSRM foi validada por checksum e contem os 363.378 pares internos de MG sem rota ausente. Foram materializadas 197.896 linhas municipio-destino, 312.198 municipio-unidade e 71.652 municipio-entidade. Quarenta e seis entidades possuem tempo disponivel; 36 sem unidade direta e duas somente moveis permanecem `NA`. A fonte e estatica, simetrica, usa sedes municipais IBGE 2010 e nao representa especificamente 10h30 de sabado. O proximo produto e o painel anual com regra explicita de alternativas plausiveis.
+
+**Resultado do passo 6:** o painel completo possui 573.216 linhas (`853 x 84 x 8`) e conserva R$ 3.101.980.422,83. Foram identificados 1.192 estoques positivos em 2014, 426 primeiros pagamentos, 252 retornos, 8.188 permanencias e 533 interrupcoes. Ha 1.618 pares com algum pagamento e 329 com mais de uma transicao. Os universos estaduais marcados no painel sao preliminares; antes de estimar, o passo 7 deve limitar alternativas por regra substantiva e integrar populacao, RCL, regiao de saude, bacia e mandato a partir de fontes anuais validadas.
 
 ---
 

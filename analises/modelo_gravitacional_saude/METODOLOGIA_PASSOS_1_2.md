@@ -345,15 +345,16 @@ capacidade historica.
 
 ## Reproducibilidade E Limites
 
-Os produtos quantitativos dos passos 1 a 5 usam bases locais processadas do
+Os produtos quantitativos dos passos 1 a 6 usam bases locais processadas do
 projeto. A qualificacao documental da amostra usou fontes oficiais ou
 institucionais na internet, com URL e interpretacao preservadas. Scripts,
 testes e relatorios estao em `analises/modelo_gravitacional_saude/`; resultados
 derivados locais ficam em `outputs/`.
 
-Os scripts `01` a `06`, seus testes e os relatorios de validacao estao em
-`analises/modelo_gravitacional_saude/`. O proximo passo substantivo e montar o
-painel `municipio x entidade x ano`, preservando a camada por unidade e
-definindo o conjunto de alternativas plausiveis. A integracao opcional do
+Os scripts `01` a `07`, seus testes e os relatorios de validacao estao em
+`analises/modelo_gravitacional_saude/`. O painel do passo 6 possui 573.216
+linhas e esta detalhado em `METODOLOGIA_PASSO_6_PAINEL_ANALITICO.md`. O proximo
+passo substantivo e definir o conjunto de alternativas plausiveis e integrar
+controles anuais validados antes da estimacao. A integracao opcional do
 marcador CNM pode ocorrer em paralelo e nao deve alterar a leitura historica do
 MIDES/MUNIC.
