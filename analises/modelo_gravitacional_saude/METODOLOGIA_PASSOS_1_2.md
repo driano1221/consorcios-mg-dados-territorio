@@ -1,15 +1,17 @@
-# Passos 1 A 3 - Preparacao Da Base De Saude
+# Passos 1 A 4 - Preparacao Da Base De Saude
 
 ## Objetivo
 
 Preparar uma base defensavel para o futuro modelo gravitacional de consorcios
 de saude em Minas Gerais. Antes de estimar distancia, capacidade assistencial
-ou probabilidade de entrada, foi necessario responder duas perguntas simples:
+ou probabilidade de entrada, foi necessario responder quatro perguntas:
 
 1. quais instituicoes de saude existem no universo analitico?
 2. que tipo de evidencia existe para cada vinculo municipio-consorcio em 2019?
 3. qual estabelecimento, rede ou ancora administrativa pode representar a
    oferta assistencial de cada entidade?
+4. quais componentes de capacidade estao registrados diretamente sob os CNPJs
+   dos consorcios e podem ser usados sem inventar oferta?
 
 O MIDES continua significando **pagamento observado** e a MUNIC,
 **participacao declarada**. Nenhuma das duas fontes e alterada por esta
@@ -23,6 +25,7 @@ preparacao.
 | 2a. Comparar MIDES, MUNIC e documentos | Concluido | 1.311 pares em 2019 e revisao de 50 divergencias |
 | 2b. Usar CNM como fotografia atual no recorte saude | Disponivel, mas ainda nao materializado na tabela de saude | Snapshot CNM de 27/08 e piloto CNM x MIDES ja existem em outra frente |
 | 3. Definir polo de atracao assistencial | Concluido | 84 entidades consultadas no CNES e regra rastreavel de polo/rede |
+| 4. Construir capacidade assistencial | Concluido | 639 unidades consultadas; medidas separadas para 46 entidades com oferta fixa direta |
 
 O item 2b nao bloqueia a proxima etapa: a CNM e uma fotografia atual e nao
 prova a composicao em 2019. Caso seja integrada, ela entrara como marcador
@@ -221,8 +224,8 @@ flowchart LR
     C -->|"Duas ou mais"| E["Rede vinculada:<br/>preservar todas as unidades"]
     C -->|"Uma movel"| F["Sem polo geografico fixo"]
     C -->|"Nenhuma"| G["Sede: ancora apenas<br/>para sensibilidade"]
-    D --> H["Passo 5: capacidade direta"]
-    E --> I["Passo 5: regra de agregacao da rede"]
+    D --> H["Passo 4: capacidade direta"]
+    E --> I["Passo 4: regra de agregacao da rede"]
     F --> I
     G --> J["Auditoria documental de prestador/rede"]
 ```
@@ -231,7 +234,7 @@ flowchart LR
 
 | Decisao de polo | Entidades | Leitura e proxima acao |
 |---|---:|---|
-| Estabelecimento fixo unico | 2 | A localizacao CNES pode ser usada como polo; a capacidade ainda sera medida no passo 5. |
+| Estabelecimento fixo unico | 2 | A localizacao CNES pode ser usada como polo; a capacidade e medida no passo 4. |
 | Rede vinculada, sem polo unico | 45 | Manter todas as unidades; definir tempo e capacidade por rede, sem escolher uma sede arbitraria. |
 | Sem unidade CNES pelo CNPJ | 36 | Nao inferir ausencia de atendimento; auditar rede propria, contrato ou prestador externo. |
 | Unidade movel, sem polo fixo | 1 | Nao usar o endereco cadastral como destino de viagem. |
@@ -241,12 +244,17 @@ Foram consultados os 100 CNPJs matriz/filial das 84 entidades e retornaram
 consulta. Entre as 64 entidades do nucleo setorial com pagamento MIDES, ha 2
 polos fixos unicos, 43 redes, 18 casos sem unidade direta e 1 unidade movel.
 
+O passo 4 refinou a tipologia interna das redes: CIS/CEN possui tres unidades,
+mas todas sao vacimoveis. Assim, a contagem de capacidade fixa final e 44 redes
+com ao menos uma unidade fixa + 2 polos fixos unicos; CIS/CEN e CIMES ficam sem
+polo rodoviario fixo.
+
 ### Exemplos Reais
 
 | Entidade | Evidencia encontrada | Decisao |
 |---|---|---|
-| CISMAS | Uma clinica/centro de especialidade CNES em Itajuba | Polo fixo unico; apto a receber medida de capacidade no passo 5. |
-| CISMARPA | Uma clinica/centro de especialidade CNES em Pocos de Caldas | Polo fixo unico; apto a receber medida de capacidade no passo 5. |
+| CISMAS | Uma clinica/centro de especialidade CNES em Itajuba | Polo fixo unico; apto a receber medida de capacidade no passo 4. |
+| CISMARPA | Uma clinica/centro de especialidade CNES em Pocos de Caldas | Polo fixo unico; apto a receber medida de capacidade no passo 4. |
 | CISVER | Cinco unidades CNES diretamente vinculadas | Rede; nao se escolhe uma unidade isolada como destino do consorcio. |
 | CIMES | Uma unidade movel VACIMOVEL | Sem polo fixo; endereco cadastral nao representa destino assistencial. |
 
@@ -271,17 +279,77 @@ assistencial documentada.
 
 ---
 
+## Passo 4 - Construir A Capacidade Assistencial
+
+### Em Que Consistiu
+
+Consultar ficha, leitos, atendimento e profissionais no CNES para as 639
+unidades diretamente vinculadas aos CNPJs consolidados. A agregacao por
+entidade utiliza somente unidades fixas e mantem cada componente separado.
+
+### Pipeline
+
+```mermaid
+flowchart LR
+    A["639 unidades CNES"] --> B["Separar 366 fixas<br/>e 273 moveis"]
+    B --> C["Leitos existentes e SUS"]
+    B --> D["Ambulatorio, internacao e SADT"]
+    B --> E["Vinculos e CBOs SUS ativos"]
+    C --> F["Agregar somente unidades fixas<br/>por raiz de CNPJ"]
+    D --> F
+    E --> F
+    F --> G["46 com capacidade direta"]
+    F --> H["36 sem unidade direta = NA"]
+    F --> I["2 somente moveis = sem polo fixo"]
+```
+
+### Resultado
+
+| Indicador | Resultado |
+|---|---:|
+| Unidades consultadas sem erro final | 639 |
+| Unidades fixas | 366 |
+| Unidades moveis/itinerantes | 273 |
+| Entidades com capacidade fixa direta | 46 |
+| Entidades sem unidade no proprio CNPJ | 36 |
+| Entidades somente com unidades moveis | 2 |
+| Entidades com leitos SUS diretos | 1 |
+
+Todas as 46 entidades com oferta fixa possuem ao menos um CBO medico SUS
+ativo. Quarenta possuem atendimento ambulatorial SUS e 23 possuem SADT em ao
+menos uma unidade. Leitos SUS aparecem somente no ICISMEP; portanto, nao sao
+medida suficiente para representar sozinhos a atracao de todos os consorcios.
+
+### Exemplos Reais
+
+- CISMAS e CISMARPA tem uma clinica fixa, zero leito e escopo profissional
+  cadastrado: capacidade nao e sinonimo de internacao.
+- CISVER tem cinco unidades, mas quatro sao moveis; a agregacao usa a unidade
+  fixa e preserva as moveis separadamente.
+- CIS/CEN tem tres vacimoveis e CIMES tem um; ambos ficam sem polo rodoviario
+  fixo.
+- CISMEP tem duas unidades fixas e 11 moveis; os 32 leitos SUS pertencem ao
+  Hospital 272 Joias diretamente vinculado.
+
+### Decisao Metodologica
+
+O modelo futuro devera testar separadamente quantidade de unidades, CBOs
+medicos SUS, atendimento ambulatorial, SADT e leitos. Nao foi criado indice
+composto. CBO e proxy cadastral atual, nao especialidade unica, producao ou
+capacidade historica.
+
+---
+
 ## Reproducibilidade E Limites
 
-Os produtos quantitativos dos passos 1 a 3 usam bases locais processadas do
+Os produtos quantitativos dos passos 1 a 4 usam bases locais processadas do
 projeto. A qualificacao documental da amostra usou fontes oficiais ou
 institucionais na internet, com URL e interpretacao preservadas. Scripts,
 testes e relatorios estao em `analises/modelo_gravitacional_saude/`; resultados
 derivados locais ficam em `outputs/`.
 
-Os scripts `01` a `04`, seus testes e o relatorio de validacao do passo 3 estao
-em `analises/modelo_gravitacional_saude/`. O proximo passo substantivo e
-construir a capacidade assistencial e a regra de agregacao das redes; so depois
-sera calculado o tempo rodoviario ate polos ou unidades documentadas. A
+Os scripts `01` a `05`, seus testes e os relatorios de validacao estao em
+`analises/modelo_gravitacional_saude/`. O proximo passo substantivo e calcular
+tempo rodoviario ate polos ou unidades fixas documentadas. A
 integracao opcional do marcador CNM pode ocorrer em paralelo e nao deve alterar
 a leitura historica do MIDES/MUNIC.

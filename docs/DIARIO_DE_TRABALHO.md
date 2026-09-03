@@ -801,3 +801,40 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
   `analises/modelo_gravitacional_saude/04_definir_polos_atracao_saude.R`;
   `tests/04_validar_polos_atracao_saude.R`; e
   `METODOLOGIA_PASSO_3_POLO_ATRACAO.md`.
+
+## Capacidade Assistencial Direta - 2026-09-03
+
+### Entregas
+
+- Criado `05_construir_capacidade_assistencial_saude.R` para consultar ficha,
+  leitos, atendimento e profissionais das unidades diretamente vinculadas.
+- Criado cache reprocessavel, divisao opcional da coleta em faixas e recuperacao
+  seletiva dos modulos que falharem.
+- Geradas camadas por unidade e entidade, metodologia do passo 4, relatorio
+  auditavel e teste automatizado.
+- Organizado o `README` da pasta como mapa de scripts, entradas, saidas, fontes
+  e ordem de reproducao dos quatro blocos.
+
+### Resultados
+
+- As 639 unidades foram consultadas sem erro final: 366 fixas e 273
+  moveis/itinerantes.
+- Quarenta e seis entidades possuem oferta fixa direta; 36 nao possuem unidade
+  listada sob o proprio CNPJ; CIS/CEN e CIMES possuem somente unidades moveis.
+- Todas as 46 entidades fixas possuem CBO medico SUS ativo; 40 registram
+  atendimento ambulatorial e 23, SADT em ao menos uma unidade.
+- Apenas o ICISMEP registra leitos SUS diretos. A ACISPES possui cinco leitos
+  existentes e nenhum SUS.
+
+### Validacao E Decisoes
+
+- Corrigida a limpeza de texto do HTML legado e descartados os resultados
+  preliminares afetados antes da documentacao.
+- Reexecutada integralmente a coleta e recuperados apenas os modulos limitados
+  temporariamente pela fonte; teste final aprovado para 84 entidades e 639
+  unidades.
+- CIS/CEN foi refinado de rede generica para entidade somente movel: tres
+  vacimoveis e nenhuma unidade fixa.
+- Leitos nao serao a massa unica. Unidades, CBOs medicos, ambulatorio, SADT e
+  leitos serao testados separadamente, sem indice composto precoce.
+- Dashboard e modelos existentes permaneceram inalterados.

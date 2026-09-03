@@ -14,8 +14,8 @@
 1. **concluido em 03/09:** validar o universo saude-MG, a identidade CNPJ e os pagamentos MIDES;
 2. **concluido em 03/09, com ressalva CNM:** confrontar MIDES 2019 com MUNIC 2019 e revisar documentalmente a amostra prioritaria. A fotografia CNM esta pronta, mas ainda nao foi materializada como marcador na tabela especifica de saude;
 3. **concluido em 03/09:** definir a sede administrativa, consultar as unidades CNES vinculadas por CNPJ e separar polo fixo, rede, servico movel e ancora de sensibilidade;
-4. construir a capacidade assistencial e a regra de agregacao das redes CNES; so depois definir qual unidade ou conjunto sera o destino analitico;
-5. integrar tempo rodoviario entre municipio e o polo/unidades definidos no passo anterior;
+4. **concluido em 03/09:** construir a capacidade assistencial e a regra de agregacao das redes CNES;
+5. integrar tempo rodoviario entre municipio e as unidades fixas documentadas no passo anterior;
 6. definir o modelo de intensidade e o risco anual de interrupcao;
 7. executar EDA e validacao antes de estimar ou publicar resultados.
 
@@ -23,7 +23,9 @@ Pontos ainda nao decididos: denominador do valor pago, forma da sobrevivencia, c
 
 **Resultado do passo 1:** 100 estabelecimentos classificados em saude foram consolidados em 84 entidades. Ha 66 entidades com pagamento MIDES em MG, das quais 64 formam o nucleo setorial observado e duas ficam em sensibilidade multiarea. A consolidacao incorporou 16 filiais em 11 raizes. Sete entidades possuem alerta de escopo, situacao temporal ou consistencia de macrogrupo; nenhuma classificacao de saude esta marcada como documentalmente pendente.
 
-**Resultado do passo 3:** o CNES foi consultado para os 100 CNPJs de matriz e filial. Das 84 entidades, 45 possuem rede diretamente vinculada, 36 nao possuem unidade listada sob esses CNPJs, uma possui apenas unidade movel e duas possuem uma unica clinica fixa diretamente vinculada. Portanto, distancia ate a sede administrativa nao sera a especificacao principal das redes.
+**Resultado do passo 3:** o CNES foi consultado para os 100 CNPJs de matriz e filial. Das 84 entidades, 45 foram inicialmente identificadas como redes, 36 nao possuem unidade listada sob esses CNPJs, uma possui apenas unidade movel e duas possuem uma unica clinica fixa diretamente vinculada. O passo 4 refinou uma das redes: CIS/CEN possui tres vacimoveis e nenhuma unidade fixa.
+
+**Resultado do passo 4:** as 639 unidades foram consultadas nos modulos de ficha, leitos, atendimento e profissionais. Ha 366 unidades fixas e 273 moveis/itinerantes. Quarenta e seis entidades possuem oferta fixa direta, 36 permanecem sem unidade no proprio CNPJ e duas possuem somente unidades moveis. Todas as 46 com oferta fixa possuem CBO medico SUS ativo; apenas uma possui leitos SUS diretamente registrados. Leitos nao serao usados como massa unica. O proximo produto e a matriz de tempo ate unidades fixas documentadas; os 36 casos sem unidade direta exigem auditoria complementar de rede/prestador.
 
 ---
 

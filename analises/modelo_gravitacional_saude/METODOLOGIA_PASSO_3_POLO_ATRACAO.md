@@ -21,9 +21,9 @@ flowchart LR
   C -->|Duas ou mais| E[Rede vinculada:<br/>nao reduzir a um unico polo]
   C -->|Nenhuma| F[Sede administrativa:<br/>ancora apenas de sensibilidade]
   C -->|Erro| G[Consulta incompleta:<br/>revisar antes de usar]
-  D --> H[Passo 4: tempo ate o estabelecimento]
+  D --> H[Passo 4: medir capacidade]
   M --> I
-  E --> I[Passo 5: definir regra de rede]
+  E --> I[Passo 4: definir capacidade da rede]
   F --> J[Buscar evidencia documental]
 ```
 
@@ -57,7 +57,7 @@ O CNPJ `01.098.929/0001-68` do **CISVER** retorna no CNES uma clinica/centro de
 especialidade e unidades moveis mantidas pelo consorcio. O resultado correto e
 `rede_vinculada_sem_polo_unico`: ha vinculo cadastral direto, mas nao seria
 metodologicamente correto escolher so a sede ou so uma unidade movel como se
-representasse toda a oferta. No passo 5, as unidades serao preservadas e a
+representasse toda a oferta. No passo 4, as unidades serao preservadas e a
 regra de capacidade da rede sera decidida explicitamente. Outro caso instrutivo
 e o **CIMES**, cuja unica unidade listada se chama `CIMES VACIMOVEL`: apesar de
 ter endereco cadastral, ela e servico movel e, por isso, nao e usada como polo
@@ -71,6 +71,11 @@ fixo na medida principal de tempo.
 | Rede CNES vinculada, sem polo unico arbitrario | 45 |
 | Sem unidade CNES listada pelo CNPJ | 36 |
 | Unidade movel, sem polo geografico fixo | 1 |
+
+O passo 4 refinou esta classificacao: CIS/CEN estava entre as 45 redes por ter
+tres unidades, mas as tres sao vacimoveis. Para capacidade e tempo, ele se soma
+ao CIMES como segunda entidade composta somente por unidades moveis. Permanecem
+44 redes com ao menos uma unidade fixa e dois polos fixos unicos.
 | **Total** | **84** |
 
 Foram consultados os 100 CNPJs de matriz e filial das 84 entidades, sem falha
@@ -78,7 +83,7 @@ final de consulta, e retornaram 639 unidades vinculadas por mantenedora. O
 resultado nao significa que so duas entidades tenham capacidade assistencial:
 significa apenas que duas possuem **uma unica unidade fixa diretamente
 vinculada** e, portanto, admitem um polo sem nova regra. As outras 45 redes
-exigem uma regra de agregacao no passo 5; as 36 sem unidade CNES pelo CNPJ
+exigem uma regra de agregacao no passo 4; as 36 sem unidade CNES pelo CNPJ
 podem operar por contrato, convenio ou estabelecimento de terceiro, algo que
 esta consulta isolada nao resolve.
 
@@ -97,7 +102,7 @@ produz localmente:
   resultado;
 - `outputs/unidades_cnes_vinculadas_saude_mg.csv`: unidades encontradas com a
   ficha CNES correspondente quando existe polo unico; redes preservam a lista
-  de unidades e terao suas fichas examinadas no passo 5;
+  de unidades e terao suas fichas examinadas no passo 4;
 - `outputs/polos_atracao_saude_mg.csv`: uma linha por entidade consolidada,
   com sede, decisao de polo e proxima acao;
 - `checks/VALIDACAO_POLOS_ATRACAO_SAUDE_MG.md`: contagens e regras aplicadas.
@@ -119,5 +124,5 @@ O resultado e uma fotografia do CNES na data de execucao, e nao uma serie
 historica 2014--2021. A ficha detalhada e aberta neste passo apenas para
 entidades com uma unica unidade, pois ela resolve a localizacao do polo unico.
 As redes sao mantidas como listas de unidades e terao seus tipos, capacidade e
-forma de agregacao examinados no passo 5. Nenhum leito, especialidade ou
+forma de agregacao examinados no passo 4. Nenhum leito, especialidade ou
 producao e somado agora.

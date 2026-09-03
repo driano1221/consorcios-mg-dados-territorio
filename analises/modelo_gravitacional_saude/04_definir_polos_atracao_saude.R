@@ -433,7 +433,7 @@ polos <- universe |>
     ),
     proxima_acao = case_when(
       decisao_polo_atracao == "estabelecimento_cnes_unico" ~
-        "Extrair capacidade CNES desta unidade no passo 5.",
+        "Extrair capacidade CNES desta unidade no passo 4.",
       decisao_polo_atracao == "rede_vinculada_sem_polo_unico" ~
         "Manter unidades separadas; decidir agregacao da rede somente com vinculo e regra explicitos.",
       decisao_polo_atracao == "sede_administrativa_apenas_ancora_sensibilidade" ~

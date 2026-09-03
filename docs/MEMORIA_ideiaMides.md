@@ -760,3 +760,22 @@ Arquivos antigos continuam uteis como registro de processo, mas nao devem ser us
 - `docs/2026-05-14-registro-etapas-6-7-8.md`
 - `docs/2026-05-14-boas-praticas-slides-dataviz.md`
 - `slides/PROTOTIPO.md`
+
+## Capacidade Assistencial Direta CNES - 2026-09-03
+
+- O quarto bloco cientifico da trilha saude foi concluido fora do dashboard.
+- Foram consultados ficha, leitos, atendimento e profissionais para 639
+  unidades vinculadas diretamente aos CNPJs de matriz/filial: 366 fixas e 273
+  moveis/itinerantes, sem erro final de modulo.
+- Quarenta e seis entidades possuem capacidade fixa direta; 36 permanecem sem
+  unidade sob o proprio CNPJ e nao foram convertidas em zero; CIS/CEN e CIMES
+  possuem somente unidades moveis e ficam sem polo rodoviario fixo.
+- Todas as 46 entidades com oferta fixa possuem ao menos um CBO medico SUS
+  ativo. Apenas o ICISMEP possui leitos SUS diretamente registrados; portanto,
+  leitos nao serao usados como medida unica de atracao.
+- O modelo futuro testara separadamente unidades, CBOs medicos, atendimento
+  ambulatorial, SADT e leitos. Nao foi criado indice composto.
+- A coleta passou a suportar cache, faixas de coleta e recuperacao apenas dos
+  modulos com erro. Nomes e CNS de profissionais nao sao retidos.
+- Proximo passo: integrar tempo rodoviario ate unidades fixas documentadas e
+  auditar rede/prestador dos 36 casos sem unidade direta.

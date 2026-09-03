@@ -7,7 +7,9 @@ As sessões detalhadas estão em `docs/DIARIO_DE_TRABALHO.md`. Este arquivo regi
 - fechado o universo saúde–MG: 100 CNPJs em 84 entidades consolidadas, com MIDES, MUNIC e revisão documental preparados para o novo modelo;
 - definido o polo assistencial por consulta CNES para matriz e filiais, distinguindo estabelecimento fixo, rede, serviço móvel e sede administrativa de sensibilidade;
 - documentada a regra de não reduzir redes a uma sede antes da capacidade e da agregação explícita;
-- adicionados script reprocessável, teste automatizado e documentação do passo 3, sem alterar o dashboard nem estimar um novo modelo.
+- construída a capacidade assistencial direta para 639 unidades CNES, separando 366 fixas e 273 móveis, com recuperação seletiva de falhas e sem reter microdados nominais de profissionais;
+- identificadas 46 entidades com oferta fixa direta, 36 sem unidade sob o próprio CNPJ e duas compostas somente por unidades móveis; leitos SUS foram descartados como medida única por cobertura insuficiente;
+- adicionados scripts reprocessáveis, testes automatizados e documentação dos passos 3 e 4, sem alterar o dashboard nem estimar um novo modelo.
 
 ## 2026-08-20
 
