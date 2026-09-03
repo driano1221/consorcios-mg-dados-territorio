@@ -30,6 +30,23 @@ Rscript analises/modelo_gravitacional_saude/tests/01_validar_universo_saude_mg.R
 Os CSVs e RDS sao gravados em `outputs/`, mantido fora do Git. O relatorio
 auditavel fica em `checks/VALIDACAO_UNIVERSO_SAUDE_MG.md`.
 
+## Cotejamento MIDES X MUNIC Em 2019
+
+O segundo passo compara a uniao dos pares observados nas duas fontes depois da
+consolidacao matriz-filial:
+
+```powershell
+Rscript analises/modelo_gravitacional_saude/02_cotejar_mides_munic_saude_2019.R
+Rscript analises/modelo_gravitacional_saude/tests/02_validar_cotejamento_mides_munic_saude_2019.R
+```
+
+A documentacao existente no cadastro contextualiza a revisao, mas nao e
+interpretada como prova de composicao municipal especificamente em 2019 quando
+o documento nao possui referencia temporal explicita. Os resultados locais
+incluem tabela detalhada, resumo por entidade, divergencias e uma amostra de 50
+pares prioritarios. O relatorio auditavel fica em
+`checks/VALIDACAO_COTEJAMENTO_MIDES_MUNIC_SAUDE_2019.md`.
+
 ## Limite
 
 Este passo identifica e organiza o universo. A entrada definitiva de cada

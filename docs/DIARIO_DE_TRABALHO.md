@@ -695,3 +695,34 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Teste automatizado aprovado para 100 estabelecimentos, 84 entidades, 66 observadas e conservacao integral dos valores.
 - Amostra aleatoria de entidades e os sete alertas foram inspecionados manualmente.
 - O dashboard e os modelos existentes nao foram alterados.
+
+---
+
+## 2026-09-03 - Cotejamento MIDES X MUNIC De Saude Em 2019
+
+### Entregas
+
+- Criado `02_cotejar_mides_munic_saude_2019.R` na pasta analitica separada do
+  dashboard.
+- Consolidada a Base 1 de 2019 por municipio e raiz de CNPJ antes de comparar
+  pagamento MIDES e declaracao MUNIC.
+- Geradas tabela detalhada, resumo por entidade, divergencias e amostra
+  prioritaria de 50 pares para revisao documental.
+- Criado teste automatizado com verificacao de chaves, contagens, conservacao
+  financeira, subtotais e proporcoes.
+
+### Resultados
+
+- 1.311 pares na uniao: 630 MIDES+MUNIC, 658 somente MIDES e 23 somente MUNIC.
+- 96,5% dos pares MUNIC aparecem no MIDES; 48,9% dos pares MIDES aparecem na
+  MUNIC.
+- R$ 379,1 milhoes observados no MIDES; 71,3% em pares comuns as duas fontes.
+- 61 entidades possuem ao menos um municipio coincidente; quatro aparecem em
+  apenas uma fonte e uma aparece nas duas sem municipio coincidente.
+
+### Validacao
+
+- Corrigidos durante os testes um valor monetario preliminar arredondado e o
+  calculo sequencial dos subtotais no `summarise`.
+- Testes finais aprovados e subtotais reconciliados com a Base 1.
+- Dashboard e modelos existentes permaneceram intocados.

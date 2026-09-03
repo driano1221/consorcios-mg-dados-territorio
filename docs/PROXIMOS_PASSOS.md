@@ -340,3 +340,19 @@ Primeiro output sugerido:
 - `docs/2026-06-10-pesquisa-recortes-territoriais.md`: pesquisa de viabilidade dos recortes territoriais.
 - `analises/base_1_2015_2019/METODOLOGIA.md`: metodologia da Base 1.
 - `dashboards/base1_shiny/app.R`: codigo do dashboard.
+
+---
+
+## Modelo Gravitacional De Saude - Estado Em 03/09/2026
+
+1. **Universo de consorcios de saude em MG:** concluido e testado.
+2. **Cotejamento MIDES x MUNIC em 2019:** concluido tecnicamente em
+   `analises/modelo_gravitacional_saude/`.
+3. **Revisao documental das divergencias:** proxima etapa. Priorizar os 23
+   pares somente MUNIC e os 27 maiores pagamentos somente MIDES da amostra
+   reprodutivel; nao classificar divergencia como erro automaticamente.
+4. **Definir polo assistencial e capacidade de atracao:** pendente depois da
+   revisao das fontes. Confirmar sede operacional, hospital de referencia,
+   leitos e especialidades antes de calcular tempo de viagem.
+5. **Modelo novo:** ainda nao estimado. Dashboard permanece inalterado ate a
+   validacao da base analitica.

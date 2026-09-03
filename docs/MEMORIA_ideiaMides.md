@@ -685,6 +685,26 @@ Leitura da procedencia e confianca da v0.2:
 - Cinco raizes possuem mais de um CNPJ observado no MIDES e 21 chaves municipio-ano exigem soma de pagamentos entre estabelecimentos da mesma raiz.
 - Codigo, testes e relatorio: `analises/modelo_gravitacional_saude/`.
 
+## Cotejamento MIDES X MUNIC De Saude Em 2019 - 2026-09-03
+
+- A comparacao foi feita por `municipio x entidade consolidada` em 2019,
+  reunindo matriz e filiais antes do confronto das fontes.
+- A uniao possui 1.311 pares: 630 MIDES+MUNIC, 658 somente MIDES e 23 somente
+  MUNIC, distribuidos por 819 municipios e 66 entidades com alguma evidencia.
+- Dos 653 pares declarados na MUNIC, 630 (96,5%) tambem possuem pagamento
+  MIDES. Em sentido inverso, a MUNIC cobre 48,9% dos 1.288 pares MIDES.
+- O valor MIDES total foi R$ 379,1 milhoes; 71,3% ocorreu em pares presentes
+  nas duas fontes e 28,7% em pares somente MIDES.
+- Em nivel de entidade, 61 possuem municipios em comum nas duas fontes, tres
+  aparecem somente no MIDES, uma somente na MUNIC, uma nas duas fontes sem
+  municipio coincidente e 18 nao aparecem em nenhuma delas em 2019.
+- Os documentos do cadastro foram mantidos como apoio nao temporal: eles nao
+  provam composicao municipal em 2019 sem data explicita.
+- Foi criada amostra reprodutivel com os 23 casos somente MUNIC e os 27 maiores
+  valores somente MIDES para a proxima revisao documental.
+- Nenhum resultado foi integrado ao dashboard e nenhum modelo novo foi
+  estimado.
+
 ## Documentos Historicos
 
 Arquivos antigos continuam uteis como registro de processo, mas nao devem ser usados como estado atual:
