@@ -19,6 +19,7 @@ Projeto de pesquisa para organizar, auditar e analisar evidências sobre consór
 | Metodologia da Base 1 | [`analises/base_1_2015_2019/METODOLOGIA.md`](analises/base_1_2015_2019/METODOLOGIA.md) |
 | Movimentos espaciais | [`analises/movimentos_espaciais/README.md`](analises/movimentos_espaciais/README.md) |
 | Base nacional consolidada | [`analises/base_nacional/README.md`](analises/base_nacional/README.md) |
+| Modelo gravitacional de saúde | [`analises/modelo_gravitacional_saude/README.md`](analises/modelo_gravitacional_saude/README.md) |
 | Classificação de políticas | [`docs/METODOLOGIA_CLASSIFICACAO_ATUAL.md`](docs/METODOLOGIA_CLASSIFICACAO_ATUAL.md) |
 | Diário técnico | [`docs/DIARIO_DE_TRABALHO.md`](docs/DIARIO_DE_TRABALHO.md) |
 
@@ -96,7 +97,8 @@ consorcios-mg-dados-territorio/
 |   |-- base_1_2015_2019/        # Recorte comparável e validação SICONFI
 |   |-- classificacao_politicas/ # Taxonomia, auditorias e decisões versionadas
 |   |-- movimentos_espaciais/    # Painel anual, vizinhança e modelos de risco
-|   `-- base_nacional/            # Identidade CNPJ e MIDES nacional consolidado
+|   |-- base_nacional/            # Identidade CNPJ e MIDES nacional consolidado
+|   `-- modelo_gravitacional_saude/ # Preparação e validação do recorte saúde-MG
 |-- dashboards/base1_shiny/      # Aplicação, documentação incorporada e testes
 |-- docs/                         # Memória, atas, diário e decisões metodológicas
 |-- scripts/                      # Pipeline histórico do painel universal MG
@@ -141,6 +143,7 @@ Rscript dashboards/base1_shiny/tests/test_trajetoria_longitudinal.R
 
 Rscript analises/base_nacional/tests/01_validar_identidade_cnpj.R
 Rscript analises/base_nacional/tests/02_validar_mides_nacional.R
+Rscript analises/modelo_gravitacional_saude/tests/01_validar_universo_saude_mg.R
 
 Push-Location dashboards/base1_shiny
 Rscript tests/test_documentacao_movimentos.R

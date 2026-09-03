@@ -1,6 +1,6 @@
 # Proximos Passos - Consorcios MG: Dados e Territorio
 
-**Atualizado em:** 2026-08-27
+**Atualizado em:** 2026-09-03
 **Uso:** roteiro curto do estado atual, decisoes pendentes e proximas entregas possiveis.
 
 > **Prioridade em 27/08/2026:** validar o piloto CNM x MIDES em MG e, depois, iniciar regionalizacao da saude. As pendencias tecnicas anteriores permanecem preservadas em segundo plano.
@@ -11,7 +11,7 @@
 
 ### Modelo gravitacional de saude - proxima sequencia
 
-1. validar o universo saude-MG, a identidade CNPJ e os pagamentos MIDES;
+1. **concluido em 03/09:** validar o universo saude-MG, a identidade CNPJ e os pagamentos MIDES;
 2. confrontar MIDES 2019 com MUNIC 2019 e evidencias documentais;
 3. definir o polo assistencial e a medida de capacidade de atracao;
 4. integrar tempo rodoviario e dados CNES;
@@ -19,6 +19,8 @@
 6. executar EDA e validacao antes de estimar ou publicar resultados.
 
 Pontos ainda nao decididos: denominador do valor pago, forma da sobrevivencia, conjunto de alternativas e tratamento da censura dos pares presentes em 2014.
+
+**Resultado do passo 1:** 100 estabelecimentos classificados em saude foram consolidados em 84 entidades. Ha 66 entidades com pagamento MIDES em MG, das quais 64 formam o nucleo setorial observado e duas ficam em sensibilidade multiarea. A consolidacao incorporou 16 filiais em 11 raizes. Sete entidades possuem alerta de escopo, situacao temporal ou consistencia de macrogrupo; nenhuma classificacao de saude esta marcada como documentalmente pendente.
 
 ---
 

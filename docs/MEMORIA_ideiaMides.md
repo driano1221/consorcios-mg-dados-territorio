@@ -1,7 +1,7 @@
 # Memoria - Projeto Consorcios MG: Dados e Territorio
 
-**Ultima atualizacao:** 2026-08-27
-**Status:** frentes 1 a 8 entregues em nivel exploratorio; identidade nacional matriz/filial materializada, validada e integrada em uma visao Brasil separada no dashboard. As pendencias tecnicas foram preservadas em espera ate a priorizacao das novas demandas.
+**Ultima atualizacao:** 2026-09-03
+**Status:** universo de consorcios de saude em MG fechado em camadas cadastral, MIDES observada e setorial preliminar; proxima etapa e o confronto MIDES 2019 x MUNIC 2019 e a revisao documental dirigida.
 
 ---
 
@@ -673,6 +673,17 @@ Leitura da procedencia e confianca da v0.2:
 - Entrada/presenca financeira e continuidade do vinculo serao estudadas separadamente.
 - Permanecem abertas a medida do valor, a forma da sobrevivencia, a definicao do polo/capacidade e o conjunto de alternativas.
 - Nenhum modelo novo foi estimado; a reuniao alterou o planejamento metodologico, nao os resultados existentes.
+
+## Universo De Consorcios De Saude Em MG - 2026-09-03
+
+- A classificacao v0.5 identificou 100 estabelecimentos CNPJ com area explicita `saude`, `urgencia_emergencia` ou `vigilancia_em_saude`.
+- A identidade por raiz de oito digitos consolidou esses estabelecimentos em 84 entidades, incorporando 16 filiais em 11 raizes.
+- Sessenta e seis entidades possuem pagamento positivo observado no MIDES MG entre 2014 e 2021.
+- O nucleo setorial preliminar possui 64 entidades; CISREC e Consorcio Conviver entram separadamente como sensibilidade multiarea observada.
+- A situacao atual das matrizes e: 67 ativas, 13 inaptas e quatro baixadas. Situacao atual nao foi retroagida para interpretar os anos do MIDES.
+- Sete entidades foram separadas para revisao de escopo, situacao temporal ou consistencia do macrogrupo; nenhuma classificacao de saude esta marcada como documentalmente pendente.
+- Cinco raizes possuem mais de um CNPJ observado no MIDES e 21 chaves municipio-ano exigem soma de pagamentos entre estabelecimentos da mesma raiz.
+- Codigo, testes e relatorio: `analises/modelo_gravitacional_saude/`.
 
 ## Documentos Historicos
 

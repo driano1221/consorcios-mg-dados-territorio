@@ -669,3 +669,29 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
 - Consolidado o novo recorte: MG, saude, MIDES e unidade municipio-consorcio-ano.
 - Separadas decisoes confirmadas de hipoteses ainda abertas sobre valor pago, capacidade assistencial e sobrevivencia.
 - Nenhuma base, estimativa ou tela do dashboard foi alterada.
+
+---
+
+## 2026-09-03 - Fechamento Do Universo De Saude Em MG
+
+### Entregas
+
+- Criada a rotina reprocessavel `analises/modelo_gravitacional_saude/01_fechar_universo_saude_mg.R`.
+- Listados os CNPJs classificados em saude, urgencia e vigilancia; matriz e filiais foram consolidadas pela identidade nacional ja validada.
+- Geradas camadas por estabelecimento, entidade canonica, casos para revisao e resumo de indicadores.
+- Criados relatorio metodologico e teste automatizado de contagens, identidade e conservacao financeira.
+
+### Resultados
+
+- 100 estabelecimentos de saude correspondem a 84 entidades consolidadas.
+- 16 filiais foram incorporadas em 11 raizes; 67 matrizes estao ativas, 13 inaptas e quatro baixadas.
+- 66 entidades aparecem no MIDES MG: 64 no nucleo setorial preliminar e duas na sensibilidade multiarea.
+- 18 entidades nao aparecem no MIDES; duas foram abertas depois do encerramento da serie.
+- Sete entidades foram sinalizadas para revisao de escopo, situacao temporal ou macrogrupo; nenhuma possui classificacao documental pendente.
+- Cinco raizes usam mais de um CNPJ no MIDES e 21 chaves municipio-ano exigem soma matriz-filial.
+
+### Validacao
+
+- Teste automatizado aprovado para 100 estabelecimentos, 84 entidades, 66 observadas e conservacao integral dos valores.
+- Amostra aleatoria de entidades e os sete alertas foram inspecionados manualmente.
+- O dashboard e os modelos existentes nao foram alterados.

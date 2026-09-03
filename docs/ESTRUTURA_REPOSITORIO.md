@@ -32,6 +32,7 @@ Essas regras estao em `.gitignore`.
 | `scripts/` | Pipeline historico do painel universal MG | Preservar como legado reprodutivel |
 | `analises/base_1_2015_2019/` | Recorte comparavel e validacao SICONFI | Usar para Base 1; nao substitui painel universal |
 | `analises/classificacao_politicas/` | Taxonomia e auditoria setorial | v0.5 e camada analitica atual |
+| `analises/modelo_gravitacional_saude/` | Preparacao separada do recorte saude-MG | Manter scripts, testes e relatorios fora do dashboard ate validacao final |
 | `dashboards/base1_shiny/` | Aplicacao publicada | Nao mover `app.R` ou `data/` sem atualizar deploy |
 | `docs/` | Fonte de verdade para decisoes e memoria | Atualizar ao concluir frente relevante |
 | `dados/` e `outputs/` | Insumos e resultados locais | Nao versionar arquivos pesados |
