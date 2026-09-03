@@ -145,6 +145,16 @@ Dos 653 pares declarados na MUNIC, 630 (96,5%) tambem possuem pagamento
 MIDES. Em sentido inverso, a MUNIC cobre 48,9% dos 1.288 pares MIDES. O valor
 MIDES da uniao e R$ 379,1 milhoes; 71,3% esta nos pares comuns as duas fontes.
 
+As duas coberturas respondem a denominadores diferentes:
+
+$$
+\frac{630\ \text{pares comuns}}{653\ \text{pares MUNIC}} = 96{,}5\%
+$$
+
+$$
+\frac{630\ \text{pares comuns}}{1\,288\ \text{pares MIDES}} = 48{,}9\%
+$$
+
 ### Exemplos Reais
 
 | Par | Evidencia | Como fica depois da auditoria |
@@ -346,6 +356,16 @@ capacidade historica.
 
 ### Por Que Leitos SUS Nao Podem Ser A Massa Unica
 
+Na formulacao gravitacional simplificada, a atracao da entidade $j$ sobre o
+municipio $i$ pode ser representada por:
+
+$$
+A_{ij} \propto M_j\,f(t_{ij}),
+$$
+
+em que $M_j$ e a massa assistencial da entidade e $f(t_{ij})$ diminui com o
+tempo rodoviario entre o municipio e a oferta.
+
 Na fotografia atual, 45 das 46 entidades com oferta fixa direta possuem zero
 leito SUS sob o proprio CNPJ. Isso nao significa ausencia de servico: clinicas
 especializadas podem ter profissionais, atendimento ambulatorial e SADT sem
@@ -358,9 +378,15 @@ internacao.
 | CISVER | 0 | uma unidade fixa e 33 CBOs medicos somados | rede seria tratada como sem oferta |
 | CISMEP | 32 | duas unidades fixas e 22 CBOs medicos somados | seria a unica entidade com massa positiva |
 
-Usar `log(1 + leitos_SUS)` evita o logaritmo de zero, mas nao corrige a falta
-de informacao. Os 36 casos sem unidade direta tambem nao possuem capacidade
-zero: possuem capacidade nao observada nesta etapa (`NA`).
+Usar
+
+$$
+\log\left(1 + L^{SUS}_j\right)
+$$
+
+evita o logaritmo de zero, mas nao corrige a falta de informacao. Os 36 casos
+sem unidade direta tambem nao possuem capacidade zero: possuem capacidade nao
+observada nesta etapa (`NA`).
 
 ---
 
@@ -420,6 +446,17 @@ flowchart LR
    resumos de sensibilidade para redes com varios destinos.
 6. Ausencia de unidade fixa recebe `NA`, nunca zero.
 
+Para uma entidade $j$ com conjunto de unidades fixas $U_j$, os resumos sao:
+
+$$
+t^{\min}_{ij}=\min_{u\in U_j}t_{iu}, \qquad
+t^{\mathrm{med}}_{ij}=\operatorname{mediana}_{u\in U_j}(t_{iu}), \qquad
+t^{\max}_{ij}=\max_{u\in U_j}t_{iu}.
+$$
+
+Esses tres valores descrevem a dispersao territorial da rede; nenhum deles e
+automaticamente a impedancia definitiva do modelo.
+
 ### Resultado
 
 | Produto | Unidade da linha | Linhas |
@@ -461,7 +498,9 @@ moveis permanecem com tempo ausente.
 Transformar pagamentos MIDES, identidade matriz-filial, capacidade CNES e
 tempo rodoviario em uma base longitudinal com unidade:
 
-`municipio i x entidade consolidada j x ano t`.
+$$
+\text{observacao}_{ijt}=\text{municipio}_i\times\text{entidade}_j\times\text{ano}_t.
+$$
 
 O painel prepara a EDA e os modelos. Ele nao afirma que todas as 84 entidades
 eram escolhas reais para todos os municipios.
@@ -493,16 +532,20 @@ flowchart LR
 
 ### Regra Temporal
 
-Seja `P_ijt = 1` quando existe valor MIDES positivo do municipio `i` para a
-entidade `j` no ano `t`.
+Seja $V_{ijt}$ o valor MIDES do municipio $i$ para a entidade $j$ no ano $t$.
+A presenca financeira e definida por:
+
+$$
+P_{ijt}=\mathbb{1}\!\left(V_{ijt}>0\right).
+$$
 
 | Condicao | Evento | Leitura |
 |---|---|---|
-| 2014 e `P_ijt = 1` | estoque inicial | havia pagamento no inicio da janela; a entrada real e desconhecida |
-| `P_ijt = 1` e `P_ij,t-1 = 1` | permanencia | pagamento positivo consecutivo |
-| `P_ijt = 1`, anterior zero e nunca houve pagamento | primeiro pagamento | primeira aparicao financeira observada |
-| `P_ijt = 1`, anterior zero e ja houve pagamento | retorno | pagamento reaparece apos ausencia |
-| `P_ijt = 0` e `P_ij,t-1 = 1` | interrupcao | deixa de haver pagamento positivo |
+| $t=2014$ e $P_{ijt}=1$ | estoque inicial | havia pagamento no inicio da janela; a entrada real e desconhecida |
+| $P_{ijt}=1$ e $P_{ij,t-1}=1$ | permanencia | pagamento positivo consecutivo |
+| $P_{ijt}=1$, $P_{ij,t-1}=0$ e nunca houve pagamento | primeiro pagamento | primeira aparicao financeira observada |
+| $P_{ijt}=1$, $P_{ij,t-1}=0$ e ja houve pagamento | retorno | pagamento reaparece apos ausencia |
+| $P_{ijt}=0$ e $P_{ij,t-1}=1$ | interrupcao | deixa de haver pagamento positivo |
 | demais casos | ausencia | sem pagamento positivo |
 
 Esses eventos descrevem pagamentos. Nao provam adesao, desligamento ou retorno
@@ -513,6 +556,12 @@ juridico.
 Quando um municipio paga para matriz e filial da mesma raiz no mesmo ano, os
 valores sao somados em uma linha da entidade e os CNPJs originais permanecem
 registrados. Isso ocorreu em 21 combinacoes municipio-entidade-ano.
+
+Se $C_j$ e o conjunto de CNPJs pertencentes a entidade consolidada $j$, entao:
+
+$$
+V_{ijt}=\sum_{c\in C_j}V_{ict}.
+$$
 
 ### Resultados Validados
 
@@ -530,6 +579,13 @@ registrados. Isso ocorreu em 21 combinacoes municipio-entidade-ano.
 | pares com mais de uma transicao | 329 |
 | valor financeiro preservado | R$ 3.101.980.422,83 |
 
+A dimensao da grade completa decorre diretamente de:
+
+$$
+853\ \text{municipios}\times84\ \text{entidades}\times8\ \text{anos}
+=573\,216\ \text{observacoes}.
+$$
+
 Dos 853 municipios, 843 possuem alguma linha MIDES de saude. Os dez restantes
 continuam na grade com zeros para evitar selecionar o universo pela resposta.
 
@@ -546,9 +602,9 @@ continuam na grade com zeros para evitar selecionar o universo pela resposta.
 
 | Bloco futuro | Marcador atual | Pendencia |
 |---|---|---|
-| primeiro pagamento | sem pagamento anterior e entidade ativa em `t-1` | limitar alternativas territoriais |
-| entrada ou retorno | ausente em `t-1` e entidade ativa em `t-1` | decidir se retorno sera separado |
-| interrupcao | pagamento em `t-1` | definir sobrevivencia e censura |
+| primeiro pagamento | sem pagamento anterior e entidade ativa em $t-1$ | limitar alternativas territoriais |
+| entrada ou retorno | ausente em $t-1$ e entidade ativa em $t-1$ | decidir se retorno sera separado |
+| interrupcao | pagamento em $t-1$ | definir sobrevivencia e censura |
 | intensidade | pagamento positivo em `t` | escolher deflacao e normalizacao |
 
 O universo estadual e apenas um limite superior. Oferecer todos os consorcios
