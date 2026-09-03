@@ -729,6 +729,10 @@ Leitura da procedencia e confianca da v0.2:
   corroboracao posterior; estabilidade entre ambos sera criterio de robustez.
 - A revisao humana tambem nao encontrou evidencia de `Sao Miguel do Anta x
   SIMSAUDE`; o par permanece divergente e nao confirmado.
+- A CNM foi atualizada e o piloto CNM x MIDES MG ja existe, mas o marcador de
+  fotografia atual ainda nao foi incluido na tabela especifica de saude de
+  2019. Essa integracao e complementar e nao deve ser interpretada como prova
+  historica nem bloquear a definicao do polo assistencial.
 - Proximo passo metodologico: definir o polo assistencial e a medida de
   capacidade de atracao antes de integrar CNES e tempo rodoviario.
 

@@ -2,119 +2,200 @@
 
 ## Objetivo
 
-Preparar e validar o universo de consorcios de saude em Minas Gerais antes de
-construir as variaveis gravitacionais e estimar novos modelos.
+Preparar uma base defensavel para o futuro modelo gravitacional de consorcios
+de saude em Minas Gerais. Antes de estimar distancia, capacidade assistencial
+ou probabilidade de entrada, foi necessario responder duas perguntas simples:
 
-## Passo 1 - Fechar O Universo De Saude
+1. quais instituicoes de saude existem no universo analitico?
+2. que tipo de evidencia existe para cada vinculo municipio-consorcio em 2019?
 
-**Bases usadas**
+O MIDES continua significando **pagamento observado** e a MUNIC,
+**participacao declarada**. Nenhuma das duas fontes e alterada por esta
+preparacao.
 
-- classificacao de areas de politica publica v0.5;
-- crosswalk nacional de matriz e filiais;
-- painel anual MIDES de Minas Gerais, 2014-2021.
+## Situacao Dos Passos
 
-**Pipeline**
+| Passo | Situacao | Produto principal |
+|---|---|---|
+| 1. Fechar o universo de saude | Concluido | 84 entidades consolidadas e auditadas |
+| 2a. Comparar MIDES, MUNIC e documentos | Concluido | 1.311 pares em 2019 e revisao de 50 divergencias |
+| 2b. Usar CNM como fotografia atual no recorte saude | Disponivel, mas ainda nao materializado na tabela de saude | Snapshot CNM de 27/08 e piloto CNM x MIDES ja existem em outra frente |
 
-```text
-Classificacao v0.5
-  -> selecionar saude, urgencia/emergencia e vigilancia em saude
-  -> vincular cada CNPJ ao crosswalk matriz-filial
-  -> consolidar estabelecimentos pela raiz de oito digitos
-  -> preservar CNPJs originais e definir o CNPJ canonico da matriz
-  -> verificar situacao cadastral e pagamentos positivos no MIDES
-  -> separar nucleo setorial e sensibilidade multiarea
+O item 2b nao bloqueia a proxima etapa: a CNM e uma fotografia atual e nao
+prova a composicao em 2019. Caso seja integrada, ela entrara como marcador
+descritivo separado, nunca como evidencia historica retroativa.
+
+---
+
+## Passo 1 - Fechar O Universo De Consorcios De Saude
+
+### Em Que Consistiu
+
+Transformar CNPJs classificados como saude em entidades analiticas unicas,
+preservando matriz, filiais, situacao cadastral e evidencia de pagamento no
+MIDES.
+
+### Antes
+
+- havia CNPJs individuais com classificacao de saude, urgencia/emergencia ou
+  vigilancia em saude;
+- uma mesma instituicao podia aparecer como matriz e filiais;
+- ainda nao se sabia quais entidades efetivamente recebiam pagamentos de
+  municipios mineiros entre 2014 e 2021;
+- situacao cadastral atual, escopo setorial e uso no MIDES nao estavam juntos
+  em uma unica camada.
+
+### Pipeline
+
+```mermaid
+flowchart LR
+    A["Classificacao v0.5"] --> B["Selecionar saude, urgencia e vigilancia"]
+    B --> C["Padronizar CNPJ"]
+    C --> D["Aplicar raiz de 8 digitos<br/>e matriz 0001"]
+    D --> E["Consolidar matriz e filiais<br/>em uma entidade"]
+    E --> F["Cruzar situacao cadastral<br/>e MIDES MG 2014-2021"]
+    F --> G["Separar nucleo setorial,<br/>sensibilidade multiarea e alertas"]
 ```
 
-**Resultados**
+### Depois
 
-- 100 estabelecimentos classificados em saude;
-- 84 entidades depois da consolidacao;
-- 16 filiais incorporadas em 11 raizes;
-- 66 entidades com pagamento MIDES observado;
-- 64 no nucleo setorial preliminar e duas na sensibilidade multiarea;
-- cinco raizes com mais de um CNPJ no MIDES e 21 chaves municipio-ano que
-  exigem soma entre estabelecimentos.
+| Antes | Depois |
+|---|---|
+| CNPJ isolado | Entidade consolidada pela raiz de oito digitos |
+| Filial podia parecer outro consorcio | Filial e matriz sao somadas, com CNPJs originais preservados |
+| Pagamentos dispersos | Presenca MIDES identificada por entidade e ano |
+| Situacao cadastral sem contexto temporal | Situacao atual preservada, sem retroagir seu significado aos anos do MIDES |
 
-## Passo 2 - Cotejar MIDES E MUNIC Em 2019
+**Resultados:** 100 estabelecimentos classificados em saude formaram 84
+entidades consolidadas. Foram incorporadas 16 filiais em 11 raizes. Sessenta e
+seis entidades aparecem no MIDES MG; 64 formam o nucleo setorial preliminar e
+duas ficam em sensibilidade multiarea. Sete entidades foram marcadas para
+revisao de escopo, situacao temporal ou macrogrupo.
 
-**Bases usadas**
+### Exemplo Real
 
-- Base 1 de vinculos MIDES-MUNIC de 2015 e 2019;
-- universo consolidado produzido no passo 1;
-- indicadores documentais do cadastro IPEA, usados apenas como contexto.
+O CISMEP possui CNPJs com a mesma raiz `05802877`. Em vez de interpretar cada
+estabelecimento como um consorcio independente, a rotina os trata como uma
+entidade. Os CNPJs originais continuam disponiveis para auditoria; pagamentos
+do mesmo municipio no mesmo ano sao somados antes de qualquer analise.
 
-**Pipeline**
+### O Que O Passo 1 Resolveu E O Que Nao Resolveu
 
-```text
-Base 1 em 2019
-  -> manter somente os CNPJs do universo de saude
-  -> consolidar matriz e filiais por municipio e raiz de CNPJ
-  -> marcar pagamento positivo no MIDES e declaracao na MUNIC
-  -> classificar: MIDES+MUNIC, somente MIDES ou somente MUNIC
-  -> resumir por entidade e selecionar divergencias para revisao
+Resolveu o universo tecnico para MG: quais entidades de saude entram, quais
+filiais pertencem a qual matriz e quais aparecem no MIDES. Nao afirmou que
+todo pagamento prova adesao juridica, nem escolheu ainda qual hospital ou sede
+representara a capacidade de atracao de cada consorcio.
+
+---
+
+## Passo 2 - Auditar Os Vinculos Municipio-Consorcio Em 2019
+
+### Em Que Consistiu
+
+Comparar, para cada par `municipio x entidade consolidada`, o pagamento
+observado no MIDES e a declaracao de participacao na MUNIC. Em seguida,
+qualificar documentalmente as divergencias prioritarias sem reescrever as
+fontes originais.
+
+### Antes
+
+- MIDES e MUNIC podiam aparentar discordancia porque usavam CNPJs distintos de
+  matriz e filial;
+- nao havia uma tabela unica que mostrasse, por par, pagamento, declaracao e
+  valor financeiro;
+- uma divergencia podia ser erro, mudanca temporal, prestacao de servico ou
+  ausencia de documentacao; todas essas possibilidades estavam misturadas.
+
+### Pipeline
+
+```mermaid
+flowchart LR
+    A["MIDES 2019<br/>pagamento positivo"] --> C["Restringir ao universo<br/>de saude do passo 1"]
+    B["MUNIC 2019<br/>participacao declarada"] --> C
+    C --> D["Consolidar CNPJs<br/>por municipio e raiz"]
+    D --> E["Classificar cada par:<br/>MIDES+MUNIC, somente MIDES<br/>ou somente MUNIC"]
+    E --> F["Selecionar 50 divergencias<br/>prioritarias"]
+    F --> G["Pesquisar documentos<br/>e registrar fonte e ano"]
+    G --> H["Definir cenario estrito<br/>e ampliado de sensibilidade"]
+    I["CNM: fotografia atual"] -. "contexto; nao retroage 2019" .-> H
 ```
 
-**Resultados**
+### Depois
 
-- 1.311 pares municipio-entidade na uniao das fontes;
-- 630 pares MIDES+MUNIC, 658 somente MIDES e 23 somente MUNIC;
-- 96,5% dos pares MUNIC tambem aparecem no MIDES;
-- a MUNIC cobre 48,9% dos pares MIDES;
-- R$ 379,1 milhoes no MIDES, com 71,3% em pares presentes nas duas fontes;
-- amostra prioritaria de 50 divergencias: os 23 pares somente MUNIC e os 27
-  maiores pagamentos somente MIDES.
+| Resultado do par | Quantidade | Leitura correta |
+|---|---:|---|
+| MIDES + MUNIC | 630 | Pagamento e declaracao coincidem em 2019 |
+| Somente MIDES | 658 | Pagamento observado, sem declaracao MUNIC no par |
+| Somente MUNIC | 23 | Declaracao MUNIC, sem pagamento MIDES positivo no par |
+| Uniao | 1.311 | Total de pares com pelo menos uma das duas evidencias |
 
-**Revisao documental da amostra**
+Dos 653 pares declarados na MUNIC, 630 (96,5%) tambem possuem pagamento
+MIDES. Em sentido inverso, a MUNIC cobre 48,9% dos 1.288 pares MIDES. O valor
+MIDES da uniao e R$ 379,1 milhoes; 71,3% esta nos pares comuns as duas fontes.
 
-As 50 divergencias prioritarias foram pesquisadas em fontes oficiais ou
-institucionais e classificadas por cobertura temporal e forca da evidencia.
-O resultado preserva uma diferenca essencial: documento posterior a 2019
-corrobora a plausibilidade do vinculo, mas nao reconstitui automaticamente a
-composicao naquele ano. Pagamento no MIDES tambem nao foi convertido em prova
-de filiacao.
+### Exemplos Reais
 
-**Resultados da revisao**
+| Par | Evidencia | Como fica depois da auditoria |
+|---|---|---|
+| `Itabira x CIAS` | MUNIC em 2019 e documento oficial de 2016 | Vinculo historicamente sustentado; ausencia em lista atual parece mudanca temporal, nao erro automatico |
+| `Juiz de Fora x ACISPES` | MIDES positivo; ACISPES diferencia consorciados de cidades atendidas | Mantem pagamento financeiro, mas nao vira filiacao juridica confirmada |
+| `Sao Miguel do Anta x SIMSAUDE` | MUNIC em 2019; nenhuma corroboracao localizada, nem na revisao humana | Permanece divergente e nao confirmado |
+| `Para de Minas x CISMEP` | MIDES e fonte oficial posterior | Pagamento permanece no modelo financeiro; vinculo institucional entra apenas no cenario ampliado |
 
-- 14 pares possuem evidencia anterior ou contemporanea a 2019;
-- 33 pares foram corroborados somente por fonte posterior;
-- um par e historicamente compativel, mas sem prova anual exata;
-- `Juiz de Fora x ACISPES` indica relacao financeira ou assistencial sem
-  filiacao comprovada;
-- `Sao Miguel do Anta x SIMSAUDE` nao foi corroborado nem na pesquisa tecnica
-  nem na revisao humana e permanece como divergencia nao confirmada.
+### Revisao Documental
 
-**Decisoes validadas**
+A amostra incluiu todos os 23 pares somente MUNIC e os 27 maiores valores
+somente MIDES. Cada caso recebeu URL, ano, cobertura temporal, grau de
+evidencia e decisao analitica no catalogo versionado.
 
-1. Pagamento MIDES e um forte indicio de relacao real com o consorcio e pode,
-   em muitos casos, acompanhar a filiacao. Mesmo assim, nao e prova juridica
-   suficiente: o municipio pode apenas comprar servicos ou transferir recursos.
-2. Os 33 pares corroborados apenas depois de 2019 nao serao rotulados como
-   filiacao confirmada em 2019. Eles permanecem no modelo financeiro quando
-   houver pagamento MIDES e entram em um cenario ampliado de sensibilidade
-   quando a analise exigir vinculo institucional.
-3. A sensibilidade compara pelo menos dois cenarios: `estrito`, com evidencia
-   temporal compativel com 2019, e `ampliado`, incluindo corroboracao oficial
-   posterior. Resultado semelhante entre os cenarios indica robustez; mudanca
-   relevante de sinal, magnitude ou incerteza exige interpretacao cautelosa.
-4. `Sao Miguel do Anta x SIMSAUDE` nao sera promovido a vinculo confirmado sem
-   nova evidencia documental. O registro MUNIC e preservado como fonte
-   original e como caso divergente.
+| Resultado documental | Pares | Tratamento |
+|---|---:|---|
+| Evidencia anterior ou igual a 2019 | 14 | Pode sustentar vinculo historico no cenario estrito |
+| Corroboracao apenas posterior | 33 | Mantem-se como plausivel; entra somente no cenario ampliado |
+| Historicamente compativel | 1 | Mantem-se com ressalva temporal |
+| Relacao financeira sem filiacao comprovada | 1 | Nao converter pagamento em adesao juridica |
+| Nao corroborado com indicio alternativo | 1 | Revisao humana prioritaria; nao promover a vinculo confirmado |
 
-## Fontes E Limites
+### Sensibilidade: O Que Muda Na Pratica
 
-Os produtos principais dos dois passos foram executados com bases locais ja
-processadas e auditadas no projeto. A qualificacao da amostra divergente usou
-pesquisa documental na internet e preserva em catalogo a URL, o ano e a
-interpretacao de cada fonte. MIDES significa pagamento observado, enquanto
-MUNIC significa participacao declarada. Divergencia entre as fontes nao e
-tratada automaticamente como erro. Documentos sem referencia temporal
-compativel nao comprovam a composicao municipal de 2019.
+| Cenario | O que conta como vinculo institucional | Uso |
+|---|---|---|
+| Estrito | Documento compativel com 2019 | Resultado principal quando a pergunta exigir filiacao |
+| Ampliado | Estrito + fonte oficial posterior | Verificar se a conclusao depende de composicoes que podem ter mudado no tempo |
 
-A amostra dos 27 maiores pagamentos somente MIDES apresentou ampla
-corroboracao de alguma relacao institucional ou assistencial, mas ela foi
-selecionada por valor e nao permite estimar que uma porcentagem fixa dos
-pagamentos MIDES represente filiacao no universo completo.
+Exemplo hipotetico: se o efeito estimado do tempo de viagem for semelhante no
+cenario estrito e no ampliado, a conclusao e robusta a essa incerteza. Se o
+sinal ou a magnitude mudar muito, a filiacao temporal precisa ser tratada como
+parte central da limitacao. O modelo financeiro MIDES nao exclui pagamentos
+apenas porque falta prova juridica: ele mede pagamentos observados.
 
-Scripts, testes e relatorios auditaveis estao neste mesmo diretorio. Os
-resultados reprocessaveis ficam em `outputs/`, fora do Git por tamanho e por
-serem derivados das bases originais.
+### Decisoes Validadas
+
+1. Pagamento MIDES e forte indicio de relacao real com o consorcio, mas nao e
+   prova juridica suficiente de filiacao.
+2. Fonte posterior a 2019 corrobora plausibilidade, mas nao reconstroi
+   automaticamente a composicao naquele ano.
+3. `Sao Miguel do Anta x SIMSAUDE` continua nao confirmado apos pesquisa e
+   revisao humana.
+
+### Limite Da CNM Nesta Etapa
+
+A CNM ja foi raspada, versionada e comparada com maio de 2026; tambem existe
+um piloto CNM x MIDES para MG. Ela ainda nao foi adicionada como coluna da
+tabela de saude de 2019 porque sua composicao e uma fotografia atual. A
+integracao futura recomendada e o marcador `presente_snapshot_cnm`, util para
+descricao e sensibilidade, sem alterar a leitura historica do ano de 2019.
+
+---
+
+## Reproducibilidade E Limites
+
+Os produtos quantitativos dos passos 1 e 2 usam bases locais processadas do
+projeto. A qualificacao documental da amostra usou fontes oficiais ou
+institucionais na internet, com URL e interpretacao preservadas. Scripts,
+testes e relatorios estao em `analises/modelo_gravitacional_saude/`; resultados
+derivados locais ficam em `outputs/`.
+
+O proximo passo substantivo e definir o polo assistencial e a medida de
+capacidade de atracao. A integracao opcional do marcador CNM pode ocorrer em
+paralelo e nao deve atrasar CNES ou tempo rodoviario.

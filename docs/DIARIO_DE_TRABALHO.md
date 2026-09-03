@@ -770,3 +770,12 @@ Ao encerrar uma sessao relevante, adicionar uma entrada com:
   2019, e cenario ampliado, com corroboracao oficial posterior.
 - A revisao humana tambem nao encontrou evidencia de Sao Miguel do Anta no
   SIMSAUDE; o caso permanece nao confirmado.
+
+### Documentacao Didatica
+
+- A metodologia dos passos 1 e 2 foi reorganizada em secoes independentes com
+  objetivo, estado anterior, pipeline visual, resultado posterior e exemplos
+  reais.
+- Foi registrada a ressalva operacional da CNM: a fotografia atual ja existe,
+  mas ainda nao foi materializada como marcador na tabela especifica de saude
+  de 2019 e nao deve ser retroagida como filiacao historica.

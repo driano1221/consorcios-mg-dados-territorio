@@ -12,7 +12,7 @@
 ### Modelo gravitacional de saude - proxima sequencia
 
 1. **concluido em 03/09:** validar o universo saude-MG, a identidade CNPJ e os pagamentos MIDES;
-2. **concluido em 03/09:** confrontar MIDES 2019 com MUNIC 2019 e revisar documentalmente a amostra prioritaria;
+2. **concluido em 03/09, com ressalva CNM:** confrontar MIDES 2019 com MUNIC 2019 e revisar documentalmente a amostra prioritaria. A fotografia CNM esta pronta, mas ainda nao foi materializada como marcador na tabela especifica de saude;
 3. definir o polo assistencial e a medida de capacidade de atracao;
 4. integrar tempo rodoviario e dados CNES;
 5. definir o modelo de intensidade e o risco anual de interrupcao;
