@@ -2,39 +2,43 @@
 
 ## Visao Geral
 
-O trabalho avancou do cadastro para uma observacao anual pronta para EDA. Cada
-passo resolveu uma pergunta que precisava estar fechada antes do seguinte.
+O trabalho avancou da decisao de escopo para uma observacao anual em preparacao
+para a EDA final. Cada entrega resolveu uma pergunta necessaria para o modelo.
 
 ```mermaid
 flowchart LR
-  P1["1. Quem e saude?<br/>84 entidades"] --> P2["2. Que evidencia liga<br/>municipio e entidade?"]
+  P0["Marco 0<br/>MG + saude + MIDES"] --> P1["1. Quem e saude?<br/>84 entidades"]
+  P1 --> P2["2. Que evidencia liga<br/>municipio e entidade?"]
   P2 --> P3["3. Onde esta a oferta?<br/>polo, rede ou ausente"]
   P3 --> P4["4. Qual capacidade<br/>esta registrada?"]
   P4 --> P5["5. Qual a impedancia<br/>rodoviaria?"]
   P5 --> P6["6. O que ocorreu<br/>em cada ano?"]
-  P6 --> PC["Complemento:<br/>cobertura e alertas"]
-  PC --> P7["7. O que existia<br/>em cada ano?"]
-  P7 --> P8["Proximo: EDA e<br/>alternativas plausiveis"]
+  P6 --> C3["Complemento do 3<br/>cobertura e alertas"]
+  C3 --> C4["Complemento do 4<br/>CNES historico"]
+  C4 --> N3["Agora<br/>fechar passo 3"]
+  N3 --> N6["Depois<br/>concluir passo 6"]
+  N6 --> N7["Entao<br/>passo 7: EDA final"]
 ```
 
 ## Evolucao Do Projeto
 
 | Passo | Pergunta | Antes | Entrega | Resultado central |
 |---:|---|---|---|---|
+| Marco 0 | qual fenomeno e recorte estudar? | havia fontes e modelos exploratorios, mas nao uma especificacao gravitacional setorial | reuniao de 27/08/2026 definiu MG, saude, MIDES e tres blocos analiticos | entrada, intensidade e interrupcao serao estudadas separadamente |
 | 1 | quais CNPJs representam consorcios de saude? | matriz e filiais podiam contar separadamente | universo por CNPJ original e por raiz | 100 CNPJs em 84 entidades; 66 observadas no MIDES |
 | 2 | pagamento e declaracao contam a mesma historia? | MIDES e MUNIC podiam ser lidos como vinculo equivalente | cotejamento e revisao documental | 1.311 pares: 630 comuns, 658 somente MIDES e 23 somente MUNIC |
 | 3 | sede administrativa e destino assistencial? | distancia poderia apontar para um escritorio | unidades CNES e decisao de polo/rede | 670 unidades; 21 entidades sem unidade direta |
 | 4 | como medir poder de atracao? | leitos eram uma hipotese ainda nao testada | capacidade por unidade e entidade | 389 fixas, 281 moveis; apenas uma entidade com leitos SUS diretos |
 | 5 | como medir a resistencia espacial? | nao havia impedancia integrada | tempo por destino, unidade e entidade | 363.378 pares MG completos; 61 entidades com tempo |
 | 6 | como representar a trajetoria anual? | pagamentos, tempo e capacidade estavam separados | grade anual com eventos e defasagens | 573.216 linhas; 426 primeiros pagamentos, 252 retornos e 533 interrupcoes |
-| Complemento | o que realmente existe nos 38 casos pendentes? | falsos negativos, redes moveis e inativos estavam misturados | busca por CNPJ proprio e auditoria documental | 15 recuperados; 23 sem estrutura fixa; 7 alertas decididos |
-| 7 | a oferta atual existia em 2014-2021? | a fotografia de 2026 era repetida nos oito anos | ST mensal e LT/SR/PF de dezembro | 672 entidades-ano; 1.868 unidades-ano; 120 fontes auditadas |
+| Complemento do 3 | o que realmente existe nos 38 casos pendentes? | falsos negativos, redes moveis e inativos estavam misturados | busca por CNPJ proprio e auditoria documental | 15 recuperados; 23 sem estrutura fixa; 7 alertas decididos |
+| Complemento do 4 | a oferta atual existia em 2014-2021? | a fotografia de 2026 era repetida nos oito anos | ST mensal e LT/SR/PF de dezembro | 672 entidades-ano; 1.868 unidades-ano; 120 fontes auditadas |
 
 ## Exemplo Real Continuo: Igarape x CISMEP
 
 O caso usa a entidade de raiz `05802877` e o municipio de Igarape
-(`id_municipio = 3130101`). Ele foi escolhido porque atravessa todos os passos
-sem preencher lacunas por inferencia.
+(`id_municipio = 3130101`). Ele foi escolhido porque atravessa as entregas
+concluidas ate aqui sem preencher lacunas por inferencia.
 
 ### Passo 1 - Da Lista De CNPJs Para Uma Entidade
 
@@ -217,13 +221,14 @@ flowchart LR
 
 ## Proximo Marco
 
-O painel e a camada CNES historica ja existem separadamente, mas a grade
-estadual ainda oferece entidades demais a cada municipio. O passo seguinte
-deve:
+O painel e a camada CNES historica ja existem separadamente, mas o passo 3
+ainda possui casos sem polo/rede anual documentado e a grade estadual oferece
+entidades demais a cada municipio. A sequencia deve:
 
-1. definir alternativas plausiveis por tempo, regiao de saude ou regra
+1. fechar os casos indiretos, moveis e historicos pendentes do passo 3;
+2. definir alternativas plausiveis por tempo, regiao de saude ou regra
    institucional;
-2. integrar populacao, RCL, regiao de saude, bacia e mandato com fontes anuais
+3. integrar populacao, RCL, regiao de saude, bacia e mandato com fontes anuais
    validadas;
-3. executar EDA dos universos finais;
-4. somente depois estimar entrada, intensidade e interrupcao.
+4. executar EDA dos universos finais;
+5. somente depois estimar entrada, intensidade e interrupcao.
