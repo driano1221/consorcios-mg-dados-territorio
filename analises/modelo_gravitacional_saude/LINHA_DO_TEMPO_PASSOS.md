@@ -114,15 +114,15 @@ Para Igarape, a camada municipio-entidade registra:
 | Medida | Resultado |
 |---|---:|
 | menor tempo ate oferta fixa CISMEP | 0 minuto |
-| tempo mediano entre os dois destinos | 4,2 minutos |
-| maior tempo | 8,4 minutos |
-| distancia mediana | 3,733 km |
+| tempo mediano entre os quatro destinos | 11,75 minutos |
+| maior tempo | 25,8 minutos |
+| distancia mediana | 12,607 km |
 | destino mais proximo | Igarape |
 
 O zero nao significa viagem instantanea de um paciente. Significa que origem e
 uma unidade fixa estao no mesmo municipio e a fonte usa sedes municipais como
-pontos de referencia. A segunda unidade, em Sao Joaquim de Bicas, preserva a
-amplitude da rede.
+pontos de referencia. Os outros destinos sao Sao Joaquim de Bicas, Betim e
+Brumadinho, o que preserva a amplitude da rede.
 
 ### Passo 6 - A Observacao Vira Uma Trajetoria Anual
 
