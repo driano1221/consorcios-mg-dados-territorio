@@ -4,7 +4,8 @@
 
 Preparar uma base defensavel para o futuro modelo gravitacional de consorcios
 de saude em Minas Gerais. Antes de estimar distancia, capacidade assistencial
-ou probabilidade de entrada, foi necessario responder sete perguntas:
+ou probabilidade de entrada, foi necessario responder perguntas operacionais
+que aprofundam os primeiros passos do plano:
 
 1. quais instituicoes de saude existem no universo analitico?
 2. que tipo de evidencia existe para cada vinculo municipio-consorcio em 2019?
@@ -19,23 +20,30 @@ ou probabilidade de entrada, foi necessario responder sete perguntas:
 7. como reconstruir a oferta CNES de 2014-2021 sem repetir a fotografia atual
    em todos os anos?
 
+A ordem e o estado dos dez passos cientificos estao exclusivamente em
+[`PLANO_DE_TRABALHO.md`](PLANO_DE_TRABALHO.md). Este documento registra a
+metodologia das entregas executadas; sua numeracao interna nao cria outro plano.
+
 O MIDES continua significando **pagamento observado** e a MUNIC,
 **participacao declarada**. Nenhuma das duas fontes e alterada por esta
 preparacao.
 
-## Situacao Dos Passos
+## Entregas Documentadas
+
+Esta tabela resume produtos tecnicos. O estado dos passos cientificos e seus
+criterios de conclusao ficam somente em `PLANO_DE_TRABALHO.md`.
 
 | Passo | Situacao | Produto principal |
 |---|---|---|
 | 1. Fechar o universo de saude | Concluido | 84 entidades consolidadas e auditadas |
 | 2a. Comparar MIDES, MUNIC e documentos | Concluido | 1.311 pares em 2019 e revisao de 50 divergencias |
 | 2b. Usar CNM como fotografia atual no recorte saude | Disponivel, mas ainda nao materializado na tabela de saude | Snapshot CNM de 27/08 e piloto CNM x MIDES ja existem em outra frente |
-| 3. Definir polo de atracao assistencial | Concluido e corrigido | 84 entidades consultadas por CNPJ mantenedor e proprio |
+| 3. Definir polo de atracao assistencial | Produto direto concluido; cobertura final em andamento | 84 entidades consultadas por CNPJ mantenedor e proprio |
 | 4. Construir capacidade assistencial | Concluido e reprocessado | 670 unidades; medidas separadas para 61 entidades com oferta fixa direta |
 | 5. Integrar tempo rodoviario | Concluido e reprocessado | 853 origens, 389 unidades fixas e tres camadas de impedancia |
-| 6. Montar o painel analitico anual | Concluido | 573.216 observacoes municipio x entidade x ano |
-| Complemento. Cobertura assistencial | Concluido | 38 casos auditados, 15 recuperados e 7 alertas decididos |
-| 7. Temporalizar CNES | Concluido | 672 entidades-ano e 120 arquivos oficiais auditados |
+| 6. Montar o painel analitico anual | Grade preliminar concluida; painel final em andamento | 573.216 observacoes municipio x entidade x ano |
+| Complemento. Cobertura assistencial | Auditoria executada; pendencias no passo 3 | 38 casos auditados, 15 recuperados e 7 alertas decididos |
+| Complemento temporal do passo 4 | Concluido | 672 entidades-ano e 120 arquivos oficiais auditados |
 
 O item 2b nao bloqueia a proxima etapa: a CNM e uma fotografia atual e nao
 prova a composicao em 2019. Caso seja integrada, ela entrara como marcador
@@ -706,7 +714,7 @@ atual por inatividade e ausencia de MIDES.
 
 ---
 
-## Passo 7 - Temporalizar A Cobertura E A Capacidade CNES
+## Complemento Temporal Do Passo 4 - Cobertura E Capacidade CNES
 
 ### Em Que Consistiu
 
@@ -843,7 +851,7 @@ sensibilidade, nao uma regra automatica de exclusao.
 
 ## Reproducibilidade E Limites
 
-Os produtos quantitativos dos passos 1 a 7 usam bases locais processadas do
+Os produtos quantitativos das entregas executadas usam bases locais processadas do
 projeto. A qualificacao documental da amostra usou fontes oficiais ou
 institucionais na internet, com URL e interpretacao preservadas. Scripts,
 testes e relatorios estao em `analises/modelo_gravitacional_saude/`; resultados
@@ -868,7 +876,7 @@ Cada script possui um teste correspondente em `tests/`. Os resultados locais
 ficam em `outputs/`, as auditorias em `checks/` e as evidencias documentais em
 `evidencias/`. O [`DICIONARIO_TECNICO.md`](DICIONARIO_TECNICO.md) identifica
 entradas e saidas; a [`LINHA_DO_TEMPO_PASSOS.md`](LINHA_DO_TEMPO_PASSOS.md)
-acompanha o caso Igarape x CISMEP ao longo dos sete passos.
+acompanha o caso Igarape x CISMEP ao longo das entregas executadas.
 
 ### Proximo Passo
 

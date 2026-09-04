@@ -9,19 +9,16 @@
 
 > **Nova prioridade definida em 27/08/2026:** preparar o modelo gravitacional de consorcios de saude em MG. O MIDES sera a fonte longitudinal principal e a unidade sera `municipio x consorcio x ano`, com multiplos consorcios permitidos.
 
-### Modelo gravitacional de saude - proxima sequencia
+### Modelo gravitacional de saude - fonte canonica
 
-1. **concluido em 03/09:** validar o universo saude-MG, a identidade CNPJ e os pagamentos MIDES;
-2. **concluido em 03/09, com ressalva CNM:** confrontar MIDES 2019 com MUNIC 2019 e revisar documentalmente a amostra prioritaria. A fotografia CNM esta pronta, mas ainda nao foi materializada como marcador na tabela especifica de saude;
-3. **concluido em 03/09:** definir a sede administrativa, consultar as unidades CNES vinculadas por CNPJ e separar polo fixo, rede, servico movel e ancora de sensibilidade;
-4. **concluido em 03/09:** construir a capacidade assistencial e a regra de agregacao das redes CNES;
-5. **concluido em 03/09:** integrar tempo rodoviario entre os 853 municipios e as 389 unidades fixas documentadas;
-6. **concluido em 03/09:** montar o painel `municipio x entidade x ano`, com pagamentos, movimentos, tempo e capacidade;
-6A. **concluido em 03/09:** completar a cobertura assistencial dos 38 casos pendentes e resolver os sete alertas do universo, sem imputar prestadores ou capacidade;
-7. definir o conjunto de alternativas plausiveis, integrar controles anuais validados e executar EDA antes da estimacao;
-8. estimar entrada/presenca, intensidade financeira e interrupcao;
-9. testar robustez de capacidade, tempo, normalizacao financeira e universo;
-10. integrar resultados validados ao dashboard.
+A ordem, os checkboxes, os criterios de conclusao e o proximo marco foram
+consolidados em
+[`PLANO_DE_TRABALHO.md`](../analises/modelo_gravitacional_saude/PLANO_DE_TRABALHO.md).
+Este arquivo geral nao mantem uma segunda sequencia do modelo.
+
+**Resumo em 03/09:** passos 1, 2, 4 e 5 concluidos; passos 3 e 6 em andamento;
+passos 7 a 10 nao iniciados como etapas finais. A prioridade e fechar as
+pendencias documentais do polo/rede assistencial antes de concluir o painel.
 
 Pontos ainda nao decididos: denominador do valor pago, forma da sobrevivencia e conjunto de alternativas. A censura dos pares presentes em 2014 foi resolvida no painel: eles sao `estoque_inicial_2014`, nunca entrada observada.
 
@@ -35,7 +32,7 @@ Pontos ainda nao decididos: denominador do valor pago, forma da sobrevivencia e 
 
 **Resultado da cobertura complementar:** os 38 casos originalmente pendentes foram auditados. Quinze foram recuperados pelo CNPJ proprio no CNES; 15 estao fora do universo modelavel atual; dois sao historicos/inativos; cinco possuem oferta movel, contratada ou historica sem um prestador fixo unico; e um permanece ativo, sem MIDES e sem evidencia assistencial localizada. Os sete alertas foram resolvidos em decisoes rastreaveis. Nenhum caso sem estrutura identificada recebeu capacidade zero ou hospital presumido.
 
-**Resultado do passo 6:** o painel completo possui 573.216 linhas (`853 x 84 x 8`) e conserva R$ 3.101.980.422,83. Foram identificados 1.192 estoques positivos em 2014, 426 primeiros pagamentos, 252 retornos, 8.188 permanencias e 533 interrupcoes. Ha 1.618 pares com algum pagamento e 329 com mais de uma transicao. Os universos estaduais marcados no painel sao preliminares; antes de estimar, o passo 7 deve limitar alternativas por regra substantiva e integrar populacao, RCL, regiao de saude, bacia e mandato a partir de fontes anuais validadas.
+**Resultado parcial do passo 6:** a grade preliminar possui 573.216 linhas (`853 x 84 x 8`) e conserva R$ 3.101.980.422,83. Foram identificados 1.192 estoques positivos em 2014, 426 primeiros pagamentos, 252 retornos, 8.188 permanencias e 533 interrupcoes. Ha 1.618 pares com algum pagamento e 329 com mais de uma transicao. Antes de concluir o passo 6, ainda e necessario limitar alternativas por regra substantiva e integrar populacao, RCL, regiao de saude, bacia e mandato a partir de fontes anuais validadas.
 
 ---
 

@@ -7,13 +7,15 @@ Este documento e o inventario oficial da pasta. Ele responde quatro perguntas:
 3. qual produto deve ser aberto;
 4. qual teste comprova que o passo fechou corretamente.
 
-O `README.md` continua sendo a porta de entrada. A evolucao substantiva dos
-passos esta em `LINHA_DO_TEMPO_PASSOS.md`.
+O `README.md` continua sendo a porta de entrada. A ordem e o estado dos dez
+passos estao exclusivamente em `PLANO_DE_TRABALHO.md`. A evolucao substantiva
+das entregas esta em `LINHA_DO_TEMPO_PASSOS.md`.
 
 ## Numeracao
 
-Ha sete passos cientificos e nove scripts. O passo 2 usa dois scripts porque a
-comparacao quantitativa e a revisao documental sao operacoes diferentes.
+Ha dez passos cientificos e nove scripts executados ate aqui. As duas numeracoes
+nao sao equivalentes: um passo pode exigir mais de um script e um complemento
+pode corrigir um produto anterior sem criar novo passo cientifico.
 
 | Passo cientifico | Script tecnico | Conteudo |
 |---:|---|---|
@@ -23,15 +25,18 @@ comparacao quantitativa e a revisao documental sao operacoes diferentes.
 | 4 | `05` | capacidade assistencial atual no CNES |
 | 5 | `06` | tempo rodoviario ate a oferta fixa |
 | 6 | `07` | painel municipio-entidade-ano e eventos |
+| complemento do 3 | `08` | auditoria da cobertura assistencial |
+| complemento do 4 | `09` | capacidade CNES historica 2014-2021 |
 
 ## Mapa Da Pasta
 
 | Local | O que contem | Regra de uso |
 |---|---|---|
-| `README.md` | estado atual e ordem de leitura | abrir primeiro |
+| `README.md` | visao geral e ordem de leitura | abrir primeiro |
+| `PLANO_DE_TRABALHO.md` | dez passos, checkboxes e proximo marco | unica fonte para ordem e estado |
 | `DICIONARIO_TECNICO.md` | arquivos, fontes, extracoes e produtos | consultar para localizar ou reproduzir |
 | `LINHA_DO_TEMPO_PASSOS.md` | evolucao dos passos e exemplo real | consultar para explicar o projeto |
-| `METODOLOGIA_GERAL.md` | metodologia unica dos passos 1 a 7 e da auditoria complementar | consultar para defender decisoes |
+| `METODOLOGIA_GERAL.md` | metodologia das entregas e complementos executados | consultar para defender decisoes |
 | `01...08...R` | scripts reprocessaveis | executar na ordem numerica |
 | `tests/` | testes de chaves, contagens e invariantes | executar depois do respectivo script |
 | `checks/` | resultados quantitativos validados | consultar numeros sem abrir bases |
@@ -188,7 +193,7 @@ Produtos principais:
 | `auditoria_alertas_universo_saude_mg.csv` | alerta | consultar decisao de escopo, situacao ou macrogrupo |
 | `baseline_capacidade_entidades_saude_mg_antes_cnpj_proprio_2026_09_03.csv` | entidade | preservar o retrato anterior a correcao da busca CNES |
 
-### Passo 7 - CNES Historico
+### Complemento Temporal Do Passo 4 - CNES Historico
 
 | Arquivo | Funcao |
 |---|---|
@@ -228,7 +233,7 @@ Ligacoes e medidas:
 | Cadastro auxiliar | pipeline do dashboard | `cadastro_base.rds` | fotografia processada vigente | 2 | nomes e contexto, nao evidencia temporal isolada |
 | Evidencias documentais | URLs por linha em `evidencias/catalogo_revisao_documental_2019.csv` | catalogo CSV versionado | documentos de anos distintos | 2 | fonte posterior nao retroage automaticamente para 2019 |
 | CNES/DATASUS | [portal atual](https://cnes.datasus.gov.br/) e [portal legado](https://cnes2.datasus.gov.br/) | snapshots e cache em `outputs/` | coletado em 03/09/2026 | 3, 4 e complemento | fotografia atual por CNPJ proprio e mantenedor |
-| CNES/DATASUS historico | `ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/` | `cache_cnes_historico/` e manifesto local | 2014-2021 | 7 | `ST` mensal; `LT`, `SR` e `PF` de dezembro |
+| CNES/DATASUS historico | `ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/` | `cache_cnes_historico/` e manifesto local | 2014-2021 | complemento do 4 | `ST` mensal; `LT`, `SR` e `PF` de dezembro |
 | Distbrasil | [pagina metodologica](https://rfsaldanha.github.io/data-projects/brazil_road_distances.html), [Zenodo 11400243](https://zenodo.org/records/11400243), [codigo](https://github.com/rfsaldanha/distbrasil) | `dados/bruto/externo/distbrasil/dist_brasil_zenodo_11400243.rds` | publicado em 31/05/2024; integrado em 03/09/2026 | 5 | rota estatica e simetrica entre sedes municipais |
 | Malha municipal MG | produto cartografico local do dashboard | `dashboards/base1_shiny/data/mg_municipios_sf_web.rds` | referencia municipal usada no projeto | 5 | nomes/codigos e geometria; nao produz o tempo rodoviario |
 
@@ -248,7 +253,7 @@ nos produtos.
 
 ## O Que Nao Entrou
 
-- A CNM nao altera os passos 1 a 7: ela e fotografia cadastral atual e ainda
+- A CNM nao altera os passos concluidos: ela e fotografia cadastral atual e ainda
   nao foi materializada como composicao historica da tabela de saude.
 - SICONFI nao identifica o CNPJ destinatario e nao entra como vinculo do par.
 - Populacao, RCL, regiao de saude, bacia e mandato aguardam fontes anuais

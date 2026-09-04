@@ -162,7 +162,7 @@ Assim, “auditoria concluida” nao significa que todos ganharam um polo. Signi
 que cada ausencia recebeu uma leitura rastreavel e que `NA` foi preservado
 quando a estrutura nao podia ser localizada com seguranca.
 
-### Passo 7 - A Oferta Tambem Vira Uma Trajetoria
+### Complemento Temporal Do Passo 4 - A Oferta Tambem Vira Uma Trajetoria
 
 A fotografia atual do CISMEP tem 15 unidades, sendo quatro fixas e 11 moveis.
 Essa estrutura nao foi repetida no passado. O CNES historico mostra:

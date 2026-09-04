@@ -8,35 +8,40 @@ estimar novos modelos.
 
 | Necessidade | Arquivo |
 |---|---|
-| saber o estado atual | `README.md` |
+| saber a ordem, o estado e o proximo marco | `PLANO_DE_TRABALHO.md` |
+| obter uma visao geral das entregas | `README.md` |
 | localizar scripts, fontes, links, extracoes e produtos | `DICIONARIO_TECNICO.md` |
 | entender a evolucao dos passos com um caso real | `LINHA_DO_TEMPO_PASSOS.md` |
 | defender uma decisao metodologica | `METODOLOGIA_GERAL.md` |
 | consultar resultados ja validados | `checks/` |
 
-O dicionario tecnico e a referencia unica para a funcao de cada arquivo e a
-proveniencia das fontes. O README resume; nao substitui o inventario.
+O `PLANO_DE_TRABALHO.md` e a unica fonte para ordem e estado dos dez passos. O
+dicionario tecnico e a referencia para a funcao de cada arquivo e a proveniencia
+das fontes. O README resume; nao substitui nenhum dos dois.
 
-## Estado Dos Blocos
+## Entregas Tecnicas Concluidas
 
-| Passo cientifico | Estado | Resultado principal |
+Esta tabela registra produtos ja construidos. Ela nao define a ordem nem o
+estado do plano cientifico.
+
+| Entrega tecnica | Estado do produto | Resultado principal |
 |---|---|---|
 | 1. Fechar universo de saude | Concluido | 100 CNPJs em 84 entidades; 66 observadas no MIDES |
 | 2. Auditar vinculos | Concluido | 1.311 pares MIDES/MUNIC em 2019 e 50 divergencias revisadas |
-| 3. Definir polo/rede | Concluido e corrigido | 670 unidades CNES por CNPJ mantenedor ou proprio; sede separada de oferta assistencial |
+| 3. Polo/rede direta | Produto direto validado; cobertura final em andamento | 670 unidades CNES por CNPJ mantenedor ou proprio; sede separada de oferta assistencial |
 | 4. Construir capacidade | Concluido e reprocessado | 61 entidades com oferta fixa direta, 21 sem unidade direta e 2 somente moveis |
 | 5. Integrar tempo rodoviario | Concluido e reprocessado | 853 origens, 389 unidades fixas e 61 entidades com tempo disponivel |
-| 6. Montar painel analitico | Concluido | 573.216 linhas; movimentos e universos preliminares separados |
-| Complemento. Cobertura assistencial | Concluido | 38 casos auditados, 15 recuperados por CNPJ proprio e 7 alertas decididos |
-| 7. Temporalizar CNES | Concluido | 672 entidades-ano; 1.868 unidades-ano; 120 arquivos oficiais auditados |
+| 6. Grade analitica preliminar | Produto preliminar validado; painel final em andamento | 573.216 linhas; movimentos e universos preliminares separados |
+| Complemento. Cobertura assistencial | Auditoria executada; pendencias documentais no passo 3 | 38 casos auditados, 15 recuperados por CNPJ proprio e 7 alertas decididos |
+| Complemento. Temporalizar CNES | Concluido | 672 entidades-ano; 1.868 unidades-ano; 120 arquivos oficiais auditados |
 
 Capacidade foi executada antes do tempo rodoviario. Calcular distancia ate uma
 sede administrativa sem saber onde esta a oferta assistencial produziria uma
 impedancia sem interpretacao substantiva.
 
-### Antes E Depois Dos Seis Passos
+### Antes E Depois Das Entregas Tecnicas
 
-| Passo | Antes | Agora |
+| Bloco | Antes | Agora |
 |---|---|---|
 | 1. Universo | 100 CNPJs de saude podiam representar matriz e filiais como instituicoes distintas | 84 entidades por raiz, com CNPJs originais preservados; o CISMEP ilustra a consolidacao da raiz `05802877` |
 | 2. Vinculos | pagamento MIDES e declaracao MUNIC podiam ser confundidos com a mesma evidencia | 1.311 pares de 2019 separados em 630 comuns, 658 somente MIDES e 23 somente MUNIC; 50 divergencias receberam revisao |
@@ -45,7 +50,7 @@ impedancia sem interpretacao substantiva.
 | 5. Tempo | nao havia impedancia integrada e redes poderiam ser reduzidas a uma sede | 853 municipios foram ligados a 389 unidades fixas; redes preservam minimo, mediana e maximo |
 | 6. Painel | pagamentos, identidade, tempo e capacidade estavam em tabelas distintas | grade `853 x 84 x 8`, com valor conservado, censura em 2014 e eventos financeiros explicitos |
 | Complemento | 36 ausencias CNES e 2 casos moveis pareciam um unico tipo de lacuna | unidades por CNPJ proprio, redes contratadas, oferta movel, casos historicos e falta real de evidencia foram separados |
-| 7. Temporalidade | capacidade de 2026 podia ser repetida nos oito anos | dezembro mede a capacidade anual e os 12 meses auditam presenca sem retroagir o cadastro atual |
+| Complemento temporal | capacidade de 2026 podia ser repetida nos oito anos | dezembro mede a capacidade anual e os 12 meses auditam presenca sem retroagir o cadastro atual |
 
 ## Fluxo Reprocessavel
 
@@ -71,7 +76,7 @@ O `README.md` e o ponto de entrada. Os arquivos foram separados por funcao:
 
 | Local | Conteudo | Quando consultar |
 |---|---|---|
-| raiz da pasta | scripts e metodologia unica dos passos 1 a 7 e do complemento | entender ou reprocessar o pipeline |
+| raiz da pasta | plano canonico, scripts e metodologia das entregas executadas | entender ou reprocessar o pipeline |
 | `tests/` | uma validacao automatizada por script | confirmar chaves, contagens e invariantes |
 | `checks/` | relatorios curtos com resultados validados | consultar numeros sem abrir os dados |
 | `evidencias/` | catalogo versionado de fontes documentais | auditar decisoes humanas do passo 2 |
@@ -102,9 +107,10 @@ isso os blocos cientificos 3 a 6 sao executados pelos scripts `04` a `07`.
 | `tests/01...09...` | Protege chaves, contagens e invariantes | respectivas saidas locais | falha explicita ou mensagem `OK` |
 | `checks/*.md` | Guarda os resultados auditaveis | calculado pelos scripts | relatorio versionado no Git |
 | `evidencias/catalogo_revisao_documental_2019.csv` | Preserva URL, ano e interpretacao documental | fontes oficiais/institucionais | rastreabilidade da revisao humana |
-| `METODOLOGIA_GERAL.md` | Explica todo o percurso metodologico | passos 1 a 7 e complemento | fontes, regras, resultados, exemplos, limites e reproducao |
-| `DICIONARIO_TECNICO.md` | Inventaria arquivos, fontes, links e datas | passos 1 a 7 e complemento | referencia de localizacao e reproducao |
-| `LINHA_DO_TEMPO_PASSOS.md` | Mostra a evolucao com Igarape x CISMEP | passos 1 a 7 e complemento | explicacao didatica ponta a ponta |
+| `PLANO_DE_TRABALHO.md` | Define ordem, estado e proximo marco | dez passos cientificos | unica fonte de verdade do planejamento |
+| `METODOLOGIA_GERAL.md` | Explica todo o percurso metodologico executado | entregas e complementos | fontes, regras, resultados, exemplos, limites e reproducao |
+| `DICIONARIO_TECNICO.md` | Inventaria arquivos, fontes, links e datas | scripts e produtos | referencia de localizacao e reproducao |
+| `LINHA_DO_TEMPO_PASSOS.md` | Mostra a evolucao com Igarape x CISMEP | entregas executadas | explicacao didatica ponta a ponta |
 
 ### Dicionario Por Passo
 
@@ -285,7 +291,7 @@ CNPJ ainda nao documentado.
 - os sete alertas de escopo, situacao cadastral ou macrogrupo receberam uma
   decisao explicita, sem transformar pagamento historico em alternativa atual.
 
-## Resultado Metodologico Do Passo 7
+## Resultado Do Complemento Temporal CNES
 
 - a fotografia atual deixou de ser a unica medida disponivel para 2014-2021;
 - 96 arquivos `ST` mensais medem presenca e tipo da unidade ao longo do ano;
