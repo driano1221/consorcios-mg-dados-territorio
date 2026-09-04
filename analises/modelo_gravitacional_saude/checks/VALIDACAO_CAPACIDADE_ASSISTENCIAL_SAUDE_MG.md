@@ -2,25 +2,25 @@
 
 - Data da extracao CNES: `2026-09-03`.
 - Entidades consolidadas: **84**.
-- Unidades CNES vinculadas consultadas: **639**.
-- Unidades com todos os modulos consultados: **639**.
+- Unidades CNES vinculadas consultadas: **670**.
+- Unidades com todos os modulos consultados: **670**.
 - Entidades do nucleo MIDES: **64**.
 
 ## Situacao Da Capacidade
 
 | Situacao | Entidades |
 |---|---:|
-| capacidade_direta_cnes_atual | 46 |
-| sem_unidade_cnes_direta_nao_interpretar_como_zero | 36 |
+| capacidade_direta_cnes_atual | 61 |
+| sem_unidade_cnes_direta_nao_interpretar_como_zero | 21 |
 | somente_unidades_moveis_sem_polo_fixo | 2 |
 
 ## Cobertura E Medidas
 
-- Unidades fixas elegiveis: **366**; unidades moveis/itinerantes: **273**.
-- Unidades fixas com atendimento ambulatorial SUS: **59**; com SADT SUS: **27**; com internacao SUS: **1**.
-- Unidades fixas com ao menos um CBO medico SUS ativo: **140**.
-- Entidades com capacidade fixa direta: **46**; todas possuem ao menos um CBO medico SUS ativo.
-- Entidades com leitos SUS diretamente registrados: **1** de **46**.
+- Unidades fixas elegiveis: **389**; unidades moveis/itinerantes: **281**.
+- Unidades fixas com atendimento ambulatorial SUS: **81**; com SADT SUS: **39**; com internacao SUS: **1**.
+- Unidades fixas com ao menos um CBO medico SUS ativo: **155**.
+- Entidades com estrutura fixa direta: **61**; **58** possuem ao menos um CBO medico SUS ativo no retrato CNES.
+- Entidades com leitos SUS diretamente registrados: **1** de **61**.
 
 ### Estabelecimentos Com Leitos Existentes
 
@@ -28,6 +28,7 @@
 |---|---:|---:|---:|
 | ACISPES | 3154920 | 5 | 0 |
 | HOSPITAL 272 JOIAS ICISMEP | 0979538 | 32 | 32 |
+| CISMEP | 3476014 | 6 | 0 |
 
 ## Exemplos Auditados
 
@@ -37,7 +38,7 @@
 | CIS/CEN | somente_unidades_moveis_sem_polo_fixo | 3 | 3 | NA | NA | NA |
 | CISMARPA | capacidade_direta_cnes_atual | 1 | 0 | 1 | 0 | 18 |
 | CISMAS | capacidade_direta_cnes_atual | 1 | 0 | 1 | 0 | 10 |
-| CISMEP | capacidade_direta_cnes_atual | 13 | 11 | 2 | 32 | 22 |
+| CISMEP | capacidade_direta_cnes_atual | 15 | 11 | 4 | 32 | 22 |
 | CISVER | capacidade_direta_cnes_atual | 5 | 4 | 1 | 0 | 33 |
 
 ## Leitura Metodologica

@@ -17,16 +17,17 @@ estimar novos modelos.
 O dicionario tecnico e a referencia unica para a funcao de cada arquivo e a
 proveniencia das fontes. O README resume; nao substitui o inventario.
 
-## Estado Dos Seis Blocos
+## Estado Dos Blocos
 
 | Passo cientifico | Estado | Resultado principal |
 |---|---|---|
 | 1. Fechar universo de saude | Concluido | 100 CNPJs em 84 entidades; 66 observadas no MIDES |
 | 2. Auditar vinculos | Concluido | 1.311 pares MIDES/MUNIC em 2019 e 50 divergencias revisadas |
-| 3. Definir polo/rede | Concluido | 639 unidades CNES; sede separada de oferta assistencial |
-| 4. Construir capacidade | Concluido | 46 entidades com oferta fixa direta, 36 sem unidade direta e 2 somente moveis |
-| 5. Integrar tempo rodoviario | Concluido | 853 origens, 366 unidades fixas e 46 entidades com tempo disponivel |
+| 3. Definir polo/rede | Concluido e corrigido | 670 unidades CNES por CNPJ mantenedor ou proprio; sede separada de oferta assistencial |
+| 4. Construir capacidade | Concluido e reprocessado | 61 entidades com oferta fixa direta, 21 sem unidade direta e 2 somente moveis |
+| 5. Integrar tempo rodoviario | Concluido e reprocessado | 853 origens, 389 unidades fixas e 61 entidades com tempo disponivel |
 | 6. Montar painel analitico | Concluido | 573.216 linhas; movimentos e universos preliminares separados |
+| Complemento. Cobertura assistencial | Concluido | 38 casos auditados, 15 recuperados por CNPJ proprio e 7 alertas decididos |
 
 Capacidade foi executada antes do tempo rodoviario. Calcular distancia ate uma
 sede administrativa sem saber onde esta a oferta assistencial produziria uma
@@ -38,10 +39,11 @@ impedancia sem interpretacao substantiva.
 |---|---|---|
 | 1. Universo | 100 CNPJs de saude podiam representar matriz e filiais como instituicoes distintas | 84 entidades por raiz, com CNPJs originais preservados; o CISMEP ilustra a consolidacao da raiz `05802877` |
 | 2. Vinculos | pagamento MIDES e declaracao MUNIC podiam ser confundidos com a mesma evidencia | 1.311 pares de 2019 separados em 630 comuns, 658 somente MIDES e 23 somente MUNIC; 50 divergencias receberam revisao |
-| 3. Polo/rede | sede administrativa podia ser usada automaticamente como destino | 639 unidades diretamente mantidas foram separadas em rede fixa, polo unico, movel ou sem unidade; CISVER, por exemplo, tem quatro moveis e uma fixa |
+| 3. Polo/rede | sede administrativa podia ser usada automaticamente como destino | 670 unidades diretamente vinculadas foram separadas em rede fixa, polo unico, movel ou sem unidade; a consulta por CNPJ proprio corrigiu 15 falsos negativos |
 | 4. Capacidade | unidade CNES indicava localizacao, mas nao a oferta registrada | ficha, leitos, atendimento e CBOs foram medidos separadamente; CISMAS tem zero leito e 10 CBOs medicos somados |
-| 5. Tempo | nao havia impedancia integrada e redes poderiam ser reduzidas a uma sede | 853 municipios foram ligados a 366 unidades fixas; redes preservam minimo, mediana e maximo |
+| 5. Tempo | nao havia impedancia integrada e redes poderiam ser reduzidas a uma sede | 853 municipios foram ligados a 389 unidades fixas; redes preservam minimo, mediana e maximo |
 | 6. Painel | pagamentos, identidade, tempo e capacidade estavam em tabelas distintas | grade `853 x 84 x 8`, com valor conservado, censura em 2014 e eventos financeiros explicitos |
+| Complemento | 36 ausencias CNES e 2 casos moveis pareciam um unico tipo de lacuna | unidades por CNPJ proprio, redes contratadas, oferta movel, casos historicos e falta real de evidencia foram separados |
 
 ## Fluxo Reprocessavel
 
@@ -51,12 +53,13 @@ flowchart LR
   B --> C[MIDES MG 2014-2021]
   B --> D[MIDES x MUNIC 2019]
   D --> E[Revisao documental]
-  B --> F[CNES por matriz e filiais]
+  B --> F[CNES por CNPJ mantenedor e proprio]
   F --> G[Polo fixo, rede, movel ou sem unidade]
   G --> H[Capacidade por unidade fixa]
   H --> I[Tempo rodoviario por unidade]
   I --> J[Painel municipio x entidade x ano]
-  J --> K[Proximo: alternativas plausiveis e EDA]
+  J --> K[Auditoria da cobertura indireta e alertas]
+  K --> L[Proximo: alternativas plausiveis e EDA]
 ```
 
 ## Como Navegar Nesta Pasta
@@ -65,7 +68,7 @@ O `README.md` e o ponto de entrada. Os arquivos foram separados por funcao:
 
 | Local | Conteudo | Quando consultar |
 |---|---|---|
-| raiz da pasta | scripts e metodologia unica dos passos 1 a 6 | entender ou reprocessar o pipeline |
+| raiz da pasta | scripts e metodologia unica dos passos 1 a 6 e do complemento | entender ou reprocessar o pipeline |
 | `tests/` | uma validacao automatizada por script | confirmar chaves, contagens e invariantes |
 | `checks/` | relatorios curtos com resultados validados | consultar numeros sem abrir os dados |
 | `evidencias/` | catalogo versionado de fontes documentais | auditar decisoes humanas do passo 2 |
@@ -86,16 +89,17 @@ isso os blocos cientificos 3 a 6 sao executados pelos scripts `04` a `07`.
 | `01_fechar_universo_saude_mg.R` | Seleciona saude e consolida matriz/filiais | classificacao v0.5, crosswalk nacional e MIDES MG | universo por CNPJ e por raiz |
 | `02_cotejar_mides_munic_saude_2019.R` | Compara pagamento e declaracao em 2019 | Base 1, universo do passo 1 e cadastro | pares MIDES+MUNIC/somente fonte |
 | `03_revisar_divergencias_documentais_2019.R` | Aplica evidencias aos 50 casos priorizados | amostra do passo 2 e catalogo versionado | cenarios estrito e ampliado |
-| `04_definir_polos_atracao_saude.R` | Consulta estabelecimentos mantidos pelos CNPJs | universo do passo 1 e CNES | polo, rede, movel ou ancora de sede |
+| `04_definir_polos_atracao_saude.R` | Consulta estabelecimentos por CNPJ mantenedor e CNPJ proprio | universo do passo 1 e CNES | polo, rede, movel ou ancora de sede |
 | `05_construir_capacidade_assistencial_saude.R` | Mede oferta atual diretamente vinculada | unidades do passo 3 e modulos CNES | capacidade por unidade e entidade |
 | `06_integrar_tempo_rodoviario_saude.R` | Integra impedancia rodoviaria a oferta fixa | capacidade, mapa MG e Zenodo 11400243 | tempo por destino, unidade e entidade |
 | `07_montar_painel_analitico_saude.R` | Materializa a grade longitudinal e seus eventos | MIDES, identidade, capacidade e tempo | painel completo, eventos e universos preliminares |
-| `tests/01...07...R` | Protege chaves, contagens e invariantes | respectivas saidas locais | falha explicita ou mensagem `OK` |
+| `08_completar_cobertura_assistencial_saude.R` | Consolida CNES direto, redes indiretas e decisoes dos alertas | resultados dos passos 1, 3 e 4 e catalogos documentais | cobertura auditada das 84 entidades |
+| `tests/01...08...R` | Protege chaves, contagens e invariantes | respectivas saidas locais | falha explicita ou mensagem `OK` |
 | `checks/*.md` | Guarda os resultados auditaveis | calculado pelos scripts | relatorio versionado no Git |
 | `evidencias/catalogo_revisao_documental_2019.csv` | Preserva URL, ano e interpretacao documental | fontes oficiais/institucionais | rastreabilidade da revisao humana |
-| `METODOLOGIA_GERAL.md` | Explica todo o percurso metodologico | passos 1 a 6 | fontes, regras, resultados, exemplos, limites e reproducao |
-| `DICIONARIO_TECNICO.md` | Inventaria arquivos, fontes, links e datas | passos 1 a 6 | referencia de localizacao e reproducao |
-| `LINHA_DO_TEMPO_PASSOS.md` | Mostra a evolucao com Igarape x CISMEP | passos 1 a 6 | explicacao didatica ponta a ponta |
+| `METODOLOGIA_GERAL.md` | Explica todo o percurso metodologico | passos 1 a 6 e complemento | fontes, regras, resultados, exemplos, limites e reproducao |
+| `DICIONARIO_TECNICO.md` | Inventaria arquivos, fontes, links e datas | passos 1 a 6 e complemento | referencia de localizacao e reproducao |
+| `LINHA_DO_TEMPO_PASSOS.md` | Mostra a evolucao com Igarape x CISMEP | passos 1 a 6 e complemento | explicacao didatica ponta a ponta |
 
 ### Dicionario Por Passo
 
@@ -108,6 +112,7 @@ isso os blocos cientificos 3 a 6 sao executados pelos scripts `04` a `07`.
 | 4. Capacidade | unidade CNES e entidade agregada | `05_construir_capacidade_assistencial_saude.R` | `capacidade_unidades_cnes_saude_mg.csv`; `capacidade_entidades_saude_mg.rds` | `tests/05_validar_capacidade_assistencial_saude.R`; `checks/VALIDACAO_CAPACIDADE_ASSISTENCIAL_SAUDE_MG.md` |
 | 5. Tempo | municipio x destino/unidade/entidade | `06_integrar_tempo_rodoviario_saude.R` | tres camadas `tempo_rodoviario_*` | `tests/06_validar_tempo_rodoviario_saude.R`; `checks/VALIDACAO_TEMPO_RODOVIARIO_SAUDE_MG.md` |
 | 6. Painel | municipio x entidade x ano | `07_montar_painel_analitico_saude.R` | painel completo, eventos, pares e resumos | `tests/07_validar_painel_analitico_saude.R`; `checks/VALIDACAO_PAINEL_ANALITICO_SAUDE_MG.md` |
+| Complemento. Cobertura | entidade | `08_completar_cobertura_assistencial_saude.R` | cobertura consolidada, 38 casos e 7 alertas | `tests/08_validar_cobertura_assistencial_saude.R`; `checks/VALIDACAO_COBERTURA_ASSISTENCIAL_COMPLEMENTAR_SAUDE_MG.md` |
 
 `outputs/` contem derivados locais e cache, e esta fora do Git. Nada nessa
 pasta altera MIDES, MUNIC, CNM, SICONFI ou o dashboard.
@@ -122,7 +127,7 @@ pasta altera MIDES, MUNIC, CNM, SICONFI ou o dashboard.
 | Base 1 MIDES/MUNIC | `dashboards/base1_shiny/data/base_1_vinculos_2015_2019.rds` | 2 | pagamento e declaracao preservados separadamente |
 | Cadastro processado | `dashboards/base1_shiny/data/cadastro_base.rds` | 2 | nomes e contexto documental |
 | Catalogo de evidencias | `evidencias/catalogo_revisao_documental_2019.csv` | 2 | fonte, ano e alcance; fonte posterior nao retroage 2019 |
-| CNES/DATASUS | https://cnes2.datasus.gov.br/ | 3 e 4 | fotografia atual de estabelecimentos sob o CNPJ mantenedor |
+| CNES/DATASUS | https://cnes.datasus.gov.br/ e https://cnes2.datasus.gov.br/ | 3 e 4 | fotografia atual por CNPJ proprio e por CNPJ mantenedor |
 | Distbrasil/Zenodo | https://zenodo.org/records/11400243 | 5 | distancia e duracao OSRM entre sedes municipais, perfil automovel |
 
 ### Registro Das Extracoes
@@ -134,7 +139,7 @@ pasta altera MIDES, MUNIC, CNM, SICONFI ou o dashboard.
 | MIDES MG | leitura do painel anual local e selecao de valor total positivo | 2014-2021 | evidencia pagamento, nao adesao juridica |
 | MUNIC | leitura da Base 1 e preservacao da declaracao separada | 2019 | autodeclaracao pontual, nao painel anual |
 | Evidencia documental | catalogo CSV com URL, titulo, ano e interpretacao | varia por documento | documento posterior nao e retroagido automaticamente a 2019 |
-| CNES/DATASUS | requisicao HTTP publica por CNPJ mantenedor e por codigo CNES; cache local | fotografia coletada em 03/09/2026 | cadastro atual, nao capacidade historica de 2014-2021 |
+| CNES/DATASUS | requisicao HTTP publica por CNPJ proprio, CNPJ mantenedor e codigo CNES; cache local | fotografia coletada em 03/09/2026 | cadastro atual, nao capacidade historica de 2014-2021 |
 | Distbrasil | download do RDS Zenodo, checksum MD5 e filtro dos pares de MG | publicado em 31/05/2024; sedes IBGE 2010 | tempo estatico, simetrico e sem transito por horario |
 
 ### Modulos CNES Consultados
@@ -142,6 +147,7 @@ pasta altera MIDES, MUNIC, CNM, SICONFI ou o dashboard.
 | Modulo publico | Endpoint relativo | Campos aproveitados |
 |---|---|---|
 | Lista de mantidas | `Listar_Mantidas.asp?VCnpj=...&VEstado=31` | unidades diretamente registradas sob cada matriz/filial em MG |
+| Busca por CNPJ proprio | `/services/estabelecimentos?cnpj=...&estado=31` | estabelecimentos cujo CNPJ proprio coincide com matriz/filial do consorcio |
 | Ficha do estabelecimento | `Exibe_Ficha_Estabelecimento.asp?VCo_Unidade=...` | municipio, IBGE, UF, tipo e dependencia |
 | Hospitalar | `Mod_Hospitalar.asp?VCo_Unidade=...` | leitos existentes e leitos SUS |
 | Atendimento | `Mod_Bas_Atendimento.asp?VCo_Unidade=...` | ambulatorial, internacao e SADT SUS |
@@ -162,13 +168,16 @@ microdados nominais da pagina.
 | `unidades_cnes_vinculadas_saude_mg.csv` | unidade CNES | localizacao e vinculo direto por CNPJ |
 | `capacidade_unidades_cnes_saude_mg.csv` | unidade CNES | componentes atuais de oferta |
 | `capacidade_entidades_saude_mg.rds` | entidade | agregacao apenas das unidades fixas diretas |
-| `tempo_rodoviario_municipio_destino_saude_mg.rds` | municipio x municipio de oferta | grade municipal de 197.896 rotas |
-| `tempo_rodoviario_municipio_unidade_saude_mg.rds` | municipio x unidade fixa | tempo preservado para 366 unidades |
+| `tempo_rodoviario_municipio_destino_saude_mg.rds` | municipio x municipio de oferta | grade municipal de 203.014 rotas |
+| `tempo_rodoviario_municipio_unidade_saude_mg.rds` | municipio x unidade fixa | tempo preservado para 389 unidades |
 | `tempo_rodoviario_municipio_entidade_saude_mg.rds` | municipio x entidade | minimo, mediana e maximo; `NA` sem destino fixo |
 | `painel_analitico_saude_mg.rds` | municipio x entidade x ano | grade completa com zeros, eventos, tempo e capacidade |
 | `painel_analitico_saude_mg_eventos.csv` | observacoes com presenca ou transicao | auditoria dos movimentos sem abrir a grade completa |
 | `painel_analitico_saude_mg_resumo_par.rds` | municipio x entidade | trajetoria, valor e recorrencia do par |
 | `DICIONARIO_PAINEL_ANALITICO_SAUDE_MG.csv` | variavel | definicoes das colunas centrais |
+| `cobertura_assistencial_entidades_saude_mg.rds` | entidade | sintese final da cobertura direta, indireta, movel ou historica |
+| `auditoria_38_casos_cobertura_assistencial_saude_mg.csv` | entidade originalmente pendente | antes/depois dos 36 sem unidade e 2 somente moveis |
+| `auditoria_alertas_universo_saude_mg.csv` | alerta | decisao dos sete casos de escopo, situacao ou macrogrupo |
 
 ## Execucao Completa
 
@@ -189,14 +198,16 @@ Rscript analises/modelo_gravitacional_saude/06_integrar_tempo_rodoviario_saude.R
 Rscript analises/modelo_gravitacional_saude/tests/06_validar_tempo_rodoviario_saude.R
 Rscript analises/modelo_gravitacional_saude/07_montar_painel_analitico_saude.R
 Rscript analises/modelo_gravitacional_saude/tests/07_validar_painel_analitico_saude.R
+Rscript analises/modelo_gravitacional_saude/08_completar_cobertura_assistencial_saude.R
+Rscript analises/modelo_gravitacional_saude/tests/08_validar_cobertura_assistencial_saude.R
 ```
 
 ## Resultado Metodologico Do Passo 4
 
-- 639 unidades: 366 fixas e 273 moveis/itinerantes;
-- 46 entidades com unidade fixa diretamente mantida, 36 sem unidade sob o
+- 670 unidades: 389 fixas e 281 moveis/itinerantes;
+- 61 entidades com unidade fixa diretamente vinculada, 21 sem unidade sob o
   CNPJ e duas com somente unidades moveis;
-- todas as 46 entidades com oferta fixa possuem CBO medico SUS ativo;
+- 58 das 61 entidades com oferta fixa possuem CBO medico SUS ativo no retrato;
 - apenas uma entidade possui leitos SUS diretamente registrados.
 
 Logo, leitos nao devem ser usados como massa unica. Quantidade de unidades,
@@ -210,7 +221,7 @@ termo proporcional a sua massa:
 
 `atracao_ij proporcional a massa_j x impedancia(tempo_ij)`.
 
-Se `massa_j = leitos_SUS_j`, 45 das 46 entidades com oferta fixa direta
+Se `massa_j = leitos_SUS_j`, 60 das 61 entidades com oferta fixa direta
 receberiam massa zero. Isso produziria tres problemas:
 
 1. CISMAS teria atracao zero apesar de possuir clinica fixa e 10 CBOs medicos
@@ -222,7 +233,7 @@ receberiam massa zero. Isso produziria tres problemas:
    entidades indistinguiveis pela medida.
 
 Zero leito significa **ausencia de leito no modulo hospitalar daquele CNPJ**,
-nao ausencia de atendimento, profissionais ou servicos ambulatoriais. E as 36
+nao ausencia de atendimento, profissionais ou servicos ambulatoriais. E as 21
 entidades sem unidade diretamente registrada nem sequer recebem zero: ficam
 `NA`, porque sua oferta pode estar em hospital municipal, contratado ou outro
 CNPJ ainda nao documentado.
@@ -230,8 +241,8 @@ CNPJ ainda nao documentado.
 ## Resultado Metodologico Do Passo 5
 
 - os 363.378 pares entre municipios de MG existem na fonte, sem rota ausente;
-- 853 municipios foram ligados a 232 municipios de oferta e 366 unidades;
-- 46 entidades possuem tempo disponivel; 36 sem unidade direta e duas somente
+- 853 municipios foram ligados a 238 municipios de oferta e 389 unidades;
+- 61 entidades possuem tempo disponivel; 21 sem unidade direta e duas somente
   moveis permanecem com `NA`;
 - a camada por unidade e a fonte principal; minimo, mediana e maximo por
   entidade sao medidas de sensibilidade;
@@ -252,12 +263,27 @@ CNPJ ainda nao documentado.
 - os marcadores de risco sao preliminares e nao convertem a grade estadual em
   conjunto final de alternativas.
 
+## Cobertura Assistencial Complementar
+
+- os 38 casos originalmente pendentes foram auditados;
+- 15 entidades foram recuperadas pela busca oficial de CNPJ proprio no CNES;
+- a cobertura fixa direta aumentou de 46 para 61 entidades;
+- CISCEN e CIMES/CISNES possuem unidade movel e rede indireta documentada, mas
+  continuam sem destino fixo unico;
+- CISVALES, CISASF e CIAS possuem oferta/rede documentada, mas exigem desenho
+  especifico de bases ou prestadores antes de receber tempo e capacidade;
+- os sete alertas de escopo, situacao cadastral ou macrogrupo receberam uma
+  decisao explicita, sem transformar pagamento historico em alternativa atual.
+
 ## Limites E Proximo Passo
 
 - CNES e fotografia de 03/09/2026; nao reconstroi automaticamente 2014-2021;
 - CBO distinto por unidade e proxy cadastral, nao especialidade unica da rede;
 - unidade de prefeitura ou terceiro nao entra sem evidencia documental;
-- 36 entidades sem unidade direta precisam de auditoria de prestador/rede;
+- 23 entidades continuam sem estrutura fixa CNES direta; cinco possuem oferta
+  ou rede
+  assistencial documentada sem polo unico e as demais foram classificadas por
+  situacao historica ou insuficiencia de evidencia;
 - CIS/CEN e CIMES possuem somente unidades moveis e nao recebem polo fixo;
 - o menor tempo ate uma rede pode apontar para unidade sem a especialidade
   relevante;

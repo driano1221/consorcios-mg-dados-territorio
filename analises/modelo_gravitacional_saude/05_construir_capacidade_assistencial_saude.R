@@ -454,7 +454,7 @@ check_lines <- c(
   paste0("- Unidades fixas elegiveis: **", nrow(fixed_units), "**; unidades moveis/itinerantes: **", sum(capacity_units$unidade_movel_ou_itinerante), "**."),
   paste0("- Unidades fixas com atendimento ambulatorial SUS: **", sum(fixed_units$atendimento_ambulatorial_sus %in% TRUE), "**; com SADT SUS: **", sum(fixed_units$sadt_sus %in% TRUE), "**; com internacao SUS: **", sum(fixed_units$internacao_sus %in% TRUE), "**."),
   paste0("- Unidades fixas com ao menos um CBO medico SUS ativo: **", sum(fixed_units$n_cbo_medicos_sus_ativos_distintos > 0), "**."),
-  paste0("- Entidades com capacidade fixa direta: **", nrow(direct_entities), "**; todas possuem ao menos um CBO medico SUS ativo."),
+  paste0("- Entidades com estrutura fixa direta: **", nrow(direct_entities), "**; **", sum(direct_entities$cbo_medicos_sus_ativos_rede_direta > 0L), "** possuem ao menos um CBO medico SUS ativo no retrato CNES."),
   paste0("- Entidades com leitos SUS diretamente registrados: **", sum(direct_entities$leitos_sus_rede_direta > 0), "** de **", nrow(direct_entities), "**."),
   "",
   "### Estabelecimentos Com Leitos Existentes",

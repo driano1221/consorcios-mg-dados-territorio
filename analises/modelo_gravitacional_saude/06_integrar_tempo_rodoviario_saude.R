@@ -133,10 +133,10 @@ fixed_units <- units |>
     by = "cod_ibge_6_destino"
   )
 
-if (nrow(fixed_units) != 366L || anyNA(fixed_units$id_municipio_destino)) {
+if (anyNA(fixed_units$id_municipio_destino)) {
   stop("Unidades fixas nao foram integralmente ligadas aos municipios de destino.")
 }
-if (n_distinct(fixed_units$cnpj_raiz_8) != 46L) {
+if (n_distinct(fixed_units$cnpj_raiz_8) != sum(entities$capacidade_status == "capacidade_direta_cnes_atual")) {
   stop("Quantidade inesperada de entidades com unidade fixa.")
 }
 

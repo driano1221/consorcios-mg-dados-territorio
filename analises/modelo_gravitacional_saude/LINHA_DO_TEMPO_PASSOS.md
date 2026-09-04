@@ -12,7 +12,8 @@ flowchart LR
   P3 --> P4["4. Qual capacidade<br/>esta registrada?"]
   P4 --> P5["5. Qual a impedancia<br/>rodoviaria?"]
   P5 --> P6["6. O que ocorreu<br/>em cada ano?"]
-  P6 --> P7["Proximo: alternativas<br/>e controles anuais"]
+  P6 --> PC["Complemento:<br/>cobertura e alertas"]
+  PC --> P7["Proximo: alternativas<br/>e controles anuais"]
 ```
 
 ## Evolucao Do Projeto
@@ -21,10 +22,11 @@ flowchart LR
 |---:|---|---|---|---|
 | 1 | quais CNPJs representam consorcios de saude? | matriz e filiais podiam contar separadamente | universo por CNPJ original e por raiz | 100 CNPJs em 84 entidades; 66 observadas no MIDES |
 | 2 | pagamento e declaracao contam a mesma historia? | MIDES e MUNIC podiam ser lidos como vinculo equivalente | cotejamento e revisao documental | 1.311 pares: 630 comuns, 658 somente MIDES e 23 somente MUNIC |
-| 3 | sede administrativa e destino assistencial? | distancia poderia apontar para um escritorio | unidades CNES e decisao de polo/rede | 639 unidades; 36 entidades sem unidade direta |
-| 4 | como medir poder de atracao? | leitos eram uma hipotese ainda nao testada | capacidade por unidade e entidade | 366 fixas, 273 moveis; apenas uma entidade com leitos SUS diretos |
-| 5 | como medir a resistencia espacial? | nao havia impedancia integrada | tempo por destino, unidade e entidade | 363.378 pares MG completos; 46 entidades com tempo |
+| 3 | sede administrativa e destino assistencial? | distancia poderia apontar para um escritorio | unidades CNES e decisao de polo/rede | 670 unidades; 21 entidades sem unidade direta |
+| 4 | como medir poder de atracao? | leitos eram uma hipotese ainda nao testada | capacidade por unidade e entidade | 389 fixas, 281 moveis; apenas uma entidade com leitos SUS diretos |
+| 5 | como medir a resistencia espacial? | nao havia impedancia integrada | tempo por destino, unidade e entidade | 363.378 pares MG completos; 61 entidades com tempo |
 | 6 | como representar a trajetoria anual? | pagamentos, tempo e capacidade estavam separados | grade anual com eventos e defasagens | 573.216 linhas; 426 primeiros pagamentos, 252 retornos e 533 interrupcoes |
+| Complemento | o que realmente existe nos 38 casos pendentes? | falsos negativos, redes moveis e inativos estavam misturados | busca por CNPJ proprio e auditoria documental | 15 recuperados; 23 sem estrutura fixa; 7 alertas decididos |
 
 ## Exemplo Real Continuo: Igarape x CISMEP
 
@@ -71,7 +73,7 @@ divergente, ele nao precisou entrar na amostra documental dos 50 casos.
 ### Passo 3 - Sede Nao Virou Hospital Automaticamente
 
 A ancora administrativa do CISMEP e Sao Joaquim de Bicas. A consulta dos CNPJs
-no CNES retornou 13 unidades diretamente vinculadas. O resultado nao foi
+no CNES retornou 15 unidades diretamente vinculadas. O resultado nao foi
 "hospital da sede", mas **rede vinculada sem polo unico**.
 
 Isso muda a pergunta de distancia. Em vez de calcular apenas
@@ -84,18 +86,18 @@ A consulta detalhada mostrou:
 
 | Componente atual do CISMEP | Valor |
 |---|---:|
-| unidades vinculadas | 13 |
+| unidades vinculadas | 15 |
 | unidades moveis/itinerantes | 11 |
-| unidades fixas | 2 |
-| municipios com oferta fixa | 2: Igarape e Sao Joaquim de Bicas |
-| unidades com ambulatorio SUS | 2 |
-| unidades com SADT SUS | 2 |
+| unidades fixas | 4 |
+| municipios com oferta fixa | 4: Betim, Brumadinho, Igarape e Sao Joaquim de Bicas |
+| unidades com ambulatorio SUS | 4 |
+| unidades com SADT SUS | 4 |
 | unidades com internacao SUS | 1 |
 | leitos SUS diretos | 32 |
 | vinculos medicos SUS ativos | 130 |
 | CBOs medicos SUS somados por unidade | 22 |
 
-O CISMEP possui leitos, mas e excecao: somente uma das 46 entidades com oferta
+O CISMEP possui leitos, mas e excecao: somente uma das 61 entidades com oferta
 fixa direta registra leitos SUS. Por isso o caso nao autoriza usar leitos como
 massa unica para todos os consorcios.
 
@@ -141,6 +143,23 @@ flowchart LR
   C --> D["2020-2021<br/>permanencia"]
 ```
 
+### Complemento - As Lacunas Foram Reabertas Sem Inventar Polos
+
+A consulta inicial usava o CNPJ como mantenedor. A API atual do CNES tambem
+permite buscar o CNPJ proprio do estabelecimento. A segunda rota mudou casos
+reais:
+
+| Caso | Antes | Depois | Consequencia |
+|---|---|---|---|
+| CISARP | sem unidade direta | clinica CNES 7918747 em Taiobeiras | entra na cobertura fixa atual; a estrutura nao e retroagida automaticamente |
+| CONSONORTE | sem unidade direta | clinica CNES 0975397 e dois vacimoveis | tempo da clinica e oferta movel ficam separados |
+| CIS/CEN | somente vacimoveis | rede credenciada documentada, sem hospital unico | continua sem tempo fixo; prestadores devem ser identificados por servico/ano |
+| CIS/UBA | pagamento historico e matriz inapta | nenhuma unidade atual confirmada | permanece no MIDES historico, mas nao como alternativa atual |
+
+Assim, “auditoria concluida” nao significa que todos ganharam um polo. Significa
+que cada ausencia recebeu uma leitura rastreavel e que `NA` foi preservado
+quando a estrutura nao podia ser localizada com seguranca.
+
 ## O Que O Exemplo Demonstra
 
 1. entidade e raiz de CNPJ, nao uma linha isolada de estabelecimento;
@@ -155,7 +174,7 @@ flowchart LR
 - CISMEP e a unica entidade com leitos SUS diretamente registrados; os 32
   leitos nao representam a cobertura das demais.
 - Igarape possui unidade no proprio municipio; muitos pares tem tempo positivo.
-- Trinta e seis entidades nao possuem unidade direta e duas tem somente oferta
+- Vinte e uma entidades nao possuem unidade direta e duas tem somente oferta
   movel; elas permanecem com tempo `NA`.
 - A capacidade CNES foi coletada em 2026 e nao comprova a mesma estrutura em
   todos os anos de 2014 a 2021.

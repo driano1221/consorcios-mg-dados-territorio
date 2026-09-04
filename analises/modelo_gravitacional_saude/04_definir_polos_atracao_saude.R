@@ -9,6 +9,7 @@
 
 suppressPackageStartupMessages({
   library(dplyr)
+  library(jsonlite)
   library(stringr)
   library(rvest)
 })
@@ -42,17 +43,20 @@ split_cnpjs <- function(x) {
   values[nchar(values) == 14L]
 }
 
-fetch_cnes <- function(url, attempts = 2L) {
+fetch_cnes <- function(url, attempts = 2L, referer = NULL) {
   last_error <- NA_character_
   for (attempt in seq_len(attempts)) {
     temp_file <- tempfile(fileext = ".html")
-    result <- tryCatch(
+    result <- tryCatch({
+      curl_args <- c("-sS", "-L", "--max-time", "20", "-A", "Mozilla/5.0")
+      if (!is.null(referer)) curl_args <- c(curl_args, "-e", referer)
       system2(
         "curl.exe",
-        c("-sS", "-L", "--max-time", "20", "-A", "Mozilla/5.0", "-o", shQuote(temp_file), shQuote(url)),
+        c(curl_args, "-o", shQuote(temp_file), shQuote(url)),
         stdout = FALSE,
         stderr = FALSE
-      ),
+      )
+    },
       error = function(e) e
     )
 
@@ -103,6 +107,28 @@ parse_listing <- function(raw_content) {
     select(co_unidade, cnes, nome_estabelecimento_cnes)
 
   result
+}
+
+parse_json_listing <- function(raw_content) {
+  text <- rawToChar(raw_content)
+  if (!str_detect(trimws(text), "^[\\[{]")) stop("Resposta CNES nao e JSON.")
+  parsed <- jsonlite::fromJSON(text, simplifyDataFrame = TRUE)
+  if (is.null(parsed) || length(parsed) == 0L) {
+    return(data.frame(
+      co_unidade = character(),
+      cnes = character(),
+      nome_estabelecimento_cnes = character(),
+      stringsAsFactors = FALSE
+    ))
+  }
+
+  data.frame(
+    co_unidade = as.character(parsed$id),
+    cnes = as.character(parsed$cnes),
+    nome_estabelecimento_cnes = clean_text(parsed$noFantasia),
+    stringsAsFactors = FALSE
+  ) |>
+    distinct(co_unidade, .keep_all = TRUE)
 }
 
 parse_detail <- function(raw_content) {
@@ -185,6 +211,7 @@ query_map <- bind_rows(lapply(seq_len(nrow(universe)), function(i) {
   distinct()
 
 stable_consultas <- file.path(out_dir, "consultas_cnes_polo_saude_mg.csv")
+stable_consultas_cnpj_proprio <- file.path(out_dir, "consultas_cnes_cnpj_proprio_saude_mg.csv")
 stable_units <- file.path(out_dir, "unidades_cnes_vinculadas_saude_mg.csv")
 stable_polos <- file.path(out_dir, "polos_atracao_saude_mg.csv")
 refresh_cnes <- identical(Sys.getenv("REFRESH_CNES"), "1")
@@ -208,8 +235,14 @@ if (use_cached_listings) {
     all(consultas$data_extracao == snapshot_date)
 
   if (cache_is_current) {
+    if (!"fonte_listagem_cnes" %in% names(cached_units)) {
+      cached_units$fonte_listagem_cnes <- "cnpj_mantenedora"
+    }
     units_listed <- cached_units |>
-      select(cnpj_raiz_8, cnpj_canonico, cnpj_consultado, co_unidade, cnes, nome_estabelecimento_cnes, url_ficha_cnes) |>
+      select(
+        cnpj_raiz_8, cnpj_canonico, cnpj_consultado, co_unidade, cnes,
+        nome_estabelecimento_cnes, url_ficha_cnes, fonte_listagem_cnes
+      ) |>
       distinct(cnpj_raiz_8, co_unidade, .keep_all = TRUE)
   } else {
     use_cached_listings <- FALSE
@@ -270,8 +303,87 @@ if (!use_cached_listings) {
 
   consultas <- bind_rows(listing_rows)
   units_listed <- bind_rows(unit_rows) |>
+    mutate(fonte_listagem_cnes = "cnpj_mantenedora") |>
     distinct(cnpj_raiz_8, co_unidade, .keep_all = TRUE)
 }
+
+# A listagem legada acima pesquisa unidades mantidas pelo CNPJ. O portal atual
+# do CNES tambem permite pesquisar o CNPJ proprio do estabelecimento. As duas
+# relacoes nao sao equivalentes; manter ambas evita falsos negativos sem
+# inferir vinculos por nome ou proximidade geografica.
+own_listing_rows <- vector("list", nrow(query_map))
+own_unit_rows <- list()
+own_unit_position <- 0L
+
+for (i in seq_len(nrow(query_map))) {
+  cnpj <- query_map$cnpj_consultado[[i]]
+  url <- paste0(
+    "https://cnes.datasus.gov.br/services/estabelecimentos?cnpj=",
+    cnpj,
+    "&estado=31"
+  )
+  response <- fetch_cnes(
+    url,
+    referer = "https://cnes.datasus.gov.br/pages/estabelecimentos/consulta.jsp"
+  )
+
+  if (!response$ok) {
+    own_listing_rows[[i]] <- data.frame(
+      cnpj_raiz_8 = query_map$cnpj_raiz_8[[i]],
+      cnpj_canonico = query_map$cnpj_canonico[[i]],
+      cnpj_consultado = cnpj,
+      status_consulta_cnes = "erro_consulta",
+      n_unidades_listadas = NA_integer_,
+      url_consulta_cnes = url,
+      erro_consulta = response$error,
+      data_extracao = snapshot_date,
+      stringsAsFactors = FALSE
+    )
+    next
+  }
+
+  parse_error <- NA_character_
+  listed <- tryCatch(
+    parse_json_listing(response$content),
+    error = function(e) {
+      parse_error <<- conditionMessage(e)
+      data.frame(
+        co_unidade = character(), cnes = character(),
+        nome_estabelecimento_cnes = character(), stringsAsFactors = FALSE
+      )
+    }
+  )
+  own_listing_rows[[i]] <- data.frame(
+    cnpj_raiz_8 = query_map$cnpj_raiz_8[[i]],
+    cnpj_canonico = query_map$cnpj_canonico[[i]],
+    cnpj_consultado = cnpj,
+    status_consulta_cnes = if (!is.na(parse_error)) "erro_resposta" else if (nrow(listed) == 0L) "sem_unidade_listada" else "unidades_listadas",
+    n_unidades_listadas = nrow(listed),
+    url_consulta_cnes = url,
+    erro_consulta = parse_error,
+    data_extracao = snapshot_date,
+    stringsAsFactors = FALSE
+  )
+
+  if (nrow(listed) > 0L) {
+    for (j in seq_len(nrow(listed))) {
+      own_unit_position <- own_unit_position + 1L
+      own_unit_rows[[own_unit_position]] <- cbind(
+        query_map[i, ],
+        listed[j, ],
+        url_ficha_cnes = paste0(source_base, "/Exibe_Ficha_Estabelecimento.asp?VCo_Unidade=", listed$co_unidade[[j]]),
+        fonte_listagem_cnes = "cnpj_proprio",
+        stringsAsFactors = FALSE
+      )
+    }
+  }
+  Sys.sleep(0.1)
+}
+
+consultas_cnpj_proprio <- bind_rows(own_listing_rows)
+units_listed <- bind_rows(units_listed, bind_rows(own_unit_rows)) |>
+  arrange(cnpj_raiz_8, co_unidade, desc(fonte_listagem_cnes == "cnpj_proprio")) |>
+  distinct(cnpj_raiz_8, co_unidade, .keep_all = TRUE)
 
 # A ficha detalhada e necessaria somente para entidades com uma unidade. Redes
 # ficam preservadas como redes neste passo; abrir cada ficha delas nao melhora
@@ -326,8 +438,13 @@ for (i in seq_len(nrow(units_listed))) {
 
 units <- bind_rows(detail_rows) |>
   mutate(
-    fonte_vinculo = "CNES: estabelecimento listado sob CNPJ da mantenedora",
-    vinculo_cnpj_mantenedora_direto = TRUE,
+    fonte_vinculo = if_else(
+      fonte_listagem_cnes == "cnpj_proprio",
+      "CNES: CNPJ proprio do estabelecimento coincide com CNPJ do consorcio",
+      "CNES: estabelecimento listado sob CNPJ da mantenedora"
+    ),
+    vinculo_cnpj_mantenedora_direto = fonte_listagem_cnes == "cnpj_mantenedora",
+    vinculo_cnpj_proprio_direto = fonte_listagem_cnes == "cnpj_proprio",
     ficha_cnes_completa = status_ficha_cnes == "ok" & !is.na(municipio_cnes) & nzchar(municipio_cnes),
     unidade_movel_ou_itinerante = str_detect(
       nome_estabelecimento_cnes,
@@ -452,9 +569,11 @@ polos <- universe |>
   arrange(cnpj_raiz_8)
 
 write.csv(consultas, stable_consultas, row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(consultas_cnpj_proprio, stable_consultas_cnpj_proprio, row.names = FALSE, fileEncoding = "UTF-8")
 write.csv(units, stable_units, row.names = FALSE, fileEncoding = "UTF-8")
 write.csv(polos, stable_polos, row.names = FALSE, fileEncoding = "UTF-8")
 write.csv(consultas, file.path(out_dir, paste0("consultas_cnes_polo_saude_mg_", snapshot_tag, ".csv")), row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(consultas_cnpj_proprio, file.path(out_dir, paste0("consultas_cnes_cnpj_proprio_saude_mg_", snapshot_tag, ".csv")), row.names = FALSE, fileEncoding = "UTF-8")
 write.csv(units, file.path(out_dir, paste0("unidades_cnes_vinculadas_saude_mg_", snapshot_tag, ".csv")), row.names = FALSE, fileEncoding = "UTF-8")
 write.csv(polos, file.path(out_dir, paste0("polos_atracao_saude_mg_", snapshot_tag, ".csv")), row.names = FALSE, fileEncoding = "UTF-8")
 saveRDS(polos, file.path(out_dir, "polos_atracao_saude_mg.rds"))

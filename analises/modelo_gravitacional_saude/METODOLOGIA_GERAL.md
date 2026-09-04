@@ -28,10 +28,11 @@ preparacao.
 | 1. Fechar o universo de saude | Concluido | 84 entidades consolidadas e auditadas |
 | 2a. Comparar MIDES, MUNIC e documentos | Concluido | 1.311 pares em 2019 e revisao de 50 divergencias |
 | 2b. Usar CNM como fotografia atual no recorte saude | Disponivel, mas ainda nao materializado na tabela de saude | Snapshot CNM de 27/08 e piloto CNM x MIDES ja existem em outra frente |
-| 3. Definir polo de atracao assistencial | Concluido | 84 entidades consultadas no CNES e regra rastreavel de polo/rede |
-| 4. Construir capacidade assistencial | Concluido | 639 unidades consultadas; medidas separadas para 46 entidades com oferta fixa direta |
-| 5. Integrar tempo rodoviario | Concluido | 853 origens, 366 unidades fixas e tres camadas de impedancia |
+| 3. Definir polo de atracao assistencial | Concluido e corrigido | 84 entidades consultadas por CNPJ mantenedor e proprio |
+| 4. Construir capacidade assistencial | Concluido e reprocessado | 670 unidades; medidas separadas para 61 entidades com oferta fixa direta |
+| 5. Integrar tempo rodoviario | Concluido e reprocessado | 853 origens, 389 unidades fixas e tres camadas de impedancia |
 | 6. Montar o painel analitico anual | Concluido | 573.216 observacoes municipio x entidade x ano |
+| Complemento. Cobertura assistencial | Concluido | 38 casos auditados, 15 recuperados e 7 alertas decididos |
 
 O item 2b nao bloqueia a proxima etapa: a CNM e uma fotografia atual e nao
 prova a composicao em 2019. Caso seja integrada, ela entrara como marcador
@@ -217,8 +218,9 @@ descricao e sensibilidade, sem alterar a leitura historica do ano de 2019.
 Separar a **sede administrativa** de um possivel destino assistencial. A sede
 do CNPJ nao foi assumida como hospital, clinica ou rede de atendimento. Cada
 matriz e filial do universo consolidado foi consultada na pagina publica do
-[CNES/DATASUS](https://cnes2.datasus.gov.br/) de estabelecimentos mantidos
-pelo CNPJ.
+[CNES/DATASUS](https://cnes.datasus.gov.br/) por duas rotas complementares:
+estabelecimentos mantidos pelo CNPJ e estabelecimentos cujo CNPJ proprio e o
+da matriz ou filial do consorcio.
 
 ### Antes
 
@@ -235,52 +237,48 @@ pelo CNPJ.
 ```mermaid
 flowchart LR
     A["84 entidades de saude<br/>consolidadas"] --> B["Consultar 100 CNPJs<br/>matriz e filial no CNES"]
-    B --> C{"Unidades diretamente<br/>mantidas pelo CNPJ?"}
-    C -->|"Uma fixa"| D["Polo: estabelecimento CNES unico"]
-    C -->|"Duas ou mais"| E["Rede vinculada:<br/>preservar todas as unidades"]
-    C -->|"Uma movel"| F["Sem polo geografico fixo"]
-    C -->|"Nenhuma"| G["Sede: ancora apenas<br/>para sensibilidade"]
-    D --> H["Passo 4: capacidade direta"]
-    E --> I["Passo 4: regra de agregacao da rede"]
-    F --> I
-    G --> J["Auditoria documental de prestador/rede"]
+    B --> C["Consultar CNPJ mantenedor<br/>e CNPJ proprio"]
+    C --> D{"Unidades diretamente<br/>vinculadas?"}
+    D -->|"Uma fixa"| E["Polo: estabelecimento CNES unico"]
+    D -->|"Duas ou mais"| F["Rede vinculada:<br/>preservar todas as unidades"]
+    D -->|"Uma movel"| G["Sem polo geografico fixo"]
+    D -->|"Nenhuma"| H["Sede: ancora apenas<br/>para sensibilidade"]
+    E --> I["Passo 4: capacidade direta"]
+    F --> J["Passo 4: regra de agregacao da rede"]
+    G --> J
+    H --> K["Auditoria documental de prestador/rede"]
 ```
 
 ### Depois
 
 | Decisao de polo | Entidades | Leitura e proxima acao |
 |---|---:|---|
-| Estabelecimento fixo unico | 2 | A localizacao CNES pode ser usada como polo; a capacidade e medida no passo 4. |
-| Rede vinculada, sem polo unico | 45 | Manter todas as unidades; definir tempo e capacidade por rede, sem escolher uma sede arbitraria. |
-| Sem unidade CNES pelo CNPJ | 36 | Nao inferir ausencia de atendimento; auditar rede propria, contrato ou prestador externo. |
+| Estabelecimento fixo unico | 13 | A localizacao CNES pode ser usada como destino atual; a capacidade e medida no passo 4. |
+| Rede vinculada, sem polo unico | 49 | Manter todas as unidades; definir tempo e capacidade por rede, sem escolher uma sede arbitraria. |
+| Sem unidade CNES pelo CNPJ | 21 | Nao inferir ausencia de atendimento; auditar rede propria, contrato ou prestador externo. |
 | Unidade movel, sem polo fixo | 1 | Nao usar o endereco cadastral como destino de viagem. |
 
 Foram consultados os 100 CNPJs matriz/filial das 84 entidades e retornaram
-639 unidades CNES diretamente vinculadas. A coleta final nao teve erro de
-consulta. Entre as 64 entidades do nucleo setorial com pagamento MIDES, ha 2
-polos fixos unicos, 43 redes, 18 casos sem unidade direta e 1 unidade movel.
-
-O passo 4 refinou a tipologia interna das redes: CIS/CEN possui tres unidades,
-mas todas sao vacimoveis. Assim, a contagem de capacidade fixa final e 44 redes
-com ao menos uma unidade fixa + 2 polos fixos unicos; CIS/CEN e CIMES ficam sem
-polo rodoviario fixo.
+670 unidades CNES diretamente vinculadas: 638 preservadas pela rota de CNPJ
+mantenedor e 32 pela rota de CNPJ proprio, com uma unidade sobreposta
+deduplicada. A segunda rota recuperou 15 das 36 entidades antes classificadas
+como sem unidade. O passo 4 confirmou 61 entidades com ao menos uma unidade
+fixa; CIS/CEN e CIMES continuam apenas com unidades moveis diretamente ligadas.
 
 ### Exemplos Reais
 
 | Entidade | Evidencia encontrada | Decisao |
 |---|---|---|
-| CISMAS | Uma clinica/centro de especialidade CNES em Itajuba | Polo fixo unico; apto a receber medida de capacidade no passo 4. |
-| CISMARPA | Uma clinica/centro de especialidade CNES em Pocos de Caldas | Polo fixo unico; apto a receber medida de capacidade no passo 4. |
+| CISARP | Clinica CNES 7918747 encontrada pelo CNPJ proprio em Taiobeiras | Corrige um falso negativo da rota de mantenedora. |
+| CONSONORTE | Clinica fixa CNES 0975397 e dois vacimoveis | Unidade fixa e oferta movel permanecem separadas. |
 | CISVER | Cinco unidades CNES diretamente vinculadas | Rede; nao se escolhe uma unidade isolada como destino do consorcio. |
 | CIMES | Uma unidade movel VACIMOVEL | Sem polo fixo; endereco cadastral nao representa destino assistencial. |
 
 ### Decisao Metodologica Para Redes E Casos Sem Unidade Direta
 
-O proximo produto nao sera ainda uma matriz de tempo. Primeiro sera criado um
-cadastro de oferta assistencial. Para cada uma das 45 redes, as unidades serao
-mantidas como destinos possiveis. Para os 36 sem unidade sob o proprio CNPJ,
-sera buscada evidencia de rede propria, prestador contratado ou estabelecimento
-operado sob outro CNPJ. Cada caso recebera uma destas saidas:
+Cada rede e mantida como conjunto de destinos possiveis. Para os casos sem
+unidade direta, foi buscada evidencia de rede propria, prestador contratado ou
+estabelecimento operado sob outro CNPJ. Cada caso recebe uma saida explicita:
 
 1. `polo_rede_documentada`: entra na analise principal de capacidade e tempo;
 2. `prestador_externo_documentado`: entra somente em especificacao explicitamente
@@ -299,7 +297,7 @@ assistencial documentada.
 
 ### Em Que Consistiu
 
-Consultar ficha, leitos, atendimento e profissionais no CNES para as 639
+Consultar ficha, leitos, atendimento e profissionais no CNES para as 670
 unidades diretamente vinculadas aos CNPJs consolidados. A agregacao por
 entidade utiliza somente unidades fixas e mantem cada componente separado.
 
@@ -307,15 +305,15 @@ entidade utiliza somente unidades fixas e mantem cada componente separado.
 
 ```mermaid
 flowchart LR
-    A["639 unidades CNES"] --> B["Separar 366 fixas<br/>e 273 moveis"]
+    A["670 unidades CNES"] --> B["Separar 389 fixas<br/>e 281 moveis"]
     B --> C["Leitos existentes e SUS"]
     B --> D["Ambulatorio, internacao e SADT"]
     B --> E["Vinculos e CBOs SUS ativos"]
     C --> F["Agregar somente unidades fixas<br/>por raiz de CNPJ"]
     D --> F
     E --> F
-    F --> G["46 com capacidade direta"]
-    F --> H["36 sem unidade direta = NA"]
+    F --> G["61 com capacidade direta"]
+    F --> H["21 sem unidade direta = NA"]
     F --> I["2 somente moveis = sem polo fixo"]
 ```
 
@@ -323,17 +321,19 @@ flowchart LR
 
 | Indicador | Resultado |
 |---|---:|
-| Unidades consultadas sem erro final | 639 |
-| Unidades fixas | 366 |
-| Unidades moveis/itinerantes | 273 |
-| Entidades com capacidade fixa direta | 46 |
-| Entidades sem unidade no proprio CNPJ | 36 |
+| Unidades consultadas sem erro final | 670 |
+| Unidades fixas | 389 |
+| Unidades moveis/itinerantes | 281 |
+| Entidades com capacidade fixa direta | 61 |
+| Entidades sem unidade no proprio CNPJ | 21 |
 | Entidades somente com unidades moveis | 2 |
 | Entidades com leitos SUS diretos | 1 |
 
-Todas as 46 entidades com oferta fixa possuem ao menos um CBO medico SUS
-ativo. Quarenta possuem atendimento ambulatorial SUS e 23 possuem SADT em ao
-menos uma unidade. Leitos SUS aparecem somente no ICISMEP; portanto, nao sao
+Das 61 entidades com oferta fixa, 58 possuem ao menos um CBO medico SUS ativo
+no retrato. CISREC, CISAP-VP e CISVALEGRAN possuem unidade fixa, mas zero CBO
+medico SUS diretamente registrado; isso exige producao ou contratos
+complementares, nao permite concluir capacidade zero. Leitos SUS aparecem
+somente no CISMEP; portanto, nao sao
 medida suficiente para representar sozinhos a atracao de todos os consorcios.
 
 ### Exemplos Reais
@@ -344,7 +344,7 @@ medida suficiente para representar sozinhos a atracao de todos os consorcios.
   fixa e preserva as moveis separadamente.
 - CIS/CEN tem tres vacimoveis e CIMES tem um; ambos ficam sem polo rodoviario
   fixo.
-- CISMEP tem duas unidades fixas e 11 moveis; os 32 leitos SUS pertencem ao
+- CISMEP tem quatro unidades fixas e 11 moveis; os 32 leitos SUS pertencem ao
   Hospital 272 Joias diretamente vinculado.
 
 ### Decisao Metodologica
@@ -366,7 +366,7 @@ municipio `i` pode ser representada por:
 `M(j)` e a massa assistencial da entidade. `f[t(i,j)]` diminui com o tempo
 rodoviario entre o municipio e a oferta.
 
-Na fotografia atual, 45 das 46 entidades com oferta fixa direta possuem zero
+Na fotografia atual, 60 das 61 entidades com oferta fixa direta possuem zero
 leito SUS sob o proprio CNPJ. Isso nao significa ausencia de servico: clinicas
 especializadas podem ter profissionais, atendimento ambulatorial e SADT sem
 internacao.
@@ -376,14 +376,14 @@ internacao.
 | CISMAS | 0 | clinica fixa e 10 CBOs medicos somados | atracao seria forçada a zero |
 | CISMARPA | 0 | clinica fixa e 18 CBOs medicos somados | estrutura ambulatorial seria ignorada |
 | CISVER | 0 | uma unidade fixa e 33 CBOs medicos somados | rede seria tratada como sem oferta |
-| CISMEP | 32 | duas unidades fixas e 22 CBOs medicos somados | seria a unica entidade com massa positiva |
+| CISMEP | 32 | quatro unidades fixas e 22 CBOs medicos somados | seria a unica entidade com massa positiva |
 
 > **Transformacao possivel dos leitos**
 >
 > log(1 + leitos SUS da entidade j)
 
 Essa transformacao evita o logaritmo de zero, mas nao corrige a falta de
-informacao. Os 36 casos sem unidade direta tambem nao possuem capacidade zero:
+informacao. Os 21 casos sem unidade direta tambem nao possuem capacidade zero:
 possuem capacidade nao observada nesta etapa (`NA`).
 
 ---
@@ -392,7 +392,7 @@ possuem capacidade nao observada nesta etapa (`NA`).
 
 ### Em Que Consistiu
 
-Ligar os 853 municipios de Minas Gerais aos municipios das 366 unidades CNES
+Ligar os 853 municipios de Minas Gerais aos municipios das 389 unidades CNES
 fixas diretamente vinculadas aos consorcios. A impedancia e calculada ate a
 oferta documentada, nao automaticamente ate a sede administrativa.
 
@@ -420,14 +420,14 @@ automovel. O arquivo `dist_brasil.rds` foi validado pelo MD5 oficial
 flowchart LR
     A["Matriz nacional OSRM"] --> B["Filtrar 363.378 pares de MG"]
     C["853 municipios"] --> D["Crosswalk IBGE 6 para 7 digitos"]
-    E["366 unidades fixas"] --> F["232 municipios de oferta"]
+    E["389 unidades fixas"] --> F["238 municipios de oferta"]
     B --> G["Municipio origem x municipio de oferta"]
     D --> G
     F --> G
-    G --> H["197.896 rotas municipais"]
-    H --> I["312.198 linhas municipio x unidade"]
+    G --> H["203.014 rotas municipais"]
+    H --> I["331.817 linhas municipio x unidade"]
     I --> J["Minimo, mediana e maximo por entidade"]
-    K["36 sem unidade + 2 somente moveis"] --> L["Tempo NA"]
+    K["21 sem unidade + 2 somente moveis"] --> L["Tempo NA"]
     J --> M["71.652 linhas municipio x entidade"]
     L --> M
 ```
@@ -459,12 +459,12 @@ automaticamente a impedancia definitiva do modelo.
 
 | Produto | Unidade da linha | Linhas |
 |---|---|---:|
-| municipio-destino | municipio x municipio de oferta | 197.896 |
-| municipio-unidade | municipio x unidade CNES fixa | 312.198 |
+| municipio-destino | municipio x municipio de oferta | 203.014 |
+| municipio-unidade | municipio x unidade CNES fixa | 331.817 |
 | municipio-entidade | municipio x entidade consolidada | 71.652 |
 
 Os 363.378 pares rodoviarios entre os 853 municipios de MG estao completos.
-A cobertura final possui 232 municipios de oferta, 366 unidades fixas e 46
+A cobertura final possui 238 municipios de oferta, 389 unidades fixas e 61
 entidades com tempo. Trinta e seis entidades sem unidade direta e duas somente
 moveis permanecem com tempo ausente.
 
@@ -613,9 +613,92 @@ estimacao.
 1. Presenca significa pagamento MIDES, nao filiacao juridica.
 2. Pares positivos em 2014 sao censurados a esquerda.
 3. CNES e capacidade sao fotografia de 2026, nao serie 2014-2021.
-4. Trinta e oito entidades permanecem sem tempo fixo diretamente documentado.
+4. Vinte e tres entidades permanecem sem estrutura fixa CNES direta; algumas
+   possuem rede movel ou contratada que exige outra especificacao territorial.
 5. Populacao, RCL, regiao de saude, bacia e mandato ainda nao foram integrados.
 6. O conjunto final de alternativas ainda precisa de regra substantiva.
+
+---
+
+## Complemento - Completar A Cobertura Assistencial
+
+### Em Que Consistiu
+
+Revisar os 36 casos originalmente sem unidade CNES direta e os dois casos
+classificados como somente moveis. A auditoria corrigiu a busca CNES, pesquisou
+redes contratadas ou moveis e registrou uma decisao para os sete alertas de
+escopo, situacao cadastral ou macrogrupo.
+
+### Antes
+
+- a consulta por CNPJ mantenedor deixava unidades com CNPJ proprio do consorcio
+  fora do resultado;
+- “sem unidade”, “somente movel”, “rede contratada” e “entidade historica”
+  apareciam como lacunas semelhantes;
+- os sete alertas indicavam revisao, mas ainda nao tinham decisao operacional;
+- usar a sede administrativa como correcao produziria um polo ficticio.
+
+### Pipeline
+
+```mermaid
+flowchart LR
+    A["38 casos originais"] --> B["CNES por CNPJ proprio"]
+    B --> C["15 entidades recuperadas"]
+    B --> D["23 sem estrutura fixa direta"]
+    D --> E["Rede contratada ou movel documentada"]
+    D --> F["Entidade historica/inativa"]
+    D --> G["Evidencia insuficiente"]
+    C --> H["Reprocessar capacidade e tempo"]
+    E --> I["Nao inventar hospital unico"]
+    F --> J["Preservar MIDES historico;<br/>excluir alternativa atual"]
+    G --> K["Capacidade e tempo = NA"]
+    L["7 alertas"] --> M["Decisao explicita por caso"]
+```
+
+### Resultado
+
+| Indicador | Antes | Depois |
+|---|---:|---:|
+| unidades CNES diretamente vinculadas | 639 | 670 |
+| unidades fixas | 366 | 389 |
+| entidades com estrutura fixa direta | 46 | 61 |
+| entidades sem unidade CNES direta | 36 | 21 |
+| entidades somente com unidades moveis diretas | 2 | 2 |
+| alertas com decisao registrada | 0 | 7 |
+
+Das 38 entidades reavaliadas, 15 foram recuperadas pela API oficial de busca
+por CNPJ proprio. As 23 restantes nao foram convertidas em capacidade zero:
+duas sao historicas e inativas com MIDES, cinco possuem oferta ou rede movel,
+indireta ou planejada sem polo fixo atual confirmado, uma esta ativa sem MIDES
+e sem evidencia assistencial suficiente, e 15 estao fora do universo modelavel
+atual por inatividade e ausencia de MIDES.
+
+### Exemplos Reais
+
+| Caso | Antes | Evidencia | Decisao |
+|---|---|---|---|
+| CISARP | sem unidade direta | clinica CNES 7918747 pelo CNPJ proprio | unidade fixa atual; temporalidade ainda deve ser validada |
+| CONSONORTE | sem unidade direta | clinica CNES 0975397 e dois vacimoveis | clinica e oferta movel separadas |
+| CIS/CEN | somente unidades moveis | contratos para media/alta complexidade | rede credenciada sem hospital unico; tempo fixo continua `NA` |
+| CIAS | sem unidade direta | gestao regional do SAMU em varios municipios | modelar bases/central em especificacao propria |
+| CIS/UBA | matriz inapta com MIDES ate 2020 | nenhuma unidade CNES atual | manter historia financeira e excluir alternativa atual |
+
+### Sete Alertas
+
+- CISREC e CONVALES permanecem em analise de sensibilidade multiarea;
+- CIS/UBA e o CNPJ `02287790` permanecem apenas como entidades historicas;
+- CIMESMI fica fora do modelo de saude ate surgir evidencia assistencial;
+- CODERI fica fora por inatividade e ausencia de MIDES;
+- CICONZ tem vigilancia/zoonoses reconhecida como tema de saude, mas fica fora
+  do modelo por inatividade e ausencia de MIDES.
+
+### Limites
+
+1. Unidade CNES atual nao prova que a mesma estrutura existia em 2014-2021.
+2. Rede contratada sem prestador e endereco por ano nao recebe tempo nem massa.
+3. Unidade movel nao possui um destino rodoviario fixo equivalente a hospital.
+4. Unidade fixa com zero CBO medico SUS registrado nao significa capacidade
+   zero; CISREC, CISAP-VP e CISVALEGRAN exigem producao ou contratos adicionais.
 
 ---
 
@@ -632,11 +715,12 @@ derivados locais ficam em `outputs/`.
 ```powershell
 Rscript analises/modelo_gravitacional_saude/01_fechar_universo_saude_mg.R
 Rscript analises/modelo_gravitacional_saude/02_cotejar_mides_munic_saude_2019.R
-Rscript analises/modelo_gravitacional_saude/03_revisar_documental_divergencias_saude.R
+Rscript analises/modelo_gravitacional_saude/03_revisar_divergencias_documentais_2019.R
 Rscript analises/modelo_gravitacional_saude/04_definir_polos_atracao_saude.R
 Rscript analises/modelo_gravitacional_saude/05_construir_capacidade_assistencial_saude.R
 Rscript analises/modelo_gravitacional_saude/06_integrar_tempo_rodoviario_saude.R
 Rscript analises/modelo_gravitacional_saude/07_montar_painel_analitico_saude.R
+Rscript analises/modelo_gravitacional_saude/08_completar_cobertura_assistencial_saude.R
 ```
 
 Cada script possui um teste correspondente em `tests/`. Os resultados locais
@@ -647,7 +731,8 @@ acompanha o caso Igarape x CISMEP ao longo dos seis passos.
 
 ### Proximo Passo
 
-Definir o conjunto de alternativas plausiveis, completar a auditoria dos 36
-casos sem unidade direta e integrar controles anuais validados antes da EDA e
-da estimacao. A CNM pode entrar como marcador atual de sensibilidade, sem
+Definir o conjunto de alternativas plausiveis e integrar controles anuais
+validados antes da EDA e da estimacao. Para redes moveis ou contratadas, a
+alternativa deve representar bases ou prestadores documentados, nao a sede
+administrativa. A CNM pode entrar como marcador atual de sensibilidade, sem
 retroagir sua composicao para 2019.

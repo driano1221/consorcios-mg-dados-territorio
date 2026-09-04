@@ -4,16 +4,16 @@
 - Entidades consolidadas avaliadas: **84**.
 - CNPJs de matriz/filial consultados: **100**.
 - Consultas CNES com erro: **0**.
-- Unidades CNES diretamente vinculadas ao CNPJ consultado: **639**.
+- Unidades CNES diretamente vinculadas ao CNPJ consultado: **670**.
 - Unidades classificadas como hospitalares pelo tipo CNES entre fichas de polos unicos: **0**.
 
 ## Resultado Da Regra
 
 | Decisao | Entidades |
 |---|---:|
-| estabelecimento_cnes_unico | 2 |
-| rede_vinculada_sem_polo_unico | 45 |
-| sede_administrativa_apenas_ancora_sensibilidade | 36 |
+| estabelecimento_cnes_unico | 13 |
+| rede_vinculada_sem_polo_unico | 49 |
+| sede_administrativa_apenas_ancora_sensibilidade | 21 |
 | unidade_movel_sem_polo_fixo | 1 |
 
 ## Regra De Interpretacao

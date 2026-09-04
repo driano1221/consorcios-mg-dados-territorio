@@ -21,13 +21,13 @@
 
 | Universo | Linhas | Eventos positivos |
 |---|---:|---:|
-| primeiro_pagamento | 242.988 | 296 |
-| entrada_ou_retorno | 243.763 | 496 |
-| retorno | 775 | 200 |
+| primeiro_pagamento | 317.644 | 329 |
+| entrada_ou_retorno | 318.588 | 553 |
+| retorno | 944 | 224 |
 | interrupcao | 8.524 | 530 |
-| interrupcao_com_tempo | 7.019 | 357 |
+| interrupcao_com_tempo | 8.111 | 427 |
 | intensidade_observada | 9.828 | NA |
-| intensidade_com_tempo | 8.143 | NA |
+| intensidade_com_tempo | 9.386 | NA |
 
 ## Regras Protegidas
 

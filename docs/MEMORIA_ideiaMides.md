@@ -741,11 +741,11 @@ Leitura da procedencia e confianca da v0.2:
 - O passo 3 foi concluido fora do dashboard: as 84 entidades de saude MG
   receberam sede administrativa canonica e situacao de polo assistencial.
 - O CNES/DATASUS foi consultado para 100 CNPJs de matriz e filial, sem erro
-  final. Foram retornadas 639 unidades registradas sob o CNPJ da mantenedora.
-- A decisao e estritamente cadastral: 45 entidades sao redes vinculadas, 36
-  nao possuem unidade CNES no proprio CNPJ, uma tem apenas unidade movel e duas
-  possuem um estabelecimento fixo unico. Sede administrativa nao foi promovida
-  automaticamente a hospital ou rede.
+  final, pelas rotas de CNPJ mantenedor e CNPJ proprio. Foram retornadas 670
+  unidades diretamente vinculadas.
+- A decisao e estritamente cadastral: 61 entidades possuem oferta fixa direta,
+  21 nao possuem unidade direta e duas possuem somente unidades moveis. Sede
+  administrativa nao foi promovida automaticamente a hospital ou rede.
 - CISMAS (Itajuba, CNES 6776434) e CISMARPA (Pocos de Caldas, CNES 5796601)
   sao os dois polos fixos unicos. CIMES possui um vacimovel e fica fora da
   medida principal de distancia fixa.
@@ -764,21 +764,21 @@ Arquivos antigos continuam uteis como registro de processo, mas nao devem ser us
 ## Capacidade Assistencial Direta CNES - 2026-09-03
 
 - O quarto bloco cientifico da trilha saude foi concluido fora do dashboard.
-- Foram consultados ficha, leitos, atendimento e profissionais para 639
-  unidades vinculadas diretamente aos CNPJs de matriz/filial: 366 fixas e 273
+- Foram consultados ficha, leitos, atendimento e profissionais para 670
+  unidades vinculadas diretamente aos CNPJs de matriz/filial: 389 fixas e 281
   moveis/itinerantes, sem erro final de modulo.
-- Quarenta e seis entidades possuem capacidade fixa direta; 36 permanecem sem
-  unidade sob o proprio CNPJ e nao foram convertidas em zero; CIS/CEN e CIMES
+- Sessenta e uma entidades possuem capacidade fixa direta; 21 permanecem sem
+  unidade direta e nao foram convertidas em zero; CIS/CEN e CIMES
   possuem somente unidades moveis e ficam sem polo rodoviario fixo.
-- Todas as 46 entidades com oferta fixa possuem ao menos um CBO medico SUS
-  ativo. Apenas o ICISMEP possui leitos SUS diretamente registrados; portanto,
+- Cinquenta e oito das 61 entidades com oferta fixa possuem ao menos um CBO
+  medico SUS ativo. Apenas o ICISMEP possui leitos SUS diretamente registrados; portanto,
   leitos nao serao usados como medida unica de atracao.
 - O modelo futuro testara separadamente unidades, CBOs medicos, atendimento
   ambulatorial, SADT e leitos. Nao foi criado indice composto.
 - A coleta passou a suportar cache, faixas de coleta e recuperacao apenas dos
   modulos com erro. Nomes e CNS de profissionais nao sao retidos.
-- O tempo rodoviario foi integrado no passo seguinte. A auditoria de
-  rede/prestador dos 36 casos sem unidade direta permanece pendente.
+- O tempo rodoviario foi integrado no passo seguinte. A cobertura complementar
+  dos casos pendentes foi concluida sem imputar prestador ou capacidade.
 
 ## Tempo Rodoviario Da Oferta Fixa - 2026-09-03
 
@@ -786,9 +786,9 @@ Arquivos antigos continuam uteis como registro de processo, mas nao devem ser us
 - A fonte `dist_brasil.rds` do Zenodo 11400243 foi validada pelo MD5 publicado
   e filtrada para os 363.378 pares entre os 853 municipios de MG, sem rota
   ausente.
-- Foram geradas tres camadas: 197.896 linhas municipio-destino, 312.198
+- Foram geradas tres camadas: 203.014 linhas municipio-destino, 331.817
   municipio-unidade e 71.652 municipio-entidade.
-- Quarenta e seis entidades possuem tempo para unidades fixas; 36 sem unidade
+- Sessenta e uma entidades possuem tempo para unidades fixas; 21 sem unidade
   direta e CIS/CEN/CIMES permanecem com tempo `NA`.
 - Redes mantem as unidades como fonte principal. Minimo, mediana e maximo sao
   resumos de sensibilidade e nao substituem a oferta por especialidade.
@@ -825,5 +825,33 @@ Arquivos antigos continuam uteis como registro de processo, mas nao devem ser us
   narrativa ponta a ponta em `LINHA_DO_TEMPO_PASSOS.md`. O caso real Igarape x
   CISMEP documenta a passagem de CNPJs para entidade, evidencias, rede,
   capacidade, tempo e observacoes anuais sem alterar resultados.
-- `METODOLOGIA_GERAL.md` e a unica fonte metodologica dos passos 1 a 6; as
+- `METODOLOGIA_GERAL.md` e a unica fonte metodologica dos passos 1 a 6 e da cobertura complementar; as
   antigas notas separadas foram removidas para evitar versoes concorrentes.
+
+## Cobertura Assistencial Complementar - 2026-09-03
+
+- A busca CNES foi ampliada da rota de CNPJ mantenedor para a busca oficial
+  pelo CNPJ proprio de cada matriz/filial. O universo passou de 639 para 670
+  unidades diretamente vinculadas.
+- Quinze das 36 entidades antes classificadas como sem unidade foram
+  recuperadas. A cobertura fixa direta passou de 46 para 61 entidades, com
+  389 unidades fixas e 281 moveis/itinerantes.
+- Os 38 casos originalmente pendentes foram auditados sem imputacao: 15
+  recuperados no CNES, 15 fora do universo modelavel atual, dois historicos ou
+  inativos, cinco com oferta movel/indireta sem prestador fixo unico e um ativo
+  sem MIDES e sem evidencia assistencial localizada.
+- CISCEN possui vacimoveis diretamente cadastrados e contratos atuais de
+  servicos especializados, mas a evidencia nao autoriza escolher um hospital
+  unico. CIMES possui vacimovel e rede indireta com a mesma limitacao.
+- CIS/UBA e a raiz `02287790` permanecem como entidades historicas: pagamentos
+  MIDES sao preservados, mas elas nao entram automaticamente no conjunto atual
+  de alternativas.
+- Os sete alertas de escopo, situacao ou macrogrupo receberam decisao explicita
+  para modelo principal, sensibilidade ou exclusao atual.
+- A matriz de tempo e a capacidade foram reprocessadas: 61 entidades possuem
+  oferta fixa e tempo; as demais permanecem com `NA`, nunca com capacidade
+  inventada ou distancia ate uma sede administrativa arbitraria.
+- Oito testes automatizados passaram. O dashboard e os modelos existentes nao
+  foram alterados.
+- Proximo passo: definir o conjunto anual de alternativas e temporalizar
+  capacidade/prestadores antes da EDA e da estimacao.

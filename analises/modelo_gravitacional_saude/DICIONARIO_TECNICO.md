@@ -31,8 +31,8 @@ comparacao quantitativa e a revisao documental sao operacoes diferentes.
 | `README.md` | estado atual e ordem de leitura | abrir primeiro |
 | `DICIONARIO_TECNICO.md` | arquivos, fontes, extracoes e produtos | consultar para localizar ou reproduzir |
 | `LINHA_DO_TEMPO_PASSOS.md` | evolucao dos passos e exemplo real | consultar para explicar o projeto |
-| `METODOLOGIA_GERAL.md` | metodologia unica dos passos 1 a 6 | consultar para defender decisoes |
-| `01...07...R` | scripts reprocessaveis | executar na ordem numerica |
+| `METODOLOGIA_GERAL.md` | metodologia unica dos passos 1 a 6 e da auditoria complementar | consultar para defender decisoes |
+| `01...08...R` | scripts reprocessaveis | executar na ordem numerica |
 | `tests/` | testes de chaves, contagens e invariantes | executar depois do respectivo script |
 | `checks/` | resultados quantitativos validados | consultar numeros sem abrir bases |
 | `evidencias/` | fontes da revisao humana | auditar decisoes documentais do passo 2 |
@@ -98,8 +98,8 @@ Produtos principais:
 
 | Arquivo | Funcao |
 |---|---|
-| `04_definir_polos_atracao_saude.R` | consulta os CNPJs no CNES e separa sede, polo unico, rede, movel ou sem unidade |
-| `tests/04_validar_polos_atracao_saude.R` | valida 84 entidades e 639 unidades |
+| `04_definir_polos_atracao_saude.R` | consulta CNPJ mantenedor e CNPJ proprio no CNES e separa sede, polo unico, rede, movel ou sem unidade |
+| `tests/04_validar_polos_atracao_saude.R` | valida 84 entidades e 670 unidades |
 | `checks/VALIDACAO_POLOS_ATRACAO_SAUDE_MG.md` | registra cobertura e decisoes territoriais |
 | `METODOLOGIA_GERAL.md` | explica a regra de polo/rede no passo 3 |
 
@@ -108,6 +108,7 @@ Produtos principais:
 | Produto | Unidade | Uso |
 |---|---|---|
 | `consultas_cnes_polo_saude_mg.csv` | CNPJ consultado | auditoria da consulta por matriz e filial |
+| `consultas_cnes_cnpj_proprio_saude_mg.csv` | CNPJ consultado | auditoria da busca complementar pelo CNPJ proprio do estabelecimento |
 | `unidades_cnes_vinculadas_saude_mg.csv` | unidade CNES | lista de estabelecimentos mantidos pelo CNPJ |
 | `polos_atracao_saude_mg.rds` | entidade | decisao de polo, rede ou ausencia de unidade direta |
 | arquivos com sufixo `2026_09_03` | snapshot datado | preservar a fotografia usada na analise |
@@ -168,6 +169,25 @@ Produtos principais:
 | `painel_analitico_saude_mg_resumo_entidade.csv` | entidade | resumo institucional |
 | `DICIONARIO_PAINEL_ANALITICO_SAUDE_MG.csv` | variavel | definicoes das colunas centrais do painel |
 
+### Complemento - Cobertura Assistencial
+
+| Arquivo | Funcao |
+|---|---|
+| `08_completar_cobertura_assistencial_saude.R` | consolida cobertura direta, indireta, movel, historica ou insuficiente |
+| `tests/08_validar_cobertura_assistencial_saude.R` | valida 84 entidades, os 38 casos originais e os 7 alertas |
+| `checks/VALIDACAO_COBERTURA_ASSISTENCIAL_COMPLEMENTAR_SAUDE_MG.md` | registra antes/depois, contagens e casos sentinela |
+| `evidencias/catalogo_cobertura_assistencial_indireta.csv` | preserva fonte e decisao das redes sem polo fixo unico |
+| `evidencias/decisoes_alertas_universo_saude.csv` | registra a resolucao operacional dos sete alertas |
+
+Produtos principais:
+
+| Produto | Unidade | Uso |
+|---|---|---|
+| `cobertura_assistencial_entidades_saude_mg.rds` | entidade | sintese final da cobertura e uso permitido no modelo |
+| `auditoria_38_casos_cobertura_assistencial_saude_mg.csv` | entidade originalmente pendente | comparar classificacao antes/depois |
+| `auditoria_alertas_universo_saude_mg.csv` | alerta | consultar decisao de escopo, situacao ou macrogrupo |
+| `baseline_capacidade_entidades_saude_mg_antes_cnpj_proprio_2026_09_03.csv` | entidade | preservar o retrato anterior a correcao da busca CNES |
+
 ## Fontes E Proveniencia
 
 | Fonte | Origem ou link | Arquivo local utilizado | Periodo/data | Passos | Leitura correta |
@@ -178,7 +198,7 @@ Produtos principais:
 | MUNIC/IBGE | [Pesquisa MUNIC](https://www.ibge.gov.br/estatisticas/sociais/saude/10586-pesquisa-de-informacoes-basicas-municipais.html) | `base_1_vinculos_2015_2019.rds` | recorte de 2019 no passo 2 | 2 | declaracao pontual, nao painel anual |
 | Cadastro auxiliar | pipeline do dashboard | `cadastro_base.rds` | fotografia processada vigente | 2 | nomes e contexto, nao evidencia temporal isolada |
 | Evidencias documentais | URLs por linha em `evidencias/catalogo_revisao_documental_2019.csv` | catalogo CSV versionado | documentos de anos distintos | 2 | fonte posterior nao retroage automaticamente para 2019 |
-| CNES/DATASUS | [CNES](https://cnes2.datasus.gov.br/) | snapshots e cache em `outputs/` | coletado em 03/09/2026 | 3 e 4 | fotografia atual de unidades sob o CNPJ mantenedor |
+| CNES/DATASUS | [portal atual](https://cnes.datasus.gov.br/) e [portal legado](https://cnes2.datasus.gov.br/) | snapshots e cache em `outputs/` | coletado em 03/09/2026 | 3, 4 e complemento | fotografia atual por CNPJ proprio e mantenedor |
 | Distbrasil | [pagina metodologica](https://rfsaldanha.github.io/data-projects/brazil_road_distances.html), [Zenodo 11400243](https://zenodo.org/records/11400243), [codigo](https://github.com/rfsaldanha/distbrasil) | `dados/bruto/externo/distbrasil/dist_brasil_zenodo_11400243.rds` | publicado em 31/05/2024; integrado em 03/09/2026 | 5 | rota estatica e simetrica entre sedes municipais |
 | Malha municipal MG | produto cartografico local do dashboard | `dashboards/base1_shiny/data/mg_municipios_sf_web.rds` | referencia municipal usada no projeto | 5 | nomes/codigos e geometria; nao produz o tempo rodoviario |
 
@@ -187,6 +207,7 @@ Produtos principais:
 | Endpoint relativo | Conteudo aproveitado |
 |---|---|
 | `Listar_Mantidas.asp?VCnpj=...&VEstado=31` | unidades diretamente registradas sob matriz ou filial |
+| `/services/estabelecimentos?cnpj=...&estado=31` | estabelecimentos cujo CNPJ proprio coincide com o consorcio |
 | `Exibe_Ficha_Estabelecimento.asp?VCo_Unidade=...` | municipio, codigo IBGE, tipo e dependencia |
 | `Mod_Hospitalar.asp?VCo_Unidade=...` | leitos existentes e SUS |
 | `Mod_Bas_Atendimento.asp?VCo_Unidade=...` | ambulatorio, internacao e SADT SUS |
@@ -202,8 +223,9 @@ nos produtos.
 - SICONFI nao identifica o CNPJ destinatario e nao entra como vinculo do par.
 - Populacao, RCL, regiao de saude, bacia e mandato aguardam fontes anuais
   validadas.
-- Os 36 casos sem unidade direta e os dois somente moveis permanecem com tempo
-  `NA`; nenhum destino foi inventado.
+- Vinte e tres entidades continuam sem estrutura fixa CNES direta. Redes
+  moveis/contratadas permanecem com tempo `NA` ate existirem prestadores ou
+  bases documentados; nenhum destino foi inventado.
 
 ## Ordem De Reproducao
 
@@ -224,6 +246,8 @@ Rscript analises/modelo_gravitacional_saude/06_integrar_tempo_rodoviario_saude.R
 Rscript analises/modelo_gravitacional_saude/tests/06_validar_tempo_rodoviario_saude.R
 Rscript analises/modelo_gravitacional_saude/07_montar_painel_analitico_saude.R
 Rscript analises/modelo_gravitacional_saude/tests/07_validar_painel_analitico_saude.R
+Rscript analises/modelo_gravitacional_saude/08_completar_cobertura_assistencial_saude.R
+Rscript analises/modelo_gravitacional_saude/tests/08_validar_cobertura_assistencial_saude.R
 ```
 
 Os produtos pesados em `outputs/` sao derivados e ignorados pelo Git. Codigo,

@@ -10,8 +10,9 @@ universe_path <- file.path(out_dir, "universo_saude_mg_entidades.rds")
 polos_path <- file.path(out_dir, "polos_atracao_saude_mg.rds")
 units_path <- file.path(out_dir, "unidades_cnes_vinculadas_saude_mg.csv")
 consultas_path <- file.path(out_dir, "consultas_cnes_polo_saude_mg.csv")
+consultas_cnpj_proprio_path <- file.path(out_dir, "consultas_cnes_cnpj_proprio_saude_mg.csv")
 
-for (path in c(universe_path, polos_path, units_path, consultas_path)) {
+for (path in c(universe_path, polos_path, units_path, consultas_path, consultas_cnpj_proprio_path)) {
   if (!file.exists(path)) stop("Arquivo nao encontrado: ", path)
 }
 
@@ -19,6 +20,7 @@ universe <- readRDS(universe_path)
 polos <- readRDS(polos_path)
 units <- read.csv(units_path, stringsAsFactors = FALSE, fileEncoding = "UTF-8")
 consultas <- read.csv(consultas_path, stringsAsFactors = FALSE, fileEncoding = "UTF-8")
+consultas_cnpj_proprio <- read.csv(consultas_cnpj_proprio_path, stringsAsFactors = FALSE, fileEncoding = "UTF-8")
 
 stopifnot(nrow(polos) == nrow(universe))
 stopifnot(!anyDuplicated(polos$cnpj_raiz_8))
@@ -51,8 +53,11 @@ stopifnot(all(polos$n_unidades_moveis_ou_itinerantes[mobile] > 0L))
 stopifnot(all(is.na(polos$cnes_polo_assistencial[mobile])))
 
 if (nrow(units) > 0L) {
-  stopifnot(all(units$cnpj_consultado %in% consultas$cnpj_consultado))
-  stopifnot(all(units$vinculo_cnpj_mantenedora_direto %in% TRUE))
+  stopifnot(all(units$cnpj_consultado %in% c(consultas$cnpj_consultado, consultas_cnpj_proprio$cnpj_consultado)))
+  stopifnot(all(units$vinculo_cnpj_mantenedora_direto | units$vinculo_cnpj_proprio_direto))
+  stopifnot(!any(units$vinculo_cnpj_mantenedora_direto & units$vinculo_cnpj_proprio_direto))
+  stopifnot(sum(units$vinculo_cnpj_proprio_direto) == 32L)
+  stopifnot(sum(units$vinculo_cnpj_mantenedora_direto) == 638L)
 }
 
 cat("OK: polo de atracao validado para", nrow(polos), "entidades;", nrow(units), "unidades CNES vinculadas.\n")

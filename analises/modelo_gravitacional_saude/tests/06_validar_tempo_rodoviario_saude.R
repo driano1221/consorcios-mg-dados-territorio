@@ -19,12 +19,12 @@ dest <- readRDS(dest_path)
 units <- readRDS(unit_path)
 entities <- readRDS(entity_path)
 
-stopifnot(nrow(dest) == 853L * 232L)
+stopifnot(nrow(dest) == 853L * 238L)
 stopifnot(n_distinct(dest$id_municipio_origem) == 853L)
-stopifnot(n_distinct(dest$id_municipio_destino) == 232L)
+stopifnot(n_distinct(dest$id_municipio_destino) == 238L)
 stopifnot(!anyDuplicated(dest[c("id_municipio_origem", "id_municipio_destino")]))
 stopifnot(!anyNA(dest[c("distancia_rodoviaria_m", "tempo_rodoviario_min")]))
-stopifnot(sum(dest$mesmo_municipio_destino) == 232L)
+stopifnot(sum(dest$mesmo_municipio_destino) == 238L)
 stopifnot(all(dest$tempo_rodoviario_min[dest$mesmo_municipio_destino] == 0))
 stopifnot(all(dest$distancia_rodoviaria_m[dest$mesmo_municipio_destino] == 0))
 stopifnot(all(dest$tempo_rodoviario_min[!dest$mesmo_municipio_destino] > 0))
@@ -53,13 +53,13 @@ mirrors <- dest |>
       "id_municipio_destino" = "id_municipio_origem"
     )
   )
-stopifnot(nrow(mirrors) == 232L * 232L)
+stopifnot(nrow(mirrors) == 238L * 238L)
 stopifnot(all(mirrors$distancia_ida == mirrors$distancia_volta))
 stopifnot(all(mirrors$tempo_ida == mirrors$tempo_volta))
 
-stopifnot(nrow(units) == 853L * 366L)
-stopifnot(n_distinct(units$cnes) == 366L)
-stopifnot(n_distinct(units$cnpj_raiz_8) == 46L)
+stopifnot(nrow(units) == 853L * 389L)
+stopifnot(n_distinct(units$cnes) == 389L)
+stopifnot(n_distinct(units$cnpj_raiz_8) == 61L)
 stopifnot(!anyDuplicated(units[c("id_municipio_origem", "cnpj_raiz_8", "cnes")]))
 stopifnot(!anyNA(units[c("distancia_rodoviaria_m", "tempo_rodoviario_min")]))
 
@@ -68,8 +68,8 @@ stopifnot(!anyDuplicated(entities[c("id_municipio_origem", "cnpj_raiz_8")]))
 available <- entities$tempo_status == "tempo_disponivel_unidades_fixas"
 without_direct <- entities$tempo_status == "sem_unidade_direta_destino_nao_definido"
 mobile_only <- entities$tempo_status == "somente_unidades_moveis_sem_tempo_fixo"
-stopifnot(sum(available) == 853L * 46L)
-stopifnot(sum(without_direct) == 853L * 36L)
+stopifnot(sum(available) == 853L * 61L)
+stopifnot(sum(without_direct) == 853L * 21L)
 stopifnot(sum(mobile_only) == 853L * 2L)
 stopifnot(!anyNA(entities$tempo_minimo_min[available]))
 stopifnot(all(is.na(entities$tempo_minimo_min[without_direct | mobile_only])))
@@ -79,5 +79,5 @@ stopifnot(all(entities$distancia_minima_km[available] <= entities$distancia_medi
 stopifnot(all(entities$distancia_mediana_km[available] <= entities$distancia_maxima_km[available]))
 
 cat(
-  "OK: tempo rodoviario validado para 853 municipios, 366 unidades fixas e 84 entidades.\n"
+  "OK: tempo rodoviario validado para 853 municipios, 389 unidades fixas e 84 entidades.\n"
 )
