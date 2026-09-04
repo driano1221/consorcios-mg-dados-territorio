@@ -13,7 +13,8 @@ flowchart LR
   P4 --> P5["5. Qual a impedancia<br/>rodoviaria?"]
   P5 --> P6["6. O que ocorreu<br/>em cada ano?"]
   P6 --> PC["Complemento:<br/>cobertura e alertas"]
-  PC --> P7["Proximo: alternativas<br/>e controles anuais"]
+  PC --> P7["7. O que existia<br/>em cada ano?"]
+  P7 --> P8["Proximo: EDA e<br/>alternativas plausiveis"]
 ```
 
 ## Evolucao Do Projeto
@@ -27,6 +28,7 @@ flowchart LR
 | 5 | como medir a resistencia espacial? | nao havia impedancia integrada | tempo por destino, unidade e entidade | 363.378 pares MG completos; 61 entidades com tempo |
 | 6 | como representar a trajetoria anual? | pagamentos, tempo e capacidade estavam separados | grade anual com eventos e defasagens | 573.216 linhas; 426 primeiros pagamentos, 252 retornos e 533 interrupcoes |
 | Complemento | o que realmente existe nos 38 casos pendentes? | falsos negativos, redes moveis e inativos estavam misturados | busca por CNPJ proprio e auditoria documental | 15 recuperados; 23 sem estrutura fixa; 7 alertas decididos |
+| 7 | a oferta atual existia em 2014-2021? | a fotografia de 2026 era repetida nos oito anos | ST mensal e LT/SR/PF de dezembro | 672 entidades-ano; 1.868 unidades-ano; 120 fontes auditadas |
 
 ## Exemplo Real Continuo: Igarape x CISMEP
 
@@ -160,14 +162,44 @@ Assim, “auditoria concluida” nao significa que todos ganharam um polo. Signi
 que cada ausencia recebeu uma leitura rastreavel e que `NA` foi preservado
 quando a estrutura nao podia ser localizada com seguranca.
 
+### Passo 7 - A Oferta Tambem Vira Uma Trajetoria
+
+A fotografia atual do CISMEP tem 15 unidades, sendo quatro fixas e 11 moveis.
+Essa estrutura nao foi repetida no passado. O CNES historico mostra:
+
+| Ano | Fixas em dezembro | Fixas em algum mes | Servicos SUS diretos | Profissionais SUS diretos |
+|---:|---:|---:|---:|---:|
+| 2014 | 2 | 2 | 18 | 106 |
+| 2015 | 2 | 2 | 18 | 105 |
+| 2016 | 2 | 2 | 17 | 109 |
+| 2017 | 2 | 2 | 18 | 126 |
+| 2018 | 2 | 2 | 14 | 99 |
+| 2019 | 2 | 2 | 15 | 101 |
+| 2020 | 2 | 2 | 15 | 116 |
+| 2021 | 1 | 2 | 14 | 107 |
+
+Logo, a linha `Igarape x CISMEP x 2019` combina pagamento MIDES de 2019 com
+capacidade CNES de dezembro de 2019, e nao com a oferta observada em 2026. Em
+2021, dezembro mostra uma fixa, enquanto a sensibilidade registra duas em
+algum momento do ano; a diferenca permanece visivel em vez de ser imputada.
+
+```mermaid
+flowchart LR
+  A[Pagamento MIDES do ano t] --> D[Municipio x entidade x ano]
+  B[Capacidade CNES em dezembro de t] --> D
+  C[Presenca CNES nos 12 meses de t] --> E[Sensibilidade]
+  E --> D
+```
+
 ## O Que O Exemplo Demonstra
 
 1. entidade e raiz de CNPJ, nao uma linha isolada de estabelecimento;
 2. MIDES e MUNIC podem concordar, mas continuam evidencias diferentes;
 3. sede administrativa, polo e rede nao sao sinonimos;
-4. capacidade possui varios componentes e uma fotografia atual;
+4. capacidade possui varios componentes e uma trajetoria historica propria;
 5. tempo deve respeitar a rede documentada;
-6. movimento anual descreve pagamento, nao ato juridico.
+6. movimento anual descreve pagamento, nao ato juridico;
+7. capacidade de 2026 nao pode ser retroagida para explicar 2014-2021.
 
 ## Onde O Exemplo Nao Pode Ser Generalizado
 
@@ -176,15 +208,18 @@ quando a estrutura nao podia ser localizada com seguranca.
 - Igarape possui unidade no proprio municipio; muitos pares tem tempo positivo.
 - Vinte e uma entidades nao possuem unidade direta e duas tem somente oferta
   movel; elas permanecem com tempo `NA`.
-- A capacidade CNES foi coletada em 2026 e nao comprova a mesma estrutura em
-  todos os anos de 2014 a 2021.
+- A camada historica cobre apenas unidades diretamente vinculadas. Prestadores
+  indiretos e contratados continuam ausentes quando nao ha identificacao anual.
+- Dezembro e a medida principal; presenca em outro mes e sensibilidade, nao
+  capacidade imputada para o ano inteiro.
 - `MIDES+MUNIC` em 2019 fortalece a evidencia, mas nao fornece sozinho a data
   juridica de entrada.
 
 ## Proximo Marco
 
-O painel ja existe, mas a grade estadual ainda oferece entidades demais a cada
-municipio. O passo seguinte deve:
+O painel e a camada CNES historica ja existem separadamente, mas a grade
+estadual ainda oferece entidades demais a cada municipio. O passo seguinte
+deve:
 
 1. definir alternativas plausiveis por tempo, regiao de saude ou regra
    institucional;

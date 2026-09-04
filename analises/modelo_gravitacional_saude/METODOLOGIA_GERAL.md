@@ -4,7 +4,7 @@
 
 Preparar uma base defensavel para o futuro modelo gravitacional de consorcios
 de saude em Minas Gerais. Antes de estimar distancia, capacidade assistencial
-ou probabilidade de entrada, foi necessario responder seis perguntas:
+ou probabilidade de entrada, foi necessario responder sete perguntas:
 
 1. quais instituicoes de saude existem no universo analitico?
 2. que tipo de evidencia existe para cada vinculo municipio-consorcio em 2019?
@@ -16,6 +16,8 @@ ou probabilidade de entrada, foi necessario responder seis perguntas:
    documentada, sem reduzir redes a uma sede administrativa?
 6. como organizar pagamentos, ausencias e movimentos em um painel anual
    completo sem confundir evidencia financeira com adesao juridica?
+7. como reconstruir a oferta CNES de 2014-2021 sem repetir a fotografia atual
+   em todos os anos?
 
 O MIDES continua significando **pagamento observado** e a MUNIC,
 **participacao declarada**. Nenhuma das duas fontes e alterada por esta
@@ -33,6 +35,7 @@ preparacao.
 | 5. Integrar tempo rodoviario | Concluido e reprocessado | 853 origens, 389 unidades fixas e tres camadas de impedancia |
 | 6. Montar o painel analitico anual | Concluido | 573.216 observacoes municipio x entidade x ano |
 | Complemento. Cobertura assistencial | Concluido | 38 casos auditados, 15 recuperados e 7 alertas decididos |
+| 7. Temporalizar CNES | Concluido | 672 entidades-ano e 120 arquivos oficiais auditados |
 
 O item 2b nao bloqueia a proxima etapa: a CNM e uma fotografia atual e nao
 prova a composicao em 2019. Caso seja integrada, ela entrara como marcador
@@ -612,7 +615,8 @@ estimacao.
 
 1. Presenca significa pagamento MIDES, nao filiacao juridica.
 2. Pares positivos em 2014 sao censurados a esquerda.
-3. CNES e capacidade sao fotografia de 2026, nao serie 2014-2021.
+3. O painel original repete a fotografia CNES de 2026; a nova serie historica
+   esta validada separadamente e ainda precisa ser integrada ao painel.
 4. Vinte e tres entidades permanecem sem estrutura fixa CNES direta; algumas
    possuem rede movel ou contratada que exige outra especificacao territorial.
 5. Populacao, RCL, regiao de saude, bacia e mandato ainda nao foram integrados.
@@ -702,9 +706,144 @@ atual por inatividade e ausencia de MIDES.
 
 ---
 
+## Passo 7 - Temporalizar A Cobertura E A Capacidade CNES
+
+### Em Que Consistiu
+
+Substituir a repeticao da fotografia CNES de 2026 por uma camada historica
+compativel com o MIDES de 2014 a 2021. A unidade de capacidade passou a ser:
+
+> **entidade de saude x ano, medida na competencia de dezembro**
+
+Presenca cadastral tambem foi verificada nos 12 meses de cada ano para medir o
+quanto dezembro pode subestimar unidades que aparecem apenas em parte do ano.
+
+### Antes
+
+- as 389 unidades fixas observadas em 03/09/2026 eram repetidas nos oito anos
+  do painel;
+- uma estrutura criada depois de 2021 podia parecer disponivel em 2014;
+- uma unidade historica encerrada antes de 2026 desaparecia de toda a serie;
+- leitos, servicos e profissionais atuais podiam ser usados como se fossem
+  invariantes no tempo.
+
+### Fontes E Ligacoes
+
+Foram usados arquivos de disseminacao oficial do CNES/DATASUS:
+
+| Tabela | Periodicidade usada | O que mede |
+|---|---|---|
+| `ST` | todos os 96 meses | existencia, municipio, tipo, CNPJ proprio e mantenedor |
+| `LT` | dezembro de cada ano | leitos existentes e leitos SUS por unidade |
+| `SR` | dezembro de cada ano | servico especializado e classificacao, com atendimento SUS |
+| `PF` | dezembro de cada ano | profissionais, CBO e carga horaria SUS; somente agregados |
+
+O encadeamento usa o codigo CNES. Primeiro, `ST` encontra a unidade quando o
+CNPJ proprio ou mantenedor pertence a uma das 84 raizes. Depois `LT`, `SR` e
+`PF` sao ligados ao mesmo codigo CNES. Assim, uma linha de profissional com
+CNPJ vazio nao e perdida quando pertence a uma unidade ja identificada.
+
+Nenhum nome, CPF ou CNS de profissional e gravado. Apenas contagens distintas,
+CBOs e carga horaria agregada sao preservados.
+
+### Pipeline
+
+```mermaid
+flowchart LR
+    A[84 entidades e suas raizes CNPJ] --> B[ST mensal 2014-2021]
+    B --> C[Unidades por CNPJ proprio ou mantenedor]
+    C --> D[Presenca nos 12 meses]
+    C --> E[Fotografia de dezembro]
+    E --> F[LT: leitos]
+    E --> G[SR: servicos]
+    E --> H[PF: profissionais e CBO]
+    F --> I[Unidade CNES x ano]
+    G --> I
+    H --> I
+    I --> J[Entidade x ano]
+    D --> J
+    J --> K[Testes, manifesto e EDA]
+```
+
+### Regra Temporal
+
+A capacidade principal de uma entidade `j` no ano `t` e a soma ou uniao das
+unidades fixas diretamente vinculadas em dezembro:
+
+> **Leitos SUS diretos(j,t)** = soma dos leitos SUS das unidades fixas da
+> entidade `j` em dezembro de `t`.
+
+> **Servicos SUS diretos(j,t)** = numero de pares distintos de servico e
+> classificacao registrados nas unidades fixas em dezembro de `t`.
+
+> **Profissionais SUS diretos(j,t)** = numero de profissionais distintos
+> registrados como SUS nas unidades fixas em dezembro de `t`.
+
+As formulas acima medem somente oferta diretamente vinculada no CNES. Elas nao
+somam hospitais de terceiros, prestadores contratados sem CNPJ vinculado ou a
+capacidade geral do municipio-sede.
+
+Quando nao ha unidade fixa em dezembro, `n_unidades_fixas = 0`, mas leitos,
+servicos e profissionais ficam vazios. Isso evita interpretar falta de
+cobertura direta como capacidade assistencial igual a zero.
+
+### Resultados Validados
+
+| Indicador | 2014 | 2021 |
+|---|---:|---:|
+| entidades com unidade fixa em dezembro | 40 | 60 |
+| unidades fixas em dezembro | 48 | 68 |
+| unidades moveis em dezembro | 126 | 224 |
+| servicos SUS distintos, somados por entidade | 226 | 319 |
+| profissionais SUS distintos, somados por entidade | 1.169 | 3.004 |
+| leitos SUS diretamente vinculados | 26 | 0 |
+
+Produtos e controles:
+
+- 672 entidades-ano, resultado de `84 x 8`;
+- 1.868 unidades-ano observadas em dezembro;
+- 120 arquivos oficiais registrados com URL, tamanho e SHA-256;
+- 3 entidades-ano sem fixa em dezembro, mas com fixa em outro mes;
+- 12 entidades-ano com mais unidades fixas em algum mes do que em dezembro;
+- 412 entidades-ano combinaram pagamento MIDES e unidade fixa direta;
+- 91 tiveram pagamento, mas nenhuma unidade fixa direta em dezembro;
+- uma teve unidade fixa sem pagamento MIDES: CONSONORTE em 2021;
+- 168 nao tiveram pagamento nem unidade fixa direta.
+
+Os 91 casos nao provam erro do MIDES ou do CNES. Podem representar rede
+contratada, oferta movel, estrutura de terceiro, registro cadastral incompleto
+ou pagamento por servico sem unidade propria. Eles formam uma pauta de EDA e
+sensibilidade, nao uma regra automatica de exclusao.
+
+### Exemplos Reais
+
+| Caso | Resultado historico | Leitura correta |
+|---|---|---|
+| CISMARG, CNES `6214371`, 2016 | presente de janeiro a novembro; ausente em dezembro | dezembro mede tres fixas; a sensibilidade anual registra quatro, sem afirmar fechamento |
+| CISMEP, 2014-2020 | duas fixas em dezembro; em 2021, uma fixa em dezembro e duas em algum mes | as quatro fixas e 11 moveis de 2026 nao podem ser retroagidas |
+| CONSONORTE, 2021 | CNES `0975397` aparece somente em dezembro; um profissional SUS e nenhum pagamento MIDES | estrutura cadastrada e fluxo financeiro sao dimensoes diferentes |
+| Consorcio do Alto Sao Francisco, raiz `64486822` | 26 leitos SUS diretos em 2014-2016 e nenhuma unidade direta depois | a serie nao autoriza concluir perda de acesso; pode ter mudado a forma de provisao |
+| CIAS, 2015 | unidade fixa aparece apenas em janeiro | dezembro perde o registro; usar como sensibilidade, nao como capacidade anual imputada |
+
+### Limites
+
+1. Dezembro e uma fotografia, nao media, estoque diario ou producao anual.
+2. Presenca em algum mes reduz falso negativo cadastral, mas nao define qual
+   capacidade deve valer para o ano inteiro.
+3. Mudanca de CNPJ, mantenedor ou tipo CNES pode refletir reorganizacao
+   cadastral, nao abertura ou fechamento real.
+4. Servico e CBO medem cadastro; nao garantem producao, disponibilidade ou
+   atendimento efetivo aos municipios consorciados.
+5. Contagens somadas por entidade podem contar o mesmo profissional em mais de
+   uma entidade; os microdados identificados nao foram retidos.
+6. A camada cobre oferta diretamente vinculada ao CNPJ. Redes indiretas ainda
+   precisam de prestador e vigencia documental.
+
+---
+
 ## Reproducibilidade E Limites
 
-Os produtos quantitativos dos passos 1 a 6 usam bases locais processadas do
+Os produtos quantitativos dos passos 1 a 7 usam bases locais processadas do
 projeto. A qualificacao documental da amostra usou fontes oficiais ou
 institucionais na internet, com URL e interpretacao preservadas. Scripts,
 testes e relatorios estao em `analises/modelo_gravitacional_saude/`; resultados
@@ -721,18 +860,20 @@ Rscript analises/modelo_gravitacional_saude/05_construir_capacidade_assistencial
 Rscript analises/modelo_gravitacional_saude/06_integrar_tempo_rodoviario_saude.R
 Rscript analises/modelo_gravitacional_saude/07_montar_painel_analitico_saude.R
 Rscript analises/modelo_gravitacional_saude/08_completar_cobertura_assistencial_saude.R
+python -m pip install -r analises/modelo_gravitacional_saude/requirements_cnes_historico.txt
+python analises/modelo_gravitacional_saude/09_temporalizar_cnes_historico_saude.py
 ```
 
 Cada script possui um teste correspondente em `tests/`. Os resultados locais
 ficam em `outputs/`, as auditorias em `checks/` e as evidencias documentais em
 `evidencias/`. O [`DICIONARIO_TECNICO.md`](DICIONARIO_TECNICO.md) identifica
 entradas e saidas; a [`LINHA_DO_TEMPO_PASSOS.md`](LINHA_DO_TEMPO_PASSOS.md)
-acompanha o caso Igarape x CISMEP ao longo dos seis passos.
+acompanha o caso Igarape x CISMEP ao longo dos sete passos.
 
 ### Proximo Passo
 
-Definir o conjunto de alternativas plausiveis e integrar controles anuais
-validados antes da EDA e da estimacao. Para redes moveis ou contratadas, a
-alternativa deve representar bases ou prestadores documentados, nao a sede
-administrativa. A CNM pode entrar como marcador atual de sensibilidade, sem
-retroagir sua composicao para 2019.
+Executar a EDA usando a camada historica, definir o conjunto de alternativas
+plausiveis e integrar controles anuais validados antes da estimacao. Para redes
+moveis ou contratadas, a alternativa deve representar bases ou prestadores
+documentados, nao a sede administrativa. A CNM pode entrar como marcador atual
+de sensibilidade, sem retroagir sua composicao para 2019.

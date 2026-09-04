@@ -22,6 +22,12 @@ As sessões detalhadas estão em `docs/DIARIO_DE_TRABALHO.md`. Este arquivo regi
 - completada a auditoria assistencial dos 38 casos originalmente pendentes: 15 falsos negativos foram recuperados pela busca oficial do CNES por CNPJ próprio, redes móveis/indiretas e entidades históricas foram separadas e nenhum prestador foi inferido sem evidência;
 - resolvidos os sete alertas de escopo, situação cadastral ou macrogrupo, com decisão explícita para modelo principal, sensibilidade ou exclusão do conjunto atual de alternativas;
 - adicionados catálogo documental, script reprocessável e oitavo teste automatizado para a cobertura assistencial complementar, sem alterar o dashboard nem estimar modelos.
+- temporalizada a oferta CNES diretamente vinculada para 2014-2021 com 96
+  competencias mensais `ST` e 24 arquivos anuais `LT`, `SR` e `PF`;
+- materializadas 672 entidades-ano, 1.868 unidades-ano de dezembro e uma
+  sensibilidade mensal, sem retroagir a fotografia assistencial de 2026;
+- registrados URL, tamanho e SHA-256 de 120 arquivos oficiais e adicionado o
+  nono teste automatizado; painel, dashboard e modelos continuam inalterados.
 
 ## 2026-08-20
 

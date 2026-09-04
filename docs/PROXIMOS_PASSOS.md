@@ -369,8 +369,9 @@ Primeiro output sugerido:
    servico sem filiacao comprovada e um caso para revisao humana prioritaria.
    A regra foi validada: pagamento MIDES e forte indicio de relacao, mas nao
    prova filiacao; fontes posteriores entram apenas no cenario ampliado.
-4. **Definir polo assistencial e capacidade de atracao:** proxima etapa.
-   Confirmar sede operacional, hospital de referencia,
-   leitos e especialidades antes de calcular tempo de viagem.
-5. **Modelo novo:** ainda nao estimado. Dashboard permanece inalterado ate a
-   validacao da base analitica.
+4. **Polo, capacidade, tempo, painel e CNES historico:** concluidos e testados
+   fora do dashboard. A oferta direta agora possui medida anual 2014-2021 e
+   sensibilidade mensal.
+5. **Proxima etapa:** executar EDA com a capacidade historica, definir o
+   conjunto de alternativas plausiveis e integrar os controles anuais. O
+   modelo novo ainda nao foi estimado e o dashboard permanece inalterado.

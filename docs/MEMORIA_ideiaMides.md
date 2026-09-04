@@ -855,3 +855,23 @@ Arquivos antigos continuam uteis como registro de processo, mas nao devem ser us
   foram alterados.
 - Proximo passo: definir o conjunto anual de alternativas e temporalizar
   capacidade/prestadores antes da EDA e da estimacao.
+
+## CNES Historico Da Oferta Direta - 2026-09-03
+
+- A temporalizacao da oferta diretamente vinculada foi concluida fora do
+  dashboard para 2014-2021.
+- Foram processados 120 arquivos oficiais do CNES: 96 competencias mensais
+  `ST` e `LT`, `SR` e `PF` de dezembro dos oito anos. O manifesto local guarda
+  URL, tamanho e SHA-256 de cada fonte.
+- A camada final possui 672 entidades-ano e 1.868 unidades-ano observadas em
+  dezembro. Presenca em qualquer mes foi preservada separadamente como
+  sensibilidade.
+- Entidades com unidade fixa direta em dezembro passam de 40 em 2014 para 60
+  em 2021. Em tres entidades-ano dezembro nao tinha fixa, embora outro mes
+  tivesse; em 12 havia mais fixas em algum mes do que em dezembro.
+- Houve 412 entidades-ano com pagamento MIDES e fixa direta, 91 com pagamento
+  sem fixa direta, uma com fixa sem pagamento e 168 sem ambas. Isso nao mede
+  filiacao e nao converte divergencia em erro automatico.
+- O painel de 573.216 linhas e o dashboard nao foram alterados. O proximo passo
+  e a EDA da camada historica, a regra de alternativas plausiveis e, somente
+  depois, a integracao ao painel analitico.

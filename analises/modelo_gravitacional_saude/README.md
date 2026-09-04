@@ -28,6 +28,7 @@ proveniencia das fontes. O README resume; nao substitui o inventario.
 | 5. Integrar tempo rodoviario | Concluido e reprocessado | 853 origens, 389 unidades fixas e 61 entidades com tempo disponivel |
 | 6. Montar painel analitico | Concluido | 573.216 linhas; movimentos e universos preliminares separados |
 | Complemento. Cobertura assistencial | Concluido | 38 casos auditados, 15 recuperados por CNPJ proprio e 7 alertas decididos |
+| 7. Temporalizar CNES | Concluido | 672 entidades-ano; 1.868 unidades-ano; 120 arquivos oficiais auditados |
 
 Capacidade foi executada antes do tempo rodoviario. Calcular distancia ate uma
 sede administrativa sem saber onde esta a oferta assistencial produziria uma
@@ -44,6 +45,7 @@ impedancia sem interpretacao substantiva.
 | 5. Tempo | nao havia impedancia integrada e redes poderiam ser reduzidas a uma sede | 853 municipios foram ligados a 389 unidades fixas; redes preservam minimo, mediana e maximo |
 | 6. Painel | pagamentos, identidade, tempo e capacidade estavam em tabelas distintas | grade `853 x 84 x 8`, com valor conservado, censura em 2014 e eventos financeiros explicitos |
 | Complemento | 36 ausencias CNES e 2 casos moveis pareciam um unico tipo de lacuna | unidades por CNPJ proprio, redes contratadas, oferta movel, casos historicos e falta real de evidencia foram separados |
+| 7. Temporalidade | capacidade de 2026 podia ser repetida nos oito anos | dezembro mede a capacidade anual e os 12 meses auditam presenca sem retroagir o cadastro atual |
 
 ## Fluxo Reprocessavel
 
@@ -59,7 +61,8 @@ flowchart LR
   H --> I[Tempo rodoviario por unidade]
   I --> J[Painel municipio x entidade x ano]
   J --> K[Auditoria da cobertura indireta e alertas]
-  K --> L[Proximo: alternativas plausiveis e EDA]
+  K --> M[CNES historico mensal e capacidade em dezembro]
+  M --> L[Proximo: alternativas plausiveis e EDA]
 ```
 
 ## Como Navegar Nesta Pasta
@@ -68,7 +71,7 @@ O `README.md` e o ponto de entrada. Os arquivos foram separados por funcao:
 
 | Local | Conteudo | Quando consultar |
 |---|---|---|
-| raiz da pasta | scripts e metodologia unica dos passos 1 a 6 e do complemento | entender ou reprocessar o pipeline |
+| raiz da pasta | scripts e metodologia unica dos passos 1 a 7 e do complemento | entender ou reprocessar o pipeline |
 | `tests/` | uma validacao automatizada por script | confirmar chaves, contagens e invariantes |
 | `checks/` | relatorios curtos com resultados validados | consultar numeros sem abrir os dados |
 | `evidencias/` | catalogo versionado de fontes documentais | auditar decisoes humanas do passo 2 |
@@ -94,12 +97,14 @@ isso os blocos cientificos 3 a 6 sao executados pelos scripts `04` a `07`.
 | `06_integrar_tempo_rodoviario_saude.R` | Integra impedancia rodoviaria a oferta fixa | capacidade, mapa MG e Zenodo 11400243 | tempo por destino, unidade e entidade |
 | `07_montar_painel_analitico_saude.R` | Materializa a grade longitudinal e seus eventos | MIDES, identidade, capacidade e tempo | painel completo, eventos e universos preliminares |
 | `08_completar_cobertura_assistencial_saude.R` | Consolida CNES direto, redes indiretas e decisoes dos alertas | resultados dos passos 1, 3 e 4 e catalogos documentais | cobertura auditada das 84 entidades |
-| `tests/01...08...R` | Protege chaves, contagens e invariantes | respectivas saidas locais | falha explicita ou mensagem `OK` |
+| `09_temporalizar_cnes_historico_saude.py` | Reconstroi presenca mensal e capacidade anual direta | arquivos DBC oficiais ST, LT, SR e PF | camada entidade-ano e unidade-ano 2014-2021 |
+| `requirements_cnes_historico.txt` | Declara as duas dependencias Python do conversor DBC | Python, WSL e `curl` | ambiente reprodutivel para o passo 7 |
+| `tests/01...09...` | Protege chaves, contagens e invariantes | respectivas saidas locais | falha explicita ou mensagem `OK` |
 | `checks/*.md` | Guarda os resultados auditaveis | calculado pelos scripts | relatorio versionado no Git |
 | `evidencias/catalogo_revisao_documental_2019.csv` | Preserva URL, ano e interpretacao documental | fontes oficiais/institucionais | rastreabilidade da revisao humana |
-| `METODOLOGIA_GERAL.md` | Explica todo o percurso metodologico | passos 1 a 6 e complemento | fontes, regras, resultados, exemplos, limites e reproducao |
-| `DICIONARIO_TECNICO.md` | Inventaria arquivos, fontes, links e datas | passos 1 a 6 e complemento | referencia de localizacao e reproducao |
-| `LINHA_DO_TEMPO_PASSOS.md` | Mostra a evolucao com Igarape x CISMEP | passos 1 a 6 e complemento | explicacao didatica ponta a ponta |
+| `METODOLOGIA_GERAL.md` | Explica todo o percurso metodologico | passos 1 a 7 e complemento | fontes, regras, resultados, exemplos, limites e reproducao |
+| `DICIONARIO_TECNICO.md` | Inventaria arquivos, fontes, links e datas | passos 1 a 7 e complemento | referencia de localizacao e reproducao |
+| `LINHA_DO_TEMPO_PASSOS.md` | Mostra a evolucao com Igarape x CISMEP | passos 1 a 7 e complemento | explicacao didatica ponta a ponta |
 
 ### Dicionario Por Passo
 
@@ -113,6 +118,7 @@ isso os blocos cientificos 3 a 6 sao executados pelos scripts `04` a `07`.
 | 5. Tempo | municipio x destino/unidade/entidade | `06_integrar_tempo_rodoviario_saude.R` | tres camadas `tempo_rodoviario_*` | `tests/06_validar_tempo_rodoviario_saude.R`; `checks/VALIDACAO_TEMPO_RODOVIARIO_SAUDE_MG.md` |
 | 6. Painel | municipio x entidade x ano | `07_montar_painel_analitico_saude.R` | painel completo, eventos, pares e resumos | `tests/07_validar_painel_analitico_saude.R`; `checks/VALIDACAO_PAINEL_ANALITICO_SAUDE_MG.md` |
 | Complemento. Cobertura | entidade | `08_completar_cobertura_assistencial_saude.R` | cobertura consolidada, 38 casos e 7 alertas | `tests/08_validar_cobertura_assistencial_saude.R`; `checks/VALIDACAO_COBERTURA_ASSISTENCIAL_COMPLEMENTAR_SAUDE_MG.md` |
+| 7. CNES historico | entidade x ano e unidade x ano | `09_temporalizar_cnes_historico_saude.py` | presenca mensal; capacidade de dezembro; manifesto das fontes | `tests/09_validar_cnes_historico_saude.py`; `checks/VALIDACAO_CNES_HISTORICO_SAUDE_MG.md` |
 
 `outputs/` contem derivados locais e cache, e esta fora do Git. Nada nessa
 pasta altera MIDES, MUNIC, CNM, SICONFI ou o dashboard.
@@ -127,7 +133,8 @@ pasta altera MIDES, MUNIC, CNM, SICONFI ou o dashboard.
 | Base 1 MIDES/MUNIC | `dashboards/base1_shiny/data/base_1_vinculos_2015_2019.rds` | 2 | pagamento e declaracao preservados separadamente |
 | Cadastro processado | `dashboards/base1_shiny/data/cadastro_base.rds` | 2 | nomes e contexto documental |
 | Catalogo de evidencias | `evidencias/catalogo_revisao_documental_2019.csv` | 2 | fonte, ano e alcance; fonte posterior nao retroage 2019 |
-| CNES/DATASUS | https://cnes.datasus.gov.br/ e https://cnes2.datasus.gov.br/ | 3 e 4 | fotografia atual por CNPJ proprio e por CNPJ mantenedor |
+| CNES/DATASUS atual | https://cnes.datasus.gov.br/ e https://cnes2.datasus.gov.br/ | 3 e 4 | fotografia atual por CNPJ proprio e por CNPJ mantenedor |
+| CNES/DATASUS historico | `ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/` | 7 | competencias mensais ST e dezembro LT/SR/PF de 2014-2021 |
 | Distbrasil/Zenodo | https://zenodo.org/records/11400243 | 5 | distancia e duracao OSRM entre sedes municipais, perfil automovel |
 
 ### Registro Das Extracoes
@@ -200,6 +207,9 @@ Rscript analises/modelo_gravitacional_saude/07_montar_painel_analitico_saude.R
 Rscript analises/modelo_gravitacional_saude/tests/07_validar_painel_analitico_saude.R
 Rscript analises/modelo_gravitacional_saude/08_completar_cobertura_assistencial_saude.R
 Rscript analises/modelo_gravitacional_saude/tests/08_validar_cobertura_assistencial_saude.R
+python -m pip install -r analises/modelo_gravitacional_saude/requirements_cnes_historico.txt
+python analises/modelo_gravitacional_saude/09_temporalizar_cnes_historico_saude.py
+python analises/modelo_gravitacional_saude/tests/09_validar_cnes_historico_saude.py
 ```
 
 ## Resultado Metodologico Do Passo 4
@@ -275,9 +285,31 @@ CNPJ ainda nao documentado.
 - os sete alertas de escopo, situacao cadastral ou macrogrupo receberam uma
   decisao explicita, sem transformar pagamento historico em alternativa atual.
 
+## Resultado Metodologico Do Passo 7
+
+- a fotografia atual deixou de ser a unica medida disponivel para 2014-2021;
+- 96 arquivos `ST` mensais medem presenca e tipo da unidade ao longo do ano;
+- 24 arquivos de dezembro (`LT`, `SR` e `PF`) medem leitos, servicos e
+  profissionais na mesma competencia anual;
+- a grade possui 672 entidades-ano e 1.868 unidades-ano observadas em dezembro;
+- entidades com unidade fixa direta em dezembro passam de 40 em 2014 para 60
+  em 2021; as unidades fixas passam de 48 para 68;
+- em tres entidades-ano dezembro nao tinha unidade fixa, embora outro mes do
+  mesmo ano tivesse; em 12 entidades-ano algum mes tinha mais unidades fixas
+  que dezembro;
+- capacidade permanece vazia quando nao ha unidade fixa em dezembro. Ausencia
+  de linha nao foi convertida em zero assistencial.
+
+Exemplo: a unidade CNES `6214371` do CISMARG aparece de janeiro a novembro de
+2016, mas nao em dezembro. A medida principal de dezembro preserva apenas as
+tres outras unidades fixas; a sensibilidade anual registra que quatro unidades
+fixas apareceram em algum mes. Nenhuma das duas leituras e tratada como data
+juridica de abertura ou fechamento.
+
 ## Limites E Proximo Passo
 
-- CNES e fotografia de 03/09/2026; nao reconstroi automaticamente 2014-2021;
+- o painel de 573.216 linhas ainda contem a fotografia CNES de 03/09/2026; a
+  camada historica foi validada separadamente e ainda nao foi incorporada;
 - CBO distinto por unidade e proxy cadastral, nao especialidade unica da rede;
 - unidade de prefeitura ou terceiro nao entra sem evidencia documental;
 - 23 entidades continuam sem estrutura fixa CNES direta; cinco possuem oferta
@@ -292,5 +324,6 @@ CNPJ ainda nao documentado.
   validadas antes de integrar o painel.
 
 O proximo passo e a EDA dos universos e a definicao do conjunto de alternativas
-plausiveis por tempo, regiao de saude ou regra institucional. Somente depois
-devem ser integrados os controles anuais e estimados os modelos.
+plausiveis por tempo, regiao de saude ou regra institucional. A EDA deve usar a
+camada historica e comparar dezembro com a sensibilidade de qualquer mes.
+Somente depois devem ser integrados os controles anuais e estimados os modelos.

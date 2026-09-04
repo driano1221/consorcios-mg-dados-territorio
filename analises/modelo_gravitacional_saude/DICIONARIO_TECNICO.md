@@ -12,7 +12,7 @@ passos esta em `LINHA_DO_TEMPO_PASSOS.md`.
 
 ## Numeracao
 
-Ha seis passos cientificos e sete scripts. O passo 2 usa dois scripts porque a
+Ha sete passos cientificos e nove scripts. O passo 2 usa dois scripts porque a
 comparacao quantitativa e a revisao documental sao operacoes diferentes.
 
 | Passo cientifico | Script tecnico | Conteudo |
@@ -31,7 +31,7 @@ comparacao quantitativa e a revisao documental sao operacoes diferentes.
 | `README.md` | estado atual e ordem de leitura | abrir primeiro |
 | `DICIONARIO_TECNICO.md` | arquivos, fontes, extracoes e produtos | consultar para localizar ou reproduzir |
 | `LINHA_DO_TEMPO_PASSOS.md` | evolucao dos passos e exemplo real | consultar para explicar o projeto |
-| `METODOLOGIA_GERAL.md` | metodologia unica dos passos 1 a 6 e da auditoria complementar | consultar para defender decisoes |
+| `METODOLOGIA_GERAL.md` | metodologia unica dos passos 1 a 7 e da auditoria complementar | consultar para defender decisoes |
 | `01...08...R` | scripts reprocessaveis | executar na ordem numerica |
 | `tests/` | testes de chaves, contagens e invariantes | executar depois do respectivo script |
 | `checks/` | resultados quantitativos validados | consultar numeros sem abrir bases |
@@ -188,6 +188,35 @@ Produtos principais:
 | `auditoria_alertas_universo_saude_mg.csv` | alerta | consultar decisao de escopo, situacao ou macrogrupo |
 | `baseline_capacidade_entidades_saude_mg_antes_cnpj_proprio_2026_09_03.csv` | entidade | preservar o retrato anterior a correcao da busca CNES |
 
+### Passo 7 - CNES Historico
+
+| Arquivo | Funcao |
+|---|---|
+| `09_temporalizar_cnes_historico_saude.py` | baixa, converte, filtra e agrega os arquivos historicos CNES |
+| `requirements_cnes_historico.txt` | declara `dbc-reader` e `dbfread`; no Windows o conversor usa WSL |
+| `tests/09_validar_cnes_historico_saude.py` | valida chaves, meses, fontes, leitos, territorio e privacidade |
+| `checks/VALIDACAO_CNES_HISTORICO_SAUDE_MG.md` | registra resultados, EDA, exemplos e limites |
+
+Produtos principais:
+
+| Produto | Unidade | Uso |
+|---|---|---|
+| `cnes_historico_unidades_saude_mg_2014_2021.csv` | entidade x ano x CNES em dezembro | capacidade anual diretamente vinculada |
+| `cnes_historico_entidades_saude_mg_2014_2021.csv` | entidade x ano | 672 linhas prontas para ligar ao painel |
+| `cnes_historico_presenca_mensal_saude_mg_2014_2021.csv` | entidade x ano x CNES | sensibilidade de presenca em qualquer mes |
+| `resumo_cnes_historico_saude_mg.csv` | ano | cobertura e capacidade agregadas para EDA |
+| `manifesto_cnes_historico_saude_mg.csv` | arquivo-fonte | URL, competencia, tamanho e SHA-256 de 120 DBCs |
+| `cache_cnes_historico/` | arquivo DBC bruto | cache local reprocessavel; ignorado pelo Git |
+
+Ligacoes e medidas:
+
+| Tabela oficial | Chave | Campos usados |
+|---|---|---|
+| `ST` | CNPJ proprio/mantenedor -> CNES | municipio, tipo, SUS, competencia e presenca |
+| `LT` | CNES | leitos existentes, SUS e tipo de leito |
+| `SR` | CNES | servico, classificacao e atendimento SUS |
+| `PF` | CNES | profissional distinto, CBO, SUS e carga horaria; identificadores nao sao gravados |
+
 ## Fontes E Proveniencia
 
 | Fonte | Origem ou link | Arquivo local utilizado | Periodo/data | Passos | Leitura correta |
@@ -199,6 +228,7 @@ Produtos principais:
 | Cadastro auxiliar | pipeline do dashboard | `cadastro_base.rds` | fotografia processada vigente | 2 | nomes e contexto, nao evidencia temporal isolada |
 | Evidencias documentais | URLs por linha em `evidencias/catalogo_revisao_documental_2019.csv` | catalogo CSV versionado | documentos de anos distintos | 2 | fonte posterior nao retroage automaticamente para 2019 |
 | CNES/DATASUS | [portal atual](https://cnes.datasus.gov.br/) e [portal legado](https://cnes2.datasus.gov.br/) | snapshots e cache em `outputs/` | coletado em 03/09/2026 | 3, 4 e complemento | fotografia atual por CNPJ proprio e mantenedor |
+| CNES/DATASUS historico | `ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/` | `cache_cnes_historico/` e manifesto local | 2014-2021 | 7 | `ST` mensal; `LT`, `SR` e `PF` de dezembro |
 | Distbrasil | [pagina metodologica](https://rfsaldanha.github.io/data-projects/brazil_road_distances.html), [Zenodo 11400243](https://zenodo.org/records/11400243), [codigo](https://github.com/rfsaldanha/distbrasil) | `dados/bruto/externo/distbrasil/dist_brasil_zenodo_11400243.rds` | publicado em 31/05/2024; integrado em 03/09/2026 | 5 | rota estatica e simetrica entre sedes municipais |
 | Malha municipal MG | produto cartografico local do dashboard | `dashboards/base1_shiny/data/mg_municipios_sf_web.rds` | referencia municipal usada no projeto | 5 | nomes/codigos e geometria; nao produz o tempo rodoviario |
 
@@ -218,7 +248,7 @@ nos produtos.
 
 ## O Que Nao Entrou
 
-- A CNM nao altera os passos 1 a 6: ela e fotografia cadastral atual e ainda
+- A CNM nao altera os passos 1 a 7: ela e fotografia cadastral atual e ainda
   nao foi materializada como composicao historica da tabela de saude.
 - SICONFI nao identifica o CNPJ destinatario e nao entra como vinculo do par.
 - Populacao, RCL, regiao de saude, bacia e mandato aguardam fontes anuais
@@ -248,6 +278,9 @@ Rscript analises/modelo_gravitacional_saude/07_montar_painel_analitico_saude.R
 Rscript analises/modelo_gravitacional_saude/tests/07_validar_painel_analitico_saude.R
 Rscript analises/modelo_gravitacional_saude/08_completar_cobertura_assistencial_saude.R
 Rscript analises/modelo_gravitacional_saude/tests/08_validar_cobertura_assistencial_saude.R
+python -m pip install -r analises/modelo_gravitacional_saude/requirements_cnes_historico.txt
+python analises/modelo_gravitacional_saude/09_temporalizar_cnes_historico_saude.py
+python analises/modelo_gravitacional_saude/tests/09_validar_cnes_historico_saude.py
 ```
 
 Os produtos pesados em `outputs/` sao derivados e ignorados pelo Git. Codigo,
