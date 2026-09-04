@@ -7,17 +7,17 @@ de saude em Minas Gerais. Antes de estimar distancia, capacidade assistencial
 ou probabilidade de entrada, foi necessario responder perguntas operacionais
 que aprofundam os primeiros passos do plano:
 
-1. quais instituicoes de saude existem no universo analitico?
-2. que tipo de evidencia existe para cada vinculo municipio-consorcio em 2019?
-3. qual estabelecimento, rede ou ancora administrativa pode representar a
+- quais instituicoes de saude existem no universo analitico?
+- que tipo de evidencia existe para cada vinculo municipio-consorcio em 2019?
+- qual estabelecimento, rede ou ancora administrativa pode representar a
    oferta assistencial de cada entidade?
-4. quais componentes de capacidade estao registrados diretamente sob os CNPJs
+- quais componentes de capacidade estao registrados diretamente sob os CNPJs
    dos consorcios e podem ser usados sem inventar oferta?
-5. qual a impedancia rodoviaria entre cada municipio e a oferta fixa
+- qual a impedancia rodoviaria entre cada municipio e a oferta fixa
    documentada, sem reduzir redes a uma sede administrativa?
-6. como organizar pagamentos, ausencias e movimentos em um painel anual
+- como organizar pagamentos, ausencias e movimentos em um painel anual
    completo sem confundir evidencia financeira com adesao juridica?
-7. como reconstruir a oferta CNES de 2014-2021 sem repetir a fotografia atual
+- como reconstruir a oferta CNES de 2014-2021 sem repetir a fotografia atual
    em todos os anos?
 
 A ordem e o estado dos dez passos cientificos estao exclusivamente em

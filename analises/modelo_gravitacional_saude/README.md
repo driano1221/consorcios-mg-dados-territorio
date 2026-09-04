@@ -11,7 +11,7 @@ estimar novos modelos.
 | saber a ordem, o estado e o proximo marco | `PLANO_DE_TRABALHO.md` |
 | obter uma visao geral das entregas | `README.md` |
 | localizar scripts, fontes, links, extracoes e produtos | `DICIONARIO_TECNICO.md` |
-| entender a evolucao dos passos com um caso real | `LINHA_DO_TEMPO_PASSOS.md` |
+| entender a evolucao das entregas com um caso real | `LINHA_DO_TEMPO_PASSOS.md` |
 | defender uma decisao metodologica | `METODOLOGIA_GERAL.md` |
 | consultar resultados ja validados | `checks/` |
 
