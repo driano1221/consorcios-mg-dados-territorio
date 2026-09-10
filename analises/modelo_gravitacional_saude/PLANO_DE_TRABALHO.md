@@ -12,7 +12,7 @@ deve criar uma segunda numeracao de etapas.
   de conclusao;
 - `[ ] Nao iniciado` depende das etapas anteriores.
 
-**Estado em 03/09/2026:** passos 1, 2, 4 e 5 concluidos; passos 3 e 6 em
+**Estado em 10/09/2026:** passos 1, 2, 4 e 5 concluidos como camadas-base; passos 3 e 6 em
 andamento; passos 7 a 10 ainda nao iniciados como etapas finais.
 
 - [x] **1. Fechar o universo de consorcios de saude**
@@ -54,13 +54,25 @@ aparecem no MIDES de Minas Gerais.
 - [x] separar polo fixo, rede, oferta movel e ausencia de unidade direta;
 - [x] auditar os 36 casos sem unidade direta e os dois casos inicialmente moveis;
 - [x] decidir os sete alertas de escopo, situacao ou macrogrupo;
-- [ ] identificar prestadores, bases e vigencias dos cinco casos moveis ou
-  indiretos relevantes para o modelo;
-- [ ] documentar disponibilidade historica ou sucessao institucional dos dois
-  casos inativos com pagamento MIDES;
-- [ ] classificar os 91 casos entidade-ano, distribuidos em 28 entidades, com pagamento e sem unidade fixa
+- [x] registrar 56 decisoes anuais para as cinco entidades indiretas/moveis e
+  as duas historicas; recuperar polos cadastrais historicos sem retroagir 2026;
+- [x] registrar exclusao/sensibilidade para os dois casos historicos sem
+  prestador ou sucessao comprovados; preservar os pagamentos;
+- [x] classificar os 91 casos entidade-ano, distribuidos em 28 entidades, com pagamento e sem unidade fixa
   direta em: rede documentada, oferta movel, ausencia cadastral, exclusao ou
   sensibilidade.
+- [x] corrigir 307 unidades moveis indevidamente classificadas como fixas no
+  snapshot atual e regenerar capacidade, tempo e grade preliminar;
+- [ ] distinguir destinos clinicos de centrais de gestao/regulacao, farmacia,
+  vigilancia e telessaude nas estruturas nao moveis atuais e historicas;
+- [ ] resolver duas fichas atuais com nome/tipo conflitante ou ausente;
+- [ ] completar a pesquisa documental individual das entidades nao prioritarias
+  e as vigencias/prestadores ainda ausentes; ate la vale a exclusao explicita.
+
+O dossie encerra a triagem dos 91 casos, nao comprova oferta para todos eles:
+59 possuem registro fixo posterior; 3 possuem fixa em outros meses do mesmo
+ano; 12 pertencem aos dois casos historicos; 5 sao planejamento CISVALES;
+1 possui regulacao SAMU documentada em 2021; 11 seguem sem polo suficiente.
 
 **Criterio para concluir:** todo caso entidade-ano relevante tera polo/rede
 documentado ou uma decisao explicita de exclusao/sensibilidade. Nao e necessario
@@ -80,7 +92,8 @@ passo 3 sera uma camada separada, nao uma alteracao retroativa deste resultado.
 ### 5. Construir A Camada-Base De Tempo Rodoviario
 
 - [x] integrar a matriz OpenStreetMap/OSRM publicada pelo projeto Distbrasil;
-- [x] calcular tempo de 853 municipios ate 389 unidades fixas diretas;
+- [x] calcular tempo de 853 municipios ate 82 estruturas fixas candidatas
+  (63 municipios de destino; classificacao corrigida em 10/09);
 - [x] preservar minimo, mediana e maximo quando uma entidade possui rede;
 - [x] deixar sem tempo os casos sem destino fixo documentado.
 
@@ -141,7 +154,9 @@ unica regressao.
 
 ## Proximo Marco
 
-Fechar as pendencias documentais do **passo 3**. Em seguida, concluir o
+Fechar o filtro de funcao assistencial nas estruturas nao moveis do **passo 3**
+e suas pendencias documentais, partindo das decisoes anuais ja materializadas.
+Nao repetir a triagem dos 91 casos ou a extracao CNES. Em seguida, concluir o
 **passo 6** com alternativas e variaveis anuais. A EDA final so comeca depois
 que esse painel estiver materializado e testado.
 
@@ -158,6 +173,8 @@ que esse painel estiver materializado e testado.
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 10/09/2026 | Triagem dos 91 casos concluida; sete entidades receberam 56 decisoes anuais; passo 3 permanece parcial | faltam filtro clinico das estruturas nao moveis e documentos para casos ainda excluidos |
+| 10/09/2026 | 307 unidades moveis retiradas da oferta fixa atual; 82 estruturas candidatas e 63 destinos | nomes USB/USA nao eram reconhecidos pelo filtro anterior; tipo oficial CNES passou a prevalecer |
 | 03/09/2026 | Fixada a sequencia canonica de dez passos | eliminar a concorrencia entre o plano original e a numeracao das entregas tecnicas |
 | 03/09/2026 | Capacidade ficou antes do tempo rodoviario | o destino assistencial precisa ser conhecido antes de calcular impedancia |
 | 03/09/2026 | Auditoria de cobertura e CNES historico foram reclassificados como complementos dos passos 3 e 4 | essas entregas aprofundam etapas existentes; nao criam novos objetivos cientificos |

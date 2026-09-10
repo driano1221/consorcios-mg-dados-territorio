@@ -1,5 +1,13 @@
 # Metodologia Geral - Modelo Gravitacional De Saude
 
+> Revisao de 10/09/2026: a classificacao anterior de 389 fixas/281 moveis foi
+> corrigida com o tipo oficial CNES. Sao 82 estruturas fixas candidatas, 586
+> moveis pelo tipo e 2 fichas com mobilidade indicada no nome e tipo
+> conflitante/ausente. As 82 ainda exigem filtro de funcao assistencial;
+> centrais administrativas/regulatorias nao equivalem a destinos clinicos.
+> Coleta original de 03/09 preservada; reprocessamento em 10/09. A serie
+> historica ja utilizava os tipos moveis 32/40/42 e nao foi alterada.
+
 ## Objetivo
 
 Preparar uma base defensavel para o futuro modelo gravitacional de consorcios
@@ -40,7 +48,7 @@ criterios de conclusao ficam somente em `PLANO_DE_TRABALHO.md`.
 | 2b. Usar CNM como fotografia atual no recorte saude | Disponivel, mas ainda nao materializado na tabela de saude | Snapshot CNM de 27/08 e piloto CNM x MIDES ja existem em outra frente |
 | 3. Definir polo de atracao assistencial | Produto direto concluido; cobertura final em andamento | 84 entidades consultadas por CNPJ mantenedor e proprio |
 | 4. Construir capacidade assistencial | Concluido e reprocessado | 670 unidades; medidas separadas para 61 entidades com oferta fixa direta |
-| 5. Integrar tempo rodoviario | Concluido e reprocessado | 853 origens, 389 unidades fixas e tres camadas de impedancia |
+| 5. Integrar tempo rodoviario | Concluido e reprocessado | 853 origens, 82 unidades fixas e tres camadas de impedancia |
 | 6. Montar o painel analitico anual | Grade preliminar concluida; painel final em andamento | 573.216 observacoes municipio x entidade x ano |
 | Complemento. Cobertura assistencial | Auditoria executada; pendencias no passo 3 | 38 casos auditados, 15 recuperados e 7 alertas decididos |
 | Complemento temporal do passo 4 | Concluido | 672 entidades-ano e 120 arquivos oficiais auditados |
@@ -316,7 +324,7 @@ entidade utiliza somente unidades fixas e mantem cada componente separado.
 
 ```mermaid
 flowchart LR
-    A["670 unidades CNES"] --> B["Separar 389 fixas<br/>e 281 moveis"]
+    A["670 unidades CNES"] --> B["Separar 82 fixas<br/>e 586 moveis e 2 casos pendentes"]
     B --> C["Leitos existentes e SUS"]
     B --> D["Ambulatorio, internacao e SADT"]
     B --> E["Vinculos e CBOs SUS ativos"]
@@ -325,7 +333,7 @@ flowchart LR
     E --> F
     F --> G["61 com capacidade direta"]
     F --> H["21 sem unidade direta = NA"]
-    F --> I["2 somente moveis = sem polo fixo"]
+    F --> I["2 sem fixa confirmada neste snapshot = sem polo fixo"]
 ```
 
 ### Resultado
@@ -333,11 +341,12 @@ flowchart LR
 | Indicador | Resultado |
 |---|---:|
 | Unidades consultadas sem erro final | 670 |
-| Unidades fixas | 389 |
-| Unidades moveis/itinerantes | 281 |
+| Unidades fixas | 82 |
+| Unidades moveis pelo tipo CNES | 586 |
+| Nome indica mobilidade e tipo conflita/ausente | 2 |
 | Entidades com capacidade fixa direta | 61 |
 | Entidades sem unidade no proprio CNPJ | 21 |
-| Entidades somente com unidades moveis | 2 |
+| Entidades sem fixa confirmada por mobilidade/conflito cadastral | 2 |
 | Entidades com leitos SUS diretos | 1 |
 
 Das 61 entidades com oferta fixa, 58 possuem ao menos um CBO medico SUS ativo
@@ -403,7 +412,7 @@ possuem capacidade nao observada nesta etapa (`NA`).
 
 ### Em Que Consistiu
 
-Ligar os 853 municipios de Minas Gerais aos municipios das 389 unidades CNES
+Ligar os 853 municipios de Minas Gerais aos municipios das 82 unidades CNES
 fixas diretamente vinculadas aos consorcios. A impedancia e calculada ate a
 oferta documentada, nao automaticamente ate a sede administrativa.
 
@@ -431,14 +440,14 @@ automovel. O arquivo `dist_brasil.rds` foi validado pelo MD5 oficial
 flowchart LR
     A["Matriz nacional OSRM"] --> B["Filtrar 363.378 pares de MG"]
     C["853 municipios"] --> D["Crosswalk IBGE 6 para 7 digitos"]
-    E["389 unidades fixas"] --> F["238 municipios de oferta"]
+    E["82 unidades fixas"] --> F["63 municipios de oferta"]
     B --> G["Municipio origem x municipio de oferta"]
     D --> G
     F --> G
-    G --> H["203.014 rotas municipais"]
-    H --> I["331.817 linhas municipio x unidade"]
+    G --> H["53.739 rotas municipais"]
+    H --> I["69.946 linhas municipio x unidade"]
     I --> J["Minimo, mediana e maximo por entidade"]
-    K["21 sem unidade + 2 somente moveis"] --> L["Tempo NA"]
+    K["21 sem unidade + 2 sem fixa confirmada neste snapshot"] --> L["Tempo NA"]
     J --> M["71.652 linhas municipio x entidade"]
     L --> M
 ```
@@ -470,20 +479,20 @@ automaticamente a impedancia definitiva do modelo.
 
 | Produto | Unidade da linha | Linhas |
 |---|---|---:|
-| municipio-destino | municipio x municipio de oferta | 203.014 |
-| municipio-unidade | municipio x unidade CNES fixa | 331.817 |
+| municipio-destino | municipio x municipio de oferta | 53.739 |
+| municipio-unidade | municipio x unidade CNES fixa | 69.946 |
 | municipio-entidade | municipio x entidade consolidada | 71.652 |
 
 Os 363.378 pares rodoviarios entre os 853 municipios de MG estao completos.
-A cobertura final possui 238 municipios de oferta, 389 unidades fixas e 61
-entidades com tempo. Trinta e seis entidades sem unidade direta e duas somente
+A cobertura final possui 63 municipios de oferta, 82 unidades fixas e 61
+entidades com tempo. Vinte e uma entidades sem unidade direta e duas somente
 moveis permanecem com tempo ausente.
 
 ### Exemplos Reais
 
 | Origem | Entidade | Resultado | Leitura |
 |---|---|---:|---|
-| Igarape | CISMEP | minimo 0; mediana 4,2; maximo 8,4 min | rede com unidades em Igarape e Sao Joaquim de Bicas |
+| Igarape | CISMEP | minimo 0; mediana 11,75; maximo 25,8 min | rede com unidades em Igarape, Sao Joaquim de Bicas, Betim e Brumadinho |
 | Para de Minas | CISMEP | minimo 58,3 min | unidade mais proxima pode diferir da sede administrativa |
 | Itajuba | CISMAS | 0 min | mesma cidade; nao significa viagem porta a porta nula |
 | Abaete | CISVER | 252,2 min | somente a unidade fixa entra; quatro vacimoveis ficam fora |
@@ -672,7 +681,7 @@ flowchart LR
 | Indicador | Antes | Depois |
 |---|---:|---:|
 | unidades CNES diretamente vinculadas | 639 | 670 |
-| unidades fixas | 366 | 389 |
+| unidades fixas (classificacao anterior, corrigida em 10/09) | 366 | 389 |
 | entidades com estrutura fixa direta | 46 | 61 |
 | entidades sem unidade CNES direta | 36 | 21 |
 | entidades somente com unidades moveis diretas | 2 | 2 |
@@ -691,7 +700,7 @@ atual por inatividade e ausencia de MIDES.
 |---|---|---|---|
 | CISARP | sem unidade direta | clinica CNES 7918747 pelo CNPJ proprio | unidade fixa atual; temporalidade ainda deve ser validada |
 | CONSONORTE | sem unidade direta | clinica CNES 0975397 e dois vacimoveis | clinica e oferta movel separadas |
-| CIS/CEN | somente unidades moveis | contratos para media/alta complexidade | rede credenciada sem hospital unico; tempo fixo continua `NA` |
+| CIS/CEN | exclusao fixa no snapshot atual | CNES historico 7609868 em Guanhaes, 2014-2021 | polo cadastral historico recuperado em 10/09; rede externa ainda pendente |
 | CIAS | sem unidade direta | gestao regional do SAMU em varios municipios | modelar bases/central em especificacao propria |
 | CIS/UBA | matriz inapta com MIDES ate 2020 | nenhuma unidade CNES atual | manter historia financeira e excluir alternativa atual |
 
@@ -728,7 +737,7 @@ quanto dezembro pode subestimar unidades que aparecem apenas em parte do ano.
 
 ### Antes
 
-- as 389 unidades fixas observadas em 03/09/2026 eram repetidas nos oito anos
+- as 389 unidades entao classificadas como fixas em 03/09/2026 eram repetidas nos oito anos
   do painel;
 - uma estrutura criada depois de 2021 podia parecer disponivel em 2014;
 - uma unidade historica encerrada antes de 2026 desaparecia de toda a serie;
@@ -870,6 +879,7 @@ Rscript analises/modelo_gravitacional_saude/07_montar_painel_analitico_saude.R
 Rscript analises/modelo_gravitacional_saude/08_completar_cobertura_assistencial_saude.R
 python -m pip install -r analises/modelo_gravitacional_saude/requirements_cnes_historico.txt
 python analises/modelo_gravitacional_saude/09_temporalizar_cnes_historico_saude.py
+python analises/modelo_gravitacional_saude/10_auditar_pendencias_assistenciais_saude.py
 ```
 
 Cada script possui um teste correspondente em `tests/`. Os resultados locais
@@ -880,8 +890,78 @@ acompanha o caso Igarape x CISMEP ao longo das entregas executadas.
 
 ### Proximo Passo
 
-Executar a EDA usando a camada historica, definir o conjunto de alternativas
-plausiveis e integrar controles anuais validados antes da estimacao. Para redes
+#### Auditoria Retomada Em 10/09/2026
+
+O repositorio foi retomado em `a411bc0`, com diff vazio e apenas
+`pdf_bundle.py` preexistente fora do versionamento. A leitura do acervo e os
+nove testes iniciais precederam as alteracoes. Os testes estruturais passavam,
+mas nao impediam uma unidade de tipo movel de ser classificada como fixa:
+307 nomes USB/USA e variantes escapavam do filtro nominal.
+
+A regra passou a considerar o tipo CNES. A documentacao oficial do
+[CNES sobre criticas cadastrais](https://wiki.saude.gov.br/cnes/index.php/Principais_Cr%C3%ADticas_do_CNES)
+identifica os tipos 32/40/42 como estruturas moveis. O reprocessamento dos
+670 caches conservou as fontes e suas datas. A proveniencia de 32 unidades
+recuperadas por CNPJ proprio tambem foi preservada, corrigindo a atribuicao
+generica a mantenedora. Capacidade atual, tempo e grade preliminar foram
+regenerados; a matriz original e o CNES historico permaneceram intactos.
+
+**Nao movel ainda nao significa polo clinico.** As 82 candidatas incluem
+centrais administrativas/regulatorias e outros tipos que precisam de filtro
+por funcao e atendimento. Nenhum resultado de estimacao foi produzido com
+esses destinos. Nas duas fichas conflitantes/sem tipo, manteve-se exclusao
+conservadora da oferta fixa atual, sem aplicar essa decisao aos anos passados.
+
+O script tecnico 10 materializa o dossie de 91 entidades-ano em 28 entidades,
+com R$ 151.093.325,68 em pagamentos. A ausencia em dezembro foi cruzada com
+os meses do mesmo ano e com a primeira presenca observada, gerando:
+
+| Classificacao | Entidades-ano | Interpretacao |
+|---|---:|---|
+| Sem vinculo no ano; registro fixo posterior | 59 | nao prova cadastro tardio nem oferta anterior |
+| Historicas sem polo documentado | 12 | preservar pagamentos; nenhuma sucessao presumida |
+| Fixa em outros meses, ausente em dezembro | 3 | sensibilidade mensal; nao preencher capacidade de dezembro |
+| Planejamento CISVALES sem operacao comprovada | 5 | intencao de implantar nao e oferta realizada |
+| Regulacao SAMU/CIAS explicitamente referente a 2021 | 1 | servico documentado sem destino hospitalar atribuivel |
+| Sem evidencia suficiente de polo no ano | 11 | manter exclusao/sensibilidade explicita |
+
+Os tres casos mensais sao CISPARA/2017, Alto Sao Francisco/2017 e CIAS/2015.
+Os 91 permanecem fora da especificacao principal de destino fixo enquanto
+faltar vinculo anual comprovado. Isso **nao apaga os pagamentos**, nao os
+transforma em zero e nao define ainda o universo estatistico final do passo 6.
+A pesquisa documental individual das entidades nao prioritarias esta pendente:
+a triagem CNES foi concluida, mas nao deve ser descrita como auditoria
+documental exaustiva de todas as 28 entidades.
+
+| Entidade | Evidencia temporal recuperada | Decisao e limite |
+|---|---|---|
+| CIS/CEN, 00773222 | CNES 7609868, Guanhaes; fixa nos oito dezembros | candidato historico; nao integra os 91; verificar escopo SUS de 2014 |
+| CIMES/CISNES, 07333598 | CNES 3987981, Salinas; clinica nos oito dezembros | candidato historico; nao integra os 91; conflito nominal atual nao retroage |
+| Alto Sao Francisco, 64486822 | CNES 2143674, Moema, 2014-2016; 26 leitos SUS em cada dezembro | polo historico; parte de 2017 apenas em sensibilidade mensal; anos posteriores sem imputacao |
+| CIAS, 97550393 | CNES 6150063, Santa Luzia, dezembro de 2014 e janeiro de 2015 | polo cadastral de 2014; rede SAMU exige especificacao propria nos demais anos |
+| CISVALES, 23866705 | planejamento institucional, sem CNES fixo anual diretamente ligado | excluir destino fixo; nao unir a CONSURGE por semelhanca funcional |
+| CIS/UBA, 00840724 | pagamento em 2014-2016 e 2019-2020; sem polo CNES anual | preservar historico; nao presumir sucessao pelo SIMSAUDE |
+| Raiz 02287790 | pagamento em 2014-2019 e 2021; sem polo CNES anual | preservar historico; situacao cadastral nao fornece data de fim assistencial |
+
+As conclusoes de polo cadastral provem das bases ST/LT/SR/PF anuais existentes.
+A [portaria federal de 2015](https://bvsms.saude.gov.br/bvs/saudelegis/gm/2015/prt2139_18_12_2015.html)
+corrobora a identidade do hospital de Moema. O
+[termo de Santa Luzia assinado em 2024](https://dom.santaluzia.mg.gov.br/?mec-events=termo-de-ajuste-de-contas-6)
+refere expressamente regulacao SAMU de 2021-2022; sustenta esse fato temporal,
+sem oferecer um CNES hospitalar ou autorizacao para retroagir a outros anos.
+A [audiencia da ALMG de 2019](https://www.almg.gov.br/projetos-de-lei/RQC/294/2019)
+trata da implantacao, insuficiente para confirmar operacao do CISVALES.
+O catalogo datado registra fontes, alcance e pendencias; o catalogo anterior
+do script 08 continua sendo retrato documental atual, nao regra historica.
+
+Permanece prioritario aplicar o filtro clinico a estruturas nao moveis atuais
+e historicas e resolver as lacunas documentais que possam alterar destinos.
+As exclusoes ja registradas evitam imputacao e permitem prosseguir de forma
+auditavel quando o criterio assistencial estiver fechado.
+
+Concluir o filtro assistencial e as pendencias do passo 3. Depois definir
+alternativas e integrar capacidade historica e controles anuais no passo 6.
+Somente com o painel final validado executar a EDA do passo 7. Para redes
 moveis ou contratadas, a alternativa deve representar bases ou prestadores
 documentados, nao a sede administrativa. A CNM pode entrar como marcador atual
 de sensibilidade, sem retroagir sua composicao para 2019.

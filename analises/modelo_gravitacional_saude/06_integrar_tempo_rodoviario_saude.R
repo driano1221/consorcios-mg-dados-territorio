@@ -371,6 +371,45 @@ saveRDS(
   compress = "xz"
 )
 
+check_dir <- file.path(model_dir, "checks")
+dir.create(check_dir, recursive = TRUE, showWarnings = FALSE)
+nonlocal_routes <- route_grid |> filter(!mesmo_municipio_destino)
+quantiles <- quantile(nonlocal_routes$tempo_rodoviario_min, c(0, .25, .5, .75, .95, 1))
+example <- entity_grid |> filter(id_municipio_origem == "3130101", cnpj_raiz_8 == "05802877")
+writeLines(c(
+  "# Validacao: Tempo Rodoviario Da Oferta Fixa De Saude (MG)",
+  "",
+  "- Fonte: [Zenodo 11400243](https://zenodo.org/records/11400243), publicada em 31/05/2024.",
+  paste0("- MD5 validado: `", actual_md5, "`."),
+  "- OSRM/OpenStreetMap, perfil car; sedes municipais IBGE 2010; ida/volta simetricas.",
+  "- Relatorio regenerado pelo script 06 com a classificacao do script 05.",
+  "",
+  "| Camada | Linhas | Destinos |",
+  "|---|---:|---:|",
+  paste0("| Municipio x municipio de oferta | ", nrow(route_grid), " | ", n_distinct(route_grid$id_municipio_destino), " |"),
+  paste0("| Municipio x estrutura fixa candidata | ", nrow(unit_routes), " | ", nrow(fixed_units), " |"),
+  paste0("| Municipio x entidade | ", nrow(entity_grid), " | ", n_distinct(entity_grid$cnpj_raiz_8), " |"),
+  "",
+  paste0("- Entidades com tempo: ", n_distinct(fixed_units$cnpj_raiz_8), "; linhas sem tempo: ", sum(is.na(entity_grid$tempo_minimo_min)), "."),
+  paste0("- Rotas entre municipios diferentes sem tempo: ", sum(is.na(nonlocal_routes$tempo_rodoviario_min)), "."),
+  "",
+  "## Estatisticas Preliminares Dos Trajetos Intermunicipais",
+  "",
+  "| Estatistica | Minutos |",
+  "|---|---:|",
+  paste0("| ", names(quantiles), " | ", round(quantiles, 1), " |"),
+  "",
+  "## Exemplo E Limites",
+  "",
+  paste0("- Igarape x CISMEP: minimo ", example$tempo_minimo_min, "; mediana ", example$tempo_mediano_min, "; maximo ", example$tempo_maximo_min, " minutos."),
+  "- A correcao de 10/09 retirou 307 unidades de tipo movel da oferta fixa; os snapshots de 03/09 preservam a classificacao anterior.",
+  "- Estruturas nao moveis ainda exigem filtro clinico: central administrativa/regulatoria nao e hospital.",
+  "- Duas fichas com indicio nominal de mobilidade e tipo conflitante/ausente permanecem fora da oferta fixa.",
+  "- Tempo zero representa mesmo municipio; nao equivale a viagem porta a porta nula.",
+  "- A matriz e estatica, sem transito por horario nem rede viaria anual de 2014-2021.",
+  "- Grade estadual completa nao e conjunto final de alternativas; capacidade historica sera ligada no passo 6."
+), file.path(check_dir, "VALIDACAO_TEMPO_RODOVIARIO_SAUDE_MG.md"), useBytes = TRUE)
+
 message(
   "Passo 5 concluido: ",
   n_distinct(route_grid$id_municipio_origem), " origens; ",

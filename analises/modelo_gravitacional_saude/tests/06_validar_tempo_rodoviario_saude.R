@@ -19,12 +19,12 @@ dest <- readRDS(dest_path)
 units <- readRDS(unit_path)
 entities <- readRDS(entity_path)
 
-stopifnot(nrow(dest) == 853L * 238L)
+stopifnot(nrow(dest) == 853L * 63L)
 stopifnot(n_distinct(dest$id_municipio_origem) == 853L)
-stopifnot(n_distinct(dest$id_municipio_destino) == 238L)
+stopifnot(n_distinct(dest$id_municipio_destino) == 63L)
 stopifnot(!anyDuplicated(dest[c("id_municipio_origem", "id_municipio_destino")]))
 stopifnot(!anyNA(dest[c("distancia_rodoviaria_m", "tempo_rodoviario_min")]))
-stopifnot(sum(dest$mesmo_municipio_destino) == 238L)
+stopifnot(sum(dest$mesmo_municipio_destino) == 63L)
 stopifnot(all(dest$tempo_rodoviario_min[dest$mesmo_municipio_destino] == 0))
 stopifnot(all(dest$distancia_rodoviaria_m[dest$mesmo_municipio_destino] == 0))
 stopifnot(all(dest$tempo_rodoviario_min[!dest$mesmo_municipio_destino] > 0))
@@ -53,12 +53,15 @@ mirrors <- dest |>
       "id_municipio_destino" = "id_municipio_origem"
     )
   )
-stopifnot(nrow(mirrors) == 238L * 238L)
+stopifnot(nrow(mirrors) == 63L * 63L)
 stopifnot(all(mirrors$distancia_ida == mirrors$distancia_volta))
 stopifnot(all(mirrors$tempo_ida == mirrors$tempo_volta))
 
-stopifnot(nrow(units) == 853L * 389L)
-stopifnot(n_distinct(units$cnes) == 389L)
+stopifnot(nrow(units) == 853L * 82L)
+stopifnot(n_distinct(units$cnes) == 82L)
+capacity <- read.csv(file.path(out_dir, "capacidade_unidades_cnes_saude_mg.csv"),
+  colClasses = c(cnes = "character"), fileEncoding = "UTF-8")
+stopifnot(setequal(units$cnes, capacity$cnes[capacity$unidade_fixa_elegivel]))
 stopifnot(n_distinct(units$cnpj_raiz_8) == 61L)
 stopifnot(!anyDuplicated(units[c("id_municipio_origem", "cnpj_raiz_8", "cnes")]))
 stopifnot(!anyNA(units[c("distancia_rodoviaria_m", "tempo_rodoviario_min")]))
@@ -79,5 +82,5 @@ stopifnot(all(entities$distancia_minima_km[available] <= entities$distancia_medi
 stopifnot(all(entities$distancia_mediana_km[available] <= entities$distancia_maxima_km[available]))
 
 cat(
-  "OK: tempo rodoviario validado para 853 municipios, 389 unidades fixas e 84 entidades.\n"
+  "OK: tempo rodoviario validado para 853 municipios, 82 estruturas fixas candidatas e 84 entidades.\n"
 )

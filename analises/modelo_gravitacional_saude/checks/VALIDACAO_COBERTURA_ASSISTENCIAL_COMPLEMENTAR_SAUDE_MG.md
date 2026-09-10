@@ -1,6 +1,6 @@
 # Validacao: Cobertura Assistencial Complementar (MG)
 
-- Data: `2026-09-03`.
+- Data: `2026-09-10`.
 - Entidades no universo: **84**.
 - Casos originalmente pendentes: **38** (36 sem unidade direta e 2 somente moveis).
 - Entidades recuperadas pela consulta de CNPJ proprio: **15**.
@@ -11,9 +11,9 @@
 
 | classificacao | entidades |
 |---|---:|
-| unidade_fixa_cnes_direta | 38 |
-| rede_fixa_cnes_direta | 23 |
+| unidade_fixa_cnes_direta | 49 |
 | fora_universo_modelavel_atual | 15 |
+| rede_fixa_cnes_direta | 12 |
 | entidade_historica_inativa_sem_polo_atual | 2 |
 | ativa_sem_mides_e_sem_evidencia_assistencial | 1 |
 | oferta_assistencial_documentada_sem_prestador_unico | 1 |

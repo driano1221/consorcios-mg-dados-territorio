@@ -1,5 +1,38 @@
 # Dicionario Tecnico - Modelo Gravitacional De Saude
 
+## Atualizacao De 10/09/2026
+
+- `05_construir_capacidade_assistencial_saude.R --cache-only`: reprocessa os
+  670 caches da coleta de 03/09 sem consultas externas; preserva data e
+  proveniencia do vinculo proprio/mantenedor. O tipo CNES movel exclui uma
+  unidade fixa mesmo quando o nome apenas informa USB/USA.
+- `unidade_movel_pelo_tipo`: 586 unidades oficialmente moveis;
+  `classificacao_fixa_pendente`: 2 fichas com indicio nominal e tipo
+  conflitante/ausente; `unidade_fixa_elegivel`: 82 candidatas cadastrais,
+  ainda sem filtro final de funcao clinica. O nome legado nao prova acesso.
+- Os produtos de coleta do script 04 e snapshots `2026_09_03` preservam a
+  classificacao inicial por nome como evidencia historica. Para capacidade e
+  tempo atuais, usar a classificacao corrigida do script 05.
+- `data_extracao_cnes` permanece 2026-09-03; `data_reprocessamento` e
+  2026-09-10 nas unidades. Snapshots `2026_09_10` sao reprocessamentos.
+- `10_auditar_pendencias_assistenciais_saude.py`: complemento tecnico do
+  passo cientifico 3; usa biblioteca padrao Python e produtos 07/09 existentes.
+  Nao e o passo cientifico 10 e nao altera o painel.
+
+| Arquivo | Unidade e finalidade |
+|---|---|
+| `evidencias/decisoes_sete_entidades_2026_09_10.csv` | 7 entidades; decisao documental, fonte, alcance temporal e pendencia |
+| `outputs/decisoes_anuais_sete_entidades.csv` | 56 entidades-ano; junta evidencia e CNES do proprio ano |
+| `outputs/dossie_91_entidades_ano_sem_fixa.csv` | 91 entidades-ano com pagamento positivo e nenhuma fixa em dezembro |
+| `outputs/resumo_28_entidades_sem_fixa.csv` | 28 entidades; anos, valor e estado da pesquisa documental |
+| `tests/10_validar_pendencias_assistenciais_saude.py` | reconcilia chaves, R$ 151.093.325,68, temporalidade e ausencia de imputacao |
+
+No dossie, `decisao_principal` trata a especificacao de destino fixo;
+nao exclui pagamentos da base financeira. `primeiro_ano_fixo_observado`
+e observacao cadastral, nao data real de abertura. `fonte_complementar_url`
+nao substitui a evidencia anual local: documentos recentes so corroboram
+identidade ou fatos historicos expressamente datados.
+
 Este documento e o inventario oficial da pasta. Ele responde quatro perguntas:
 
 1. qual arquivo executa cada passo;
@@ -13,7 +46,7 @@ das entregas esta em `LINHA_DO_TEMPO_PASSOS.md`.
 
 ## Numeracao
 
-Ha dez passos cientificos e nove scripts executados ate aqui. As duas numeracoes
+Ha dez passos cientificos e dez scripts tecnicos executados ate aqui. As duas numeracoes
 nao sao equivalentes: um passo pode exigir mais de um script e um complemento
 pode corrigir um produto anterior sem criar novo passo cientifico.
 
@@ -285,6 +318,7 @@ Rscript analises/modelo_gravitacional_saude/08_completar_cobertura_assistencial_
 Rscript analises/modelo_gravitacional_saude/tests/08_validar_cobertura_assistencial_saude.R
 python -m pip install -r analises/modelo_gravitacional_saude/requirements_cnes_historico.txt
 python analises/modelo_gravitacional_saude/09_temporalizar_cnes_historico_saude.py
+python analises/modelo_gravitacional_saude/10_auditar_pendencias_assistenciais_saude.py
 python analises/modelo_gravitacional_saude/tests/09_validar_cnes_historico_saude.py
 ```
 

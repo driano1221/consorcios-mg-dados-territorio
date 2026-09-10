@@ -29,6 +29,7 @@ dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
 
 snapshot_date <- as.character(Sys.Date())
 snapshot_tag <- gsub("-", "_", snapshot_date, fixed = TRUE)
+cache_only <- "--cache-only" %in% commandArgs(trailingOnly = TRUE)
 source_base <- "https://cnes2.datasus.gov.br"
 refresh_cnes <- identical(Sys.getenv("REFRESH_CNES_CAPACIDADE"), "1")
 refresh_beds <- identical(Sys.getenv("REFRESH_CNES_LEITOS"), "1")
@@ -48,6 +49,7 @@ as_number <- function(x) {
 }
 
 fetch_cnes <- function(url, attempts = 2L) {
+  if (cache_only) stop("--cache-only proibe nova coleta: ", url)
   last_error <- NA_character_
   for (attempt in seq_len(attempts)) {
     temp_file <- tempfile(fileext = ".html")
@@ -283,6 +285,12 @@ units <- read.csv(
   distinct(cnpj_raiz_8, co_unidade, .keep_all = TRUE) |>
   arrange(cnpj_raiz_8, cnes)
 polos <- readRDS(polos_path)
+if (cache_only) {
+  dates <- unique(units$data_extracao)
+  if (length(dates) != 1L || is.na(dates) || !nzchar(dates)) stop("Data do snapshot ambigua.")
+  snapshot_date <- dates[[1]]
+  # O sufixo identifica o reprocessamento; a data de coleta original permanece nas colunas.
+}
 
 capacity_rows <- vector("list", nrow(units))
 start_index <- max(1L, suppressWarnings(as.integer(Sys.getenv("CNES_START_INDEX", unset = "1"))))
@@ -352,12 +360,21 @@ if (start_index != 1L || end_index != nrow(units)) {
 }
 
 capacity_units <- bind_rows(capacity_rows) |>
+  select(-any_of(c("fonte_vinculo", "vinculo_cnpj_mantenedora_direto", "vinculo_cnpj_proprio_direto"))) |>
+  left_join(
+    units |> select(cnpj_raiz_8, cnes, fonte_vinculo, vinculo_cnpj_mantenedora_direto, vinculo_cnpj_proprio_direto),
+    by = c("cnpj_raiz_8", "cnes"), relationship = "one-to-one"
+  ) |>
   mutate(
+    unidade_movel_pelo_tipo = coalesce(str_detect(tipo_estabelecimento_cnes, regex("movel|móvel", ignore_case = TRUE)), FALSE),
+    classificacao_fixa_pendente = unidade_movel_ou_itinerante & !unidade_movel_pelo_tipo,
+    # Tipo oficial recupera USB/USA que nao dizem 'ambulancia' no nome.
+    # Conflito nome/tipo ou ficha ausente nao promove uma unidade a fixa.
+    unidade_movel_ou_itinerante = unidade_movel_ou_itinerante | unidade_movel_pelo_tipo,
     unidade_fixa_elegivel = !unidade_movel_ou_itinerante,
     capacidade_direta_cnes_atual = consulta_cnes_completa & !unidade_movel_ou_itinerante,
     proxy_especialidades_medicas = "CBO medico distinto, SUS e ativo; nao equivale a servico especializado formal",
-    fonte_vinculo = "CNES: estabelecimento listado sob CNPJ da mantenedora",
-    vinculo_cnpj_mantenedora_direto = TRUE
+    data_reprocessamento = as.character(Sys.Date())
   ) |>
   arrange(cnpj_raiz_8, cnes)
 
@@ -390,10 +407,15 @@ entity_capacity <- polos |>
     cnpj_raiz_8, cnpj_canonico, razao_social_canonica, sigla_canonica,
     aparece_mides_mg, incluir_modelo_principal_preliminar,
     incluir_sensibilidade_multiarea, decisao_polo_atracao,
-    n_unidades_cnes_vinculadas, n_unidades_moveis_ou_itinerantes
+    n_unidades_cnes_vinculadas
+  ) |>
+  left_join(
+    capacity_units |> summarise(n_unidades_moveis_ou_itinerantes = sum(unidade_movel_ou_itinerante), .by = cnpj_raiz_8),
+    by = "cnpj_raiz_8"
   ) |>
   left_join(entity_capacity, by = c("cnpj_raiz_8", "cnpj_canonico")) |>
   mutate(
+    n_unidades_moveis_ou_itinerantes = coalesce(n_unidades_moveis_ou_itinerantes, 0L),
     capacidade_status = case_when(
       decisao_polo_atracao == "sede_administrativa_apenas_ancora_sensibilidade" ~ "sem_unidade_cnes_direta_nao_interpretar_como_zero",
       n_unidades_cnes_vinculadas > 0L & n_unidades_moveis_ou_itinerantes == n_unidades_cnes_vinculadas ~ "somente_unidades_moveis_sem_polo_fixo",
@@ -451,7 +473,7 @@ check_lines <- c(
   "",
   "## Cobertura E Medidas",
   "",
-  paste0("- Unidades fixas elegiveis: **", nrow(fixed_units), "**; unidades moveis/itinerantes: **", sum(capacity_units$unidade_movel_ou_itinerante), "**."),
+  paste0("- Estruturas fixas elegiveis: **", nrow(fixed_units), "**; excluidas da oferta fixa: **", sum(capacity_units$unidade_movel_ou_itinerante), "** (", sum(capacity_units$unidade_movel_pelo_tipo), " moveis pelo tipo CNES e ", sum(capacity_units$classificacao_fixa_pendente), " com indicio no nome e tipo conflitante/ausente)."),
   paste0("- Unidades fixas com atendimento ambulatorial SUS: **", sum(fixed_units$atendimento_ambulatorial_sus %in% TRUE), "**; com SADT SUS: **", sum(fixed_units$sadt_sus %in% TRUE), "**; com internacao SUS: **", sum(fixed_units$internacao_sus %in% TRUE), "**."),
   paste0("- Unidades fixas com ao menos um CBO medico SUS ativo: **", sum(fixed_units$n_cbo_medicos_sus_ativos_distintos > 0), "**."),
   paste0("- Entidades com estrutura fixa direta: **", nrow(direct_entities), "**; **", sum(direct_entities$cbo_medicos_sus_ativos_rede_direta > 0L), "** possuem ao menos um CBO medico SUS ativo no retrato CNES."),
@@ -481,10 +503,13 @@ check_lines <- c(
   "- Leitos SUS aparecem em apenas uma entidade com capacidade direta; nao devem ser a unica massa de atracao.",
   "- CBOs medicos e atendimentos possuem cobertura maior, mas medem cadastro atual, nao producao nem especialidade historica.",
   "- O mesmo CBO pode aparecer em varias unidades da rede; a soma mede escopo registrado por unidade, nao especialidades unicas da entidade.",
-  "- CIS/CEN e CIMES possuem somente unidades moveis e nao recebem destino rodoviario fixo.",
+  "- CIS/CEN e CIMES nao recebem destino fixo neste snapshot: ha indicios de mobilidade e fichas com tipo ausente/conflitante. A serie historica deve ser lida separadamente.",
   "",
   "## Regras De Leitura",
   "",
+  "- Reprocessamento de 10/09: tipos CNES moveis nao recebem tempo fixo, mesmo quando o nome diz apenas USB/USA. As 307 classificacoes incorretas foram removidas da oferta fixa.",
+  "- CIMES 3987981: nome VACIMOVEL e tipo clinica conflitam no snapshot atual. CISCEN 5563003: ficha sem tipo. Ambos permanecem excluidos conservadoramente da oferta fixa atual; isso nao retroage ao CNES historico.",
+  "- Estrutura nao movel pode ser central administrativa/regulatoria, farmacia ou telessaude. A elegibilidade cadastral nao autoriza trata-la como destino clinico; o filtro assistencial pertence ao fechamento do passo 3.",
   "- Leitos, vinculos SUS e CBOs sao fotografia atual do CNES, nao serie historica do MIDES.",
   "- Valores iguais a zero so significam ausencia no modulo CNES quando a consulta foi completa; ausencia de unidade sob o CNPJ permanece `NA` no agregado.",
   "- CBO medico distinto e proxy de escopo profissional, nao equivale a servico especializado formal ou producao realizada.",

@@ -16,9 +16,9 @@
 
 ## Cobertura E Medidas
 
-- Unidades fixas elegiveis: **389**; unidades moveis/itinerantes: **281**.
-- Unidades fixas com atendimento ambulatorial SUS: **81**; com SADT SUS: **39**; com internacao SUS: **1**.
-- Unidades fixas com ao menos um CBO medico SUS ativo: **155**.
+- Estruturas fixas elegiveis: **82**; excluidas da oferta fixa: **588** (586 moveis pelo tipo CNES e 2 com indicio no nome e tipo conflitante/ausente).
+- Unidades fixas com atendimento ambulatorial SUS: **67**; com SADT SUS: **38**; com internacao SUS: **1**.
+- Unidades fixas com ao menos um CBO medico SUS ativo: **72**.
 - Entidades com estrutura fixa direta: **61**; **58** possuem ao menos um CBO medico SUS ativo no retrato CNES.
 - Entidades com leitos SUS diretamente registrados: **1** de **61**.
 
@@ -46,10 +46,13 @@
 - Leitos SUS aparecem em apenas uma entidade com capacidade direta; nao devem ser a unica massa de atracao.
 - CBOs medicos e atendimentos possuem cobertura maior, mas medem cadastro atual, nao producao nem especialidade historica.
 - O mesmo CBO pode aparecer em varias unidades da rede; a soma mede escopo registrado por unidade, nao especialidades unicas da entidade.
-- CIS/CEN e CIMES possuem somente unidades moveis e nao recebem destino rodoviario fixo.
+- CIS/CEN e CIMES nao recebem destino fixo neste snapshot: ha indicios de mobilidade e fichas com tipo ausente/conflitante. A serie historica deve ser lida separadamente.
 
 ## Regras De Leitura
 
+- Reprocessamento de 10/09: tipos CNES moveis nao recebem tempo fixo, mesmo quando o nome diz apenas USB/USA. As 307 classificacoes incorretas foram removidas da oferta fixa.
+- CIMES 3987981: nome VACIMOVEL e tipo clinica conflitam no snapshot atual. CISCEN 5563003: ficha sem tipo. Ambos permanecem excluidos conservadoramente da oferta fixa atual; isso nao retroage ao CNES historico.
+- Estrutura nao movel pode ser central administrativa/regulatoria, farmacia ou telessaude. A elegibilidade cadastral nao autoriza trata-la como destino clinico; o filtro assistencial pertence ao fechamento do passo 3.
 - Leitos, vinculos SUS e CBOs sao fotografia atual do CNES, nao serie historica do MIDES.
 - Valores iguais a zero so significam ausencia no modulo CNES quando a consulta foi completa; ausencia de unidade sob o CNPJ permanece `NA` no agregado.
 - CBO medico distinto e proxy de escopo profissional, nao equivale a servico especializado formal ou producao realizada.

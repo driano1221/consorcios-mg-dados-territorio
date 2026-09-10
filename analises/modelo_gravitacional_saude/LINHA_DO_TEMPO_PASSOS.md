@@ -1,5 +1,13 @@
 # Linha Do Tempo Dos Passos - Modelo Gravitacional De Saude
 
+> Revisao de 10/09/2026: a classificacao anterior de 389 fixas/281 moveis foi
+> corrigida com o tipo oficial CNES. Sao 82 estruturas fixas candidatas, 586
+> moveis pelo tipo e 2 fichas com mobilidade indicada no nome e tipo
+> conflitante/ausente. As 82 ainda exigem filtro de funcao assistencial;
+> centrais administrativas/regulatorias nao equivalem a destinos clinicos.
+> Coleta original de 03/09 preservada; reprocessamento em 10/09. A serie
+> historica ja utilizava os tipos moveis 32/40/42 e nao foi alterada.
+
 ## Visao Geral
 
 O trabalho avancou da decisao de escopo para uma observacao anual em preparacao
@@ -28,7 +36,7 @@ flowchart LR
 | 1 | quais CNPJs representam consorcios de saude? | matriz e filiais podiam contar separadamente | universo por CNPJ original e por raiz | 100 CNPJs em 84 entidades; 66 observadas no MIDES |
 | 2 | pagamento e declaracao contam a mesma historia? | MIDES e MUNIC podiam ser lidos como vinculo equivalente | cotejamento e revisao documental | 1.311 pares: 630 comuns, 658 somente MIDES e 23 somente MUNIC |
 | 3 | sede administrativa e destino assistencial? | distancia poderia apontar para um escritorio | unidades CNES e decisao de polo/rede | 670 unidades; 21 entidades sem unidade direta |
-| 4 | como medir poder de atracao? | leitos eram uma hipotese ainda nao testada | capacidade por unidade e entidade | 389 fixas, 281 moveis; apenas uma entidade com leitos SUS diretos |
+| 4 | como medir poder de atracao? | leitos eram uma hipotese ainda nao testada | capacidade por unidade e entidade | 82 fixas, 586 moveis e 2 casos pendentes; apenas uma entidade com leitos SUS diretos |
 | 5 | como medir a resistencia espacial? | nao havia impedancia integrada | tempo por destino, unidade e entidade | 363.378 pares MG completos; 61 entidades com tempo |
 | 6 | como representar a trajetoria anual? | pagamentos, tempo e capacidade estavam separados | grade anual com eventos e defasagens | 573.216 linhas; 426 primeiros pagamentos, 252 retornos e 533 interrupcoes |
 | Complemento do 3 | o que realmente existe nos 38 casos pendentes? | falsos negativos, redes moveis e inativos estavam misturados | busca por CNPJ proprio e auditoria documental | 15 recuperados; 23 sem estrutura fixa; 7 alertas decididos |
@@ -159,7 +167,7 @@ reais:
 |---|---|---|---|
 | CISARP | sem unidade direta | clinica CNES 7918747 em Taiobeiras | entra na cobertura fixa atual; a estrutura nao e retroagida automaticamente |
 | CONSONORTE | sem unidade direta | clinica CNES 0975397 e dois vacimoveis | tempo da clinica e oferta movel ficam separados |
-| CIS/CEN | somente vacimoveis | rede credenciada documentada, sem hospital unico | continua sem tempo fixo; prestadores devem ser identificados por servico/ano |
+| CIS/CEN | exclusao atual por mobilidade e ficha sem tipo | CNES historico 7609868 em Guanhaes, 2014-2021 | possui candidato fixo historico; prestadores externos ainda exigem prova anual |
 | CIS/UBA | pagamento historico e matriz inapta | nenhuma unidade atual confirmada | permanece no MIDES historico, mas nao como alternativa atual |
 
 Assim, “auditoria concluida” nao significa que todos ganharam um polo. Significa
@@ -182,8 +190,9 @@ Essa estrutura nao foi repetida no passado. O CNES historico mostra:
 | 2020 | 2 | 2 | 15 | 116 |
 | 2021 | 1 | 2 | 14 | 107 |
 
-Logo, a linha `Igarape x CISMEP x 2019` combina pagamento MIDES de 2019 com
-capacidade CNES de dezembro de 2019, e nao com a oferta observada em 2026. Em
+Na montagem final, a linha `Igarape x CISMEP x 2019` devera combinar o pagamento
+MIDES de 2019 com a capacidade CNES de dezembro de 2019. As camadas ainda
+estao separadas; a grade preliminar continua contendo o retrato atual. Em
 2021, dezembro mostra uma fixa, enquanto a sensibilidade registra duas em
 algum momento do ano; a diferenca permanece visivel em vez de ser imputada.
 
@@ -210,14 +219,27 @@ flowchart LR
 - CISMEP e a unica entidade com leitos SUS diretamente registrados; os 32
   leitos nao representam a cobertura das demais.
 - Igarape possui unidade no proprio municipio; muitos pares tem tempo positivo.
-- Vinte e uma entidades nao possuem unidade direta e duas tem somente oferta
-  movel; elas permanecem com tempo `NA`.
+- Vinte e uma entidades nao possuem unidade direta e duas permanecem sem fixa confirmada por mobilidade/conflito
+  cadastral; elas permanecem com tempo `NA`.
 - A camada historica cobre apenas unidades diretamente vinculadas. Prestadores
   indiretos e contratados continuam ausentes quando nao ha identificacao anual.
 - Dezembro e a medida principal; presenca em outro mes e sensibilidade, nao
   capacidade imputada para o ano inteiro.
 - `MIDES+MUNIC` em 2019 fortalece a evidencia, mas nao fornece sozinho a data
   juridica de entrada.
+
+## Retomada De 10/09/2026
+
+A revisao corrigiu 307 unidades de tipo movel que escapavam pelo nome e
+materializou os 91 casos em 28 entidades. Foram registrados 56 tratamentos
+anuais para sete prioritarias. CIS/CEN e CIMES ja tinham fixa no CNES
+historico em todos os anos: nao pertencem aos 91.
+
+Outro exemplo real explicita a mudanca de oferta: a raiz `64486822` tinha o
+CNES `2143674` em Moema, com 26 leitos SUS nos dezembros de 2014, 2015 e 2016.
+Em 2017, o vinculo aparece em parte dos meses, mas nao em dezembro. Nos anos
+seguintes, nao se atribui esse hospital ao consorcio sem nova evidencia.
+Pagamento que continua nao autoriza carregar a mesma capacidade para a frente.
 
 ## Proximo Marco
 
