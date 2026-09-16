@@ -355,3 +355,54 @@ Rscript analises/modelo_gravitacional_saude/tests/11_validar_diagnostico_univers
 
 Os produtos pesados em `outputs/` sao derivados e ignorados pelo Git. Codigo,
 testes, checks, metodologias e evidencias pequenas sao versionados.
+
+## Revisao Externa E Atlas Por Consorcio — Scripts 12 E 13
+
+| Arquivo | Conteudo / unidade |
+|---|---|
+| `12_revisar_fronteira_universo_saude.py` | cadastro MG + CNM menos 84; selecao CNES em oito ST de dezembro; reutiliza o conversor do script 09 |
+| `evidencias/revisao_fora_84_2026_09_16.csv` | 28 decisoes documentais por raiz, com fonte, periodo e limites |
+| `13_detalhar_atlas_consorcios_saude.R` | consulta MIDES complementar opcional, cruzamento financeiro e atlas |
+| `atlas_consorcios.js` | interacao Leaflet: consorcio, periodo, funcao, tipo, camadas e CSV |
+| `tests/12_validar_fronteira_e_atlas.py` | invariantes de universo, valores, fontes e tempo; `--browser` testa interface offline |
+
+Novos produtos locais em `outputs/`, sem sobrescrever os scripts 01-11:
+
+| Produto | Conteudo |
+|---|---|
+| `fronteira_universo_cadastro.csv` | 137 raizes externas: 122 cadastro IPEA + 15 somente CNM |
+| `fronteira_cnes_unidades_2014_2021.csv` | 74 unidades-ano ST, das quais 71 clinicas e tres nao clinicas |
+| `fronteira_cnes_fontes.csv` | oito arquivos-fonte, URL e SHA-256 |
+| `fronteira_mides_complementar.csv` | 1.079 agregados ano-municipio-CNPJ; consulta de 15 raizes |
+| `fronteira_consulta_mides.sql` / `fronteira_consulta_mides_manifesto.json` | consulta exata, data, raizes e estatisticas da execucao; cache BigQuery pode indicar zero bytes processados naquela execucao |
+| `revisao_fora_84_resultado.csv` | 137 decisoes, sinais cadastrais, CNES e montantes MIDES; 28 com pesquisa documental |
+| `atlas_pagamentos_entidade_municipio_ano.csv` | valores anuais somados por raiz, preservando matriz/filial; o mapa seleciona valores positivos |
+| `atlas_unidades_consorcio_periodo.csv` | 2.612 registros unidade-periodo; 670 atuais + 1.868 historicos originais + 74 externos |
+| `atlas_municipios.geojson` / `atlas_dados.json` | 853 municipios e dados incorporados ao HTML |
+| `atlas_consorcios_saude_mg.html` | mapa interativo autocontido, executavel localmente sem servidor |
+| `atlas_cismep_2019.png` / `atlas_ciesp_2019.png` | capturas produzidas pelo teste opcional do navegador |
+
+Entradas: cadastro nacional consolidado (Windows-1252), classificacao v0.5,
+CNM `C:/IPEA/dados cnm/snapshots/2026-08-27/data/base_unificada_consorcios_macroareas.csv`,
+cache ST, elegibilidade do script 11, painel MIDES local e malha municipal do
+dashboard. O campo `valor_mides` soma pares-ano positivos e nao identifica
+finalidade setorial. Zero sinal na triagem nao e prova de capacidade zero.
+`revisao_documental` distingue as 28 pesquisadas individualmente das 109
+restantes; `status_mides` distingue consulta complementar da extracao original.
+
+Reproducao, na raiz do repositorio, depois dos produtos 01-11:
+
+```powershell
+python analises/modelo_gravitacional_saude/12_revisar_fronteira_universo_saude.py
+Rscript analises/modelo_gravitacional_saude/13_detalhar_atlas_consorcios_saude.R --consultar-mides
+python analises/modelo_gravitacional_saude/tests/12_validar_fronteira_e_atlas.py --browser
+```
+
+Apenas a primeira consulta exige BigQuery autenticado e projeto autorizado
+(`MIDES_BILLING_ID`, padrao do projeto existente). Reexecucoes do atlas omitem
+`--consultar-mides` para usar o cache; a opcao `--somente-consulta` encerra
+depois do download. O limite de faturamento por consulta e 100 GB; nao implica
+gratuidade. Nenhuma credencial e gravada nos produtos. R requer sf, dplyr,
+readr, bigrquery (consulta), leaflet, htmlwidgets, htmltools, jsonlite e Pandoc;
+se nao detectado, definir `RSTUDIO_PANDOC` para a pasta do executavel.
+O teste basico usa Python padrao; `--browser` requer Playwright com Chromium.

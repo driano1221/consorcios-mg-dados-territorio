@@ -29,8 +29,24 @@ andamento; passos 7 a 10 ainda nao iniciados como etapas finais.
 ### Complementos Da Reuniao De 10/09
 
 Estes complementos aprofundam etapas existentes e nao criam uma nova
-numeracao. Devem ser executados antes do fechamento do passo 3, reaproveitando
-as bases ja materializadas:
+numeracao. O fechamento assistencial do passo 3 refere-se ao recorte das 84
+entidades; nao encerra a revisao de fronteira nem os mapas individuais.
+Reaproveitam as bases ja materializadas:
+
+- [x] completar a revisao fora das 84: cruzar o cadastro MG e a CNM, verificar
+  candidatos em fontes oficiais e distinguir atendimento, compras, autorizacao
+  estatutaria e evidencia posterior a 2021;
+- [x] detalhar os mapas por consorcio, tipo e periodo; separar localizacao CNES
+  de municipios pagadores e de cobertura assistencial comprovada;
+
+**Resultado de 16/09:** 137 raizes externas triadas (122 do cadastro e 15 da
+CNM), 28 revisadas documentalmente. Dez candidatas com saude historica e tres
+com escopo a segregar. Nove das dez nao estavam no cadastro usado na consulta
+MIDES: a consulta complementar recuperou R$ 258.359.912,14 em 2014-2021.
+Revisao concluida nas fontes consultadas, sem afirmar censo exaustivo de MG.
+O atlas local permite escolher entidade, ano, funcao e tipo CNES; distingue
+pagadores anuais e composicao CNM atual. As 221 entidades do inventario nao
+sao uma amostra de 221 consorcios de saude.
 
 - [x] comparar as 18 entidades cadastrais sem MIDES com as 66 observadas,
   distinguindo abertura posterior a 2021, situacao cadastral, estrutura CNES e
@@ -135,6 +151,9 @@ feita no passo 6.
 - [x] materializar a grade preliminar municipio x entidade x ano;
 - [x] calcular pagamento, primeiro pagamento, permanencia, retorno e interrupcao;
 - [x] preservar a censura dos pagamentos ja existentes em 2014;
+- [ ] harmonizar as dez candidatas externas e os tres casos de escopo misto
+  com as regras de amostra; completar capacidade LT/SR/PF e presenca mensal
+  somente para as entidades que entrarem, reaproveitando os arquivos brutos;
 - [ ] definir o conjunto de alternativas plausiveis por municipio e ano;
 - [ ] comparar tres regras: todos os consorcios de saude de MG, limite de tempo
   rodoviario e mesma regiao de saude;
@@ -183,11 +202,14 @@ unica regressao.
 
 ## Proximo Marco
 
-Concluir o **passo 6**. Primeiro, definir e comparar os tres conjuntos de
+Revisao externa e atlas por consorcio concluidos. Agora concluir o **passo 6**:
+primeiro harmonizar os candidatos identificados fora das 84 e completar suas
+medidas historicas; depois definir e comparar os tres conjuntos de
 alternativas plausiveis por municipio e ano; depois integrar capacidade
 historica, tempo rodoviario, populacao, RCL, regiao de saude, bacia e mandato
-sem vazamento temporal. Nao repetir a triagem dos 91 casos, a coleta CNES ou a
-pesquisa documental do passo 3. A EDA final so comeca depois que esse painel
+sem vazamento temporal. Nao repetir a triagem dos 91 casos nem a coleta das 84
+originais. As 74 unidades-ano externas foram extraidas somente do ST de
+dezembro; ainda nao possuem a mesma bateria de capacidade das 84. A EDA final so comeca depois que esse painel
 estiver materializado e testado.
 
 ## Controle De Mudancas
@@ -203,6 +225,7 @@ estiver materializado e testado.
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 16/09/2026 | Revisao externa de 137 raizes, 28 dossies, MIDES complementar e atlas individual concluidos | nove consorcios de saude nao tinham sido consultados; incorporar candidatos com temporalidade e escopo antes de fechar o painel |
 | 16/09/2026 | Passo 3 concluido: filtro funcional, duas fichas conflitantes, 21 auditorias documentais, 18 entidades sem MIDES, tres multiarea, alerta CISPARA e dois mapas validados | todo caso relevante agora possui destino/rede documentado ou decisao explicita de exclusao/sensibilidade |
 | 16/09/2026 | Auditoria comparativa das 18 sem MIDES, revisao dos dois multiarea e mapas por tipo incorporados como complementos | demandas da reuniao de 10/09; aprofundam universo e cobertura sem criar nova etapa |
 | 10/09/2026 | Triagem dos 91 casos concluida; sete entidades receberam 56 decisoes anuais; passo 3 permanece parcial | faltam filtro clinico das estruturas nao moveis e documentos para casos ainda excluidos |

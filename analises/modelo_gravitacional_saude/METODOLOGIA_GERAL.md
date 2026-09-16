@@ -1057,3 +1057,99 @@ contagens e chaves, confirma as duas fichas revistas, os grupos 18/66, os
 catalogos, a preservacao integral do dossie de 91 e a existencia dos mapas.
 Os dois PNG tambem foram inspecionados visualmente. Avisos locais de locale
 e de versao de pacotes R nao impediram a execucao.
+
+## Revisao Fora Das 84 E Atlas Individual — 16/09/2026
+
+Esta entrega responde ao complemento de universo e mapas levantado na reuniao
+de 10/09 e reafirmado por Adriano. A classificacao v0.5 e os produtos originais
+foram preservados para comparacao. As 84 entidades nunca foram um censo
+comprovado de toda a saude consorciada de MG.
+
+### Universo Pesquisado E Criterio De Fechamento
+
+O cadastro MG possui 206 raizes: 84 no recorte original e 122 fora dele.
+A CNM de 27/08 acrescenta 15 raizes sediadas em MG ausentes desse cadastro.
+A triagem externa cobre, portanto, 137 raizes; o inventario combinado tem 221.
+Foram cruzados classificacao, macroareas CNM e os oito ST de dezembro de
+2014-2021, pelo CNPJ proprio ou mantenedor. Nenhum DBC precisou ser baixado
+novamente. Vinte e quatro externas tinham sinal de saude na CNM; foram
+revisadas documentalmente, junto com CIMAMS, CIMPLA, CODAP e CODANORTE.
+
+| Decisao documental | Entidades | Interpretacao |
+|---|---:|---|
+| Candidata com saude historica | 10 | CIESP, CISCAXAMBU, CISVI, CISCOM, CISAMESP, CONSARDOCE, CISMIP, CISLAGOS, CISSM e CISMMA; harmonizar escopo e disponibilidade antes da amostra |
+| Saude historica com escopo a segregar | 3 | CIDESLESTE, UNIAO SERRA GERAL e CIMAMS; pagamento total nao vira gasto exclusivamente assistencial |
+| Evidencia localizada posterior a 2021 | 3 | CIMPLA, CODAP e IPER; nao retroagir documento posterior |
+| Compras sem destino clinico identificado | 2 | CIMJEQUITINHONHA e CIMPAR |
+| Fora da janela | 1 | CIMBASP, abertura em 2022 |
+| Fora da assistencia humana | 1 | CISICOM; inspecao animal nao e atendimento clinico humano |
+| Inabilitado no recorte SES de 2020 | 1 | CODANORTE; nao equivale a provar ausencia de toda atividade de saude |
+| Sinal CNM sem oferta historica confirmada | 7 | AMESP, CIMOG, INFRAMINAS, CIMMES, CONSMEPI, CIMLESTE e CIDSMEJE |
+
+As outras 109 receberam decisao de nao inclusao por ausencia de sinal
+selecionado nas fontes cruzadas. Isso encerra a triagem delimitada, nao uma
+auditoria de todos os contratos municipais nem prova de inexistencia de
+redes indiretas. Cada uma das 28 linhas documentais conserva fonte, periodo,
+interpretacao e limite em `evidencias/revisao_fora_84_2026_09_16.csv`.
+
+### Omissao Na Extracao Financeira Original
+
+Os scripts de download MIDES filtravam pelos CNPJs do cadastro IPEA. As nove
+candidatas setoriais acrescentadas pela CNM nao estavam nesse cadastro:
+portanto, nao tinham sido consultadas, em vez de terem pagamento igual a zero.
+Sao grupo distinto das 18 sem MIDES entre as 84 originais.
+
+A consulta complementar pesquisou as 15 raizes novas, incluindo CNPJs de
+matriz/filial, em `world_wb_mides.pagamento`, MG, 2014-2021. Agregou
+`valor_final` por ano, municipio e CNPJ sem filtrar finalidade ou restos;
+produziu 1.079 linhas. Quatorze raizes possuem pagamento positivo; todas as
+nove de saude aparecem nos oito anos. Somam R$ 258.359.912,14. CIESP ja estava
+no MIDES local, mas fora da classificacao de saude: R$ 37.349.881,30. Juntas,
+as dez candidatas somam R$ 295.709.793,44, ainda sem decomposicao setorial.
+Nao somar automaticamente esse valor ao modelo: elegibilidade e escopo
+precisam ser aplicados ao painel final. Valores nominais, sem deflacao.
+
+Exemplo: CISAMESP, raiz `01080759`, tem R$ 82.604.740,13 no MIDES complementar
+e CNES `5338409` nos oito dezembros. O problema era o filtro cadastral da
+consulta, nao ausencia de relacao financeira. CIESP, raiz `07356999`, tem
+20 unidades-ano; o [catalogo CONASEMS de 2019, p. 92](https://conasems-ava-prod.s3.sa-east-1.amazonaws.com/institucional/wpcontent/2020/11/Catalogo_2019_Arteweb_fev2022.pdf)
+descreve CAPS desde 2013 e transferencia em janeiro de 2019. CNES sustenta
+presenca cadastral; o documento nao transforma essa presenca em disponibilidade
+garantida a todo municipio em todo o ano.
+
+### CNES Complementar E Cartografia
+
+Foram recuperadas 74 unidades-ano em 11 entidades externas: 71 clinicas e
+tres estruturas de gestao, sem moveis. A regra inclui o tipo 70 (CAPS),
+encontrado nesta revisao. CIMAMS possui a central de gestao `9954988` em
+2019-2021: ela fica fora dos destinos clinicos, embora documentos oficiais
+comprovem contratacao de hospitais. CONSARDOCE e UNIAO SERRA GERAL possuem
+evidencia assistencial, mas nenhum vinculo CNES direto nos oito arquivos
+consultados; nao recebem capacidade zero nem hospital imputado.
+
+O atlas conserva separadamente 670 unidades atuais originais, 1.868
+unidades-ano historicas originais e as 74 externas: 2.612 registros de
+unidade-periodo, nao 2.612 estabelecimentos distintos. As externas foram
+consultadas apenas em ST de dezembro: faltam LT/SR/PF e presenca mensal para
+ter a mesma profundidade das originais. Seu retrato atual nao foi coletado.
+
+O HTML funciona offline, com filtros de entidade, ano, funcao e tipo CNES,
+tabela/exportacao CSV, municipios pagadores no ano e composicao CNM atual
+opcional. Pontos representam municipios, nao enderecos; unidades no mesmo
+municipio sao agrupadas. O movel original sem municipio continua na tabela,
+sem ponto inventado. Nenhuma camada representa fluxo de pacientes, trajeto
+rodoviario ou area juridica/assistencial comprovada. CNM/2026 permanece
+explicitamente atual mesmo quando sobreposta a 2019. A ausencia de coleta
+atual externa recebe aviso, sem ser interpretada como ausencia de oferta.
+
+O passo 6 incorporara as regras dos candidatos e completara suas medidas,
+antes de ligar capacidade anual e destinos a matriz rodoviaria e definir
+alternativas. Permanecem preservados os R$ 3.101.980.422,83 do recorte original.
+
+Validacao desta entrega: os onze testes anteriores e o novo teste 12 passaram.
+O teste adicional verifica separacao de universos, chaves, montantes, hashes
+das fontes e temporalidade. Com `--browser`, verifica filtros, tipo CAPS,
+exportacao CSV, avisos de coleta ausente, tela estreita e ausencia de pedidos
+de rede para carregar o atlas. As capturas CISMEP/2019 e CIESP/2019 foram
+inspecionadas visualmente. A validacao nao transforma evidencia documental
+insuficiente em oferta confirmada.

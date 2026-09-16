@@ -261,10 +261,41 @@ restrito a destinos comprovados e permanecem limites da cobertura.
 
 ## Proximo Marco
 
+Antes deste marco, a sequencia reafirmada por Adriano foi **revisar fora das
+84 -> detalhar mapas por consorcio**. Esse complemento foi concluido em 16/09:
+
+1. A reuniao de 10/09 levantou possiveis omissoes de saude e pediu mapas por
+   consorcio/tipo. O foco em MG foi confirmado; expansao para outros estados
+   ficou adiada. Formula e massa gravitacional continuam abertas.
+2. Cadastro + CNM produziram 137 raizes fora das 84. Vinte e oito receberam
+   pesquisa documental; 109 tiveram triagem sistematica sem sinal selecionado.
+3. Dez candidatas possuem saude historica documentada; outras tres exigem
+   segregacao de escopo. Nove candidatas nao constavam do cadastro usado na
+   consulta original MIDES. A consulta complementar recuperou R$ 258,36 milhoes
+   para elas, nos oito anos. Isso nao altera retrospectivamente o significado
+   de 84/66: eram numeros do recorte inicial, nao um censo completo de MG.
+4. Os ST de dezembro acrescentaram 74 unidades-ano externas: 71 clinicas e
+   tres centrais de gestao. Faltam os modulos de capacidade e a presenca mensal
+   dessas candidatas, a serem harmonizados com o painel final.
+5. O atlas individual permite comparar periodos, funcoes e tipos, municipios
+   pagadores e CNM atual. Nenhuma dessas camadas e chamada de fluxo de pacientes
+   ou cobertura comprovada. O inventario tem 221 entidades de varias areas,
+   sem converter todas em alternativas de saude.
+
+**Continuidade do exemplo Igarape x CISMEP:** a raiz `05802877` permanece no
+recorte original e seus R$ 4.740.790,51 de 2019 estao preservados. No atlas,
+selecionar CISMEP/2019 mostra duas clinicas, em Betim e Brumadinho; selecionar
+o retrato atual mostra quatro clinicas, alem das moveis. Portanto, os tempos
+atuais de Igarape e Sao Joaquim de Bicas nao podem ser carregados para 2019.
+A proxima linha final deve usar destinos e capacidade de 2019; a revisao
+externa acrescentara alternativas candidatas, sem mudar artificialmente o
+pagamento ou a oferta historica deste par.
+
 O painel preliminar e as camadas historica e funcional existem separadamente.
 O passo 6 deve:
 
-1. ligar destinos clinicos e capacidade de cada ano a matriz rodoviaria;
+1. harmonizar os candidatos externos e completar suas medidas; ligar destinos
+   clinicos e capacidade de cada ano a matriz rodoviaria;
 2. comparar alternativas estaduais, por tempo e por regiao de saude;
 3. integrar populacao, RCL, regiao de saude, bacia e mandato e construir os
    universos sob risco;

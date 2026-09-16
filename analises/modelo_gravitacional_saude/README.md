@@ -1,5 +1,14 @@
 # Modelo Gravitacional De Saude - MG
 
+> Complemento de 16/09: revisao fora das 84 concluida nas fontes consultadas.
+> Foram triadas 137 raizes e documentados 28 casos: dez candidatas com saude
+> historica e tres com escopo a segregar. Nove candidatas estavam ausentes do
+> cadastro usado na consulta MIDES; recuperados R$ 258,36 milhoes em consulta
+> complementar. Os numeros anteriores continuam descrevendo o recorte original.
+> Abra `outputs/atlas_consorcios_saude_mg.html` para mapas por entidade, ano,
+> funcao e tipo CNES, pagamentos e composicao CNM atual. O inventario de 221
+> entidades nao constitui a amostra final do modelo.
+
 > Revisao de 16/09/2026: as 670 unidades atuais foram classificadas por funcao
 > em 63 destinos clinicos fixos, 20 estruturas fixas nao clinicas e 587 moveis.
 > As duas fichas conflitantes foram resolvidas e nenhuma unidade ficou
@@ -372,6 +381,19 @@ de outra politica. O catalogo distingue os tres casos desse alerta adicional.
 - populacao, RCL, regiao de saude, bacia e mandato ainda exigem fontes anuais
   validadas antes de integrar o painel.
 
-O proximo marco e concluir o passo 6: comparar conjuntos de alternativas e
+O proximo marco e concluir o passo 6: harmonizar os candidatos externos e
+completar suas medidas de capacidade; comparar conjuntos de alternativas e
 integrar capacidade historica, impedancia e controles anuais.
 A EDA final do passo 7 depende desse painel; estimacoes vem depois.
+
+Para reproduzir a nova entrega, depois dos produtos anteriores:
+
+```powershell
+python analises/modelo_gravitacional_saude/12_revisar_fronteira_universo_saude.py
+Rscript analises/modelo_gravitacional_saude/13_detalhar_atlas_consorcios_saude.R --consultar-mides
+python analises/modelo_gravitacional_saude/tests/12_validar_fronteira_e_atlas.py
+```
+
+A consulta requer credencial BigQuery e projeto de faturamento autorizado;
+`MIDES_BILLING_ID` permite escolher o projeto. Sem `--consultar-mides`, o
+script reutiliza o cache. O dicionario detalha os produtos e o teste do atlas.
