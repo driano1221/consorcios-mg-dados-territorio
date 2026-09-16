@@ -12,12 +12,12 @@ deve criar uma segunda numeracao de etapas.
   de conclusao;
 - `[ ] Nao iniciado` depende das etapas anteriores.
 
-**Estado em 10/09/2026:** passos 1, 2, 4 e 5 concluidos como camadas-base; passos 3 e 6 em
+**Estado em 16/09/2026:** passos 1 a 5 concluidos como camadas-base; passo 6 em
 andamento; passos 7 a 10 ainda nao iniciados como etapas finais.
 
 - [x] **1. Fechar o universo de consorcios de saude**
 - [x] **2. Auditar os vinculos**
-- [ ] **3. Definir o polo e completar a cobertura assistencial - em andamento**
+- [x] **3. Definir o polo e completar a cobertura assistencial**
 - [x] **4. Construir e temporalizar a capacidade assistencial direta**
 - [x] **5. Construir a camada-base de tempo rodoviario**
 - [ ] **6. Montar o painel analitico final - em andamento**
@@ -25,6 +25,23 @@ andamento; passos 7 a 10 ainda nao iniciados como etapas finais.
 - [ ] **8. Estimar os tres blocos**
 - [ ] **9. Testar robustez**
 - [ ] **10. Integrar resultados validados ao dashboard**
+
+### Complementos Da Reuniao De 10/09
+
+Estes complementos aprofundam etapas existentes e nao criam uma nova
+numeracao. Devem ser executados antes do fechamento do passo 3, reaproveitando
+as bases ja materializadas:
+
+- [x] comparar as 18 entidades cadastrais sem MIDES com as 66 observadas,
+  distinguindo abertura posterior a 2021, situacao cadastral, estrutura CNES e
+  possivel selecao do universo financeiro;
+- [x] verificar em fontes oficiais a atuacao efetiva de CISREC e CONVALES e
+  manter separadas classificacao institucional, oferta CNES e pagamentos;
+- [x] produzir mapas diagnosticos dos consorcios e estabelecimentos por tipo,
+  sem tratar pagamento, composicao juridica e cobertura assistencial como a
+  mesma area;
+- [x] registrar o que a evidencia sustenta e o que permanece para decisao da
+  equipe, sem repetir a coleta CNES ou a triagem dos 91 casos entidade-ano.
 
 ## Ordem Canonica
 
@@ -63,16 +80,28 @@ aparecem no MIDES de Minas Gerais.
   sensibilidade.
 - [x] corrigir 307 unidades moveis indevidamente classificadas como fixas no
   snapshot atual e regenerar capacidade, tempo e grade preliminar;
-- [ ] distinguir destinos clinicos de centrais de gestao/regulacao, farmacia,
+- [x] distinguir destinos clinicos de centrais de gestao/regulacao, farmacia,
   vigilancia e telessaude nas estruturas nao moveis atuais e historicas;
-- [ ] resolver duas fichas atuais com nome/tipo conflitante ou ausente;
-- [ ] completar a pesquisa documental individual das entidades nao prioritarias
-  e as vigencias/prestadores ainda ausentes; ate la vale a exclusao explicita.
+- [x] resolver duas fichas atuais com nome/tipo conflitante ou ausente;
+- [x] completar a pesquisa documental individual das entidades nao prioritarias
+  e registrar exclusao/sensibilidade quando a fonte nao identifica vigencia,
+  prestador e endereco suficientes para o modelo.
 
 O dossie encerra a triagem dos 91 casos, nao comprova oferta para todos eles:
 59 possuem registro fixo posterior; 3 possuem fixa em outros meses do mesmo
 ano; 12 pertencem aos dois casos historicos; 5 sao planejamento CISVALES;
 1 possui regulacao SAMU documentada em 2021; 11 seguem sem polo suficiente.
+
+O fechamento funcional classificou as 670 unidades atuais em 63 destinos
+clinicos fixos, 20 estruturas fixas nao clinicas e 587 unidades moveis, sem
+pendencia residual. Na serie historica, as 1.868 unidades-ano se dividem em
+398 destinos clinicos fixos, 74 estruturas fixas nao clinicas e 1.396 moveis.
+A auditoria documental das 21 entidades nao prioritarias confirmou redes,
+implantacoes e servicos moveis em parte dos casos, mas nao autorizou imputar
+prestadores ausentes. Tambem revelou o CIMBAJE como terceiro caso multiarea
+documentado, alem de CISREC e CONVALES.
+O CISPARA recebeu alerta estatutario desde 2017; autorizacao multifinalitaria
+nao foi tratada como prova de pagamentos para outras politicas.
 
 **Criterio para concluir:** todo caso entidade-ano relevante tera polo/rede
 documentado ou uma decisao explicita de exclusao/sensibilidade. Nao e necessario
@@ -154,11 +183,12 @@ unica regressao.
 
 ## Proximo Marco
 
-Fechar o filtro de funcao assistencial nas estruturas nao moveis do **passo 3**
-e suas pendencias documentais, partindo das decisoes anuais ja materializadas.
-Nao repetir a triagem dos 91 casos ou a extracao CNES. Em seguida, concluir o
-**passo 6** com alternativas e variaveis anuais. A EDA final so comeca depois
-que esse painel estiver materializado e testado.
+Concluir o **passo 6**. Primeiro, definir e comparar os tres conjuntos de
+alternativas plausiveis por municipio e ano; depois integrar capacidade
+historica, tempo rodoviario, populacao, RCL, regiao de saude, bacia e mandato
+sem vazamento temporal. Nao repetir a triagem dos 91 casos, a coleta CNES ou a
+pesquisa documental do passo 3. A EDA final so comeca depois que esse painel
+estiver materializado e testado.
 
 ## Controle De Mudancas
 
@@ -173,6 +203,8 @@ que esse painel estiver materializado e testado.
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 16/09/2026 | Passo 3 concluido: filtro funcional, duas fichas conflitantes, 21 auditorias documentais, 18 entidades sem MIDES, tres multiarea, alerta CISPARA e dois mapas validados | todo caso relevante agora possui destino/rede documentado ou decisao explicita de exclusao/sensibilidade |
+| 16/09/2026 | Auditoria comparativa das 18 sem MIDES, revisao dos dois multiarea e mapas por tipo incorporados como complementos | demandas da reuniao de 10/09; aprofundam universo e cobertura sem criar nova etapa |
 | 10/09/2026 | Triagem dos 91 casos concluida; sete entidades receberam 56 decisoes anuais; passo 3 permanece parcial | faltam filtro clinico das estruturas nao moveis e documentos para casos ainda excluidos |
 | 10/09/2026 | 307 unidades moveis retiradas da oferta fixa atual; 82 estruturas candidatas e 63 destinos | nomes USB/USA nao eram reconhecidos pelo filtro anterior; tipo oficial CNES passou a prevalecer |
 | 03/09/2026 | Fixada a sequencia canonica de dez passos | eliminar a concorrencia entre o plano original e a numeracao das entregas tecnicas |

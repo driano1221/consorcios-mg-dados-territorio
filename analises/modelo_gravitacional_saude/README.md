@@ -1,12 +1,10 @@
 # Modelo Gravitacional De Saude - MG
 
-> Revisao de 10/09/2026: a classificacao anterior de 389 fixas/281 moveis foi
-> corrigida com o tipo oficial CNES. Sao 82 estruturas fixas candidatas, 586
-> moveis pelo tipo e 2 fichas com mobilidade indicada no nome e tipo
-> conflitante/ausente. As 82 ainda exigem filtro de funcao assistencial;
-> centrais administrativas/regulatorias nao equivalem a destinos clinicos.
-> Coleta original de 03/09 preservada; reprocessamento em 10/09. A serie
-> historica ja utilizava os tipos moveis 32/40/42 e nao foi alterada.
+> Revisao de 16/09/2026: as 670 unidades atuais foram classificadas por funcao
+> em 63 destinos clinicos fixos, 20 estruturas fixas nao clinicas e 587 moveis.
+> As duas fichas conflitantes foram resolvidas e nenhuma unidade ficou
+> pendente. A coleta original de 03/09 e os reprocessamentos anteriores foram
+> preservados; o novo filtro apenas define elegibilidade para o modelo.
 
 Esta pasta prepara, fora do dashboard, o recorte de Minas Gerais definido na
 reuniao de 27/08/2026. O objetivo e construir uma base defensavel antes de
@@ -36,11 +34,11 @@ estado do plano cientifico.
 |---|---|---|
 | 1. Fechar universo de saude | Concluido | 100 CNPJs em 84 entidades; 66 observadas no MIDES |
 | 2. Auditar vinculos | Concluido | 1.311 pares MIDES/MUNIC em 2019 e 50 divergencias revisadas |
-| 3. Polo/rede direta | Produto direto validado; cobertura final em andamento | 670 unidades CNES por CNPJ mantenedor ou proprio; sede separada de oferta assistencial |
-| 4. Construir capacidade | Concluido e reprocessado | 61 entidades com oferta fixa direta, 21 sem unidade direta e 2 sem fixa confirmada neste snapshot |
-| 5. Integrar tempo rodoviario | Concluido e reprocessado | 853 origens, 82 unidades fixas e 61 entidades com tempo disponivel |
+| 3. Polo/rede direta | Concluido | 670 unidades classificadas por funcao; todo caso relevante recebeu destino/rede ou exclusao/sensibilidade explicita |
+| 4. Construir capacidade | Concluido e reprocessado | 63 destinos clinicos fixos, 20 estruturas fixas nao clinicas e 587 moveis no retrato atual |
+| 5. Integrar tempo rodoviario | Camada-base concluida | 853 origens ligadas a 82 estruturas candidatas; o passo 6 selecionara somente destinos clinicos elegiveis por ano |
 | 6. Grade analitica preliminar | Produto preliminar validado; painel final em andamento | 573.216 linhas; movimentos e universos preliminares separados |
-| Complemento. Cobertura assistencial | Auditoria executada; pendencias documentais no passo 3 | 38 casos auditados, 15 recuperados por CNPJ proprio e 7 alertas decididos |
+| Complemento. Cobertura assistencial | Concluido | 38 casos iniciais, 91 entidades-ano, 21 auditorias documentais e 2 fichas conflitantes decididos sem imputar prestador |
 | Complemento. Temporalizar CNES | Concluido | 672 entidades-ano; 1.868 unidades-ano; 120 arquivos oficiais auditados |
 
 Capacidade foi executada antes do tempo rodoviario. Calcular distancia ate uma
@@ -53,7 +51,7 @@ impedancia sem interpretacao substantiva.
 |---|---|---|
 | 1. Universo | 100 CNPJs de saude podiam representar matriz e filiais como instituicoes distintas | 84 entidades por raiz, com CNPJs originais preservados; o CISMEP ilustra a consolidacao da raiz `05802877` |
 | 2. Vinculos | pagamento MIDES e declaracao MUNIC podiam ser confundidos com a mesma evidencia | 1.311 pares de 2019 separados em 630 comuns, 658 somente MIDES e 23 somente MUNIC; 50 divergencias receberam revisao |
-| 3. Polo/rede | sede administrativa podia ser usada automaticamente como destino | 670 unidades diretamente vinculadas foram separadas em rede fixa, polo unico, movel ou sem unidade; a consulta por CNPJ proprio corrigiu 15 falsos negativos |
+| 3. Polo/rede | sede administrativa podia ser usada automaticamente como destino | 670 unidades foram separadas por funcao; 15 falsos negativos foram recuperados e casos sem prestador ficaram explicitamente excluidos ou em sensibilidade |
 | 4. Capacidade | unidade CNES indicava localizacao, mas nao a oferta registrada | ficha, leitos, atendimento e CBOs foram medidos separadamente; CISMAS tem zero leito e 10 CBOs medicos somados |
 | 5. Tempo | nao havia impedancia integrada e redes poderiam ser reduzidas a uma sede | 853 municipios foram ligados a 82 unidades fixas; redes preservam minimo, mediana e maximo |
 | 6. Painel | pagamentos, identidade, tempo e capacidade estavam em tabelas distintas | grade `853 x 84 x 8`, com valor conservado, censura em 2014 e eventos financeiros explicitos |
@@ -75,7 +73,8 @@ flowchart LR
   I --> J[Painel municipio x entidade x ano]
   J --> K[Auditoria da cobertura indireta e alertas]
   K --> M[CNES historico mensal e capacidade em dezembro]
-  M --> L[Proximo: fechar passo 3 e painel do passo 6]
+  M --> N[Filtro clinico e auditoria documental]
+  N --> L[Proximo: concluir painel do passo 6]
 ```
 
 ## Como Navegar Nesta Pasta
@@ -111,6 +110,8 @@ isso os blocos cientificos 3 a 6 sao executados pelos scripts `04` a `07`.
 | `07_montar_painel_analitico_saude.R` | Materializa a grade longitudinal e seus eventos | MIDES, identidade, capacidade e tempo | painel completo, eventos e universos preliminares |
 | `08_completar_cobertura_assistencial_saude.R` | Consolida CNES direto, redes indiretas e decisoes dos alertas | resultados dos passos 1, 3 e 4 e catalogos documentais | cobertura auditada das 84 entidades |
 | `09_temporalizar_cnes_historico_saude.py` | Reconstroi presenca mensal e capacidade anual direta | arquivos DBC oficiais ST, LT, SR e PF | camada entidade-ano e unidade-ano 2014-2021 |
+| `10_auditar_pendencias_assistenciais_saude.py` | Materializa os 91 casos sem fixa em dezembro | painel e CNES historico ja existentes | dossie por entidade-ano e resumo de 28 entidades |
+| `11_diagnosticar_universo_e_elegibilidade_saude.R` | Compara 66 com MIDES e 18 sem MIDES e aplica o filtro funcional | universo e CNES atual/historico existentes | tabelas de elegibilidade e dois mapas diagnosticos |
 | `requirements_cnes_historico.txt` | Declara as duas dependencias Python do conversor DBC | Python, WSL e `curl` | ambiente reprodutivel para o passo 7 |
 | `tests/01...09...` | Protege chaves, contagens e invariantes | respectivas saidas locais | falha explicita ou mensagem `OK` |
 | `checks/*.md` | Guarda os resultados auditaveis | calculado pelos scripts | relatorio versionado no Git |
@@ -133,6 +134,7 @@ isso os blocos cientificos 3 a 6 sao executados pelos scripts `04` a `07`.
 | 6. Painel | municipio x entidade x ano | `07_montar_painel_analitico_saude.R` | painel completo, eventos, pares e resumos | `tests/07_validar_painel_analitico_saude.R`; `checks/VALIDACAO_PAINEL_ANALITICO_SAUDE_MG.md` |
 | Complemento. Cobertura | entidade | `08_completar_cobertura_assistencial_saude.R` | cobertura consolidada, 38 casos e 7 alertas | `tests/08_validar_cobertura_assistencial_saude.R`; `checks/VALIDACAO_COBERTURA_ASSISTENCIAL_COMPLEMENTAR_SAUDE_MG.md` |
 | Complemento do 4. CNES historico | entidade x ano e unidade x ano | `09_temporalizar_cnes_historico_saude.py` | presenca mensal; capacidade de dezembro; manifesto das fontes | `tests/09_validar_cnes_historico_saude.py`; `checks/VALIDACAO_CNES_HISTORICO_SAUDE_MG.md` |
+| Fechamento do 3. Elegibilidade | unidade, entidade e entidade x ano | `10_auditar_pendencias_assistenciais_saude.py`; `11_diagnosticar_universo_e_elegibilidade_saude.R` | dossie 91; auditorias; elegibilidade funcional; mapas | `tests/10_validar_pendencias_assistenciais_saude.py`; `tests/11_validar_diagnostico_universo_e_elegibilidade_saude.R` |
 
 `outputs/` contem derivados locais e cache, e esta fora do Git. Nada nessa
 pasta altera MIDES, MUNIC, CNM, SICONFI ou o dashboard.
@@ -226,14 +228,18 @@ python analises/modelo_gravitacional_saude/09_temporalizar_cnes_historico_saude.
 python analises/modelo_gravitacional_saude/10_auditar_pendencias_assistenciais_saude.py
 python analises/modelo_gravitacional_saude/tests/09_validar_cnes_historico_saude.py
 python analises/modelo_gravitacional_saude/tests/10_validar_pendencias_assistenciais_saude.py
+Rscript analises/modelo_gravitacional_saude/11_diagnosticar_universo_e_elegibilidade_saude.R
+Rscript analises/modelo_gravitacional_saude/tests/11_validar_diagnostico_universo_e_elegibilidade_saude.R
 ```
 
 ## Resultado Metodologico Do Passo 4
 
-- 670 unidades: 82 estruturas fixas candidatas, 586 moveis pelo tipo e duas fichas conflitantes/sem tipo;
-- 61 entidades com unidade fixa diretamente vinculada, 21 sem unidade sob o
-  CNPJ e duas sem fixa confirmada por mobilidade/conflito cadastral;
-- 58 das 61 entidades com oferta fixa possuem CBO medico SUS ativo no retrato;
+- 670 unidades: 63 destinos clinicos fixos, 20 estruturas fixas nao clinicas
+  e 587 moveis, sem classificacao pendente;
+- 49 das 84 entidades possuem ao menos um destino clinico fixo atual; entre as
+  66 com MIDES, sao 48 (72,7%);
+- o filtro funcional retira centrais de regulacao, sedes administrativas,
+  farmacias, vigilancia e telessaude da medida principal de impedancia;
 - apenas uma entidade possui leitos SUS diretamente registrados.
 
 Logo, leitos nao devem ser usados como massa unica. Quantidade de unidades,
@@ -247,7 +253,7 @@ termo proporcional a sua massa:
 
 `atracao_ij proporcional a massa_j x impedancia(tempo_ij)`.
 
-Se `massa_j = leitos_SUS_j`, 60 das 61 entidades com oferta fixa direta
+Se `massa_j = leitos_SUS_j`, quase todas as entidades com oferta ambulatorial
 receberiam massa zero. Isso produziria tres problemas:
 
 1. CISMAS teria atracao zero apesar de possuir clinica fixa e 10 CBOs medicos
@@ -267,9 +273,11 @@ CNPJ ainda nao documentado.
 ## Resultado Metodologico Do Passo 5
 
 - os 363.378 pares entre municipios de MG existem na fonte, sem rota ausente;
-- 853 municipios foram ligados a 63 municipios de oferta e 82 unidades;
-- 61 entidades possuem tempo disponivel; 21 sem unidade direta e duas somente
-  moveis permanecem com `NA`;
+- 853 municipios foram ligados a 63 municipios e 82 estruturas fixas
+  candidatas na camada-base;
+- 62 dessas estruturas sao clinicas; a revisao acrescentou a clinica CIMES,
+  chegando a 63 destinos atuais. O passo 6 ligara a oferta de cada ano a
+  matriz municipal completa, incluindo destinos ausentes desta camada-base;
 - a camada por unidade e a fonte principal; minimo, mediana e maximo por
   entidade sao medidas de sensibilidade;
 - a duracao e estatica, simetrica e nao representa uma partida as 10h30 de
@@ -294,8 +302,8 @@ CNPJ ainda nao documentado.
 - os 38 casos originalmente pendentes foram auditados;
 - 15 entidades foram recuperadas pela busca oficial de CNPJ proprio no CNES;
 - a cobertura fixa direta aumentou de 46 para 61 entidades;
-- CISCEN e CIMES/CISNES possuem unidade movel e rede indireta documentada, mas
-  continuam sem destino fixo unico;
+- CIS/CEN possui unidades atuais moveis e polo historico em Guanhaes;
+  CIMES/CISNES possui clinica em Salinas na serie historica e no filtro atual;
 - CISVALES, CISASF e CIAS possuem oferta/rede documentada, mas exigem desenho
   especifico de bases ou prestadores antes de receber tempo e capacidade;
 - os sete alertas de escopo, situacao cadastral ou macrogrupo receberam uma
@@ -331,11 +339,20 @@ Francisco possui hospital vinculado em Moema em 2014-2016; CIAS possui
 hospital-dia cadastrado em Santa Luzia em dezembro de 2014.
 
 O script tecnico `10_auditar_pendencias_assistenciais_saude.py` reproduz a
-triagem; o catalogo datado em `evidencias/` registra o alcance das fontes.
-Os casos sem polo receberam exclusao da especificacao de destino fixo,
-preservando a base financeira. A pesquisa individual das entidades nao
-prioritarias e o filtro clinico das estruturas nao moveis seguem pendentes.
-Detalhes no plano, metodologia, dicionario e linha do tempo ja existentes.
+triagem. O script `11_diagnosticar_universo_e_elegibilidade_saude.R` fecha o
+filtro funcional, compara as 66 entidades com MIDES as 18 sem MIDES e produz
+dois mapas diagnosticos. A pesquisa documental das 21 entidades nao
+prioritarias foi registrada em `evidencias/`: quando a fonte nao fornece
+prestador, endereco e vigencia, o pagamento e preservado, mas nenhum destino e
+imputado.
+
+Entre as 18 entidades sem MIDES, 15 estao hoje inativas ou inaptas, duas foram
+abertas depois de 2021 e uma esta ativa sem evidencia assistencial suficiente.
+Isso mostra forte selecao cadastral do grupo sem pagamento e impede trata-lo
+como conjunto simples de alternativas omitidas. A busca tambem encontrou um
+terceiro caso multiarea documentado, CIMBAJE, alem de CISREC e CONVALES.
+O CISPARA recebeu alerta estatutario desde 2017; a fonte nao comprova execucao
+de outra politica. O catalogo distingue os tres casos desse alerta adicional.
 
 ## Limites E Proximo Passo
 
@@ -343,17 +360,18 @@ Detalhes no plano, metodologia, dicionario e linha do tempo ja existentes.
   camada historica foi validada separadamente e ainda nao foi incorporada;
 - CBO distinto por unidade e proxy cadastral, nao especialidade unica da rede;
 - unidade de prefeitura ou terceiro nao entra sem evidencia documental;
-- 23 entidades continuam sem estrutura fixa CNES direta; cinco possuem oferta
-  ou rede
-  assistencial documentada sem polo unico e as demais foram classificadas por
-  situacao historica ou insuficiencia de evidencia;
-- CIS/CEN e CIMES permanecem sem polo fixo neste snapshot por indicio de mobilidade e tipo conflitante/ausente; possuem polo cadastral historico em 2014-2021;
+- entidades sem destino clinico documentado permanecem com tempo e capacidade
+  ausentes na especificacao principal; redes, servicos moveis e implantacoes
+  ficam em sensibilidades proprias;
+- a ficha CNES 5563003 do CIS/CEN foi confirmada como movel; a ficha 3987981 do
+  CIMES foi classificada como clinica fixa atual em Salinas. A serie historica
+  continua sendo lida pela competencia de cada ano;
 - o menor tempo ate uma rede pode apontar para unidade sem a especialidade
   relevante;
 - a grade estadual ainda nao define o conjunto de escolha plausivel;
 - populacao, RCL, regiao de saude, bacia e mandato ainda exigem fontes anuais
   validadas antes de integrar o painel.
 
-O proximo marco e fechar o filtro assistencial e as pendencias do passo 3.
-Depois, o passo 6 integra alternativas, capacidade historica e controles anuais.
+O proximo marco e concluir o passo 6: comparar conjuntos de alternativas e
+integrar capacidade historica, impedancia e controles anuais.
 A EDA final do passo 7 depende desse painel; estimacoes vem depois.

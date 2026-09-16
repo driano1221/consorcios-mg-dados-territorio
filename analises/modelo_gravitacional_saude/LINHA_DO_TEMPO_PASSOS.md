@@ -1,12 +1,9 @@
 # Linha Do Tempo Dos Passos - Modelo Gravitacional De Saude
 
-> Revisao de 10/09/2026: a classificacao anterior de 389 fixas/281 moveis foi
-> corrigida com o tipo oficial CNES. Sao 82 estruturas fixas candidatas, 586
-> moveis pelo tipo e 2 fichas com mobilidade indicada no nome e tipo
-> conflitante/ausente. As 82 ainda exigem filtro de funcao assistencial;
-> centrais administrativas/regulatorias nao equivalem a destinos clinicos.
-> Coleta original de 03/09 preservada; reprocessamento em 10/09. A serie
-> historica ja utilizava os tipos moveis 32/40/42 e nao foi alterada.
+> Revisao de 16/09/2026: passo 3 fechado com filtro funcional e decisoes
+> documentais. Das 670 unidades atuais, 63 sao clinicas fixas, 20 fixas nao
+> clinicas e 587 moveis. As contagens anteriores abaixo descrevem as camadas
+> produzidas em cada momento; o proximo marco e o painel final do passo 6.
 
 ## Visao Geral
 
@@ -23,8 +20,8 @@ flowchart LR
   P5 --> P6["6. O que ocorreu<br/>em cada ano?"]
   P6 --> C3["Complemento do 3<br/>cobertura e alertas"]
   C3 --> C4["Complemento do 4<br/>CNES historico"]
-  C4 --> N3["Agora<br/>fechar passo 3"]
-  N3 --> N6["Depois<br/>concluir passo 6"]
+  C4 --> N3["16/09<br/>filtro clinico e decisoes fechados"]
+  N3 --> N6["Agora<br/>concluir passo 6"]
   N6 --> N7["Entao<br/>passo 7: EDA final"]
 ```
 
@@ -241,16 +238,35 @@ Em 2017, o vinculo aparece em parte dos meses, mas nao em dezembro. Nos anos
 seguintes, nao se atribui esse hospital ao consorcio sem nova evidencia.
 Pagamento que continua nao autoriza carregar a mesma capacidade para a frente.
 
+## Fechamento De 16/09/2026
+
+1. As 18 sem MIDES foram comparadas com as 66 observadas: quinze estao hoje
+   inativas/inaptas, duas abriram depois de 2021 e uma, CIMESMI, permanece
+   ativa sem evidencia assistencial direta suficiente.
+2. As 670 unidades receberam filtro funcional: 63 clinicas, 20 estruturas
+   fixas de outras funcoes e 587 moveis. A serie historica tem 398 unidades-ano
+   clinicas e 74 fixas nao clinicas, alem de 1.396 moveis.
+3. A rodada documental cobriu as 21 entidades nao prioritarias. Exemplo:
+   CIS-URG Oeste recebeu pagamentos em 2014-2015, mas iniciou SAMU em 2017.
+   O pagamento de implantacao nao recebe capacidade operacional posterior.
+4. CISREC e CONVALES tiveram o escopo multiárea corroborado; CIMBAJE tambem
+   possui evidencia desde 2014. CISPARA ganhou alerta estatutario desde 2017,
+   sem concluir que todos os seus pagamentos misturam politicas.
+5. Dois mapas mostram sedes cadastrais e unidades por funcao. Sao pontos
+   municipais, sem inferir area de cobertura ou trajeto porta a porta.
+
+O passo 3 esta fechado por decisao documentada, inclusive exclusoes. Ainda
+existem prestadores e vigencias desconhecidos; eles nao bloqueiam o modelo
+restrito a destinos comprovados e permanecem limites da cobertura.
+
 ## Proximo Marco
 
-O painel e a camada CNES historica ja existem separadamente, mas o passo 3
-ainda possui casos sem polo/rede anual documentado e a grade estadual oferece
-entidades demais a cada municipio. A sequencia deve:
+O painel preliminar e as camadas historica e funcional existem separadamente.
+O passo 6 deve:
 
-1. fechar os casos indiretos, moveis e historicos pendentes do passo 3;
-2. definir alternativas plausiveis por tempo, regiao de saude ou regra
-   institucional;
-3. integrar populacao, RCL, regiao de saude, bacia e mandato com fontes anuais
-   validadas;
-4. executar EDA dos universos finais;
-5. somente depois estimar entrada, intensidade e interrupcao.
+1. ligar destinos clinicos e capacidade de cada ano a matriz rodoviaria;
+2. comparar alternativas estaduais, por tempo e por regiao de saude;
+3. integrar populacao, RCL, regiao de saude, bacia e mandato e construir os
+   universos sob risco;
+4. permitir a EDA final do passo 7 e, depois, os modelos gravitacionais de
+   entrada, intensidade e interrupcao.

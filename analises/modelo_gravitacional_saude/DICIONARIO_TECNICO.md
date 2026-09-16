@@ -1,5 +1,33 @@
 # Dicionario Tecnico - Modelo Gravitacional De Saude
 
+## Atualizacao De 16/09/2026
+
+O script `11_diagnosticar_universo_e_elegibilidade_saude.R` fecha a camada
+funcional do passo 3 reutilizando as saidas anteriores. Rodar na raiz do repo,
+apos 10, seguido de `tests/11_validar_diagnostico_universo_e_elegibilidade_saude.R`.
+
+| Arquivo | Conteudo e uso |
+|---|---|
+| `evidencias/auditoria_documental_21_entidades_2026_09_16.csv` | 21 entidades nao prioritarias: fonte consultada, anos, decisao e limite; rodada delimitada, nao busca exaustiva |
+| `evidencias/auditoria_multiarea_2026_09_16.csv` | CISREC, CONVALES, CIMBAJE e alerta estatutario CISPARA; conservar alcance temporal de cada fonte |
+| `evidencias/decisoes_fichas_cnes_conflitantes_2026_09_16.csv` | Duas decisoes atuais consumidas pelo script: 5563003 movel; 3987981 clinica |
+| `outputs/elegibilidade_assistencial_unidades_atuais_saude_mg.csv` | 670 unidades: 63 clinicas fixas, 20 nao clinicas e 587 moveis |
+| `outputs/elegibilidade_assistencial_unidades_historicas_saude_mg_2014_2021.csv` | 1.868 unidades-ano: 398 clinicas fixas, 74 nao clinicas e 1.396 moveis |
+| `outputs/elegibilidade_assistencial_entidade_ano_saude_mg_2014_2021.csv` | 672 entidades-ano com contagens funcionais; elegibilidade cadastral, nao amostra final |
+| `outputs/auditoria_18_entidades_sem_mides_saude_mg.csv` | 15 inativas/inaptas atuais, 2 abertas apos 2021 e 1 ativa sem evidencia |
+| `outputs/comparacao_entidades_com_sem_mides_saude_mg.csv` | Comparacao descritiva dos grupos 66 e 18 |
+| `outputs/auditoria_multiarea_saude_mg.csv` | Catalogo documental ligado a cobertura CNES, sem reescrever a v0.5 |
+| `outputs/decisoes_documentais_91_entidades_ano.csv` | Dossie original preservado e acrescido da rodada documental; R$ 151.093.325,68 conservados |
+| `outputs/figuras/mapa_entidades_saude_mg_presenca_mides.png` | Sedes cadastrais das 84 entidades; sobreposicoes possiveis |
+| `outputs/figuras/mapa_unidades_cnes_saude_mg_por_funcao.png` | Pontos municipais para 669/670 unidades; movel 5563003 sem municipio no cache |
+
+`funcao_assistencial` e `decisao_tempo_principal` sao o filtro funcional vigente.
+O marcador legado `unidade_fixa_elegivel` do script 05 significa apenas
+candidata cadastral. Nao usar os dois como sinonimos. A classificacao por tipo
+nao garante acesso ou producao. A ligacao de elegibilidade, tempo, capacidade,
+escopo e alternativas pertence ao passo 6. O dossie de 91 trata ausencia de
+qualquer fixa; a tabela de 672 tambem identifica fixa sem funcao clinica.
+
 ## Atualizacao De 10/09/2026
 
 - `05_construir_capacidade_assistencial_saude.R --cache-only`: reprocessa os
@@ -9,10 +37,10 @@
 - `unidade_movel_pelo_tipo`: 586 unidades oficialmente moveis;
   `classificacao_fixa_pendente`: 2 fichas com indicio nominal e tipo
   conflitante/ausente; `unidade_fixa_elegivel`: 82 candidatas cadastrais,
-  ainda sem filtro final de funcao clinica. O nome legado nao prova acesso.
+  antes do filtro final de funcao clinica do script 11. O nome legado nao prova acesso.
 - Os produtos de coleta do script 04 e snapshots `2026_09_03` preservam a
   classificacao inicial por nome como evidencia historica. Para capacidade e
-  tempo atuais, usar a classificacao corrigida do script 05.
+  tempo principais, combinar a coleta do script 05 com o filtro do script 11.
 - `data_extracao_cnes` permanece 2026-09-03; `data_reprocessamento` e
   2026-09-10 nas unidades. Snapshots `2026_09_10` sao reprocessamentos.
 - `10_auditar_pendencias_assistenciais_saude.py`: complemento tecnico do
@@ -291,9 +319,9 @@ nos produtos.
 - SICONFI nao identifica o CNPJ destinatario e nao entra como vinculo do par.
 - Populacao, RCL, regiao de saude, bacia e mandato aguardam fontes anuais
   validadas.
-- Vinte e tres entidades continuam sem estrutura fixa CNES direta. Redes
-  moveis/contratadas permanecem com tempo `NA` ate existirem prestadores ou
-  bases documentados; nenhum destino foi inventado.
+- Trinta e cinco das 84 entidades nao possuem destino clinico fixo no filtro
+  atual. Redes moveis/contratadas exigem desenho proprio e documentacao;
+  nenhum destino foi inventado. A disponibilidade historica e avaliada por ano.
 
 ## Ordem De Reproducao
 
@@ -320,6 +348,9 @@ python -m pip install -r analises/modelo_gravitacional_saude/requirements_cnes_h
 python analises/modelo_gravitacional_saude/09_temporalizar_cnes_historico_saude.py
 python analises/modelo_gravitacional_saude/10_auditar_pendencias_assistenciais_saude.py
 python analises/modelo_gravitacional_saude/tests/09_validar_cnes_historico_saude.py
+python analises/modelo_gravitacional_saude/tests/10_validar_pendencias_assistenciais_saude.py
+Rscript analises/modelo_gravitacional_saude/11_diagnosticar_universo_e_elegibilidade_saude.R
+Rscript analises/modelo_gravitacional_saude/tests/11_validar_diagnostico_universo_e_elegibilidade_saude.R
 ```
 
 Os produtos pesados em `outputs/` sao derivados e ignorados pelo Git. Codigo,

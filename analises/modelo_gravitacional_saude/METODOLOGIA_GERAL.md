@@ -1,12 +1,10 @@
 # Metodologia Geral - Modelo Gravitacional De Saude
 
-> Revisao de 10/09/2026: a classificacao anterior de 389 fixas/281 moveis foi
-> corrigida com o tipo oficial CNES. Sao 82 estruturas fixas candidatas, 586
-> moveis pelo tipo e 2 fichas com mobilidade indicada no nome e tipo
-> conflitante/ausente. As 82 ainda exigem filtro de funcao assistencial;
-> centrais administrativas/regulatorias nao equivalem a destinos clinicos.
-> Coleta original de 03/09 preservada; reprocessamento em 10/09. A serie
-> historica ja utilizava os tipos moveis 32/40/42 e nao foi alterada.
+> Estado vigente em 16/09/2026: filtro funcional concluido, com 63 destinos
+> clinicos fixos, 20 estruturas fixas nao clinicas e 587 moveis nas 670 unidades.
+> Historico: 398 unidades-ano clinicas, 74 nao clinicas e 1.396 moveis.
+> As secoes datadas preservam a evolucao das camadas anteriores; para preparar
+> o painel final, usar a elegibilidade do script 11 descrita ao final.
 
 ## Objetivo
 
@@ -46,11 +44,11 @@ criterios de conclusao ficam somente em `PLANO_DE_TRABALHO.md`.
 | 1. Fechar o universo de saude | Concluido | 84 entidades consolidadas e auditadas |
 | 2a. Comparar MIDES, MUNIC e documentos | Concluido | 1.311 pares em 2019 e revisao de 50 divergencias |
 | 2b. Usar CNM como fotografia atual no recorte saude | Disponivel, mas ainda nao materializado na tabela de saude | Snapshot CNM de 27/08 e piloto CNM x MIDES ja existem em outra frente |
-| 3. Definir polo de atracao assistencial | Produto direto concluido; cobertura final em andamento | 84 entidades consultadas por CNPJ mantenedor e proprio |
+| 3. Definir polo de atracao assistencial | Concluido com exclusoes explicitas | 84 entidades consultadas; filtro funcional e rodada documental fechados em 16/09 |
 | 4. Construir capacidade assistencial | Concluido e reprocessado | 670 unidades; medidas separadas para 61 entidades com oferta fixa direta |
 | 5. Integrar tempo rodoviario | Concluido e reprocessado | 853 origens, 82 unidades fixas e tres camadas de impedancia |
 | 6. Montar o painel analitico anual | Grade preliminar concluida; painel final em andamento | 573.216 observacoes municipio x entidade x ano |
-| Complemento. Cobertura assistencial | Auditoria executada; pendencias no passo 3 | 38 casos auditados, 15 recuperados e 7 alertas decididos |
+| Complemento. Cobertura assistencial | Decisoes de uso concluidas | 38 casos iniciais, 91 entidades-ano e rodada documental das 21 nao prioritarias |
 | Complemento temporal do passo 4 | Concluido | 672 entidades-ano e 120 arquivos oficiais auditados |
 
 O item 2b nao bloqueia a proxima etapa: a CNM e uma fotografia atual e nao
@@ -101,7 +99,9 @@ flowchart LR
 **Resultados:** 100 estabelecimentos classificados em saude formaram 84
 entidades consolidadas. Foram incorporadas 16 filiais em 11 raizes. Sessenta e
 seis entidades aparecem no MIDES MG; 64 formam o nucleo setorial preliminar e
-duas ficam em sensibilidade multiarea. Sete entidades foram marcadas para
+duas ficam em sensibilidade multiarea na classificacao v0.5. A auditoria de
+16/09 acrescentou CIMBAJE e um alerta estatutario para CISPARA, sem reescrever
+a classificacao original ou aprovar uma amostra final. Sete entidades foram marcadas para
 revisao de escopo, situacao temporal ou macrogrupo.
 
 ### Exemplo Real
@@ -341,15 +341,15 @@ flowchart LR
 | Indicador | Resultado |
 |---|---:|
 | Unidades consultadas sem erro final | 670 |
-| Unidades fixas | 82 |
+| Estruturas candidatas antes do filtro funcional de 16/09 | 82 |
 | Unidades moveis pelo tipo CNES | 586 |
-| Nome indica mobilidade e tipo conflita/ausente | 2 |
+| Fichas conflitantes antes da revisao de 16/09 | 2 |
 | Entidades com capacidade fixa direta | 61 |
 | Entidades sem unidade no proprio CNPJ | 21 |
 | Entidades sem fixa confirmada por mobilidade/conflito cadastral | 2 |
 | Entidades com leitos SUS diretos | 1 |
 
-Das 61 entidades com oferta fixa, 58 possuem ao menos um CBO medico SUS ativo
+Na camada-base de 10/09, das 61 entidades com estrutura fixa, 58 possuem ao menos um CBO medico SUS ativo
 no retrato. CISREC, CISAP-VP e CISVALEGRAN possuem unidade fixa, mas zero CBO
 medico SUS diretamente registrado; isso exige producao ou contratos
 complementares, nao permite concluir capacidade zero. Leitos SUS aparecem
@@ -362,8 +362,9 @@ medida suficiente para representar sozinhos a atracao de todos os consorcios.
   cadastrado: capacidade nao e sinonimo de internacao.
 - CISVER tem cinco unidades, mas quatro sao moveis; a agregacao usa a unidade
   fixa e preserva as moveis separadamente.
-- CIS/CEN tem tres vacimoveis e CIMES tem um; ambos ficam sem polo rodoviario
-  fixo.
+- CIS/CEN tem tres unidades atuais moveis; o CIMES tem ficha de nome
+  VACIMOVEL, mas tipo clinica e oferta ambulatorial, classificada como destino
+  clinico em 16/09. Nome isolado nao prevalece sobre a ficha e a evidencia.
 - CISMEP tem quatro unidades fixas e 11 moveis; os 32 leitos SUS pertencem ao
   Hospital 272 Joias diretamente vinculado.
 
@@ -929,9 +930,10 @@ Os tres casos mensais sao CISPARA/2017, Alto Sao Francisco/2017 e CIAS/2015.
 Os 91 permanecem fora da especificacao principal de destino fixo enquanto
 faltar vinculo anual comprovado. Isso **nao apaga os pagamentos**, nao os
 transforma em zero e nao define ainda o universo estatistico final do passo 6.
-A pesquisa documental individual das entidades nao prioritarias esta pendente:
-a triagem CNES foi concluida, mas nao deve ser descrita como auditoria
-documental exaustiva de todas as 28 entidades.
+Em 10/09 a pesquisa individual das entidades nao prioritarias estava pendente.
+A rodada de 16/09 acrescentou uma ficha para cada uma das 21 restantes, alem
+dos dois multiarea e das sete prioritarias. E uma busca documental delimitada,
+nao prova de inexistencia de documentos ou prestadores em outras fontes.
 
 | Entidade | Evidencia temporal recuperada | Decisao e limite |
 |---|---|---|
@@ -954,14 +956,104 @@ trata da implantacao, insuficiente para confirmar operacao do CISVALES.
 O catalogo datado registra fontes, alcance e pendencias; o catalogo anterior
 do script 08 continua sendo retrato documental atual, nao regra historica.
 
-Permanece prioritario aplicar o filtro clinico a estruturas nao moveis atuais
-e historicas e resolver as lacunas documentais que possam alterar destinos.
-As exclusoes ja registradas evitam imputacao e permitem prosseguir de forma
-auditavel quando o criterio assistencial estiver fechado.
+## Fechamento Funcional E Documental De 16/09/2026
 
-Concluir o filtro assistencial e as pendencias do passo 3. Depois definir
-alternativas e integrar capacidade historica e controles anuais no passo 6.
-Somente com o painel final validado executar a EDA do passo 7. Para redes
-moveis ou contratadas, a alternativa deve representar bases ou prestadores
-documentados, nao a sede administrativa. A CNM pode entrar como marcador atual
-de sensibilidade, sem retroagir sua composicao para 2019.
+O script 11 reutiliza universo, unidades atuais, unidades historicas e a malha
+municipal ja existentes. Nenhuma nova coleta integral CNES foi necessaria.
+Os catalogos pequenos de fontes e decisoes sao versionados; as tabelas e mapas
+sao reproduziveis localmente. O criterio do passo 3 foi cumprido: casos sem
+prestador e vigencia suficientes receberam exclusao ou sensibilidade explicita.
+Isso encerra a decisao para esta especificacao, sem afirmar cobertura integral.
+
+### Regra Funcional
+
+Clinicas, policlinicas, consultorios, hospitais e apoio diagnostico podem ser
+destinos presenciais. Centrais de gestao/regulacao, farmacias, vigilancia e
+telessaude ficam fora da especificacao clinica principal. Estas ultimas podem
+prestar servicos relevantes, mas nao representam o mesmo deslocamento para
+consulta/procedimento. Tipos novos ou desconhecidos exigem revisao explicita.
+
+O historico usa codigos CNES 04, 05, 22, 36, 39 e 62 como clinicos e 64, 68,
+76 e 81 como nao clinicos; os tipos moveis ja estavam identificados. A regra
+classifica funcao cadastral, nao comprova acesso, producao nem disponibilidade
+contratual de cada municipio. O passo 6 ainda deve aplicar escopo, vigencia,
+capacidade e alternativas, sem usar o marcador funcional sozinho como amostra.
+
+| Fotografia | Clinicas fixas | Fixas nao clinicas | Moveis | Total |
+|---|---:|---:|---:|---:|
+| Atual, unidades | 63 | 20 | 587 | 670 |
+| Dezembros 2014-2021, unidades-ano | 398 | 74 | 1.396 | 1.868 |
+
+As 82 candidatas anteriores continham 62 clinicas e 20 nao clinicas. O CIMES,
+CNES 3987981 em Salinas, acrescenta uma clinica apos revisao: tipo oficial,
+atendimento ambulatorial, 20 vinculos medicos SUS, 12 CBO medicos e 129 horas
+no cache corroboram a decisao, apesar do nome VACIMOVEL. O portal do CIMES
+[identifica o CNES nos relatorios de saude](https://www.cimes.mg.gov.br/relatorio-de-saude).
+A ficha CIS/CEN 5563003 foi confirmada como movel pela lista oficial de unidades
+moveis do CNES. A unidade historica CIS/CEN 7609868 e outra: em dezembro de 2014
+possui vinculo SUS, atendimento ambulatorial, 17 profissionais SUS e 13 CBO
+medicos SUS. O historico foi lido por competencia, sem aplicar nomes atuais.
+
+### Comparacao Das 66 Com MIDES E Das 18 Sem MIDES
+
+| Indicador | Com MIDES | Sem MIDES |
+|---|---:|---:|
+| Entidades | 66 | 18 |
+| Ativas no cadastro atual | 64 (97,0%) | 3 (16,7%) |
+| Com CNES atual | 61 (92,4%) | 2 (11,1%) |
+| Com destino clinico fixo atual | 48 (72,7%) | 1 (5,6%) |
+| Com destino clinico em algum dezembro de 2014-2021 | 52 (78,8%) | 0 |
+
+Das 18, quinze estao hoje inativas/inaptas sem oferta CNES direta identificada
+na janela; duas abriram depois de 2021 (CIMGEP e CISURG Medio Piracicaba); e
+uma, CIMESMI, esta ativa desde 2021 sem MIDES nem evidencia assistencial direta.
+A situacao atual nao foi retroagida como data de fechamento. O contraste
+revela composicao muito diferente entre grupos; nao identifica causalmente
+selecao nem autoriza excluir uma alternativa so porque nao recebeu pagamento.
+
+### Evidencia Documental E Escopo
+
+Uma linha por entidade registra fonte, anos investigados, evidencia, decisao e
+limite nas 21 nao prioritarias. O dossie final associa essas linhas aos 91 casos
+originais sem alterar pagamentos, chaves ou a triagem cadastral anterior.
+Nao foi recuperado novo prestador com identificacao e vigencia suficientes
+para adicionar capacidade ao modelo principal nesta rodada.
+
+Exemplos: o [CIS-URG Oeste](https://cisurg.oeste.mg.gov.br/07-anos-de-funcionamento-do-samu-gerenciado-pelo-cis-urg-oeste/)
+foi criado em 2014 e iniciou SAMU em 2017; seus pagamentos de 2014-2015 nao
+recebem as bases posteriores. O [CISREUNO](https://cisreuno.saude.mg.gov.br/cisreuno/institucional/)
+separa atividade administrativa em 2015 da implantacao em 2022. O
+[CISTRISUL](https://cistrisul.mg.gov.br/cistrisul-institucional.html) documenta
+servico aeromedico desde 2019: deve ser tratado como movel, sem hospital
+ficticio. O CISPARA/2017 conserva apenas a sensibilidade mensal ja detectada.
+
+CISREC e CONVALES continuam na sensibilidade multiárea. A
+[Enap](https://www.enap.gov.br/acontece/noticias/enap-apoia-municipios-do-baixo-jequitinhonha-a-desenvolverem-estrategia-para-lidar-com-o-aprofundamento-da-pobreza-decorrente-da-pandemia/)
+documenta transformacao do CIMBAJE e iluminacao publica no fim de 2014, alem
+de projeto socioeconomico em 2021. Ele recebe o mesmo tratamento conservador.
+O [CISPARA](https://www.cispara.mg.gov.br/consorcio/apresentacao) informa ampliacao
+estatutaria em 2017; isso e alerta para sensibilidade desde esse ano, sem
+afirmar execucao de outra politica. Sao tres casos com evidencia multiárea e
+um alerta estatutario. Nao existe decomposicao setorial dos pagamentos.
+
+### Mapas, Limites E Continuacao
+
+Dois mapas mostram sedes cadastrais das 84 entidades e distribuicao municipal
+das unidades por funcao. Pontos de unidades sao representacoes municipais,
+nao enderecos geocodificados nem territorios de cobertura. Entidades na mesma
+sede podem sobrepor-se. O mapa CNES localiza 669/670 unidades: o movel 5563003
+nao tem municipio no cache e permanece na tabela, sem localizacao inventada.
+
+O passo 6 deve integrar a elegibilidade ao tempo e a capacidade do proprio ano.
+A camada de tempos anterior nao contem a clinica CIMES acrescentada agora e
+nao e a amostra final: usar a matriz municipal completa para ligar todos os
+destinos historicos e recalcular agregados clinicos. Contagens agregadas de
+profissionais entre unidades nao devem ser somadas como pessoas distintas.
+Depois, comparar alternativas estaduais, por tempo e por regiao de saude,
+integrar controles anuais e executar a EDA final do passo 7.
+
+Validacao: os onze testes da pasta passaram em 16/09. O teste 11 reconcilia
+contagens e chaves, confirma as duas fichas revistas, os grupos 18/66, os
+catalogos, a preservacao integral do dossie de 91 e a existencia dos mapas.
+Os dois PNG tambem foram inspecionados visualmente. Avisos locais de locale
+e de versao de pacotes R nao impediram a execucao.
