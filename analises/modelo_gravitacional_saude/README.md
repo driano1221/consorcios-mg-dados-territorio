@@ -2,8 +2,9 @@
 
 **Consulta visual da v1:** abra localmente
 [outputs/visuais_v1/index.html](outputs/visuais_v1/index.html).
-A pagina explica somente a v1 em seis abas: a base, construcao, pagamentos,
-CNES, tempos/mapa e consulta completa. Sao cinco figuras principais, com
+A pagina explica a v1 em seis abas de dados e uma nova aba de modelo:
+base, construcao, pagamentos, CNES, tempos/mapa, consulta completa e
+piloto gravitacional de participacoes de 2019. Sao cinco figuras de dados, com
 ranking, trajetorias e mapa interativos dos 73 consorcios da v1.
 As duas tabelas podem ser consultadas integralmente: 491.328 x 19 e
 323.287 x 30, com filtros e paginacao. Os fluxos mostram fontes, chaves
@@ -16,15 +17,35 @@ o HTML precisa das subpastas `figuras` e `dados` ao lado dele.
 O pedido de piloto logit em um ano ja foi confrontado com a v1:
 `29_avaliar_proposta_logit.R` reproduz o diagnostico em
 `outputs/viabilidade_logit/`. A avaliacao esta ao final de
-`METODOLOGIA_GERAL.md`. Proximo passo: definir desfecho e alternativas
-antes de estimar; pagamentos a varios consorcios impedem interpretar
-automaticamente cada linha positiva como escolha exclusiva.
+`METODOLOGIA_GERAL.md`. Apos autorizacao, o script 30 estimou o piloto:
+703 municipios x 54 consorcios, 37.962 linhas; beta de profissionais 0,3939
+e de tempo subtraido 3,0050. Na validacao por municipios, o erro de distribuicao
+passa de 34,98% (tempo) para 34,08% (profissionais + tempo); principal destino
+correto passa de 75,96% para 78,38%. Ganho pequeno da capacidade, sem inferencia
+causal. A grade estadual e um cenario exploratorio, nao acesso comprovado.
+Abra `outputs/visuais_v1/index.html#modelo` para selecao nominal, transformacoes,
+validacao, exemplos dos 703 municipios e matematica. A v1 permanece intacta.
+
+Reproduzir a partir desta pasta, depois da v1 e do pacote visual:
+
+```powershell
+Rscript 30_estimar_piloto_participacoes.R
+python 28_montar_visuais_v1.py
+python tests/18_validar_piloto_participacoes.py
+python tests/17_validar_visuais_v1.py
+```
+
+O teste 18 usa NumPy/SciPy para verificacao independente da estimacao em R.
+Produtos grandes permanecem locais; fontes e resultados em
+`outputs/piloto_participacoes/`. Proximo passo: alternativas institucionais
+documentadas e capacidade anterior ao pagamento, sem reabrir toda a coleta.
 
 ## Comece Aqui: Base V1 — 24/09/2026
 
 A v1 organiza o que ja foi coletado em **duas tabelas**. Uma linha significa
-municipio x consorcio x ano. MIDES e o eixo financeiro; nenhuma PCA ou modelo
-foi estimado. Os arquivos ficam em [outputs/base_v1](outputs/base_v1/), localmente.
+municipio x consorcio x ano. MIDES e o eixo financeiro; nenhuma PCA foi criada.
+O piloto descrito acima e derivado separado. Os arquivos da v1 ficam em
+[outputs/base_v1](outputs/base_v1/), localmente.
 
 | Entrega | Linhas | Entidades | Pagamentos positivos | Valor nominal 2014-2021 |
 |---|---:|---:|---:|---:|
@@ -114,7 +135,8 @@ da v1. Inventario e ressalvas no dicionario; ordem no plano canonico.
 > `outputs/diagnostico_alternativas_painel_saude_2014_2021.csv`. O passo 7
 > segue em andamento: perdas, extremos, RCL, alternativas, marcadores SUS e as
 > 60 variaveis foram auditados, mas a suficiencia ainda precisa ser julgada.
-> Nenhum modelo foi estimado. Bacias ficaram para analise territorial posterior.
+> Naquela etapa, nenhum modelo havia sido estimado. O piloto posterior esta
+> descrito no inicio deste README. Bacias ficaram para analise territorial posterior.
 
 > Conciliacao de 24/09: as 181 entidades-ano pagas sem polo direto receberam
 > classificacao, fonte e limite em
@@ -560,7 +582,8 @@ entidades-ano. A classificacao documental anual esta no painel para 84
 dessas entidades-ano; as outras exigem confronto com dossies existentes.
 Um registro Sao Joao das Missoes-CISNORTE-MG em 2021 tem quatro transacoes
 MIDES e valor total zero; permanece como registro sem pagamento positivo.
-Nenhum modelo ou indice de massa foi estimado.
+Naquela auditoria, nenhum modelo ou indice havia sido estimado; o piloto
+posterior de participacoes esta descrito no inicio deste README.
 
 Com o painel anual ja materializado, reproduza o inventario completo a partir
 da raiz do repositorio:

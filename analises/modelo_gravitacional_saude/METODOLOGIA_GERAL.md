@@ -2045,3 +2045,131 @@ Uma robustez com capacidade de 2018 e possivel sem mudar o ano do desfecho.
 Nao e necessario reabrir toda a coleta para discutir/rodar um piloto
 delimitado. A pendencia central agora e a definicao da pergunta, do conjunto
 de alternativas e da interpretacao. Nenhum modelo foi ajustado nesta avaliacao.
+
+## Piloto De Participacoes De 2019 — Executado Apos Autorizacao
+
+Depois do diagnostico, foi autorizada a tentativa de participacoes e sua
+explicacao em uma aba nova. O script `30_estimar_piloto_participacoes.R`
+estima uma media fracional com normalizacao logit. A pergunta e sobre a
+distribuicao dos pagamentos dentro do recorte direto, condicionada a total
+municipal positivo. Nao mede adesao juridica, pacientes, orcamento ou causalidade.
+
+### Selecao E Transformacoes
+
+O registro `inclusao_entidade_ano.csv` fornece a selecao nominal de 2019:
+
+| Etapa | Quantidade | Regra e perda |
+|---|---:|---|
+| Universo investigado | 97 entidades | 84 originais + 13 candidatas externas |
+| Base financeira | 73 entidades | 3 antes da abertura; 21 fora do nucleo (6 multiarea e 15 outros fora do nucleo) |
+| Recorte direto | 54 entidades | 19 permanecem somente na financeira, sem polo clinico direto com tempo |
+| Grade direta do ano | 46.062 linhas | 853 municipios x 54 alternativas |
+| Municipios com total direto positivo | 703 | 105 pagam somente fora do direto; 45 nao tem pagamento financeiro positivo |
+| Base de estimacao | 37.962 linhas | 703 x 54; 781 positivas e 37.181 zeros |
+
+As 54 entidades tem 64 unidades clinicas e R$ 361.802.069,73 de pagamentos,
+88,94% dos R$ 406.799.086,09 da financeira no ano. A regra nao seleciona
+apenas alternativas com pagamento. Todos os 54 destinos entram para cada
+origem, inclusive zeros. Disponibilidade cadastral nao prova acesso institucional.
+628 municipios pagam a um consorcio direto, 72 a dois e tres a tres.
+
+Preservamos as 30 colunas da v1 nas linhas selecionadas. Acrescentamos:
+`total_direto`, `participacao`, `log_profissionais`, `tempo_horas`, `fold`,
+`bloco_espacial`, `utilidade`, `previsto_ajuste`, `previsto_validacao` e
+`previsto_espacial`. O pagamento somado por origem forma o denominador;
+nao somamos capacidade entre origens. Nao houve imputacao, corte de tempo,
+PCA, exclusao de CISVAS por massa zero ou exclusao automatica por alerta.
+Dois consorcios de 2019 tem alerta temporal, envolvendo 20 pares pagos.
+O +1 da transformacao acomoda o zero cadastral; nao corrige sua qualidade.
+
+Leitos (todos zero), servicos, numero de unidades, populacao da origem,
+populacao da sede, RCL, bacia, mandato, movimentos e indicadores derivados
+do pagamento nao entram na formula principal. Horas substituem profissionais
+e mediana substitui minimo em sensibilidades separadas. A aba explica cada
+escolha. Contratos/MUNIC/CNM continuam documentais, sem formar J_i automaticamente.
+
+### Estimacao E Validacao
+
+Com A_j igual a soma de profissionais SUS por unidade e t_ij em minutos:
+
+    s_ij = valor_ij / soma_j(valor_ij)
+    V_ij = beta_A * ln(1 + A_j) - beta_T * t_ij/60
+    media_ij = exp(V_ij) / soma_x(exp(V_ix))
+    perda = -media_i(soma_j(s_ij * ln(media_ij)))
+
+Cada municipio pesa igualmente. Reais e transacoes nao sao tentativas
+independentes. R `optim`, BFGS e gradiente analitico minimizam a perda;
+log-sum-exp estabiliza a normalizacao. Nao se impuseram sinais ou penalizacao.
+Intercepto comum cancela; efeitos fixos de destino absorveriam a massa anual.
+Zeros/uns da resposta ficam intactos. A referencia para medias multivariadas
+de participacoes e [Mullahy](https://www.nber.org/papers/w16354), aqui com
+especificacao restrita de atributos das alternativas. Fracoes nao sao rotulos
+de classificacao ou contagens multinomiais.
+
+Semente 24092026. Cinco grupos sorteados por municipio sao usados para
+previsao fora da estimacao. Outra particao usa k-means das coordenadas
+projetadas do pacote geobr, cinco grupos e 30 inicializacoes, sem pagamentos.
+Esses grupos nao sao regioes oficiais de saude. As alternativas continuam
+iguais; validamos transporte a outras origens, nao a novos consorcios.
+Coeficientes de cada treino e particoes sao salvos.
+
+Referencias: participacoes iguais e media municipal das participacoes do
+treino, com uma distribuicao uniforme adicional fixa para evitar previsao
+exatamente zero. A referencia uniforme nao define principal, portanto esse
+acerto e NA. Sensibilidades nao substituem automaticamente a especificacao.
+Nao foi ajustado modelo separado de escolha exclusiva: principal recebedor
+e uma metrica secundaria da previsao das participacoes.
+
+Erro de distribuicao = 100 * media_i(soma_j(abs(s_ij - media_ij))/2).
+Mede a parcela que precisaria mudar de destino, nao percentual de linhas
+erradas ou erro do orcamento. A perda logaritmica avalia todas as parcelas.
+O acerto do principal compara argmax previsto e observado. Nao usamos
+classificacao de zeros como medida de sucesso. Sem p-valores ou interpretacao
+causal; as linhas da grade nao sao observacoes independentes.
+
+### Resultados Do Primeiro Exercicio
+
+Coeficientes completos: beta_A = 0,3939313483; beta_T = 3,0049814421, subtraido.
+Com +30 minutos somente em um destino, seu peso relativo e multiplicado
+por exp(-3,0049814421/2), aproximadamente 0,223. A participacao precisa ser
+renormalizada. Essa conta nao e efeito causal de uma estrada.
+
+| Validacao | Modelo | Perda logaritmica | Erro de distribuicao | Principal correto |
+|---|---|---:|---:|---:|
+| Municipios sorteados | Tempo | 0,766817 | 34,9759% | 75,9602% |
+| Municipios sorteados | Profissionais + tempo | 0,742736 | 34,0823% | 78,3784% |
+| Municipios sorteados | Horas + tempo | 0,734738 | 33,8691% | 77,3826% |
+| Municipios sorteados | Profissionais + mediana | 0,732299 | 33,3408% | 78,8051% |
+| Grupos geograficos | Tempo | 0,786646 | 36,1331% | 75,9602% |
+| Grupos geograficos | Profissionais + tempo | 0,765524 | 35,3054% | 78,3784% |
+
+Profissionais reduzem a perda logaritmica em 3,14% na particao sorteada e
+2,69% na geografica; ganho pequeno, sem teste de significancia. Horas e
+mediana tiveram resultados proximos. O piloto nao foi promovido a modelo
+final ou generalizado ao universo financeiro inteiro. Permanecem acesso
+institucional, heterogeneidade de servicos, dupla contagem entre unidades,
+dezembro versus ano e endogeneidade.
+
+Conceicao do Para: total direto R$ 261.089,73. Fora do treino municipal,
+o modelo preve CISVI 50,51% (observado 43,80%), CISPARA 23,74% (18,00%) e
+CISMEP 14,71% (38,20%). A diferenca do CISMEP fica visivel; acertar o
+principal nao implica acertar a distribuicao. R$ 22.841,89 ao CIS-URG OESTE
+continuam fora do denominador direto, preservados na financeira. As contas
+da aba usam os coeficientes do treino correspondente quando se seleciona
+validacao; o ajuste completo e rotulado separadamente.
+
+### Entrega E Verificacoes
+
+Setima aba `outputs/visuais_v1/index.html#modelo`: selecao nominal das 97,
+variaveis, transformacoes, pipeline, comparacoes, consulta dos 703 municipios
+com 54 alternativas, matematica real, limites e referencias. Sem biblioteca
+de graficos nova ou botoes de download. Layout e paleta aprovados reutilizados.
+Duas visualizacoes SVG interativas no navegador; cinco figuras de dados mantidas.
+
+Teste 18 confere celulas originais com CSVs v1, somas, chaves, exclusoes,
+previsoes e metricas. Reestima com SciPy; coeficientes coincidem com R dentro
+de 2e-5. Confere gradientes de treino e previsoes nos dez grupos. O script R
+confere gradiente por diferencas finitas e recupera parametros sinteticos.
+Teste 17 reconcilia o pacote e as consultas anteriores. Hashes conservados.
+Reproducao no README/dicionario. Proximo: alternativas documentadas e capacidade
+anterior ao pagamento. Blocos longitudinais continuam pendentes.

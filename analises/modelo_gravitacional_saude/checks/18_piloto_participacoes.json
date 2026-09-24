@@ -1,0 +1,17 @@
+{
+  "status": "OK",
+  "municipios": 703,
+  "consorcios": 54,
+  "linhas": 37962,
+  "positivos": 781,
+  "zeros": 37181,
+  "coeficientes_R": [
+    0.393931348265997,
+    3.00498144205892
+  ],
+  "coeficientes_scipy": [
+    0.39393135538416807,
+    3.0049810980250715
+  ],
+  "verificado": "Celulas originais preservadas; participacoes, selecao, softmax e metricas conciliadas; otimizacao independente; gradiente do treino e previsoes dos 10 grupos conferidos; hashes intactos."
+}

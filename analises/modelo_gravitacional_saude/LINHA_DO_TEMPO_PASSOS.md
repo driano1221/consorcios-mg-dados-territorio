@@ -3,7 +3,8 @@
 > Fechamento v1 de 24/09/2026: passo 7 concluido para duas bases delimitadas,
 > financeira e clinica direta. Pendencias mensais/indiretas ficam documentadas.
 > As contagens abaixo conservam os marcos historicos de cada entrega. A
-> formula dos modelos virá da equipe; bacias ficaram para analise posterior.
+> proposta de um ano foi recebida e um piloto de participacoes foi autorizado
+> e estimado depois. Bacias ficaram para analise posterior.
 
 ## Visao Geral
 
@@ -24,7 +25,9 @@ flowchart LR
   N3 --> N6["23/09<br/>painel anual + 13 candidatas"]
   N6 --> N7["24/09<br/>EDA e auditoria de dados"]
   N7 --> N8["V1 entregue<br/>financeira + clinica direta"]
-  N8 --> N9["Proximo<br/>conferir exigencias da formula da equipe"]
+  N8 --> N9["Proposta recebida<br/>diagnostico de viabilidade, script 29"]
+  N9 --> N10["Piloto autorizado<br/>participacoes 2019 + nova aba, script 30"]
+  N10 --> N11["Proximo<br/>alternativas institucionais + temporalidade"]
 ```
 
 ## Evolucao Do Projeto
@@ -520,3 +523,25 @@ disponivel e Sao Joaquim de Bicas, mas as clinicas de 2019 sao Betim e
 Brumadinho. Portanto, populacao da sede e capacidade/destino clinico
 precisam ser distinguidos. Nenhum coeficiente foi estimado; agora falta
 alinhar o desfecho e o conjunto de alternativas do piloto.
+
+### Piloto Autorizado E Executado Depois Do Diagnostico
+
+O pedido seguinte autorizou testar participacoes em uma aba nova, seguindo
+a consulta v1. Acrescentou a exigencia de explicar a selecao e as variaveis:
+97 investigadas -> 73 financeiras em 2019 -> 54 com clinica/tempo;
+853 municipios -> 703 com total direto positivo -> 37.962 linhas.
+Os 37.181 zeros entre alternativas permanecem; v1 e fontes nao mudaram.
+
+O script 30 estimou profissionais + tempo, com duas particoes de validacao,
+comparacao com tempo sozinho e sensibilidades de horas/mediana. Na validacao
+municipal, principal correto 78,38% e erro de distribuicao 34,08%; tempo
+sozinho: 75,96% e 34,98%. Ganho de capacidade pequeno, sem conclusao causal.
+
+Exemplo adicional para enxergar a divisao: Conceicao do Para paga R$ 261.089,73
+a CISVI, CISPARA e CISMEP no direto. CISMEP recebeu 38,20%; o modelo previu
+14,71% fora do treino. A aba conserva esse erro e permite acompanhar a conta
+e todos os destinos. Igarape-CISMEP continua consultavel como caso de um destino.
+
+A entrega local tem agora sete abas. Passo 8 parcial; seguintes desafios:
+alternativas institucionais e capacidade anterior ao pagamento. Os modelos
+longitudinais originais e deploy no dashboard nao foram executados por esse piloto.

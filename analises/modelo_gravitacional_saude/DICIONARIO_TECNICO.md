@@ -748,9 +748,11 @@ JavaScript. O HTML incorpora os dados e pode ser aberto localmente.
 A segunda proposta foi aprovada e implementada; depois Adriano pediu
 concentrar a leitura na v1 e disponibilizar suas tabelas completas.
 A entrada vigente e `outputs/visuais_v1/index.html`; as pastas
-`prototipo` e `proposta_02` sao historicas. As seis abas vigentes sao:
+`prototipo` e `proposta_02` sao historicas. As seis abas de dados sao:
 a base v1, como foi construida, pagamentos, CNES, tempos/mapa e consultar
-bases. Os fluxos explicam fonte, chave de ligacao, tratamento e resultado.
+bases. A setima, Modelo gravitacional, foi acrescentada apos autorizacao
+do piloto e esta descrita ao final deste dicionario. Os fluxos explicam
+fonte, chave de ligacao, tratamento e resultado.
 O mapa inclui apenas as 73 entidades e anos admitidos na v1 financeira.
 Nao ha CNM, retrato 2026, comparacao multiarea ou botoes de download.
 
@@ -823,3 +825,29 @@ pareamento da sede usa nome normalizado de municipio MG, com unicidade
 verificada. Obter 73 pareamentos nao transforma sede atual em sede anual.
 As populacoes dos municipios clinicos nao sao numero de pacientes ou
 populacao consorciada. A soma de destinos e descritiva, nao massa aprovada.
+
+## Piloto De Participacoes E Setima Aba
+
+Executar nesta pasta `Rscript 30_estimar_piloto_participacoes.R`, depois
+`python 28_montar_visuais_v1.py`. Testes: `tests/18_validar_piloto_participacoes.py`
+e `tests/17_validar_visuais_v1.py`. R usa dplyr, jsonlite e digest ja disponiveis;
+verificacao independente usa NumPy/SciPy. Semente 24092026. Sem consulta externa.
+
+| Produto em outputs/piloto_participacoes/ | Conteudo |
+|---|---|
+| `base_estimacao_2019.csv` | 37.962 x 40; 30 colunas v1 preservadas + total, participacao, log profissionais, horas de viagem, dois grupos, utilidade e tres previsoes |
+| `municipios_2019.csv` | 703 origens, totais direto/financeiro, destinos pagos, grupos, alerta e erro de validacao |
+| `consorcios_2019.csv` | 54 destinos, capacidade e alerta; uma linha por entidade |
+| `selecao_consorcios_2019.csv` | As 97 entidades investigadas e seu destino na v1 em 2019 |
+| `coeficientes.csv` | Quatro especificacoes; parametros completos, convergencia e gradiente |
+| `coeficientes_validacao.csv` | Parametros e tamanho de treino/teste nos cinco grupos de cada particao |
+| `validacao.csv` | 12 linhas: seis especificacoes/referencias x duas particoes; metricas fora do treino |
+| `fontes.csv` | Quatro entradas e SHA-256, preservados antes/depois |
+| `piloto.json` | Dados incorporados ao HTML, incluindo previsoes de todas as alternativas |
+
+`modelo_v1.js` renderiza a setima aba; `visuais_v1.html` e `.css` preservam
+a estrutura aprovada. O empacotador 28 inclui o JSON e JS no index local,
+registra as fontes e refaz o ZIP. Nao ha dependencia de servico externo.
+As contas interativas usam parametros do treino correspondente a cada
+previsao. `checks/18_piloto_participacoes.json` registra conciliacao e
+comparacao da estimacao R com SciPy. A fonte v1 nao recebe colunas novas.

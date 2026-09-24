@@ -162,7 +162,7 @@ $('query-load').onclick=async()=>{
   renderQuery();$('query-status').textContent=fmt(queryRows.length)+(queryRows.length===1?' linha encontrada':' linhas encontradas')+' · '+queryColumns.length+' variáveis · '+(yr==='all'?'2014–2021':yr)+'. Os cabeçalhos mostram o significado e o nome original de cada coluna.';
  }catch(error){$('query-status').textContent=error.message;}finally{controls.forEach(e=>e.disabled=false);}
 };
-const pages=['panorama','construcao','pagamentos','capacidade','atlas','consulta'];
+const pages=['panorama','construcao','pagamentos','capacidade','atlas','consulta','modelo'];
 function switchPage(page){document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.page===page)));pages.forEach(p=>$(p).hidden=p!==page);$('tip').style.display='none';if(page==='atlas')drawAtlas();window.scrollTo({top:0,behavior:'instant'});}
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>switchPage(b.dataset.page));
 let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if(!$('atlas').hidden)drawAtlas();},120);});

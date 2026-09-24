@@ -18,7 +18,9 @@ base gravitacional com oferta clinica direta cadastrada em dezembro.
 Adriano autorizou simplificar: MIDES como eixo, RCL complementar e documentos
 como apoio. A v1 nao representa toda a oferta indireta/movel nem define a
 formula final. Preparacao do passo 8 iniciada com a avaliacao da proposta
-logit de um ano; estimacao ainda nao iniciada. Passos 9 e 10 nao iniciados.
+logit de um ano. Apos autorizacao para tentar participacoes, piloto de 2019
+estimado e validado no script 30. Passo 8 parcial; sensibilidades iniciais do
+piloto nao encerram o passo 9. Aba local entregue; deploy do passo 10 pendente.
 
 - [x] **1. Fechar o universo de consorcios de saude**
 - [x] **2. Auditar os vinculos**
@@ -27,7 +29,7 @@ logit de um ano; estimacao ainda nao iniciada. Passos 9 e 10 nao iniciados.
 - [x] **5. Construir a camada-base de tempo rodoviario**
 - [x] **6. Montar o painel analitico anual e um recorte candidato**
 - [x] **7. Executar a EDA e fechar a base v1 para o recorte documentado**
-- [ ] **8. Estimar os tres blocos — em especificacao; piloto de um ano proposto**
+- [ ] **8. Estimar os tres blocos — piloto transversal de participacoes concluido; blocos longitudinais pendentes**
 - [ ] **9. Testar robustez**
 - [ ] **10. Integrar resultados validados ao dashboard**
 
@@ -254,10 +256,17 @@ nao foi interpretado como ausencia de atendimento.
 **Encaminhamento recebido em 24/09:** foi apresentado pedido de um piloto
 logit multinomial, em um unico ano de saude/MG, com atracao por capacidade
 ou populacao da sede e impedancia espacial. A compatibilidade foi examinada
-no script 29; nenhum modelo estimado. Antes do piloto, definir se o desfecho
-e consorcio principal por pagamento, participacao no gasto ou presenca de
-pagamento por par. Sao perguntas diferentes. O piloto transversal proposto
-nao substitui os blocos longitudinais abaixo nem mede nova adesao juridica.
+no script 29, inicialmente sem estimar. Em seguida, foi autorizada a tentativa
+de participacoes com profissionais e tempo em 2019 e sua explicacao numa nova
+aba. Script 30 executado: 703 municipios, 54 alternativas estaduais cadastrais,
+37.962 linhas. O cenario amplo e exploratorio, sem prova de acesso institucional.
+O piloto transversal nao substitui os blocos longitudinais abaixo nem mede
+nova adesao juridica. Metodo, perdas, resultados e validacao na metodologia.
+
+- [x] estimar piloto fracional de 2019 com peso municipal igual;
+- [x] comparar tempo, profissionais, horas e tempo mediano; validar por
+  municipios e grupos geograficos, sem vazamento das respostas dos grupos;
+- [x] explicar selecao, transformacoes, matematica e exemplos na aba local;
 
 - [ ] antes de estimar, definir se a pergunta trata de membros, pagamentos
   observados ou formacao da relacao; justificar pares elegiveis e zeros.
@@ -284,14 +293,14 @@ unica regressao.
 
 ## Proximo Marco
 
-**Prioridade atualizada em 24/09: fechar o desfecho e as alternativas do
-piloto a partir da proposta logit recebida.** Diagnostico concluido no script
-29; recomendacao tecnica e piloto em 2019, sem ano ou desfecho aprovados
-automaticamente. O complemento visual do passo 7 esta concluido, sem reabrir
-a construcao da v1 ou criar outra etapa. Entrada local:
-`outputs/visuais_v1/index.html`, com seis abas centradas na v1, cinco
-figuras principais, mapa das 73 entidades e consulta integral das duas
-tabelas com filtros e paginacao. Nenhum modelo foi estimado.
+**Prioridade atualizada em 24/09, apos piloto autorizado:** discutir os
+resultados e a disponibilidade institucional das alternativas. Tempo tem
+associacao forte com a distribuicao; profissionais acrescentam ganho pequeno
+na validacao. Proximas sensibilidades substantivas: alternativas documentadas
+e capacidade anterior ao pagamento. Nao promover o cenario amplo a modelo final.
+Entrada local: `outputs/visuais_v1/index.html#modelo`, setima aba, com selecao
+97 -> 73 -> 54, municipios 853 -> 703, variaveis, pipeline, previsoes de todos
+os municipios e matematica. As seis abas anteriores e as fontes v1 permanecem.
 
 Execucao visual iniciada em 24/09 com design-vault. A primeira previa,
 `outputs/visuais_v1/prototipo/index.html`, foi rejeitada por Adriano: a
@@ -359,14 +368,13 @@ Os tres trabalhos seguintes foram executados em 24/09, dentro do passo 7:
   de saude, 5.612 diretos, 1.052 diretos com RCL e 510 com RCL e PDR.
   Os recortes fiscais sao seletivos e nao definem a amostra final.
 
-**Proximo marco:** alinhar a pergunta do piloto de um ano: principal destino
-financeiro, distribuicao do gasto ou ocorrencia de pagamento por par.
-Depois fixar alternativas e massa, materializar o recorte de estimacao
-com perdas explicitas e executar um piloto simples. A proposta recebida
-ja foi confrontada com a v1; metodo e numeros em METODOLOGIA_GERAL.md.
+**Proximo marco:** discutir o piloto de distribuicao do gasto ja executado,
+seu ganho modesto com capacidade e a regra das alternativas. Os resultados
+e as perdas estao em METODOLOGIA_GERAL.md; amostra derivada separada da v1.
 Em um so ano, a deflacao por indice comum nao muda participacoes nem ranking.
 Para retornar a comparacoes monetarias entre anos, reabrir a deflacao.
-Nao estimar modelos automaticamente nem ampliar coleta sem uma necessidade
+O piloto de participacoes foi autorizado; novos desfechos nao sao uma
+consequencia automatica dessa autorizacao. Nao ampliar coleta sem necessidade
 especifica. A base gravitacional conserva alternativas sem pagamento, sem
 limite arbitrario de minutos e sem exigir RCL/PDR.
 
@@ -382,7 +390,8 @@ correcao e nova versao; a fonte atual permanece preservada.
 Os extremos financeiros ja conferem com as fontes; nomes completos resolvem
 a exibicao das cinco raizes sem sigla, sem inventar abreviacoes. RCL nao sera
 imputada nem substituida por receita total. A proposta logit ja foi examinada
-como exigencia de dados; falta alinhar desfecho/alternativas antes de estimar.
+como exigencia de dados; participacoes foram estimadas depois da autorizacao,
+com alternativas amplas explicitadas como hipotese, ainda sem validacao institucional.
 
 ## Controle De Mudancas
 
@@ -397,6 +406,7 @@ como exigencia de dados; falta alinhar desfecho/alternativas antes de estimar.
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 24/09, piloto autorizado | Passo 8 parcial: participacoes estimadas, validacao e aba local concluidas | Testar atracao/tempo com desfecho financeiro, explicar selecao e manter limites de acesso institucional |
 | 24/09, proposta logit | Passo 8 em especificacao; diagnostico de um ano executado, sem estimar | Pagamentos simultaneos exigem distinguir principal destino, participacoes e ocorrencia por par; sede/populacao nao equivalem a hospital |
 | 24/09/2026, fechamento v1 | Passo 7 concluido para entrega delimitada: duas bases, sintese CNES, inclusao/exclusao e testes | Adriano priorizou MIDES e uma entrega simples; RCL e pesquisa documental deixam de bloquear; formula/amostra final continuam por definir |
 | 24/09/2026 | Revisados tres casos prioritarios; coletadas seis fotografias mensais e medida a cobertura dos recortes | distinguir servico movel de polo clinico; corrigir leitura incompleta da Fhemig; dimensionar coleta mensal e selecao fiscal |
