@@ -714,3 +714,12 @@ repetir a capacidade por municipio; valores financeiros sao nominais e
 zeros da grade nao sao transacoes observadas. Os multiarea ficam em painel
 comparativo auxiliar. A definicao da amostra do modelo nao impede esses
 graficos descritivos, mas impede interpreta-los como estimacao gravitacional.
+
+Previa de design posterior nesta data: `outputs/visuais_v1/prototipo/`, com
+`index.html` navegavel e tres exemplos reais (cobertura, capacidade/2019 e
+CISMEP/2019), PNG 300 dpi e SVG. `gerar_previa.R` reproduz somente o rascunho,
+executado da raiz; nao substitui os scripts nem o atlas existentes. Os
+produtos sao locais e aguardam aprovacao visual; nao constituem o pacote
+final. Navegacao, uso offline e ausencia de overflow da pagina em tela
+estreita conferidos; figuras mantem rolagem propria para leitura. Teste 16
+reexecutado confirmou conservacao da v1 e dos hashes das fontes.
