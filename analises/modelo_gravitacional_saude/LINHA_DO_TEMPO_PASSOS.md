@@ -1,9 +1,8 @@
 # Linha Do Tempo Dos Passos - Modelo Gravitacional De Saude
 
-> Revisao de 16/09/2026: passo 3 fechado com filtro funcional e decisoes
-> documentais. Das 670 unidades atuais, 63 sao clinicas fixas, 20 fixas nao
-> clinicas e 587 moveis. As contagens anteriores abaixo descrevem as camadas
-> produzidas em cada momento; o proximo marco e o painel final do passo 6.
+> Revisao de 23/09/2026: passo 6 integrado para a amostra restrita. As
+> contagens abaixo conservam os marcos historicos de cada entrega. O proximo
+> marco e a EDA do passo 7; bacias ficaram para analise posterior.
 
 ## Visao Geral
 
@@ -21,8 +20,8 @@ flowchart LR
   P6 --> C3["Complemento do 3<br/>cobertura e alertas"]
   C3 --> C4["Complemento do 4<br/>CNES historico"]
   C4 --> N3["16/09<br/>filtro clinico e decisoes fechados"]
-  N3 --> N6["Agora<br/>concluir passo 6"]
-  N6 --> N7["Entao<br/>passo 7: EDA final"]
+  N3 --> N6["23/09<br/>painel anual + 13 candidatas"]
+  N6 --> N7["Agora<br/>passo 7: EDA final"]
 ```
 
 ## Evolucao Do Projeto
@@ -287,17 +286,41 @@ recorte original e seus R$ 4.740.790,51 de 2019 estao preservados. No atlas,
 selecionar CISMEP/2019 mostra duas clinicas, em Betim e Brumadinho; selecionar
 o retrato atual mostra quatro clinicas, alem das moveis. Portanto, os tempos
 atuais de Igarape e Sao Joaquim de Bicas nao podem ser carregados para 2019.
-A proxima linha final deve usar destinos e capacidade de 2019; a revisao
-externa acrescentara alternativas candidatas, sem mudar artificialmente o
+A integracao de 23/09 passou a usar destinos e capacidade de 2019; a revisao
+externa acrescentou alternativas candidatas, sem mudar artificialmente o
 pagamento ou a oferta historica deste par.
 
 O painel preliminar e as camadas historica e funcional existem separadamente.
-O passo 6 deve:
+O plano anterior pedia que o passo 6:
 
 1. harmonizar os candidatos externos e completar suas medidas; ligar destinos
    clinicos e capacidade de cada ano a matriz rodoviaria;
 2. comparar alternativas estaduais, por tempo e por regiao de saude;
-3. integrar populacao, RCL, regiao de saude, bacia e mandato e construir os
+3. integrar populacao, RCL, regiao de saude e mandato e construir os
    universos sob risco;
 4. permitir a EDA final do passo 7 e, depois, os modelos gravitacionais de
    entrada, intensidade e interrupcao.
+
+## Integracao De 23/09/2026
+
+O painel anual ampliou a grade original de 853 x 84 x 8 para 853 x 97 x 8
+= 661.928 linhas, sem alterar o painel anterior. As 13 candidatas externas
+foram acrescentadas separadamente, com capacidade clinica e destinos de cada
+ano quando o CNES historico os comprova. A populacao cobre todos os municipios
+e anos; a RCL consultada no RREO/Anexo 03 permanece ausente em grande parte
+da base. O PDR/2019 so informa regiao de saude de 2019 a 2021.
+
+No exemplo Igarape x CISMEP, o pagamento de 2019 segue em R$ 4.740.790,51.
+As duas clinicas daquele dezembro estavam em Betim e Brumadinho: a menor
+impedancia desde a sede de Igarape e **15,1 minutos ate Betim**, a mediana e
+20,45 e o maximo e 25,8 minutos. O zero minuto obtido com uma clinica atual
+em Igarape nao descreve 2019. Esse par entra na intensidade restrita com o
+tempo de 2019; numa analise de entrada, as covariaveis seriam defasadas.
+
+As regras de alternativas foram comparadas. Em 2019, dos 1.513 pares com
+pagamento, 781 tem clinica direta e tempo conhecido, representando 82,8% do
+valor; um limite de 90 minutos deixaria 630 pares. O recorte direto sem limite
+e a especificacao principal operacional. Redes sem unidade propria nao sao
+declaradas inexistentes: seguem no painel descritivo e em sensibilidade.
+Adriano decidiu reservar bacias hidrograficas para analise territorial
+posterior. O passo 7 verificara perdas, extremos e selecao antes dos modelos.

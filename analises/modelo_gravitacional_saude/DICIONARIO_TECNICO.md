@@ -317,8 +317,10 @@ nos produtos.
 - A CNM nao altera os passos concluidos: ela e fotografia cadastral atual e ainda
   nao foi materializada como composicao historica da tabela de saude.
 - SICONFI nao identifica o CNPJ destinatario e nao entra como vinculo do par.
-- Populacao, RCL, regiao de saude, bacia e mandato aguardam fontes anuais
-  validadas.
+- A grade preliminar nao continha populacao, RCL, regiao de saude, bacia nem
+  mandato. A integracao anual de 23/09 acrescentou populacao completa, RCL
+  parcial, PDR/2019 como referencia para 2019-2021 e ciclo do mandato. Bacia
+  segue em decisao metodologica.
 - Trinta e cinco das 84 entidades nao possuem destino clinico fixo no filtro
   atual. Redes moveis/contratadas exigem desenho proprio e documentacao;
   nenhum destino foi inventado. A disponibilidade historica e avaliada por ano.
@@ -406,3 +408,53 @@ gratuidade. Nenhuma credencial e gravada nos produtos. R requer sf, dplyr,
 readr, bigrquery (consulta), leaflet, htmlwidgets, htmltools, jsonlite e Pandoc;
 se nao detectado, definir `RSTUDIO_PANDOC` para a pasta do executavel.
 O teste basico usa Python padrao; `--browser` requer Playwright com Chromium.
+
+## Integracao Anual Do Passo 6 - 23/09/2026
+
+O painel novo nao sobrescreve `painel_analitico_saude_mg.rds`, que continua a
+documentar a grade preliminar das 84 entidades. Os produtos abaixo ficam em
+`outputs/` e nao entram no Git; os scripts, SQL e teste sao versionados.
+
+| Arquivo | Papel e unidade | Limite |
+|---|---|---|
+| `14_completar_cnes_candidatas_saude.py` | Reusa os 120 DBC CNES; gera 74 unidades-ano externas em dezembro, capacidade LT/SR/PF, 104 entidades-ano e 75 registros de presenca unidade-ano | vinculo por CNPJ direto; nao mede prestadores terceirizados |
+| `populacao_ibge_mg_2014_2021.sql` | Consulta reproduzivel de 6.824 municipio-ano em `basedosdados.br_ibge_populacao.municipio` | requer BigQuery e projeto de faturamento autorizado |
+| `16_extrair_rcl_siconfi_saude.py` | Consulta API oficial Siconfi, RREO-Anexo 03, sexto bimestre; um CSV por ano | 2014 sem retorno; em 2015-2021 so 160-270/853 municipios por ano retornaram RCL |
+| `17_extrair_regioes_saude_pdr_2019.py` | Le Anexo I da Deliberacao CIB-SUS/MG 3.013/2019: 853 municipios, 66 micros e 12 macros | a referencia de 2019 nao e retroagida a 2014-2018 |
+| `15_integrar_painel_anual_saude.R` | Junta 853 municipios, 97 entidades e 8 anos; recalcula tempo ate destinos clinicos do proprio ano e materializa alternativas e riscos | amostra principal condicionada a clinica direta e tempo historico; cobertura parcial |
+| `18_diagnosticar_alternativas_painel_saude.R` | Compara cobertura das regras, retenção de pagamentos, cortes de 90/120/180 minutos e municipios sem opcao | diagnostico do passo 6, sem estimacao de modelo |
+| `19_eda_inicial_painel_saude.R` | Separa zeros, perdas por polo/escopo, RCL observada e tempos extremos por ano | inicio do passo 7; nao decide exclusao de outliers |
+| `tests/13_validar_painel_anual_saude.R` | Confere montantes, chaves, historia Igarape-CISMEP, CIESP, CIMBAJE, CIMAMS e ausencia sem polo | executado apos o script 15 |
+
+Produtos principais: `painel_anual_integrado_saude_mg_2014_2021.rds`
+(661.928 linhas), `painel_anual_integrado_resumo.csv`,
+`diagnostico_alternativas_painel_saude_2014_2021.csv`,
+`diagnostico_municipios_sem_alternativa_saude.csv`,
+`eda_inicial_painel_saude_2014_2021.csv`,
+`eda_tempos_acima_300min_saude.csv`,
+`candidatas_cnes_capacidade_unidades_2014_2021.csv`,
+`candidatas_cnes_capacidade_entidade_ano_2014_2021.csv`,
+`candidatas_cnes_presenca_mensal_2014_2021.csv`,
+`populacao_municipal_ibge_2014_2021.csv`, `rcl_siconfi_mg_AAAA.csv` e
+`regionalizacao_saude_mg_pdr_2019.csv`.
+
+Proveniencia: [estimativas do IBGE](https://www.ibge.gov.br/estatisticas/sociais/populacao/9103-estimativas-de-populacao.html)
+via Base dos Dados/BigQuery;
+[API Siconfi](https://www.gov.br/conecta/catalogo/apis/siconfi-extratos-das-declaracoes-contabeis)
+e [definicao do RREO/Anexo 03](https://siconfi.tesouro.gov.br/siconfi/pages/public/arquivo/conteudo/2024_Regras_Gerais_e_Instrucoes_de_preenchimento_RREO.pdf);
+[PDR-SUS/MG 2019, Anexo I](https://www.saude.mg.gov.br/wp-content/uploads/2019/11/Del-3013-SUBGR_SDCAR_DREA-Ajuste-PDR-versao-CIB-alterada-15.10-a71.pdf).
+O tempo usa a mesma matriz Distbrasil do passo 5, com checksum conferido.
+
+Decisao de 23/09: bacia hidrografica fica para analise territorial posterior,
+fora dos controles exigidos pelo modelo gravitacional de saude. A regra
+principal usa clinica direta historica sem limite de minutos; 90/120/180
+minutos e mesma microrregiao sao sensibilidades. O PDR/2019 so se aplica a
+2019-2021; RCL faltante permanece ausente.
+
+Para reproduzir a partir desta pasta: instalar
+`requirements_cnes_historico.txt` e `requirements_painel_anual.txt`; executar
+o script 14, a consulta SQL de populacao, os scripts 16 e 17, depois o 15;
+executar o teste 13 a partir da raiz `ideiaMides`. O script 16 grava
+checkpoints por ano para retomada. O ano 2014 mantem RCL ausente; ausencia de
+resposta da API em outros anos nao significa receita zero. A medida de
+profissionais somada entre unidades nao equivale a pessoas distintas.

@@ -47,7 +47,7 @@ criterios de conclusao ficam somente em `PLANO_DE_TRABALHO.md`.
 | 3. Definir polo de atracao assistencial | Concluido com exclusoes explicitas | 84 entidades consultadas; filtro funcional e rodada documental fechados em 16/09 |
 | 4. Construir capacidade assistencial | Concluido e reprocessado | 670 unidades; medidas separadas para 61 entidades com oferta fixa direta |
 | 5. Integrar tempo rodoviario | Concluido e reprocessado | 853 origens, 82 unidades fixas e tres camadas de impedancia |
-| 6. Montar o painel analitico anual | Grade preliminar concluida; painel final em andamento | 573.216 observacoes municipio x entidade x ano |
+| 6. Montar o painel analitico anual | Concluido para amostra clinica direta; sujeito a EDA do passo 7 | 661.928 observacoes municipio x entidade x ano, preservando as 573.216 originais |
 | Complemento. Cobertura assistencial | Decisoes de uso concluidas | 38 casos iniciais, 91 entidades-ano e rodada documental das 21 nao prioritarias |
 | Complemento temporal do passo 4 | Concluido | 672 entidades-ano e 120 arquivos oficiais auditados |
 
@@ -633,11 +633,12 @@ estimacao.
 
 1. Presenca significa pagamento MIDES, nao filiacao juridica.
 2. Pares positivos em 2014 sao censurados a esquerda.
-3. O painel original repete a fotografia CNES de 2026; a nova serie historica
-   esta validada separadamente e ainda precisa ser integrada ao painel.
+3. O painel original repete a fotografia CNES de 2026. A integracao anual de
+   23/09 corrige isso em um arquivo novo, preservando o original como trilha.
 4. Vinte e tres entidades permanecem sem estrutura fixa CNES direta; algumas
    possuem rede movel ou contratada que exige outra especificacao territorial.
-5. Populacao, RCL, regiao de saude, bacia e mandato ainda nao foram integrados.
+5. Populacao e ciclo do mandato foram integrados; RCL e regiao de saude tem
+   cobertura parcial documentada. Bacia ainda nao foi integrada.
 6. O conjunto final de alternativas ainda precisa de regra substantiva.
 
 ---
@@ -1153,3 +1154,69 @@ exportacao CSV, avisos de coleta ausente, tela estreita e ausencia de pedidos
 de rede para carregar o atlas. As capturas CISMEP/2019 e CIESP/2019 foram
 inspecionadas visualmente. A validacao nao transforma evidencia documental
 insuficiente em oferta confirmada.
+
+## Passo 6 Concluido Para A Amostra Restrita - Integracao Anual De 23/09/2026
+
+O arquivo `painel_anual_integrado_saude_mg_2014_2021.rds` preserva a grade
+preliminar de 84 raizes e acrescenta separadamente dez candidatas documentais
+de saude e tres entidades de escopo misto para sensibilidade. A grade resultante
+tem 853 municipios x 97 entidades x 8 anos = 661.928 linhas. Os R$
+3.101.980.422,83 das 84 originais foram conservados; as 13 candidatas
+acrescentam R$ 397.523.124,05 sem duplicar o MIDES original. Pagamento total
+de entidade multiarea nao e gasto de saude identificado.
+
+O CNES historico das candidatas foi completado com os mesmos tipos de arquivo
+das originais: ST mensal e LT/SR/PF de dezembro. Ha 74 unidades-ano externas em
+dezembro, das quais 71 clinicas e tres estruturas de gestao do CIMAMS; para
+duas candidatas nao ha unidade direta nessa janela. As 398 unidades-ano
+clinicas originais e as 71 externas geram capacidade somente nos anos em que
+constam em dezembro. Ausencia de unidade diretamente vinculada deixa leitos,
+servicos, profissionais e tempo ausentes; nao produz capacidade zero nem
+hospital imputado. As 91 decisoes anuais e as 56 decisoes prioritarias foram
+ligadas por entidade-ano para consulta no painel.
+
+O tempo rodoviario foi recalculado para cada municipio de origem e todos os
+municipios que continham clinicas diretas daquele consorcio naquele ano. O
+painel guarda minimo, mediana, maximo e destino mais proximo. A matriz
+Distbrasil continua estatica entre sedes municipais, mas a lista de destinos
+agora varia anualmente. No exemplo Igarape x CISMEP em 2019, permanecem R$
+4.740.790,51 e duas clinicas historicas (Betim e Brumadinho), sem carregar as
+quatro clinicas observadas em 2026. O tempo minimo historico e positivo; o
+tempo zero da fotografia atual de Igarape nao foi retroagido. O menor tempo
+historico e 15,1 minutos ate Betim; a mediana dos dois destinos e 20,45.
+
+Tres conjuntos diagnosticos foram materializados: entidades de saude abertas
+no ano, entidades com clinica direta e tempo conhecido, e este segundo grupo
+limitado a 90 minutos. A regra de mesma microrregiao usa o Anexo I do
+PDR-SUS/MG 2019 (853 municipios, 66 micros e 12 macros), apenas como
+referencia para 2019-2021. Um corte de 90 minutos reduziria os pares pagantes
+elegiveis em 2019 de 781 para 630. A especificacao principal, condicionada a
+clinica diretamente comprovada no CNES historico, conserva todos os tempos
+conhecidos, sem corte de minutos. Os cortes de 90/120/180 minutos e a mesma
+microrregiao ficam para robustez. Trata-se de uma pergunta mais restrita que
+a rede total: em 2019, 781 dos 1.513 pares pagantes, mas 82,8% do valor pago,
+tem polo direto e tempo. Pagamentos fora desse recorte continuam no painel
+descritivo e nao significam ausencia de atendimento. CIMBAJE, CISREC,
+CONVALES e os tres candidatos de escopo misto
+ficam identificados para sensibilidade. O alerta estatutario do CISPARA nao
+converte automaticamente seus pagamentos em outra politica.
+
+Populacao anual IBGE esta completa para os 853 municipios de 2014 a 2021. A
+RCL foi procurada no sexto bimestre do RREO/Anexo 03 da API Siconfi: foram
+encontrados, respectivamente, 160, 219, 185, 227, 270, 154 e 150 municipios
+em 2015-2021; a consulta de 2014 nao retornou dados. A falta de resposta e
+marcada como ausente, nunca como RCL zero nem substituida por receita
+orcamentaria total. O ciclo do mandato e indexado em quatro anos; nao identifica
+prefeito, reeleicao ou partido. Por decisao de Adriano, bacias ANA/BHO6 ficam
+para analise territorial posterior: divisao hidrologica nao mede diretamente
+acesso clinico. A regionalizacao anterior a 2019 nao foi ligada, pois retroagir
+o PDR/2019 criaria erro temporal.
+
+Eventos financeiros (primeiro pagamento observado, permanencia, retorno e
+interrupcao), censura inicial de 2014 e universos sob risco foram recalculados
+na grade ampliada. A entrada com tempo requer covariaveis de capacidade e
+impedancia defasadas em `t-1`; a intensidade conserva covariaveis do proprio
+ano, cuja interpretacao e associativa. A selecao operacional da amostra esta
+definida. A EDA do passo 7 deve verificar composicao, extremos e perdas por
+ausencia de polo direto ou RCL antes da formula e da estimacao. Os testes
+atuais conferem integridade e casos reais, nao efeitos gravitacionais.

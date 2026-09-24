@@ -12,16 +12,16 @@ deve criar uma segunda numeracao de etapas.
   de conclusao;
 - `[ ] Nao iniciado` depende das etapas anteriores.
 
-**Estado em 16/09/2026:** passos 1 a 5 concluidos como camadas-base; passo 6 em
-andamento; passos 7 a 10 ainda nao iniciados como etapas finais.
+**Estado em 23/09/2026:** passos 1 a 6 concluidos para a especificacao
+restrita a oferta clinica direta comprovada; passo 7 iniciado.
 
 - [x] **1. Fechar o universo de consorcios de saude**
 - [x] **2. Auditar os vinculos**
 - [x] **3. Definir o polo e completar a cobertura assistencial**
 - [x] **4. Construir e temporalizar a capacidade assistencial direta**
 - [x] **5. Construir a camada-base de tempo rodoviario**
-- [ ] **6. Montar o painel analitico final - em andamento**
-- [ ] **7. Executar a EDA e a validacao do universo final**
+- [x] **6. Montar o painel analitico anual e fixar a amostra principal**
+- [ ] **7. Executar a EDA e a validacao do universo final - em andamento**
 - [ ] **8. Estimar os tres blocos**
 - [ ] **9. Testar robustez**
 - [ ] **10. Integrar resultados validados ao dashboard**
@@ -151,19 +151,36 @@ feita no passo 6.
 - [x] materializar a grade preliminar municipio x entidade x ano;
 - [x] calcular pagamento, primeiro pagamento, permanencia, retorno e interrupcao;
 - [x] preservar a censura dos pagamentos ja existentes em 2014;
-- [ ] harmonizar as dez candidatas externas e os tres casos de escopo misto
+- [x] harmonizar as dez candidatas externas e os tres casos de escopo misto
   com as regras de amostra; completar capacidade LT/SR/PF e presenca mensal
   somente para as entidades que entrarem, reaproveitando os arquivos brutos;
-- [ ] definir o conjunto de alternativas plausiveis por municipio e ano;
-- [ ] comparar tres regras: todos os consorcios de saude de MG, limite de tempo
+- [x] definir o conjunto de alternativas plausiveis por municipio e ano;
+- [x] comparar tres regras: todos os consorcios de saude de MG, limite de tempo
   rodoviario e mesma regiao de saude;
-- [ ] integrar populacao, RCL, regiao de saude, bacia e ciclo do mandato;
-- [ ] ligar capacidade historica, tempo e decisoes do passo 3 sem vazamento
+- [x] integrar populacao, RCL disponivel, PDR/2019 como referencia a partir de
+  2019 e ciclo do mandato; manter ausencias explicitas;
+- [x] ligar capacidade historica, tempo e decisoes do passo 3 sem vazamento
   temporal;
-- [ ] definir os universos sob risco de entrada, intensidade e interrupcao.
+- [x] definir os universos sob risco de entrada, intensidade e interrupcao.
 
-**Produto parcial:** grade de 573.216 linhas com movimentos financeiros. Ela
-ainda nao e o painel final de estimacao.
+**Produto do passo 6:** a grade original de 573.216 linhas permanece intacta. A
+integracao anual de 23/09 contem 661.928 linhas (853 municipios x 97 entidades
+x 8 anos), incluindo separadamente as 13 candidatas externas. O CNES clinico e
+o tempo agora pertencem ao proprio ano; o teste conserva os R$ 3,102 bilhoes
+originais. Populacao cobre 853 municipios em cada ano. A consulta RREO/Anexo 03
+recuperou RCL para 160 a 270 municipios por ano em 2015-2021, sem retorno em
+2014. O PDR/2019 fornece mapa das 66 microrregioes apenas como referencia de
+2019-2021. As regras de alternativas e de risco ja estao materializadas como
+diagnosticos. A especificacao principal usa oferta clinica direta de dezembro
+com tempo historico conhecido, sem corte arbitrario de minutos. Para entrada,
+retorno e interrupcao, o tempo e a capacidade elegiveis sao os de `t-1`;
+para intensidade, sao os do ano do pagamento. Em 2019, 781/1.513 pares pagantes
+e 82,8% do valor pago permanecem no recorte direto; 90 minutos deixariam
+630 pares. Os 90/120/180 minutos e a mesma microrregiao ficam para sensibilidade.
+Bacia hidrográfica foi adiada por decisao de Adriano para analise territorial
+posterior, sem bloquear o modelo de saude. RCL incompleta e mapa regional
+anterior a 2019 nao sao imputados; o passo 7 medira as perdas e avaliara
+a especificacao antes da estimacao.
 
 ### 7. Executar A EDA E A Validacao Do Universo Final
 
@@ -176,6 +193,12 @@ ainda nao e o painel final de estimacao.
 
 As estatisticas produzidas nos passos anteriores sao controles preliminares;
 nao substituem esta EDA final, que depende do passo 6.
+
+Primeira EDA de 23/09: os 1.513 pares pagantes de 2019 se repartem em 781
+com tempo clinico direto, 595 no nucleo cadastral sem polo direto e 137 fora
+do nucleo. O tempo mediano nos 781 e 52,7 minutos; o percentil 95 e cerca de
+143 minutos. Pares acima de 300 minutos foram listados para exame, sem
+exclusao automatica. RCL existe para 241 dos 781 pares principais de 2019.
 
 ### 8. Estimar Os Tres Blocos
 
@@ -202,15 +225,13 @@ unica regressao.
 
 ## Proximo Marco
 
-Revisao externa e atlas por consorcio concluidos. Agora concluir o **passo 6**:
-primeiro harmonizar os candidatos identificados fora das 84 e completar suas
-medidas historicas; depois definir e comparar os tres conjuntos de
-alternativas plausiveis por municipio e ano; depois integrar capacidade
-historica, tempo rodoviario, populacao, RCL, regiao de saude, bacia e mandato
-sem vazamento temporal. Nao repetir a triagem dos 91 casos nem a coleta das 84
-originais. As 74 unidades-ano externas foram extraidas somente do ST de
-dezembro; ainda nao possuem a mesma bateria de capacidade das 84. A EDA final so comeca depois que esse painel
-estiver materializado e testado.
+O **passo 7** deve validar a amostra restrita: zeros e eventos sob risco,
+distribuicao de tempo e capacidade, perdas por falta de destino direto e RCL,
+comparacao por grupo, extremos acima de 300 minutos e sensibilidade territorial.
+Onde nao ha tempo clinico
+direto, o pagamento permanece no painel descritivo, fora da especificacao
+gravitacional principal. Manter RCL ausente quando a API nao retornou o anexo;
+nao substituir por receita total. Nao repetir triagens ou coleta original.
 
 ## Controle De Mudancas
 
@@ -225,6 +246,8 @@ estiver materializado e testado.
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 23/09/2026 | Passo 6 fechado na especificacao restrita; bacia adiada por decisao de Adriano | comparar alternativas demonstrou perda material de pares sem polo direto; bacia nao mede diretamente acesso assistencial |
+| 23/09/2026 | Primeira integracao anual de 97 entidades, capacidade externa, populacao IBGE, RCL parcial, PDR/2019 e tempos historicos materializados | comparar alternativas antes de fixar o recorte restrito no mesmo dia |
 | 16/09/2026 | Revisao externa de 137 raizes, 28 dossies, MIDES complementar e atlas individual concluidos | nove consorcios de saude nao tinham sido consultados; incorporar candidatos com temporalidade e escopo antes de fechar o painel |
 | 16/09/2026 | Passo 3 concluido: filtro funcional, duas fichas conflitantes, 21 auditorias documentais, 18 entidades sem MIDES, tres multiarea, alerta CISPARA e dois mapas validados | todo caso relevante agora possui destino/rede documentado ou decisao explicita de exclusao/sensibilidade |
 | 16/09/2026 | Auditoria comparativa das 18 sem MIDES, revisao dos dois multiarea e mapas por tipo incorporados como complementos | demandas da reuniao de 10/09; aprofundam universo e cobertura sem criar nova etapa |

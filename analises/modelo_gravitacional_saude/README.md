@@ -1,5 +1,14 @@
 # Modelo Gravitacional De Saude - MG
 
+> Integracao de 23/09: o painel anual novo tem 661.928 linhas (853 municipios,
+> 97 entidades e 2014-2021). Pagamentos originais foram preservados; CNES,
+> capacidade e destinos rodoviarios variam pelo ano. O passo 6 esta concluido
+> para uma amostra principal com clinicas diretas e tempo historico conhecido,
+> sem corte de minutos. Consulte `outputs/painel_anual_integrado_resumo.csv` e
+> `outputs/diagnostico_alternativas_painel_saude_2014_2021.csv`. O passo 7
+> iniciou a validacao de perdas, extremos e composicao antes da estimacao. Bacias ficaram
+> para analise territorial posterior por decisao do pesquisador.
+
 > Complemento de 16/09: revisao fora das 84 concluida nas fontes consultadas.
 > Foram triadas 137 raizes e documentados 28 casos: dez candidatas com saude
 > historica e tres com escopo a segregar. Nove candidatas estavam ausentes do
@@ -46,7 +55,7 @@ estado do plano cientifico.
 | 3. Polo/rede direta | Concluido | 670 unidades classificadas por funcao; todo caso relevante recebeu destino/rede ou exclusao/sensibilidade explicita |
 | 4. Construir capacidade | Concluido e reprocessado | 63 destinos clinicos fixos, 20 estruturas fixas nao clinicas e 587 moveis no retrato atual |
 | 5. Integrar tempo rodoviario | Camada-base concluida | 853 origens ligadas a 82 estruturas candidatas; o passo 6 selecionara somente destinos clinicos elegiveis por ano |
-| 6. Grade analitica preliminar | Produto preliminar validado; painel final em andamento | 573.216 linhas; movimentos e universos preliminares separados |
+| 6. Grade analitica preliminar | Produto preliminar preservado; painel anual restrito concluido | 573.216 linhas originais e 661.928 na integracao de 97 entidades |
 | Complemento. Cobertura assistencial | Concluido | 38 casos iniciais, 91 entidades-ano, 21 auditorias documentais e 2 fichas conflitantes decididos sem imputar prestador |
 | Complemento. Temporalizar CNES | Concluido | 672 entidades-ano; 1.868 unidades-ano; 120 arquivos oficiais auditados |
 
@@ -83,7 +92,8 @@ flowchart LR
   J --> K[Auditoria da cobertura indireta e alertas]
   K --> M[CNES historico mensal e capacidade em dezembro]
   M --> N[Filtro clinico e auditoria documental]
-  N --> L[Proximo: concluir painel do passo 6]
+  N --> L[Painel anual restrito: passo 6]
+  L --> O[Proximo: EDA do passo 7]
 ```
 
 ## Como Navegar Nesta Pasta
@@ -121,6 +131,11 @@ isso os blocos cientificos 3 a 6 sao executados pelos scripts `04` a `07`.
 | `09_temporalizar_cnes_historico_saude.py` | Reconstroi presenca mensal e capacidade anual direta | arquivos DBC oficiais ST, LT, SR e PF | camada entidade-ano e unidade-ano 2014-2021 |
 | `10_auditar_pendencias_assistenciais_saude.py` | Materializa os 91 casos sem fixa em dezembro | painel e CNES historico ja existentes | dossie por entidade-ano e resumo de 28 entidades |
 | `11_diagnosticar_universo_e_elegibilidade_saude.R` | Compara 66 com MIDES e 18 sem MIDES e aplica o filtro funcional | universo e CNES atual/historico existentes | tabelas de elegibilidade e dois mapas diagnosticos |
+| `14_completar_cnes_candidatas_saude.py` | Completa historico das 13 candidatas | cache ST/LT/SR/PF ja existente | 74 unidades-ano externas e capacidade anual |
+| `15_integrar_painel_anual_saude.R` | Junta candidatos, pagamentos, destinos anuais, tempo, populacao, RCL parcial e PDR/2019 | saidas 01-14, Distbrasil e controles | painel anual de 661.928 linhas; teste 13 |
+| `16_extrair_rcl_siconfi_saude.py` | Consulta RCL na API Siconfi | RREO/Anexo 03, sexto bimestre | CSV por municipio-ano com status de ausencia |
+| `17_extrair_regioes_saude_pdr_2019.py` | Extrai micro e macro da deliberação oficial | Anexo I PDR-SUS/MG 2019 | 853 municipios, 66 micros e 12 macros |
+| `18_diagnosticar_alternativas_painel_saude.R` | Compara regra estadual, tempo e microrregiao | painel anual integrado | perdas amostrais e municipios sem alternativa |
 | `requirements_cnes_historico.txt` | Declara as duas dependencias Python do conversor DBC | Python, WSL e `curl` | ambiente reprodutivel para o passo 7 |
 | `tests/01...09...` | Protege chaves, contagens e invariantes | respectivas saidas locais | falha explicita ou mensagem `OK` |
 | `checks/*.md` | Guarda os resultados auditaveis | calculado pelos scripts | relatorio versionado no Git |
@@ -365,6 +380,9 @@ de outra politica. O catalogo distingue os tres casos desse alerta adicional.
 
 ## Limites E Proximo Passo
 
+Os itens abaixo registram o diagnostico de 16/09; o painel integrado de 23/09
+substituiu as pendencias de temporalizacao e controles ali descritas.
+
 - o painel de 573.216 linhas ainda contem a fotografia CNES de 03/09/2026; a
   camada historica foi validada separadamente e ainda nao foi incorporada;
 - CBO distinto por unidade e proxy cadastral, nao especialidade unica da rede;
@@ -377,14 +395,16 @@ de outra politica. O catalogo distingue os tres casos desse alerta adicional.
   continua sendo lida pela competencia de cada ano;
 - o menor tempo ate uma rede pode apontar para unidade sem a especialidade
   relevante;
-- a grade estadual ainda nao define o conjunto de escolha plausivel;
-- populacao, RCL, regiao de saude, bacia e mandato ainda exigem fontes anuais
-  validadas antes de integrar o painel.
+- na especificacao atual, a grade estadual usa somente clinicas diretas com
+  tempo historico; cortes temporais e regiao de saude sao sensibilidades;
+- populacao esta completa; RCL e parcial, PDR/2019 nao foi retroagido, o ciclo
+  do mandato foi indexado, e bacia foi adiada para analise posterior.
 
-O proximo marco e concluir o passo 6: harmonizar os candidatos externos e
-completar suas medidas de capacidade; comparar conjuntos de alternativas e
-integrar capacidade historica, impedancia e controles anuais.
-A EDA final do passo 7 depende desse painel; estimacoes vem depois.
+Esta secao registra o diagnostico anterior de 16/09. O painel anual foi
+integrado em 23/09, preservando as 84 originais e acrescentando 13 candidatas.
+O passo 7 foi iniciado; falta validar o recorte direto, perdas de
+pagamentos sem polo, RCL incompleta e alternativas territoriais antes de
+estimar os tres blocos.
 
 Para reproduzir a nova entrega, depois dos produtos anteriores:
 
