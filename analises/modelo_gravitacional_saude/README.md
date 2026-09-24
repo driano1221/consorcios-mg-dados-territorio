@@ -2,8 +2,14 @@
 
 **Consulta visual da v1:** abra localmente
 [outputs/visuais_v1/index.html](outputs/visuais_v1/index.html).
-A pagina reune pagamentos e cobertura, perfis CNES, tempos e atlas por
-consorcio/ano. Sao 20 figuras em PNG 300 dpi e SVG, com dados CSV e fontes.
+A pagina explica somente a v1 em seis abas: a base, construcao, pagamentos,
+CNES, tempos/mapa e consulta completa. Sao cinco figuras principais, com
+ranking, trajetorias e mapa interativos dos 73 consorcios da v1.
+As duas tabelas podem ser consultadas integralmente: 491.328 x 19 e
+323.287 x 30, com filtros e paginacao. Os fluxos mostram fontes, chaves
+de ligacao e o que cada tratamento acrescentou. Nao ha botoes de download.
+As 20 figuras da primeira entrega permanecem como produtos de origem;
+o pacote vigente inclui apenas as cinco utilizadas na consulta.
 Os produtos ficam locais; os scripts 26 a 28 reproduzem a entrega.
 Para compartilhar, use `outputs/visuais_v1.zip` e extraia a pasta inteira:
 o HTML precisa das subpastas `figuras` e `dados` ao lado dele.

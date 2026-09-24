@@ -745,27 +745,33 @@ JavaScript. O HTML incorpora os dados e pode ser aberto localmente.
 
 ## Entrega Visual Da V1
 
-A segunda proposta foi aprovada e implementada. A entrada vigente e
-`outputs/visuais_v1/index.html`; as pastas `prototipo` e `proposta_02` sao
-historicas. A entrega tem seis secoes: leitura da base, pagamentos, CNES,
-tempos, atlas e fontes/arquivos. O HTML incorpora o conjunto interativo;
-as figuras sao arquivos locais relativos, por isso a pasta deve acompanhar
-o HTML ao transferir a entrega. Dados e interacoes nao consultam servicos
-externos. A abertura direta por file:// do pacote final foi bloqueada pela
-politica do navegador de verificacao; os testes interativos usaram servidor
-local. Nao foi declarado teste offline do pacote final.
+A segunda proposta foi aprovada e implementada; depois Adriano pediu
+concentrar a leitura na v1 e disponibilizar suas tabelas completas.
+A entrada vigente e `outputs/visuais_v1/index.html`; as pastas
+`prototipo` e `proposta_02` sao historicas. As seis abas vigentes sao:
+a base v1, como foi construida, pagamentos, CNES, tempos/mapa e consultar
+bases. Os fluxos explicam fonte, chave de ligacao, tratamento e resultado.
+O mapa inclui apenas as 73 entidades e anos admitidos na v1 financeira.
+Nao ha CNM, retrato 2026, comparacao multiarea ou botoes de download.
+
+O HTML incorpora o conjunto interativo resumido. Figuras e tabelas
+completas sao arquivos locais relativos; manter as subpastas ao transferir.
+Dados e interacoes nao consultam servicos externos. A abertura direta por
+file:// foi bloqueada pela politica do navegador de verificacao; os testes
+interativos usaram servidor local. Nao foi declarado teste offline.
 
 | Arquivo/pasta | Conteudo e reproducao |
 |---|---|
-| `26_preparar_visuais_v1.R` | Le v1, inventario do atlas e CNES historico; agrega sem alterar fontes |
+| `26_preparar_visuais_v1.R` | Le v1, inventario e CNES; prepara estatisticas, primeiras linhas, exemplo, mapa e tabelas completas sem alterar fontes |
 | `27_renderizar_visuais_v1.R` | Produz 20 figuras com ggplot2, Noto Sans e paleta aprovada; mapas com sf/patchwork |
-| `28_montar_visuais_v1.py` | Incorpora dados/CSS/JS ao HTML, registra hashes e gera ZIP para compartilhar |
+| `28_montar_visuais_v1.py` | Seleciona cinco figuras, incorpora dados/CSS/JS ao HTML, registra hashes e gera ZIP |
 | `outputs/visuais_v1.zip` | Pacote com HTML, figuras e dados; extrair a pasta inteira |
 | `visuais_v1.html`, `.css`, `.js` | Interface e interacoes da entrega aprovada |
-| `outputs/visuais_v1/figuras/` | 20 PNG a 300 dpi e 20 SVG; nomes e interpretacao no catalogo |
+| `outputs/visuais_v1/figuras/` | 20 PNG a 300 dpi e 20 SVG de origem; cinco pares PNG/SVG entram na consulta e no ZIP vigente |
 | `outputs/visuais_v1/dados/` | CSV dos graficos, JSON interativo, preparacao RDS e manifesto SHA-256 |
 | `dados/catalogo_figuras.csv` | Correspondencia figura, pergunta, tabela de dados e secao |
-| `tests/17_validar_visuais_v1.py` | Conciliacao independente com os CSVs v1, hashes, PNG/SVG e links |
+| `dados/consulta/{financeira,direta}_{2014..2021}.js` | 16 arquivos anuais com todas as linhas/colunas originais; carregados somente ao consultar |
+| `tests/17_validar_visuais_v1.py` | Compara todas as celulas das duas tabelas com os CSVs v1; confere recorte anual do mapa, valores, hashes, PNG/SVG e ZIP |
 | `checks/17_visuais_v1.json` | Resultado da verificacao de dados/arquivos |
 | `outputs/visuais_v1/qa/` | Capturas da revisao e registro das verificacoes no navegador |
 
@@ -775,11 +781,18 @@ existentes: dplyr, tidyr, readr, sf, jsonlite, ggplot2, scales, stringr,
 stringi, patchwork, ragg e svglite. Python usa a biblioteca padrao.
 
 Interacoes: ranking por periodo, trajetoria financeira e municipios
-pagadores por consorcio; atlas de 221 entidades por periodo, funcao e tipo,
-camadas de pagamento/unidades/CNM, enquadramento regional/estadual e consulta
-municipal. Exporta CSV dos filtros e SVG; mapa tambem exporta PNG em alta
-resolucao. O PNG do mapa gerado pelo navegador usa dimensoes em pixels,
-enquanto os 20 PNG gerados em R possuem metadado de 300 dpi.
+pagadores; mapa das 73 entidades, ano admissivel, funcao/tipo CNES,
+pagamentos/unidades, enquadramento regional/estadual e consulta municipal.
+Na aba Consultar bases, escolher financeira (491.328 x 19) ou direta
+(323.287 x 30), ano ou todos os anos, municipio, consorcio e pagamento.
+Cada pagina mostra 25 linhas e todas as colunas, com rolagem horizontal.
+Cabecalhos preservam o nome original e acrescentam um rotulo legivel;
+o dicionario explica as 30 variaveis distintas. A representacao dos numeros
+na tela e formatada, enquanto os arquivos anuais preservam os valores.
+
+As cinco figuras ativas sao pagamentos anuais, cobertura, funcoes CNES,
+capacidade em 2019 e distribuicao de tempos. Autoria e data de elaboracao
+foram retiradas dos rodapes; fontes, periodo e competencias permanecem.
 
 O atlas anterior e os dois mapas de 16/09 tiveram textos/universos revistos.
 O script 27 atualiza tambem os caminhos antigos dos dois PNG em

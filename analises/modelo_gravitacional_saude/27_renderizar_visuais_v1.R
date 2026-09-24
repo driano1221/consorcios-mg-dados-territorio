@@ -15,7 +15,7 @@ theme_set(theme_minimal(base_size=13,base_family='Noto Sans') + theme(
   axis.title=element_text(size=11),axis.text=element_text(colour='#45545F'),
   legend.position='bottom',legend.title=element_blank(),strip.text=element_text(face='bold',size=12),
   panel.spacing=grid::unit(1.4,'lines')))
-source <- 'Fonte: MIDES e CNES/DATASUS, derivados da base v1 de 24/09/2026. Elaboração: Adriano Pires Cunha.'
+source <- 'Fontes: MIDES e CNES/DATASUS. Período: 2014–2021.'
 wrap <- function(x,w=112) stringr::str_wrap(x,width=w)
 catalog <- list()
 save_plot <- function(p,id,title,question,datafile,section,w=13.5,h=7.8){
@@ -133,7 +133,7 @@ p <- ggplot(d,aes(valor,entidade))+geom_segment(aes(x=0,xend=valor,yend=entidade
  breaks=function(lim){x<-pretty(lim,n=4);if(max(lim)<=4)x[x==floor(x)] else x})+labs(x='Capacidade clínica cadastrada',y=NULL)
 p <- annotate_plot(p,'Comparação auxiliar de consórcios multiárea','CISREC, CONVALES e CIMBAJE, dezembro de 2019. Mesma escala entre entidades dentro de cada medida.',
  'Os três permanecem fora do núcleo financeiro v1. Sem clínica direta significa capacidade clínica não identificada neste recorte, não capacidade zero.')+
- labs(caption='Os três permanecem fora do núcleo v1. Sem clínica direta indica ausência de identificação neste recorte, não capacidade zero.\nFonte: CNES/DATASUS, dezembro/2019; classificação documental do projeto. Elaboração: Adriano Pires Cunha.')
+ labs(caption='Os três permanecem fora do núcleo v1. Sem clínica direta indica ausência de identificação neste recorte, não capacidade zero.\nFonte: CNES/DATASUS, dezembro/2019; classificação documental do projeto.')
 save_plot(p,'13_multiarea','Comparação multiárea','Permite observar perfis sem incorporar essas entidades silenciosamente ao núcleo.','multiarea.csv','capacidade',h=8)
 d <- bind_rows(t$tempos_distribuicao |> mutate(painel='Distribuição completa'),
   t$tempos_distribuicao |> filter(faixa>=240) |> mutate(painel='Detalhe dos tempos a partir de 240 min')) |>
@@ -191,13 +191,13 @@ save_plot(p,'17_mapa_cismep_2019','CISMEP no território','Conecta um caso real 
 orig <- z$entities |> filter(grupo=='84 originais')
 normal <- function(x) toupper(stringi::stri_trans_general(x,'Latin-ASCII'))
 seat <- orig |> mutate(key=normal(sede)) |> left_join(st_drop_geometry(geom) |> mutate(key=normal(name)) |> select(key,x,y),by='key',relationship='many-to-one') |>
- mutate(com_mides=raiz %in% unique(a$payments$cnpj_raiz_8))
+ mutate(com_mides=raiz %in% unique(jsonlite::fromJSON(file.path(here,'outputs/atlas_dados.json'))$payments$cnpj_raiz_8))
 stopifnot(nrow(seat)==84,!anyNA(seat$x),sum(seat$com_mides)==66)
 p <- ggplot(geom)+geom_sf(fill='#F7F9FA',colour='#D3DCE1',linewidth=.12)+geom_point(data=seat,aes(x,y,colour=com_mides,shape=com_mides),size=3,alpha=.85)+
  scale_colour_manual(values=c('FALSE'=grey,'TRUE'=blue),labels=c('18 sem pagamento observado','66 com pagamento observado'))+
  scale_shape_manual(values=c('FALSE'=1,'TRUE'=16),labels=c('18 sem pagamento observado','66 com pagamento observado'))+coord_sf(datum=NA)+theme(legend.position='bottom',axis.title=element_blank(),axis.text=element_blank(),panel.grid=element_blank())
 p <- annotate_plot(p,'Presença no MIDES das 84 entidades originais','Sedes cadastrais do universo inicial, com pagamentos observados em 2014–2021. Este mapa não representa o universo ampliado da v1.')+
- labs(caption='Mais de uma entidade pode ter sede no mesmo município. Pontos representativos municipais.\nFontes: cadastro IPEA, MIDES 2014–2021 e malha IBGE/geobr. Elaboração: Adriano Pires Cunha.')
+ labs(caption='Mais de uma entidade pode ter sede no mesmo município. Pontos representativos municipais.\nFontes: cadastro IPEA, MIDES 2014–2021 e malha IBGE/geobr.')
 readr::write_excel_csv2(seat |> select(raiz,sigla,sede,com_mides,x,y),file.path(dest,'dados/mapa_universo_original.csv'))
 save_plot(p,'18_mapa_universo_original','Universo original e MIDES','Situa a triagem inicial sem confundi-la com o universo financeiro v1.','mapa_universo_original.csv','atlas',h=9)
 u <- z$units |> filter(ano=='atual',!is.na(x)) |> count(codigo_ibge_6,x,y,funcao,name='n') |> mutate(funcao=unname(flabels[funcao]))
@@ -206,7 +206,7 @@ p <- ggplot(geom)+geom_sf(fill='#F7F9FA',colour='#D3DCE1',linewidth=.08)+geom_po
  theme(axis.title=element_blank(),axis.text=element_blank(),panel.grid=element_blank())
 p <- annotate_plot(p,'Unidades CNES das 84 entidades originais em 2026','Coleta de 03/09/2026 e classificação de 16/09/2026. São 669 das 670 unidades localizadas no mapa.',
  'A unidade móvel CNES 5563003 não tem município no cache. Pontos são municipais; unidades móveis não representam destinos fixos.')+
- labs(caption='A unidade móvel CNES 5563003 não tem município no cache. Pontos municipais; móveis não são destinos fixos.\nFontes: CNES/DATASUS, coleta de 03/09/2026; malha IBGE/geobr. Elaboração: Adriano Pires Cunha.')
+ labs(caption='A unidade móvel CNES 5563003 não tem município no cache. Pontos municipais; móveis não são destinos fixos.\nFontes: CNES/DATASUS, coleta de 03/09/2026; malha IBGE/geobr.')
 readr::write_excel_csv2(z$units |> filter(ano=='atual'),file.path(dest,'dados/mapa_cnes_atual.csv'),na='')
 save_plot(p,'19_mapa_cnes_atual','CNES atual do universo original','Preserva a fotografia de 2026 separada do histórico usado na v1.','mapa_cnes_atual.csv','atlas',w=14,h=11)
 # Mantem os caminhos historicos apontando para as versoes revistas.

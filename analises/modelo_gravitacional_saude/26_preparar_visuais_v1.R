@@ -90,11 +90,44 @@ tables <- list(pagamentos_anuais=annual,pagamentos_consorcio_ano=entity_year,ran
   tempos_distribuicao=time_dist,tempos_acumulada=time_ecdf,tempos_consorcio=time_entity,tempos_resumo=time_stats,
   tempos_extremos=times |> arrange(desc(tempo_minimo_min)) |> slice_head(n=30))
 for(n in names(tables)) write_excel_csv2(tables[[n]],file.path(dest,'dados',paste0(n,'.csv')),na='')
-data <- list(summary=summary,annual=annual,entity_year=entity_year,ranking=ranking,cap=cap,aux=aux,
-  units_profile=unit_profile,absence=absent,times=time_stats,entities=entities,units=units,cap_all=cap_all,
-  payments=clean(atlas$payments),cnm=atlas$cnm,ledger=ledger,polys=polys,
+# A consulta publica somente consorcios e anos que pertencem a v1.
+# A preparacao RDS mantem o inventario de origem para reproduzir figuras historicas.
+preview <- function(df) list(head=df |> slice_head(n=5),examples=bind_rows(
+  df |> filter(ano==2019,cnpj_raiz_8=='05802877',municipio=='Igarapé'),
+  df |> filter(ano==2019,cnpj_raiz_8=='05802877',valor_total==0) |> slice_head(n=1),
+  df |> filter(ano==2019,valor_total>0,cnpj_raiz_8!='05802877') |> slice_head(n=1)))
+base_stats <- function(df,name) data.frame(base=name,linhas=nrow(df),colunas=ncol(df),
+  municipios=n_distinct(df$id_municipio),consorcios=n_distinct(df$cnpj_raiz_8),
+  entidades_ano=n_distinct(paste(df$cnpj_raiz_8,df$ano)),pagas=sum(df$valor_total>0),
+  zeros=sum(df$valor_total==0),nulos=sum(is.na(df)),celulas=nrow(df)*ncol(df),valor=sum(df$valor_total))
+overview <- list(stats=bind_rows(base_stats(f,'financeira'),base_stats(g,'direta')),
+  previews=list(financeira=preview(f),direta=preview(g)),
+  variables=clean(read_data('base_v1/dicionario_variaveis.csv')),
+  coverage=clean(read_data('base_v1/cobertura_variaveis.csv')),
+  case=g |> filter(ano==2019,cnpj_raiz_8=='05802877',municipio=='Igarapé'))
+v1cap <- cap |> transmute(cnpj_raiz_8,ano,unidades=n_destinos_clinicos_dezembro,
+  profissionais=profissionais_sus_clinicos_soma_unidades,servicos=servicos_sus_clinicos_soma_unidades,
+  horas=horas_sus_clinicas_soma_registros,leitos=leitos_sus_clinicos)
+data <- list(summary=summary,overview=overview,annual=annual,entity_year=entity_year,ranking=ranking,cap=cap,
+  units_profile=unit_profile,absence=absent,times=time_stats,
+  entities=entities |> filter(raiz %in% f$cnpj_raiz_8),
+  units=units |> semi_join(v1keys,by=c('cnpj_raiz_8','ano')),cap_all=v1cap,
+  payments=paid |> transmute(cnpj_raiz_8,ano,codigo_ibge_6=substr(id_municipio,1,6),valor=valor_total,n_transacoes),
+  ledger=ledger |> semi_join(v1keys |> mutate(ano=as.integer(ano)),by=c('cnpj_raiz_8','ano')),polys=polys,
   example=clean(read_data('base_v1/exemplo_igarape_cismep.csv')))
 write_json(data,file.path(dest,'dados','visuais.json'),dataframe='rows',auto_unbox=TRUE,digits=8,na='null')
+# Particoes anuais mantem todas as colunas e linhas consultaveis sem carregar
+# as duas bases inteiras ao abrir a pagina. Scripts locais funcionam sem fetch.
+dir.create(file.path(dest,'dados','consulta'),showWarnings=FALSE)
+for(kind in c('financeira','direta')) {
+  df <- if(kind=='financeira') f else g
+  for(yr in 2014:2021) {
+    payload <- toJSON(list(columns=names(df),rows=df |> filter(ano==yr)),
+      dataframe='values',auto_unbox=TRUE,digits=NA,na='null')
+    writeLines(paste0('window.receiveBaseRows("',kind,'",',yr,',',payload,');'),
+      file.path(dest,'dados','consulta',paste0(kind,'_',yr,'.js')),useBytes=TRUE)
+  }
+}
 saveRDS(list(tables=tables,geom=geom,units=units,entities=entities,ledger=ledger,summary=summary,
   source_files=c('base_v1/base_financeira_v1.rds','base_v1/base_gravitacional_v1.rds',
   'base_v1/capacidade_entidade_ano.csv','base_v1/inclusao_entidade_ano.csv','atlas_dados.json',

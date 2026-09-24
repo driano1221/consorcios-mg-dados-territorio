@@ -476,3 +476,25 @@ As 20 figuras cobrem pagamentos, perfis CNES, tempos e cobertura. Seus CSVs
 permitem conferir os numeros e suas imagens servem para reuniao ou relatorio.
 A etapa visual nao escolheu massa, indice ou amostra final do modelo.
 O proximo passo e receber a formula e verificar sua compatibilidade com a v1.
+
+### Revisao Da Apresentacao Para Explicar A V1
+
+Ainda em 24/09, Adriano considerou a entrega ampla demais e pediu foco na
+base que sera discutida com a equipe. A entrada passou a ter seis abas:
+a base v1, como foi construida, pagamentos, CNES, tempos/mapa e consultar
+bases. Cinco figuras principais acompanham a explicacao; o inventario
+externo, CNM e o retrato 2026 sairam dessa interface. Os produtos anteriores
+continuam preservados, sem alterar a v1 ou a ordem do trabalho.
+
+O exemplo Igarape-CISMEP/2019 agora aparece desde a primeira aba: a linha
+combina os 43.045 habitantes de Igarape com R$ 4.740.790,51 pagos ao
+consorcio. Na tabela direta, acrescenta duas clinicas, 105 profissionais,
+17 servicos/classificacoes, 1.651 horas e menor tempo de 15,1 minutos.
+O fluxo explica como CNPJ, codigo CNES, municipio e ano fizeram essas
+ligacoes. Capacidade e do consorcio; o pagamento e do par; populacao e
+do municipio. A consulta completa permite localizar essa mesma linha
+e ler suas 30 colunas, sem exigir abrir o arquivo em outro programa.
+
+Todas as 814.615 linhas das duas tabelas estao consultaveis, com filtros
+e paginacao; todas as celulas foram comparadas aos CSVs originais.
+Essa revisao mudou a apresentacao e a consulta, sem nova coleta ou modelo.

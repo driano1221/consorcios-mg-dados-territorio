@@ -278,8 +278,9 @@ unica regressao.
 **Prioridade atualizada em 24/09: receber a formula da equipe e confronta-la
 com a base v1.** O complemento visual do passo 7 esta concluido, sem reabrir
 a construcao da v1 ou criar outra etapa. Entrada local:
-`outputs/visuais_v1/index.html`, com 20 figuras em PNG 300 dpi/SVG, tabelas
-dos graficos e atlas integrado. Nenhum modelo foi estimado.
+`outputs/visuais_v1/index.html`, com seis abas centradas na v1, cinco
+figuras principais, mapa das 73 entidades e consulta integral das duas
+tabelas com filtros e paginacao. Nenhum modelo foi estimado.
 
 Execucao visual iniciada em 24/09 com design-vault. A primeira previa,
 `outputs/visuais_v1/prototipo/index.html`, foi rejeitada por Adriano: a
@@ -291,6 +292,8 @@ e especificacao dos seis blocos da entrega. Essa proposta navegavel foi
 avaliada antes da implementacao geral, conforme a skill. Adriano aprovou a segunda proposta e
 autorizou a entrega completa, incluindo revisao visual durante a execucao.
 Os rascunhos ficam como historico; a entrada vigente e `visuais_v1/index.html`.
+
+**Primeira entrega visual, preservada como historico:**
 
 - [x] revisar o pedido da reuniao, os mapas existentes e sua coerencia com a v1;
 - [x] ajustar as legendas de universo/data e os textos antigos de status do
@@ -305,6 +308,19 @@ Os rascunhos ficam como historico; a entrada vigente e `visuais_v1/index.html`.
   comparacao por consorcio e tabela de extremos, sem exclusoes silenciosas;
 - [x] conferir fontes, totais e exportacoes; registrar reproducao nos scripts
   26 a 28 e validacao no teste 17, alem da integridade da v1 no teste 16.
+
+**Revisao solicitada depois da primeira entrega, executada em 24/09:**
+
+- [x] concentrar a interface na v1; retirar CNM, retrato 2026, entidades
+  externas e comparacao multiarea da navegacao vigente;
+- [x] explicar variaveis, periodos, nulos, zeros, primeiras linhas reais
+  e construcao por fluxos, com detalhamento das ligacoes do CNES;
+- [x] disponibilizar as duas bases completas, todas as colunas e filtros
+  por ano, municipio, consorcio e pagamento, em paginas de 25 linhas;
+- [x] remover botoes de download, autoria e data de elaboracao dos rodapes;
+  preservar fontes e competencias dos dados;
+- [x] conciliar todas as celulas das tabelas consultaveis com a v1 original
+  e verificar filtros, navegacao, mapas e leitura em tela estreita.
 
 Depois desse retrato visual, confrontar a formula com os dados e justificar
 os pares/zeros antes de estimar. Os mapas descritivos continuam uteis mesmo

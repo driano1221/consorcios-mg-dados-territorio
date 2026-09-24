@@ -1827,7 +1827,7 @@ repete apenas valores a partir de 240 minutos, com outra escala vertical.
 Essa repeticao visual nao e somada ao total. A curva acumulada apresenta
 separadamente relacoes e peso financeiro, sem inferir viagens ou pacientes.
 
-O atlas mantem 221 entidades do inventario ampliado e 2.612 registros de
+Na primeira entrega visual, o atlas mantinha 221 entidades do inventario ampliado e 2.612 registros de
 unidade/periodo. Um indicador informa a inclusao na v1 do ano escolhido.
 Pagamentos do atlas abrangem as finalidades da entidade; as figuras de
 pagamentos do nucleo usam a v1. CNM atual fica em camada opcional datada.
@@ -1836,3 +1836,29 @@ na lista e no contador, com aviso, sem receber coordenada inventada.
 
 Os graficos sao descritivos. A proxima decisao depende da formula da equipe,
 da definicao da pergunta e da elegibilidade dos pares, inclusive dos zeros.
+
+### Consulta Concentrada Na V1
+
+Na revisao solicitada em 24/09, a interface foi restrita a v1 financeira:
+73 raizes, somente as 576 combinacoes entidade-ano admitidas e 1.914
+registros de unidade/periodo associados a essas chaves. Pagamentos foram
+extraidos diretamente da tabela financeira v1. A capacidade exibida usa
+as 379 combinacoes da tabela direta. O retrato 2026, CNM e comparacoes
+externas sairam da interface; os produtos de origem foram preservados.
+
+A primeira aba explica municipio x consorcio x ano, periodos e fontes,
+estatisticas, exemplos e primeiras linhas reais. Fluxos nas abas registram
+a consolidacao por raiz do CNPJ, a grade municipal nos anos admitidos,
+a ligacao de populacao por municipio/ano e o acrescimo de capacidade/tempo.
+No CNES, o CNPJ do estabelecimento ou da mantenedora identifica a unidade;
+codigo CNES e competencia ligam ST, SR, PF e LT. O municipio localiza a
+unidade, mas nao atribui toda a oferta local ao consorcio. Somam-se recursos
+das clinicas selecionadas no proprio dezembro, mantendo as ressalvas sobre
+duplicacao entre unidades e cadastro versus atendimento.
+
+As tabelas completas sao serializadas por ano para consulta sob demanda:
+491.328 x 19 na financeira e 323.287 x 30 na direta. Filtros e paginacao
+afetam apenas a visualizacao. O teste 17 compara cada celula aos CSVs
+originais. As duas tabelas tem zero celulas nulas nos recortes/colunas
+selecionados; isso nao implica oferta assistencial completamente conhecida.
+Nenhuma fonte, criterio da v1, formula ou amostra de estimacao foi alterada.
