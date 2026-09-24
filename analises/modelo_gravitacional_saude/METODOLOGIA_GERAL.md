@@ -1758,3 +1758,42 @@ CSV tem UTF-8, virgula, ponto decimal e vazio para NA; CNPJ e IBGE devem ser
 importados como texto. RDS conserva os tipos. Fonte original MIDES e painel
 anual foram conferidos contra seus hashes anteriores. Testes 13, 15 e 16
 passaram. Reproducao detalhada no dicionario; nenhum modelo ou dashboard alterado.
+
+### Esclarecimento Sobre Os Pares E Zeros — 24/09/2026
+
+Adriano questionou se a amostra deveria conter apenas municipios membros.
+A grade v1 e uma estrutura de dados candidata; seus testes nao validam a
+plausibilidade institucional de todos os pares. Foi corrigido o checkbox do
+passo 6 que sugeria essa validacao concluida. Nenhuma linha ou regra mudou.
+
+Tres perguntas exigem universos diferentes: valor pago entre membros exige
+composicao no ano (inclusive membros sem pagamento); formacao de relacao
+financeira exige nao pagadores plausiveis; intensidade entre pagamentos
+positivos descreve apenas relacoes pagas. Pagamento MIDES nao substitui uma
+serie juridica de filiacao, e filtrar apenas positivos nao permite explicar
+a ocorrencia de pagamento. Uma lista de quem pagou em qualquer ano tampouco
+comprova elegibilidade anual e pode usar informacao futura em modelos de entrada.
+
+O guia [OMC/UNCTAD, Yotov et al. (2016), pp. 19-20 e 25-26](https://www.yotoyotov.com/files/book.pdf)
+discute fluxos zero e PPML, inclusive em dados com muitos zeros. Isso apoia
+manter zeros quando coerentes com a pergunta, nao certifica a amostra deste
+projeto. [Train, cap. 2, secao 2.2](https://eml.berkeley.edu/books/choice2nd/Ch02_p9-33.pdf)
+define o conjunto de escolha em termos das alternativas disponiveis: referencia
+conceitual, sem impor escolha exclusiva, pois municipios podem pagar a varios
+consorcios. [Latruwe et al.](https://link.springer.com/article/10.1007/s10742-022-00298-4)
+estudam fluxos hospitalares em contexto de escolha de prestadores, que nao
+equivale automaticamente a possibilidade institucional de consorciamento.
+
+Aplicacao ao projeto: Igarape-CISMEP/2019 tem pagamento comprovado no extrato;
+Igarape-CISPARA/2019 tem zero e tempo calculado, mas esses dois campos nao
+demonstram que CISPARA era uma opcao institucionalmente disponivel. Se houver
+restricao comprovada, o tratamento depende do objeto: excluir da amostra
+condicional de membros ou representar a restricao num modelo mais amplo.
+Um dado financeiro nao coberto pela fonte deve ser ausente, nao zero. Os
+zeros v1 significam ausencia de pagamento positivo nos extratos utilizados.
+Nao foi comprovado nesta consulta erro de cobertura, nem escolhida nova amostra.
+
+Recomendacao: preservar a grade, chamar elegibilidade de cadastral, definir
+com a formula da equipe o universo da estimacao e justificar os filtros antes
+de regredir. A porcentagem elevada de zeros, sozinha, nao aprova nem reprova
+o desenho. Permanecem fechadas a construcao/auditoria v1 e aberta a especificacao.

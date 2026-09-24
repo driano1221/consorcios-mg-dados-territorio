@@ -158,7 +158,8 @@ feita no passo 6.
 - [x] harmonizar as dez candidatas externas e os tres casos de escopo misto
   com as regras de amostra; completar capacidade LT/SR/PF e presenca mensal
   somente para as entidades que entrarem, reaproveitando os arquivos brutos;
-- [x] definir o conjunto de alternativas plausiveis por municipio e ano;
+- [x] materializar conjuntos candidatos por municipio e ano; plausibilidade
+  institucional nao demonstrada para todos os pares, a validar na especificacao;
 - [x] comparar tres regras: todos os consorcios de saude de MG, limite de tempo
   rodoviario e mesma regiao de saude;
 - [x] integrar populacao, RCL disponivel, PDR/2019 como referencia a partir de
@@ -249,6 +250,8 @@ nao foi interpretado como ausencia de atendimento.
 
 ### 8. Estimar Os Tres Blocos
 
+- [ ] antes de estimar, definir se a pergunta trata de membros, pagamentos
+  observados ou formacao da relacao; justificar pares elegiveis e zeros.
 - [ ] entrada: logit ou risco discreto;
 - [ ] intensidade financeira: PPML ou modelo hurdle;
 - [ ] interrupcao/permanencia: sobrevivencia em tempo discreto.

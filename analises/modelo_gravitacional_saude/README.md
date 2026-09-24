@@ -17,6 +17,11 @@ a segunda, 317.675. Esses zeros sao possibilidades sem pagamento observado,
 nao vinculos comprovados ou ausencia comprovada de atendimento. Um registro
 MIDES com quatro transacoes zeradas permanece distinguido da falta de registro.
 
+**Grade candidata, nao amostra aprovada:** `elegivel_gravitacional_v1` indica
+apenas escopo, cadastro clinico e tempo. Nao prova filiacao ou possibilidade
+de contratar aquele consorcio. O fechamento da v1 validou a construcao dos
+dados; a justificativa dos pares/zeros para o modelo ainda depende da pergunta.
+
 **O que entra:** nucleo cadastral de saude nos anos admissiveis; no recorte
 gravitacional, tambem clinica direta em dezembro e tempo disponivel. Nao ha
 corte de minutos, exigencia de RCL/PDR ou filtro para manter apenas pagadores.
