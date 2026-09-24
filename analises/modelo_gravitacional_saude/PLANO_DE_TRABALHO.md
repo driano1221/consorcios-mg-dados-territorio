@@ -12,8 +12,11 @@ deve criar uma segunda numeracao de etapas.
   de conclusao;
 - `[ ] Nao iniciado` depende das etapas anteriores.
 
-**Estado em 23/09/2026:** passos 1 a 6 concluidos para a especificacao
-restrita a oferta clinica direta comprovada; passo 7 iniciado.
+**Estado em 24/09/2026:** passos 1 a 7 concluidos para a especificacao
+restrita a unidades clinicas diretamente cadastradas no CNES historico.
+Isso nao comprova producao SUS nem deslocamento de pacientes. Passos 8 a 10
+nao foram iniciados; Adriano pediu foco integral nos dados e enviara depois
+a formula definida pela equipe.
 
 - [x] **1. Fechar o universo de consorcios de saude**
 - [x] **2. Auditar os vinculos**
@@ -21,7 +24,7 @@ restrita a oferta clinica direta comprovada; passo 7 iniciado.
 - [x] **4. Construir e temporalizar a capacidade assistencial direta**
 - [x] **5. Construir a camada-base de tempo rodoviario**
 - [x] **6. Montar o painel analitico anual e fixar a amostra principal**
-- [ ] **7. Executar a EDA e a validacao do universo final - em andamento**
+- [x] **7. Executar a EDA e a validacao do universo restrito de dados**
 - [ ] **8. Estimar os tres blocos**
 - [ ] **9. Testar robustez**
 - [ ] **10. Integrar resultados validados ao dashboard**
@@ -184,21 +187,52 @@ a especificacao antes da estimacao.
 
 ### 7. Executar A EDA E A Validacao Do Universo Final
 
-- [ ] quantificar zeros, entradas, permanencias, retornos e interrupcoes nos
+- [x] quantificar zeros, entradas, permanencias, retornos e interrupcoes nos
   universos finais;
-- [ ] examinar alternativas por municipio e tempos extremos;
-- [ ] identificar entidades sem massa mensuravel;
-- [ ] verificar censura, perdas por pareamento e cobertura das variaveis;
-- [ ] comparar os tres conjuntos de alternativas antes de escolher o principal.
+- [x] examinar alternativas por municipio e tempos extremos;
+- [x] identificar entidades sem medidas CNES SUS positivas;
+- [x] verificar censura, perdas por pareamento e cobertura das variaveis;
+- [x] comparar os conjuntos de alternativas antes de escolher o principal.
 
-As estatisticas produzidas nos passos anteriores sao controles preliminares;
-nao substituem esta EDA final, que depende do passo 6.
+As estatisticas preliminares dos passos anteriores foram confrontadas nesta
+EDA com os extratos financeiros, o CNES historico e a matriz rodoviaria.
 
-Primeira EDA de 23/09: os 1.513 pares pagantes de 2019 se repartem em 781
+EDA fechada em 24/09: os 1.513 pares pagantes de 2019 se repartem em 781
 com tempo clinico direto, 595 no nucleo cadastral sem polo direto e 137 fora
 do nucleo. O tempo mediano nos 781 e 52,7 minutos; o percentil 95 e cerca de
-143 minutos. Pares acima de 300 minutos foram listados para exame, sem
-exclusao automatica. RCL existe para 241 dos 781 pares principais de 2019.
+143 minutos. Ha 45.281 zeros nas 46.062 alternativas diretas de 2019.
+Nos conjuntos de risco com tempo em `t-1`, 2015-2021 somam 181 primeiros
+pagamentos, 67 retornos e 216 interrupcoes. A raridade das entradas devera
+orientar a especificacao futura, sem estimar regressao nesta etapa.
+Os 19 registros acima de 300 minutos correspondem a seis pares repetidos em
+anos diferentes, R$ 1.059.868,20 (0,037% do valor do recorte direto de oito
+anos). Valores e transacoes conferem com os extratos MIDES; tempos e distancias
+conferem com a matriz rodoviaria. Nenhum foi excluido. Essa verificacao nao
+prova viagem de pacientes.
+
+Em 2019, 90/120/180 minutos conservariam 630/708/762 dos 781 pagadores
+diretos e deixariam 151/70/21 municipios sem opcao; mesma microrregiao do
+PDR/2019 conservaria 558 e deixaria 156 municipios sem opcao. A regra sem
+corte preserva todas as 853 origens e continua principal. RCL existe para
+241 dos 781 pares principais; nesse grupo, a populacao mediana dos pares com
+RCL e 13.828, contra 7.098,5 nos sem RCL. Portanto, sua falta nao parece
+aleatoria e ela nao sera controle obrigatorio do modelo de oito anos.
+
+A escassez de leitos SUS ja constava da memoria: na fotografia atual,
+somente CISMEP tinha 32; no historico direto, apenas a raiz Alto Sao Francisco
+`64486822` tinha 26 em dezembro de 2014-2016. Entre as 54 entidades diretas
+de 2019, nenhuma tinha leito SUS registrado. Isso confirma que leitos nao
+podem ser a massa unica, sem escolher agora a formula da equipe.
+
+Uma segunda auditoria distinguiu tipo clinico CNES de marcador SUS. Em 2019,
+quatro unidades-ano clinicas nao tinham vinculo, leitos, servicos nem
+profissionais SUS registrados: uma do CISVAS e tres do CISMARG. Exigir algum
+marcador retiraria dez pares pagantes do CISVAS (R$ 1.465.922,21) e aumentaria
+o tempo em seis pares do CISMARG (R$ 624.809,36). Em 2020, 18 pares (R$
+4.963.224,00) pertencem a duas entidades com vinculo SUS informado, mas sem
+capacidade SUS positiva nos modulos coletados. Esses casos permanecem no
+painel principal cadastral e foram separados em sensibilidade; zero cadastral
+nao foi interpretado como ausencia de atendimento.
 
 ### 8. Estimar Os Tres Blocos
 
@@ -225,13 +259,13 @@ unica regressao.
 
 ## Proximo Marco
 
-O **passo 7** deve validar a amostra restrita: zeros e eventos sob risco,
-distribuicao de tempo e capacidade, perdas por falta de destino direto e RCL,
-comparacao por grupo, extremos acima de 300 minutos e sensibilidade territorial.
-Onde nao ha tempo clinico
-direto, o pagamento permanece no painel descritivo, fora da especificacao
-gravitacional principal. Manter RCL ausente quando a API nao retornou o anexo;
-nao substituir por receita total. Nao repetir triagens ou coleta original.
+O proximo trabalho continua nos **dados**, por orientacao de Adriano: preservar
+e explicar as sensibilidades de marcador SUS, rede movel/indireta e RCL
+incompleta; corrigir apenas inconsistencias que evidencia adicional demonstrar.
+Onde nao ha tempo clinico direto, o pagamento permanece no painel descritivo.
+A formula da equipe sera recebida depois; so entao iniciaremos o passo 8.
+Nao imputar RCL nem trocar por receita total. Nao repetir triagens ou coleta
+original.
 
 ## Controle De Mudancas
 
@@ -246,6 +280,7 @@ nao substituir por receita total. Nao repetir triagens ou coleta original.
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 24/09/2026 | EDA do passo 7 concluida para o recorte cadastral direto, com auditoria de extremos, capacidade, RCL, alternativas e marcador SUS | medir perdas e separar cadastro clinico de evidencia de atividade SUS antes de qualquer modelo |
 | 23/09/2026 | Passo 6 fechado na especificacao restrita; bacia adiada por decisao de Adriano | comparar alternativas demonstrou perda material de pares sem polo direto; bacia nao mede diretamente acesso assistencial |
 | 23/09/2026 | Primeira integracao anual de 97 entidades, capacidade externa, populacao IBGE, RCL parcial, PDR/2019 e tempos historicos materializados | comparar alternativas antes de fixar o recorte restrito no mesmo dia |
 | 16/09/2026 | Revisao externa de 137 raizes, 28 dossies, MIDES complementar e atlas individual concluidos | nove consorcios de saude nao tinham sido consultados; incorporar candidatos com temporalidade e escopo antes de fechar o painel |

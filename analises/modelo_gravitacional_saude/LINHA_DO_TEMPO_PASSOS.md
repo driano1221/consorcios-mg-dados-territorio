@@ -1,8 +1,8 @@
 # Linha Do Tempo Dos Passos - Modelo Gravitacional De Saude
 
-> Revisao de 23/09/2026: passo 6 integrado para a amostra restrita. As
-> contagens abaixo conservam os marcos historicos de cada entrega. O proximo
-> marco e a EDA do passo 7; bacias ficaram para analise posterior.
+> Revisao de 24/09/2026: passos 6 e 7 concluidos para a base restrita.
+> As contagens abaixo conservam os marcos historicos de cada entrega. A
+> formula dos modelos virá da equipe; bacias ficaram para analise posterior.
 
 ## Visao Geral
 
@@ -21,7 +21,8 @@ flowchart LR
   C3 --> C4["Complemento do 4<br/>CNES historico"]
   C4 --> N3["16/09<br/>filtro clinico e decisoes fechados"]
   N3 --> N6["23/09<br/>painel anual + 13 candidatas"]
-  N6 --> N7["Agora<br/>passo 7: EDA final"]
+  N6 --> N7["24/09<br/>EDA e auditoria de dados"]
+  N7 --> N8["Depois<br/>formula da equipe e modelos"]
 ```
 
 ## Evolucao Do Projeto
@@ -265,7 +266,8 @@ Antes deste marco, a sequencia reafirmada por Adriano foi **revisar fora das
 
 1. A reuniao de 10/09 levantou possiveis omissoes de saude e pediu mapas por
    consorcio/tipo. O foco em MG foi confirmado; expansao para outros estados
-   ficou adiada. Formula e massa gravitacional continuam abertas.
+   ficou adiada. Formula e massa gravitacional estavam abertas naquela
+   reuniao; a definicao posterior da equipe sera enviada por Adriano.
 2. Cadastro + CNM produziram 137 raizes fora das 84. Vinte e oito receberam
    pesquisa documental; 109 tiveram triagem sistematica sem sinal selecionado.
 3. Dez candidatas possuem saude historica documentada; outras tres exigem
@@ -323,4 +325,32 @@ valor; um limite de 90 minutos deixaria 630 pares. O recorte direto sem limite
 e a especificacao principal operacional. Redes sem unidade propria nao sao
 declaradas inexistentes: seguem no painel descritivo e em sensibilidade.
 Adriano decidiu reservar bacias hidrograficas para analise territorial
-posterior. O passo 7 verificara perdas, extremos e selecao antes dos modelos.
+posterior. O passo 7 verificou perdas, extremos e selecao antes dos modelos.
+
+## Auditoria Dos Dados Em 24/09/2026
+
+Em 2019, as 46.062 alternativas com clinica direta e tempo se dividem em
+45.281 linhas sem pagamento e 781 com pagamento. Dos outros pares pagantes,
+595 sao de saude sem polo clinico direto e 137 ficam fora do recorte restrito.
+Um corte de 90 minutos conservaria 630 dos 781 pagadores e deixaria 151
+municipios sem opcao. RCL existe para apenas 241 dos 781; os municipios dos
+pares com RCL tem populacao mediana maior que os sem RCL.
+
+Os 19 registros acima de 300 minutos representam seis pares municipio-
+consorcio ao longo dos anos, 0,037% do valor pago no recorte direto. Os
+extratos MIDES e a matriz rodoviaria conferem; isso valida a ligacao das
+bases, nao demonstra uma viagem ate a unidade. Nenhum par foi retirado.
+
+A memoria ja registrava que **leitos SUS nao servem como massa unica**:
+CISMEP tem 32 no retrato atual, e a raiz Alto Sao Francisco tinha 26 nos
+dezembros de 2014-2016. Em 2019, nenhuma das 54 entidades diretas pagas
+registra leitos SUS. A auditoria nova examinou outra pergunta: a unidade
+clinica cadastrada registra algum marcador SUS? Em 2019, o CISVAS recebeu
+R$ 1.465.922,21 de dez municipios, mas sua clinica nao tinha vinculo,
+leitos, servicos ou profissionais SUS registrados. Isso nao apaga o pagamento
+nem prova que nao houve atendimento. No CISMARG, tres unidades nao tinham
+marcador, mas outra tinha; para seis pares pagantes o tempo ate esta ultima
+e maior. Essas diferencas ficaram documentadas como sensibilidade.
+
+Adriano pediu manter o foco nos dados e informara depois a formula definida
+pela equipe. Os modelos gravitacionais ainda nao foram estimados.

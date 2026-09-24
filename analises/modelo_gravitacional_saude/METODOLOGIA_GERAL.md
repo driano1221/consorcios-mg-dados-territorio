@@ -1191,7 +1191,7 @@ limitado a 90 minutos. A regra de mesma microrregiao usa o Anexo I do
 PDR-SUS/MG 2019 (853 municipios, 66 micros e 12 macros), apenas como
 referencia para 2019-2021. Um corte de 90 minutos reduziria os pares pagantes
 elegiveis em 2019 de 781 para 630. A especificacao principal, condicionada a
-clinica diretamente comprovada no CNES historico, conserva todos os tempos
+unidade de tipo clinico diretamente cadastrada no CNES historico, conserva todos os tempos
 conhecidos, sem corte de minutos. Os cortes de 90/120/180 minutos e a mesma
 microrregiao ficam para robustez. Trata-se de uma pergunta mais restrita que
 a rede total: em 2019, 781 dos 1.513 pares pagantes, mas 82,8% do valor pago,
@@ -1217,6 +1217,59 @@ interrupcao), censura inicial de 2014 e universos sob risco foram recalculados
 na grade ampliada. A entrada com tempo requer covariaveis de capacidade e
 impedancia defasadas em `t-1`; a intensidade conserva covariaveis do proprio
 ano, cuja interpretacao e associativa. A selecao operacional da amostra esta
-definida. A EDA do passo 7 deve verificar composicao, extremos e perdas por
-ausencia de polo direto ou RCL antes da formula e da estimacao. Os testes
-atuais conferem integridade e casos reais, nao efeitos gravitacionais.
+definida. A EDA do passo 7 verificou composicao, extremos e perdas por
+ausencia de polo direto ou RCL em 24/09. Os testes conferem integridade e
+casos reais, nao efeitos gravitacionais.
+
+## Passo 7 - Validacao Dos Dados Em 24/09/2026
+
+O recorte direto foi confrontado com o painel de pagamentos, os extratos
+anteriores do MIDES, as fichas anuais CNES e a matriz Distbrasil. Em 2019,
+das 46.062 alternativas com unidade clinica direta e tempo, 45.281 tem
+pagamento zero e 781 pagamento positivo. Estes 781 representam 82,8% do
+valor pago entre todas as 97 entidades do painel. Os 595 pares de saude sem
+polo direto e 137 fora do escopo restrito nao foram apagados nem convertidos
+em ausencia de atendimento. Em todo o periodo de risco com tempo em `t-1`,
+ha 181 primeiros pagamentos, 67 retornos e 216 interrupcoes. O primeiro
+pagamento e uma observacao financeira, nao data juridica de adesao.
+
+Os 19 registros de mais de 300 minutos correspondem a seis pares
+municipio-entidade repetidos em anos diferentes. Somam R$ 1.059.868,20,
+0,037% do valor do recorte direto em oito anos. Tempo e distancia reproduzem
+a matriz rodoviaria; valor e numero de transacoes reproduzem os extratos
+MIDES original ou complementar. Matias Cardoso x ACISPES (761,3 minutos ate
+Juiz de Fora) ilustra que consistencia de bases nao prova deslocamento de
+pacientes. Os registros permanecem no painel, sinalizados para sensibilidade.
+
+Em 2019, cortes de 90, 120 e 180 minutos reteriam 630, 708 e 762 dos 781
+pagadores diretos, deixando respectivamente 151, 70 e 21 municipios sem
+alternativa. A mesma microrregiao do PDR/2019 reteria 558 pagadores e deixaria
+156 municipios sem alternativa. O recorte principal sem corte preserva
+opcoes para todas as 853 origens. O PDR/2019 nao foi retroagido a 2014-2018.
+
+RCL do RREO/Anexo 03 foi encontrada em 2019 para 241 dos 781 pares diretos.
+Nesses pares, a populacao mediana municipal e 13.828, contra 7.098,5 nos
+540 pares sem RCL. A cobertura fiscal e seletiva; RCL nao entra como controle
+obrigatorio no painel 2014-2021 e sua ausencia nao vira zero ou receita total.
+
+A escassez de leitos SUS **ja estava registrada**: no retrato atual, apenas
+CISMEP apresenta 32 leitos diretos; no historico de dezembro, a raiz Alto Sao
+Francisco `64486822` apresenta 26 leitos em 2014-2016. Em 2019, nenhuma das
+54 entidades diretas com pagamento tem leitos SUS. A EDA confirma a decisao
+anterior de nao usar leitos como unica massa, sem escolher a formula da equipe.
+
+Uma clinica de tipo assistencial no CNES nao garante atividade SUS observada.
+Em 2019, quatro unidades-ano clinicas nao tinham vinculo SUS nem leitos,
+servicos ou profissionais SUS registrados: tres do CISMARG e uma do CISVAS.
+O CISVAS tinha dez municipios pagadores e R$ 1.465.922,21 no ano, mas nenhuma
+clinica com marcador SUS; em seis pares do CISMARG, o tempo minimo aumenta
+se apenas unidades com marcador SUS forem consideradas. Estes seis somam R$
+624.809,36. Em 2020, 18 pares pagantes de CISVAS e CISCAXAMBU (R$
+4.963.224,00) pertencem a entidades cujas clinicas tinham vinculo SUS
+informado, mas nenhuma capacidade SUS positiva nos modulos coletados. Estes
+zeros cadastrais nao provam ausencia de atendimento e a regra principal nao
+foi alterada; as duas definicoes foram separadas para sensibilidade.
+
+Adriano orientou manter o trabalho integralmente nos dados e informou que a
+equipe ja definiu uma formula gravitacional, a ser enviada depois. Nenhum
+modelo foi estimado nem uma nova massa escolhida nesta etapa.

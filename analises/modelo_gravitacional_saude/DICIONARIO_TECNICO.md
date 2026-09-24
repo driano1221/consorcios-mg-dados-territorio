@@ -423,7 +423,8 @@ documentar a grade preliminar das 84 entidades. Os produtos abaixo ficam em
 | `17_extrair_regioes_saude_pdr_2019.py` | Le Anexo I da Deliberacao CIB-SUS/MG 3.013/2019: 853 municipios, 66 micros e 12 macros | a referencia de 2019 nao e retroagida a 2014-2018 |
 | `15_integrar_painel_anual_saude.R` | Junta 853 municipios, 97 entidades e 8 anos; recalcula tempo ate destinos clinicos do proprio ano e materializa alternativas e riscos | amostra principal condicionada a clinica direta e tempo historico; cobertura parcial |
 | `18_diagnosticar_alternativas_painel_saude.R` | Compara cobertura das regras, retenção de pagamentos, cortes de 90/120/180 minutos e municipios sem opcao | diagnostico do passo 6, sem estimacao de modelo |
-| `19_eda_inicial_painel_saude.R` | Separa zeros, perdas por polo/escopo, RCL observada e tempos extremos por ano | inicio do passo 7; nao decide exclusao de outliers |
+| `19_eda_inicial_painel_saude.R` | Audita zeros, eventos, perdas por polo/escopo, RCL, capacidade, cortes territoriais e 19 tempos extremos contra MIDES/Distbrasil | passo 7; nao exclui extremos automaticamente |
+| `20_auditar_marcador_sus_e_destinos.R` | Compara clinicas CNES com vinculo ou capacidade SUS registrada; recalcula tempos para este subconjunto | teste de qualidade/sensibilidade, sem mudar o painel principal |
 | `tests/13_validar_painel_anual_saude.R` | Confere montantes, chaves, historia Igarape-CISMEP, CIESP, CIMBAJE, CIMAMS e ausencia sem polo | executado apos o script 15 |
 
 Produtos principais: `painel_anual_integrado_saude_mg_2014_2021.rds`
@@ -432,6 +433,11 @@ Produtos principais: `painel_anual_integrado_saude_mg_2014_2021.rds`
 `diagnostico_municipios_sem_alternativa_saude.csv`,
 `eda_inicial_painel_saude_2014_2021.csv`,
 `eda_tempos_acima_300min_saude.csv`,
+`eda_selecao_pagadores_saude.csv`, `eda_selecao_entidades_saude.csv`,
+`eda_selecao_rcl_saude.csv`, `eda_cobertura_capacidade_cnes_saude.csv`,
+`eda_sensibilidade_alternativas_saude.csv`,
+`eda_marcadores_sus_unidades.csv`, `eda_efeito_marcador_sus_saude.csv`,
+`eda_pares_afetados_marcador_sus_saude.csv`,
 `candidatas_cnes_capacidade_unidades_2014_2021.csv`,
 `candidatas_cnes_capacidade_entidade_ano_2014_2021.csv`,
 `candidatas_cnes_presenca_mensal_2014_2021.csv`,
@@ -451,6 +457,14 @@ principal usa clinica direta historica sem limite de minutos; 90/120/180
 minutos e mesma microrregiao sao sensibilidades. O PDR/2019 so se aplica a
 2019-2021; RCL faltante permanece ausente.
 
+Auditoria de 24/09: `clinica_direta_dezembro` significa registro de tipo
+clinico vinculado ao CNPJ no dezembro do ano; nao significa producao SUS nem
+viagem de pacientes. O script 20 distingue `vinculo_sus` e capacidade SUS
+positiva e mede o efeito de exigir qualquer um desses marcadores. O achado
+anterior sobre leitos escassos permanece valido: CISMEP tem 32 no retrato
+atual, enquanto a raiz `64486822` tinha 26 nos dezembros de 2014-2016.
+Os produtos da EDA sao locais em `outputs/`, com scripts versionados.
+
 Para reproduzir a partir desta pasta: instalar
 `requirements_cnes_historico.txt` e `requirements_painel_anual.txt`; executar
 o script 14, a consulta SQL de populacao, os scripts 16 e 17, depois o 15;
@@ -458,3 +472,7 @@ executar o teste 13 a partir da raiz `ideiaMides`. O script 16 grava
 checkpoints por ano para retomada. O ano 2014 mantem RCL ausente; ausencia de
 resposta da API em outros anos nao significa receita zero. A medida de
 profissionais somada entre unidades nao equivale a pessoas distintas.
+Para refazer a auditoria de 24/09, executar o script 18 e depois os scripts
+19 e 20 a partir desta pasta. O script 19 confronta os extremos com os
+extratos MIDES anteriores; o 20 confere o exemplo Igarape-CISMEP e a excecao
+CISVAS/2019 sem marcador SUS. Nenhum altera o painel `.rds`.
