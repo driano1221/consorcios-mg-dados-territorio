@@ -275,10 +275,11 @@ unica regressao.
 
 ## Proximo Marco
 
-**Prioridade atualizada em 24/09: preparar os graficos antes de receber a
-formula da equipe.** Complemento visual do passo 7, sem reabrir a construcao
-da v1 ou criar outra etapa. A revisao confirmou dois mapas estaticos e um
-atlas funcional; ainda nao existe um pacote de graficos da EDA v1.
+**Prioridade atualizada em 24/09: receber a formula da equipe e confronta-la
+com a base v1.** O complemento visual do passo 7 esta concluido, sem reabrir
+a construcao da v1 ou criar outra etapa. Entrada local:
+`outputs/visuais_v1/index.html`, com 20 figuras em PNG 300 dpi/SVG, tabelas
+dos graficos e atlas integrado. Nenhum modelo foi estimado.
 
 Execucao visual iniciada em 24/09 com design-vault. A primeira previa,
 `outputs/visuais_v1/prototipo/index.html`, foi rejeitada por Adriano: a
@@ -286,19 +287,24 @@ leitura do vault e a proposta visual precisavam de maior profundidade.
 Apos leitura integral das 16 notas de design e inspecao das referencias,
 a segunda proposta esta em `outputs/visuais_v1/proposta_02/index.html`:
 leitura guiada dos pagamentos/cobertura, atlas CISMEP com oito anos reais
-e especificacao dos seis blocos da entrega. E uma proposta navegavel,
-nao o pacote completo. Aguarda avaliacao de Adriano antes da implementacao
-geral, conforme a skill. Bases, atlas original e vault de design preservados.
+e especificacao dos seis blocos da entrega. Essa proposta navegavel foi
+avaliada antes da implementacao geral, conforme a skill. Adriano aprovou a segunda proposta e
+autorizou a entrega completa, incluindo revisao visual durante a execucao.
+Os rascunhos ficam como historico; a entrada vigente e `visuais_v1/index.html`.
 
 - [x] revisar o pedido da reuniao, os mapas existentes e sua coerencia com a v1;
-- [ ] ajustar as legendas de universo/data e os textos antigos de status do
+- [x] ajustar as legendas de universo/data e os textos antigos de status do
   atlas; preservar a distincao entre pagadores, CNM atual e unidades CNES;
-- [ ] mostrar unidades por consorcio, ano, funcao e tipo, reaproveitando o atlas;
-- [ ] comparar capacidade separadamente (unidades, profissionais, servicos e
+- [x] mostrar unidades por consorcio, ano, funcao e tipo, reaproveitando o atlas;
+- [x] comparar capacidade separadamente (unidades, profissionais, servicos e
   horas), usando uma linha por entidade-ano; destacar CISREC, CONVALES e CIMBAJE
   em comparacao auxiliar, sem inclui-los silenciosamente no nucleo v1;
-- [ ] apresentar evolucao/ranking dos pagamentos observados e cobertura dos
+- [x] apresentar evolucao/ranking dos pagamentos observados e cobertura dos
   recortes, com valores nominais, denominadores e perdas explicitos.
+- [x] representar tempos das 5.612 relacoes pagas diretas, curva acumulada,
+  comparacao por consorcio e tabela de extremos, sem exclusoes silenciosas;
+- [x] conferir fontes, totais e exportacoes; registrar reproducao nos scripts
+  26 a 28 e validacao no teste 17, alem da integridade da v1 no teste 16.
 
 Depois desse retrato visual, confrontar a formula com os dados e justificar
 os pares/zeros antes de estimar. Os mapas descritivos continuam uteis mesmo

@@ -1797,3 +1797,42 @@ Recomendacao: preservar a grade, chamar elegibilidade de cadastral, definir
 com a formula da equipe o universo da estimacao e justificar os filtros antes
 de regredir. A porcentagem elevada de zeros, sozinha, nao aprova nem reprova
 o desenho. Permanecem fechadas a construcao/auditoria v1 e aberta a especificacao.
+
+## Visualizacao Descritiva Da V1
+
+O pacote visual de 24/09 usa as fontes ja auditadas, sem nova coleta e sem
+alterar os recortes. Os pagamentos sao positivos no nucleo financeiro v1;
+os totais anuais foram conciliados com os CSVs originais. Os rankings
+incluem todos os consorcios nas tabelas e mostram os 15 maiores na figura.
+As trajetorias comparativas mostram os 12 maiores no periodo, com escala
+comum. Valores permanecem nominais.
+
+O perfil de unidades CNES em 2019 usa as entidades elegiveis ao nucleo
+financeiro naquele ano: 207 unidades moveis, 64 clinicas e nove estruturas
+nao clinicas. A capacidade usa uma linha por entidade-ano do recorte
+direto: 379 fotografias no periodo e 54 consorcios em 2019. Somar essas
+fotografias nao produz contagem de pessoas ou unidades unicas no periodo.
+Os graficos mantem unidades, profissionais, servicos e horas separados.
+
+A comparacao auxiliar seleciona CISREC, CONVALES (raiz 06070075) e CIMBAJE.
+Eles nao esgotam as entidades multiarea do cadastro e permanecem fora do
+nucleo v1. No CISREC/2019, capacidade clinica sem identificacao fica ausente;
+em CONVALES/2019, servicos SUS iguais a zero sao zero cadastral observado.
+Os dois casos recebem representacoes distintas.
+
+Tempos usam as 5.612 relacoes pagas diretas: mediana 52,65 minutos,
+percentil 90 de 119,4 minutos, maximo 761,3 minutos e 368 casos
+intramunicipais. O histograma preserva toda a cauda; o painel de detalhe
+repete apenas valores a partir de 240 minutos, com outra escala vertical.
+Essa repeticao visual nao e somada ao total. A curva acumulada apresenta
+separadamente relacoes e peso financeiro, sem inferir viagens ou pacientes.
+
+O atlas mantem 221 entidades do inventario ampliado e 2.612 registros de
+unidade/periodo. Um indicador informa a inclusao na v1 do ano escolhido.
+Pagamentos do atlas abrangem as finalidades da entidade; as figuras de
+pagamentos do nucleo usam a v1. CNM atual fica em camada opcional datada.
+Pontos sao representativos dos municipios. Unidade sem municipio continua
+na lista e no contador, com aviso, sem receber coordenada inventada.
+
+Os graficos sao descritivos. A proxima decisao depende da formula da equipe,
+da definicao da pergunta e da elegibilidade dos pares, inclusive dos zeros.

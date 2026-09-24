@@ -95,7 +95,7 @@ stopifnot(nrow(units)==670+1868+74,!anyDuplicated(units[c('cnpj_raiz_8','ano','c
 write.csv(units,file.path(out,'atlas_unidades_consorcio_periodo.csv'),row.names=FALSE,na='',fileEncoding='UTF-8')
 entities <- bind_rows(
   original |> transmute(raiz=cnpj_raiz_8,cnpj=cnpj_canonico,sigla=sigla_canonica,nome=razao_social_canonica,
-    sede=municipio_sede_canonico,grupo='84 originais',decisao='Recorte original; amostra final ainda depende do passo 6.',evidencia='',fonte='',limite=''),
+    sede=municipio_sede_canonico,grupo='84 originais',decisao='Universo original de 84 entidades. A base v1 foi fechada em 24/09/2026; a amostra de estimacao depende da formula e da elegibilidade dos pares.',evidencia='',fonte='',limite=''),
   audit |> transmute(raiz=cnpj_raiz_8,cnpj=cnpj_canonico,sigla=sigla_canonica,nome=razao_social,
     sede=municipio_sede,grupo=if_else(revisao_documental,'Fronteira: revisao documental','Fronteira: triagem'),decisao,evidencia,fonte,limite)) |>
   mutate(across(where(is.character),decode),sigla=if_else(sigla==''|sigla=='-',nome,sigla)) |>

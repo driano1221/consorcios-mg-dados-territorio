@@ -1,0 +1,13 @@
+{
+  "status": "OK",
+  "figuras": 20,
+  "formatos": [
+    "PNG 300 dpi",
+    "SVG"
+  ],
+  "relacoes_financeiras": 10735,
+  "relacoes_diretas": 5612,
+  "entidades_atlas": 221,
+  "unidades_periodo": 2612,
+  "verificado": "Conservacao dos valores anuais, fontes, denominadores, capacidade, ausencias, tempos, arquivos e manifestos."
+}

@@ -742,3 +742,45 @@ o segundo incorpora `dados.json` ao HTML. Nenhuma fonte e sobrescrita.
 Conferidos os oito anos do CISMEP, totais da cobertura, camadas, selecao de
 Igarape, troca de escala e leitura em tela de 390 px; nova carga sem erros
 JavaScript. O HTML incorpora os dados e pode ser aberto localmente.
+
+## Entrega Visual Da V1
+
+A segunda proposta foi aprovada e implementada. A entrada vigente e
+`outputs/visuais_v1/index.html`; as pastas `prototipo` e `proposta_02` sao
+historicas. A entrega tem seis secoes: leitura da base, pagamentos, CNES,
+tempos, atlas e fontes/arquivos. O HTML incorpora o conjunto interativo;
+as figuras sao arquivos locais relativos, por isso a pasta deve acompanhar
+o HTML ao transferir a entrega. Dados e interacoes nao consultam servicos
+externos. A abertura direta por file:// do pacote final foi bloqueada pela
+politica do navegador de verificacao; os testes interativos usaram servidor
+local. Nao foi declarado teste offline do pacote final.
+
+| Arquivo/pasta | Conteudo e reproducao |
+|---|---|
+| `26_preparar_visuais_v1.R` | Le v1, inventario do atlas e CNES historico; agrega sem alterar fontes |
+| `27_renderizar_visuais_v1.R` | Produz 20 figuras com ggplot2, Noto Sans e paleta aprovada; mapas com sf/patchwork |
+| `28_montar_visuais_v1.py` | Incorpora dados/CSS/JS ao HTML, registra hashes e gera ZIP para compartilhar |
+| `outputs/visuais_v1.zip` | Pacote com HTML, figuras e dados; extrair a pasta inteira |
+| `visuais_v1.html`, `.css`, `.js` | Interface e interacoes da entrega aprovada |
+| `outputs/visuais_v1/figuras/` | 20 PNG a 300 dpi e 20 SVG; nomes e interpretacao no catalogo |
+| `outputs/visuais_v1/dados/` | CSV dos graficos, JSON interativo, preparacao RDS e manifesto SHA-256 |
+| `dados/catalogo_figuras.csv` | Correspondencia figura, pergunta, tabela de dados e secao |
+| `tests/17_validar_visuais_v1.py` | Conciliacao independente com os CSVs v1, hashes, PNG/SVG e links |
+| `checks/17_visuais_v1.json` | Resultado da verificacao de dados/arquivos |
+| `outputs/visuais_v1/qa/` | Capturas da revisao e registro das verificacoes no navegador |
+
+Executar 26 e 27 com Rscript, depois 28 e teste 17 com Python, sempre da raiz
+do repositorio. O teste 16 confirma a conservacao da v1. Dependencias R ja
+existentes: dplyr, tidyr, readr, sf, jsonlite, ggplot2, scales, stringr,
+stringi, patchwork, ragg e svglite. Python usa a biblioteca padrao.
+
+Interacoes: ranking por periodo, trajetoria financeira e municipios
+pagadores por consorcio; atlas de 221 entidades por periodo, funcao e tipo,
+camadas de pagamento/unidades/CNM, enquadramento regional/estadual e consulta
+municipal. Exporta CSV dos filtros e SVG; mapa tambem exporta PNG em alta
+resolucao. O PNG do mapa gerado pelo navegador usa dimensoes em pixels,
+enquanto os 20 PNG gerados em R possuem metadado de 300 dpi.
+
+O atlas anterior e os dois mapas de 16/09 tiveram textos/universos revistos.
+O script 27 atualiza tambem os caminhos antigos dos dois PNG em
+`outputs/figuras/`. A capacidade historica nao e projetada para 2026.

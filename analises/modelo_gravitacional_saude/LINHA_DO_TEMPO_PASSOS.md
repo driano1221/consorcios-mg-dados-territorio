@@ -457,3 +457,22 @@ interpretaveis; nenhum indice PCA escolhido. Leitos SUS continuam zero nas
 54 entidades diretas desse ano, limitacao ja conhecida. Testes 13, 15 e 16
 confirmam a conservacao e as regras. A proxima decisao depende da formula
 da equipe, inclusive para combinar capacidade, tempo e valores monetarios.
+
+## Complemento Visual Da V1
+
+Depois da revisao dos produtos de 16/09, Adriano pediu os graficos antes de
+enviar a formula da equipe. A primeira previa foi rejeitada. A leitura
+integral do vault de design orientou uma segunda proposta, aprovada, que
+foi ampliada para a entrega em `outputs/visuais_v1/index.html`.
+
+Agora o mesmo exemplo Igarape-CISMEP/2019 pode ser consultado no atlas:
+selecionar CISMEP, 2019 e clinica fixa mostra duas unidades; selecionar
+Igarape informa R$ 4.740.790,51 e 81 registros financeiros. Ao trocar
+para 2021, aparecem uma clinica e 54 municipios pagadores. O retrato
+atual de 2026 fica separado e nao exibe pagamentos de 2026, que nao foram
+coletados nesta serie.
+
+As 20 figuras cobrem pagamentos, perfis CNES, tempos e cobertura. Seus CSVs
+permitem conferir os numeros e suas imagens servem para reuniao ou relatorio.
+A etapa visual nao escolheu massa, indice ou amostra final do modelo.
+O proximo passo e receber a formula e verificar sua compatibilidade com a v1.

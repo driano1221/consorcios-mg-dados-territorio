@@ -1,5 +1,14 @@
 # Modelo Gravitacional De Saude - MG
 
+**Consulta visual da v1:** abra localmente
+[outputs/visuais_v1/index.html](outputs/visuais_v1/index.html).
+A pagina reune pagamentos e cobertura, perfis CNES, tempos e atlas por
+consorcio/ano. Sao 20 figuras em PNG 300 dpi e SVG, com dados CSV e fontes.
+Os produtos ficam locais; os scripts 26 a 28 reproduzem a entrega.
+Para compartilhar, use `outputs/visuais_v1.zip` e extraia a pasta inteira:
+o HTML precisa das subpastas `figuras` e `dados` ao lado dele.
+O proximo passo e discutir a formula da equipe com a base, antes de estimar.
+
 ## Comece Aqui: Base V1 — 24/09/2026
 
 A v1 organiza o que ja foi coletado em **duas tabelas**. Uma linha significa
