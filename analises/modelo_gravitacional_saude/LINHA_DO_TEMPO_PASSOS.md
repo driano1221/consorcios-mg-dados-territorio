@@ -588,4 +588,30 @@ Na amostra comum, S3 repete S1. A ampliacao so aparece nos nove casos de
 sede. Teste 19 conciliou 186.807 linhas com a v1; fontes preservadas.
 A serie mensal ja coletada explica Brumadinho: a unidade aparece de janeiro
 a junho de 2021, mas nao em dezembro. A causa cadastral ainda nao foi provada.
-Preparacao encerrada; proximo passo e estimar e validar a proposta binaria.
+Preparacao encerrada; naquele marco o proximo passo era estimar a proposta.
+
+### Primeiro Exercicio De Vinculo Financeiro Executado
+
+Adriano autorizou continuar. Script 32 estima pagamento positivo em 2019,
+permitindo varios vinculos e conservando os 853 municipios. Compara clinicas
+e sedes nos mesmos 53 consorcios; depois sedes/misto em 62. Foram executadas
+sensibilidades de horas zero, alertas, distancia/tempo e agregacao, com
+grupos municipais retidos para validacao. Tambem se testaram blocos geograficos.
+
+Distancia apresentou associacao negativa forte. Horas acrescentaram pouco
+entre clinicas; populacao teve sinal negativo condicional, sem explicacao
+causal estabelecida. Sede nao trouxe vantagem relevante na amostra comum.
+A ampliacao de modalidades alterou a associacao das horas e permanece
+exploratoria. Nao se escolheu formula apenas por maior cobertura financeira.
+
+Igarape-CISMEP preservou pagamento R$ 4.740.790,51 e 1.651 horas. No ajuste
+clinico, a probabilidade financeira estimada foi 95,94%; fora do treino,
+96,67%. Isso nao mede a chance de uma futura filiacao juridica. Como
+contraponto, Uberaba-CISVALEGRAN tinha pagamento zero e distancia municipal
+zero, mas o modelo estimou perto de 100%. A proximidade sozinha nao basta.
+
+Um decimo segundo ajuste distinguiu coincidencia municipal, sem inventar
+quilometragem; corrigiu a media desse grupo, mas sem ganho consistente na
+validacao. Problema documentado, nao declarado resolvido. Resultados completos,
+exemplos e limites na metodologia e em outputs/adesao_financeira. A aba visual
+continua com o piloto fracional e deve receber essa nova leitura em seguida.

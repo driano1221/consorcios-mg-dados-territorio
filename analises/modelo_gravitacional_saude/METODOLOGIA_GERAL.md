@@ -2422,3 +2422,173 @@ Uma leitura pontual dos STMG1912.dbc e STMG2012.dbc confirmou CNPJ 0580287700020
 dezembro nao e mero erro do mapa, nem evidencia de que nao existiu oferta
 em todo 2021. A causa da mudanca cadastral/operacional permanece em aberto.
 O arquivo `cismep_brumadinho_presenca_mensal.csv` conserva essa evidencia.
+
+## Estimacao Do Vinculo Financeiro Em 2019: Script 32
+
+Adriano autorizou prosseguir depois da preparacao. Executada a proposta
+binaria: y=1 se pagamento positivo no MIDES, com varios positivos permitidos
+por municipio. A pergunta e se populacao da origem, horas SUS e impedancia
+espacial se associam a presenca de vinculo financeiro entre cada municipio
+e consorcio em 2019. Nao estima valor pago, filiacao juridica, nova entrada,
+fluxo de pacientes, decisao causal ou escolha exclusiva de um consorcio.
+
+Pipeline: produtos do script 31 -> recortes com flags -> tres variaveis
+explicativas transformadas -> GLM binomial/logit -> validacao com municipios
+retidos -> comparacao e sensibilidades -> tabelas, exemplos e teste 20.
+O valor financeiro so define y e contextualiza as perdas; nao pondera a
+regressao. Cada par tem peso um. Nenhum zero foi subamostrado e nenhum
+municipio foi excluido por pagar zero em todas as alternativas do recorte.
+
+### Ajustes Executados E Amostras
+
+| Ajuste | Consorcios | Pares | Pagos | Municipios sem pagamento no recorte |
+|---|---:|---:|---:|---:|
+| Clinicas, principal | 53 | 45.209 | 771 | 159 |
+| Sedes, mesma amostra | 53 | 45.209 | 771 | 159 |
+| Sedes ampliadas | 62 | 52.886 | 1.299 | 74 |
+| Misto ampliado | 62 | 52.886 | 1.299 | 74 |
+| log(1+horas), incluindo CISVAS | 54 | 46.062 | 781 | 150 |
+| Sem entidades com alerta temporal da v1 | 51 | 43.503 | 751 | 174 |
+
+Todos contem 853 municipios. O misto nos 53 e igual ao clinico, por isso
+nao se estimou duplicata. Os nove adicionais continuam sendo modalidades
+moveis/nao clinicas; sedes sao referencias cadastrais sem vigencia historica
+confirmada. Dez ausencias de capacidade continuam fora desses ajustes.
+Nao se imputou capacidade zero nos dez. CISVAS possui um destino, portanto
+log(1+horas) permite inclui-lo e sua impedancia dispensa ponderacao entre unidades.
+
+Ao todo, doze especificacoes: quatro principais acima, tempo no lugar de km,
+distancia de referencia 0,5 e 5 km (principal 1 km), menor distancia no lugar
+da ponderada, inclusao de horas zero, exclusao de alertas, retirada das horas
+e indicador intramunicipal. Os onze primeiros foram definidos antes de olhar
+resultados; o ultimo foi acrescentado apos diagnosticar excesso de confianca
+na distancia zero. Nao houve selecao automatica da melhor formula.
+
+### Estimador, Incerteza E Validacao
+
+Mantida a formula da secao anterior. Estimacao por IRLS de `stats::glm`,
+familia binomial, ligacao logit, sem regularizacao. Convergencia, posto,
+gradiente e probabilidades finitas conferidos. Referencia do procedimento:
+[documentacao oficial de glm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/glm.html).
+
+Intervalos de 95% sao assintoticos normais, usando `sandwich::vcovCL` com
+agrupamento simultaneo por municipio e consorcio, HC1, ajuste G/(G-1) e
+subtracao HC0 dos pares unicos (`multi0=TRUE`). Nao foram usados erros iid
+por linha nem correcao artificial de autovalores; as matrizes obtidas sao
+positivas definidas. A aproximacao tem limites com 51 a 62 grupos de
+consorcios e nao elimina vies de variaveis omitidas, dependencia espacial
+entre grupos ou simultaneidade. [Referencia oficial do estimador](https://sandwich.r-forge.r-project.org/reference/vcovCL.html).
+
+Validacao de cinco grupos, semente 24092026, sem repartir pares do mesmo
+municipio entre treino e teste. A divisao sorteada e comum a todos os modelos.
+Nos quatro principais e no teste intramunicipal, usou-se tambem k-means sobre
+os centroides ja existentes no pacote visual, sem usar respostas. Os cinco
+blocos geograficos tem 326, 199, 88, 93 e 147 municipios, sem faixa de exclusao
+nas fronteiras. Isso testa transferencia espacial limitada dentro de MG,
+nao outros anos, novos consorcios ou regioes institucionalmente equivalentes.
+
+Referencias calculadas so no treino: prevalencia geral e frequencia por
+consorcio, esta suavizada por (positivos+0,5)/(municipios+1). Metricas:
+logloss (penaliza erro confiante), Brier (erro quadratico da probabilidade),
+average precision (AP, qualidade da ordenacao dos pagamentos) e ROC-AUC.
+AP considera empates; nao e percentual de acertos ou precisao num limiar.
+[Definicao de AP no scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html).
+Calibracao compara media prevista e fracao paga em faixas fixas de
+probabilidade. `fold=0` agrega todas as previsoes fora do treino; 1 a 5
+reportam cada grupo. Referencias de prevalencia podem variar entre folds,
+logo sua AP agregada nao precisa coincidir exatamente com a prevalencia global.
+
+### Resultados E O Que Permitem Dizer
+
+| Ajuste | Logloss municipal | Brier municipal | AP municipal | Logloss espacial | AP espacial |
+|---|---:|---:|---:|---:|---:|
+| Clinicas 53 | 0,03297 | 0,00891 | 0,6679 | 0,03637 | 0,6304 |
+| Sedes 53 | 0,03340 | 0,00898 | 0,6620 | 0,03658 | 0,6266 |
+| Sedes 62 | 0,05062 | 0,01386 | 0,6203 | 0,05594 | 0,5757 |
+| Misto 62 | 0,05036 | 0,01382 | 0,6232 | 0,05588 | 0,5770 |
+
+Nos 53 clinicos, a referencia de prevalencia tem logloss 0,08635 e Brier
+0,01676 na validacao municipal; frequencia por consorcio, 0,08527 e 0,01671.
+O modelo supera ambas. Nao traduzir AUC 0,9863 em 98,63% de acerto: prever
+zero sempre ja acertaria 98,29% das linhas, mas ignoraria todos os pagamentos.
+Sedes e clinicas sao proximas na amostra comum; nao ha evidencia aqui de
+vantagem relevante de usar a sede. Os 62 mudam amostra e prevalencia, portanto
+nao comparar seus escores com os 53 como se fosse apenas mudanca espacial.
+
+No ajuste clinico completo:
+
+| Variavel | Coeficiente | IC95 agrupado |
+|---|---:|---:|
+| log(populacao de origem) | -0,2856 | -0,4457 a -0,1256 |
+| log(horas SUS clinicas) | 0,1609 | -0,1163 a 0,4381 |
+| Impedancia ponderada | -3,4426 | -3,7079 a -3,1774 |
+
+Distancia tem associacao negativa forte. Horas apresentam sinal positivo,
+mas intervalo inclui zero. Retira-las quase nao muda a validacao: logloss
+0,03310 e AP 0,6672. Dobrar horas corresponde a multiplicar as chances
+p/(1-p) por aproximadamente 1,12, mantendo os demais atributos, nao a somar
+12 pontos percentuais na probabilidade. A associacao de horas aumenta para
+aproximadamente 0,575 nos 62, junto com a mudanca de modalidades e amostra;
+nao demonstra validacao mais forte da mesma medida clinica.
+
+A populacao apresenta sinal negativo condicional. Nao se forcou sinal
+gravitacional positivo. Capacidade propria municipal, organizacao regional
+e modalidades distintas podem ser investigadas, mas nao foram medidas aqui
+como explicacao desse sinal. Nao concluir que aumentar populacao reduz
+causalmente adesao. Horas e pagamentos no mesmo ano tambem podem refletir
+relacao reversa entre recursos e vinculos.
+
+As sensibilidades planejadas mantem distancia negativa e horas com intervalo
+incluindo zero no recorte clinico. Escala 5 km tem logloss 0,03229, mas nao
+substituiu a regra de 1 km por ajuste ao resultado. Retirar alertas elimina
+20 pares positivos e R$ 7.246.677,68; conservar horas zero acrescenta dez
+positivos e R$ 1.465.922,21. Nenhuma fonte foi corrigida a partir desses ajustes.
+
+### Calibracao, Falhas Concretas E Teste Adicional
+
+Na validacao municipal, a faixa acima de 80% tem media prevista 92,55%, mas
+85,37% de pagamentos observados (210/246). No teste espacial, 92,74% versus
+80,00% (244/305). A media espacial geral tambem sobe a 2,01% diante de
+1,71% observado. Assim, boa ordenacao nao garante probabilidades individuais
+bem calibradas, sobretudo ao transportar o ajuste geograficamente.
+
+Ha 58 pares cujo municipio contem ao menos uma clinica; 52 pagaram.
+Nesse grupo, o principal preve em media 97,36% fora do treino contra 89,66%
+observados. Exemplos de zero com previsao perto de um: Uberaba-CISVALEGRAN,
+Uberlandia-AMVAP SAUDE, Ipatinga-CONSAUDE. Localizar clinica no municipio nao
+prova pagamento ou filiacao. Distancia zero na malha nao e viagem real nula.
+
+Acrescentou-se, como exploracao posterior, indicador de coincidencia municipal
+sem inventar quilometragem. A media cai para 87,92% nesse grupo, mas logloss
+global municipal muda pouco (0,03291), Brier piora (0,00901), AP cai a 0,6584
+e logloss espacial piora levemente (0,03646). O coeficiente do indicador
+varia bastante entre folds. Portanto, nao foi adotado como correcao definitiva
+nem se declarou resolvido o problema. Os pares continuam na base.
+
+### Exemplo Real E Continuidade
+
+Igarape-CISMEP/2019: 43.045 habitantes; R$ 4.740.790,51 pagos; y=1; horas
+1.417 em Betim e 234 em Brumadinho, total 1.651. Impedancia ponderada em km
+2,966703. No ajuste completo clinico:
+
+    eta = 15,2323 - 0,2856*ln(43045) + 0,1609*ln(1651) - 3,4426*2,966703
+    p = exp(eta)/(1+exp(eta)) = aproximadamente 95,94%
+
+Retendo Igarape e seu grupo fora do treino, a previsao e 96,67%; usando
+sedes nos mesmos 53, 99,81%. Sao estimativas do vinculo financeiro em 2019,
+nao probabilidades observadas nem previsoes de uma futura adesao juridica.
+O exemplo nao valida sozinho o modelo e deve acompanhar os erros acima.
+
+O teste 20 reestima cada especificacao em SciPy por trust-exact, reconcilia
+pagamentos/variaveis com o script 31, reconstrui a covariancia agrupada,
+confere o score de cada treino e as previsoes, verifica ausencia de municipios
+compartilhados entre treino/teste e calcula metricas independentemente com
+scikit-learn. Os manifestos protegem as fontes e produtos. Ambiente em
+`ambiente.txt`; nao foi necessario instalar bibliotecas.
+
+Proximo marco: incorporar essa leitura na aba de modelo, preservando a
+distincao do piloto fracional; antes de conclusoes finais, tratar calibracao
+intramunicipal, alternativas institucionais e comparabilidade das modalidades.
+Vigencia das sedes, fotografia CNES de dezembro e malha estatica continuam
+limitacoes. O exercicio ja permite discutir a associacao espacial com dados
+reais; nao encerra os modelos longitudinais nem a agenda documental geral.

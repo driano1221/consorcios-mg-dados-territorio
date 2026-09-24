@@ -1,0 +1,16 @@
+{
+  "status": "OK",
+  "modelos_reestimados_scipy": 12,
+  "linhas_previsoes": 798408,
+  "checagens": [
+    "fontes e produtos SHA256",
+    "desfecho e valores iguais a preparacao",
+    "coeficientes IRLS versus trust-exact",
+    "erros agrupados em duas dimensoes",
+    "municipios sem vazamento entre treino e teste",
+    "score de cada ajuste no treino",
+    "previsoes e referencias refeitas",
+    "metricas conferidas com sklearn",
+    "exemplo Igarape CISMEP"
+  ]
+}

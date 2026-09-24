@@ -1,22 +1,31 @@
 # Modelo Gravitacional De Saude - MG
 
-**Apos a reuniao de 24/09:** preparar adesao operacional como pagamento
-positivo, permitindo varios vinculos por municipio (confirmacao posterior
-de Adriano). Horas SUS sao a massa inicial; comparar destinos clinicos,
-sedes e cenario misto. Ainda sem nova estimacao: o piloto abaixo explica
-participacoes financeiras, nao esse novo desfecho. O plano contem a prioridade
-vigente; a ultima secao da metodologia registra decisoes, dados reutilizaveis
-e cuidados com normalizacao, populacao e temporalidade.
+**Estimacao binaria executada apos a reuniao de 24/09:** pagamento positivo,
+permitindo varios vinculos por municipio. Script 32 usa populacao, horas SUS
+e distancia em 2019: clinicas/sedes nos mesmos 53 consorcios, ampliacoes
+exploratorias com 62 e sensibilidades, mantendo 853 municipios. Resultados
+em `outputs/adesao_financeira/`: comece por `amostras.csv`, `validacao.csv`
+(fold=0 resume a validacao completa), `coeficientes.csv` e `exemplos.csv`.
+Distancia tem associacao forte; horas acrescentam pouco entre clinicas.
+Sedes nao superam clinicas de forma relevante; distancias zero exigem cuidado
+com probabilidades individuais. Metodo, referencias e limites na ultima
+secao de `METODOLOGIA_GERAL.md`. A aba visual ainda mostra participacoes,
+nao o novo desfecho binario. Nenhuma fonte v1 ou interface foi alterada.
 
-**Preparacao concluida, sem nova estimacao:** produtos do script 31 em
+```powershell
+Rscript 32_estimar_adesao_financeira.R
+python tests/20_validar_adesao_financeira.py
+```
+
+**Preparacao anterior, preservada:** produtos do script 31 em
 `outputs/cenarios_adesao/`, validados pelo teste 19. Comece por `comparacao_cenarios_2019.csv` e
 `inventario_consorcios_2019.csv`. Unidades: 54 consorcios com horas conhecidas,
 53 positivas; sedes/misto: 63 conhecidas, 62 positivas, incluindo nove de
 modalidades moveis/nao clinicas como sensibilidade. Dez continuam sem horas.
 As 853 origens e todos os pagamentos/zeros foram preservados em tres grades
 com flags, somando 186.807 linhas. Sedes atuais/cadastrais nao comprovam sede
-historica. A especificacao recomendada, as perdas e o exemplo Igarape-CISMEP
-estao na ultima secao da metodologia; o proximo trabalho e a estimacao binaria.
+historica. As perdas e o exemplo Igarape-CISMEP estao documentados na
+metodologia; essa preparacao alimenta o script 32.
 
 ```powershell
 Rscript 31_preparar_cenarios_adesao.R

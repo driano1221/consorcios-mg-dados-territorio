@@ -7,7 +7,17 @@ deve criar uma segunda numeracao de etapas.
 
 ## Leitura Do Estado
 
-**Prioridade apos a reuniao de 24/09 e esclarecimento posterior de Adriano:**
+**Estado vigente, apos estimacao autorizada (script 32):** vinculo financeiro
+binario estimado em 2019, com 853 municipios e comparacao clinicas/sedes nos
+mesmos 53 consorcios. Ampliacoes sedes/misto com 62 sao exploratorias.
+Doze especificacoes, validacao municipal e espacial, coeficientes com erros
+agrupados por municipio/consorcio e exemplos exportados. Distancia mostra
+associacao forte; horas acrescentam pouco no recorte clinico. Distancia zero
+gera excesso de confianca em alguns pares; teste intramunicipal preservado
+como sensibilidade posterior, sem ganho consistente. Resultados e limites
+na ultima secao da metodologia. A aba visual ainda mostra o piloto fracional.
+
+**Encaminhamento historico apos a reuniao de 24/09:**
 adesao operacional = pagamento MIDES positivo, permitindo varios vinculos
 por municipio. Preparar comparacao com horas SUS cadastradas e tres destinos:
 unidades clinicas fixas, sede municipal do consorcio e combinacao com sede
@@ -18,7 +28,7 @@ O piloto de participacoes do script 30 permanece como resultado anterior;
 nao foi convertido em modelo de adesao. Nesta atualizacao so houve leitura,
 conferencia dos dados existentes e documentacao, sem nova estimacao.
 
-Proximo marco, dentro do passo 8: especificar o desfecho binario por par e
+O marco naquela leitura, depois executado nos scripts 31/32, era especificar o desfecho binario por par e
 uma formulacao gravitacional compativel com multiplos positivos; inventariar
 horas por unidade/modalidade, sedes e impedancia dos tres cenarios. A soma
 normalizada entre destinos representa atracao relativa, nao automaticamente
@@ -66,7 +76,7 @@ piloto nao encerram o passo 9. Aba local entregue; deploy do passo 10 pendente.
 - [x] **5. Construir a camada-base de tempo rodoviario**
 - [x] **6. Montar o painel analitico anual e um recorte candidato**
 - [x] **7. Executar a EDA e fechar a base v1 para o recorte documentado**
-- [ ] **8. Estimar os tres blocos — piloto transversal de participacoes concluido; blocos longitudinais pendentes**
+- [ ] **8. Estimar os tres blocos — pilotos transversais de participacoes e vinculo financeiro concluidos; blocos longitudinais pendentes**
 - [ ] **9. Testar robustez**
 - [ ] **10. Integrar resultados validados ao dashboard**
 
@@ -309,10 +319,12 @@ nova adesao juridica. Metodo, perdas, resultados e validacao na metodologia.
   vinculos por municipio (esclarecimento de Adriano apos reuniao de 24/09);
 - [x] preparar inventario, rotas, grades e especificacao recomendada para
   unidades/sedes/misto com horas SUS em 2019 (script 31); teste 19;
-- [ ] estimar o desfecho binario, reportando premissas propostas de ano,
+- [x] estimar o desfecho binario, reportando premissas propostas de ano,
   impedancia, zeros/agregacao, vigencia das sedes e modalidades de capacidade;
-- [ ] justificar elegibilidade do cenario estadual e comparar amostra comum
-  com ampliada; recuperar sede nao recupera automaticamente capacidade;
+- [x] comparar amostra comum e ampliada sem atribuir ganho de cobertura a
+  melhora do modelo (script 32); validade institucional permanece limitada;
+- [ ] validar elegibilidade institucional e vigencia das sedes relevantes;
+  recuperar sede nao recupera automaticamente capacidade;
 - [ ] distinguir presenca anual do vinculo de evento de primeiro pagamento;
   a extensao de novas adesoes mencionada na reuniao nao foi executada.
 - [ ] entrada: logit ou risco discreto;
@@ -324,6 +336,9 @@ unica regressao.
 
 ### 9. Testar Robustez
 
+- [x] no piloto binario: km/tempo, escala da distancia, minimo/ponderacao,
+  horas zero, exclusao de alertas temporais, retirada das horas e distancia
+  intramunicipal; validacao espacial dos quatro ajustes principais;
 - [ ] variar as medidas de capacidade;
 - [ ] variar os conjuntos de alternativas;
 - [ ] comparar pagamento bruto, per capita e proporcional a RCL;
@@ -338,13 +353,13 @@ unica regressao.
 
 ## Proximo Marco
 
-**Vigente apos a preparacao do script 31:** executar a primeira estimacao
-binaria nas clinicas com horas positivas e a comparacao de sedes na mesma
-amostra; tratar ampliacoes de sede/misto como sensibilidades exploratorias.
-A proposta tecnica de formula/validacao esta na metodologia e ainda nao
-foi estimada. Conferir vigencia de sedes conforme relevancia dos casos,
-modalidades e sensibilidade dos zeros. Corrigir a comunicacao de cobertura.
-Inventario documental geral segue como frente complementar.
+**Vigente apos o script 32:** levar os resultados binarios e suas limitacoes
+para a aba do modelo, distinguindo-os do piloto de participacoes, e corrigir
+a comunicacao da cobertura. Antes de promover a modelo final: aprofundar
+elegibilidade institucional, calibracao intramunicipal e capacidade por
+modalidade; conferir sedes historicas conforme relevancia. Nao ampliar o
+modelo apenas porque a amostra maior cobre mais dinheiro. Inventario
+documental geral segue como frente complementar.
 
 **Prioridade anterior a reuniao de 24/09, apos piloto autorizado:** discutir os
 resultados e a disponibilidade institucional das alternativas. Tempo tem
@@ -459,6 +474,7 @@ com alternativas amplas explicitadas como hipotese, ainda sem validacao instituc
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 24/09, estimacao apos preparacao | Script 32 estima vinculo binario, cenarios e sensibilidades; teste 20 independente | Comparar clinicas/sedes na mesma amostra, avaliar ampliacao e expor limites de horas, populacao e distancia zero |
 | 24/09, preparacao apos reuniao | Script 31 inventaria tres cenarios, 186.807 linhas conciliadas e especificacao binaria; teste 19 | Quantificar ampliacao 54->63 (53->62 com horas positivas), preservar ausentes/zeros e separar mudanca espacial de amostral |
 | 24/09, reuniao e esclarecimento posterior | Adesao operacional definida como pagamento positivo com varios vinculos; horas SUS e tres cenarios espaciais encaminhados, ainda sem estimar | Distinguir presenca de vinculo, atracao relativa e participacao financeira; separar agenda documental geral e piloto MG |
 | 24/09, piloto autorizado | Passo 8 parcial: participacoes estimadas, validacao e aba local concluidas | Testar atracao/tempo com desfecho financeiro, explicar selecao e manter limites de acesso institucional |

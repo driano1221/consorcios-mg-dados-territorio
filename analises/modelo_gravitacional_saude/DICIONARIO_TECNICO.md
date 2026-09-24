@@ -899,3 +899,46 @@ sedes usadas sao cadastrais, nao evidencia historica confirmada. Regra da massa:
 clinicas quando existem; outras modalidades somente no complemento exploratorio.
 S1 e S3 coincidem na amostra comum de 53 entidades. A proposta de formula,
 transformacoes, validacao e limites esta na ultima secao da metodologia.
+
+## Estimacao Binaria De Adesao Financeira
+
+Entrada: `32_estimar_adesao_financeira.R`, executado da pasta do modelo.
+Reutiliza dplyr, digest, jsonlite, sandwich e stats em R. Verificacao:
+`python tests/20_validar_adesao_financeira.py`, com NumPy, pandas, SciPy e
+scikit-learn existentes. Produtos locais em `outputs/adesao_financeira/`;
+nenhuma alteracao na v1, nos produtos 31 ou na aba do piloto fracional.
+
+| Arquivo | Conteudo e uso |
+|---|---|
+| `especificacoes.csv` | 12 ajustes, cenario, filtro, impedancia, massa, validacao espacial e etapa planejada/exploratoria |
+| `amostras.csv` | Denominadores reais por ajuste, pagamentos, zeros e municipios sem vinculo |
+| `coeficientes.csv` | Coeficientes completos, erros com agrupamento duplo e IC95 normal assintotico |
+| `coeficientes_validacao.csv` | Coeficientes de cada treino; nao usar os completos para reproduzir probabilidade de validacao |
+| `grupos_validacao.csv` | 853 origens, fold sorteado/espacial e centroides reutilizados |
+| `validacao.csv` | Modelo/referencia x esquema x fold; fold=0 agrega todas as previsoes fora do treino; logloss/Brier menores e AP/AUC maiores sao melhores |
+| `calibracao.csv` | Faixas de probabilidade, contagens e fracao paga observada; nao sao intervalos de confianca |
+| `previsoes.csv.gz` | 798.408 linhas identificadas por modelo/validacao/municipio/consorcio; repeticoes sao ajustes/esquemas, nao novos dados observados |
+| `exemplos.csv` | Todas as alternativas de Igarape e Conceicao do Para nos quatro principais e teste intramunicipal |
+| `vinculos_municipais.csv` | Numero observado e soma das probabilidades por municipio; soma e quantidade esperada, nao precisa ser um |
+| `resultados_modalidade.csv` | Qualidade e calibracao separadas entre horas clinicas e moveis/nao clinicas |
+| `diagnostico_intramunicipal.csv` | 58 pares com ao menos uma clinica no municipio versus demais; principal e sensibilidade |
+| `maiores_erros.csv` | 30 maiores erros absolutos de probabilidade fora do treino no principal; nao autoriza excluir observacoes |
+| `diagnosticos.csv` | Convergencia, gradiente, posto via assert, condicao, extremos e autovalor da covariancia |
+| `ajustes.rds`, `ambiente.txt` | Objetos GLM e versoes para reproducao |
+| `resumo.json`, `fontes.csv`, `manifesto_produtos.csv` | Escopo exploratorio, semente, contagens e SHA256 |
+| `checks/20_adesao_financeira.json` | Reestimacao independente e conciliacao numerica |
+
+Campos de previsao: `adesao_financeira` e 0/1 observado; `valor_total` e
+contexto financeiro sem peso no ajuste; `log_populacao`, `log_horas` e
+`impedancia` sao entradas efetivamente usadas conforme especificacao.
+`mesmo_municipio_destino` vale um quando menor distancia e zero; somente
+`intramunicipal53` o inclui na regressao. Nas demais especificacoes fica
+para diagnostico e segue o destino do cenario: clinica ou sede. `prob_ajuste` usa todos os
+pares; `prob_validacao` usa somente outros municipios no treino;
+`prob_prevalencia` e `prob_frequencia_consorcio` sao referencias do treino.
+`fold`, `validacao` e `modelo` identificam qual treinamento gerou a linha.
+Demais identificadores/modalidades/alertas sao herdados do script 31.
+
+O indicador intramunicipal e posterior ao primeiro diagnostico, portanto
+sua avaliacao nao equivale a confirmacao numa amostra intocada. As duas
+validacoes usam o mesmo ano e os mesmos consorcios; nao ha teste temporal.
