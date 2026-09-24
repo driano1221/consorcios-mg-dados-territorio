@@ -1,14 +1,14 @@
 # Linha Do Tempo Dos Passos - Modelo Gravitacional De Saude
 
-> Revisao de 24/09/2026: passo 6 gerou o painel; a EDA do recorte direto foi
-> executada, mas o passo 7 segue aberto quanto a suficiencia dos dados.
+> Fechamento v1 de 24/09/2026: passo 7 concluido para duas bases delimitadas,
+> financeira e clinica direta. Pendencias mensais/indiretas ficam documentadas.
 > As contagens abaixo conservam os marcos historicos de cada entrega. A
 > formula dos modelos virá da equipe; bacias ficaram para analise posterior.
 
 ## Visao Geral
 
-O trabalho avancou da decisao de escopo para uma observacao anual em preparacao
-para a EDA final. Cada entrega resolveu uma pergunta necessaria para o modelo.
+O trabalho avancou da decisao de escopo ate duas bases anuais verificadas e
+uma EDA de capacidade. Cada entrega resolveu uma pergunta necessaria ao modelo.
 
 ```mermaid
 flowchart LR
@@ -23,8 +23,8 @@ flowchart LR
   C4 --> N3["16/09<br/>filtro clinico e decisoes fechados"]
   N3 --> N6["23/09<br/>painel anual + 13 candidatas"]
   N6 --> N7["24/09<br/>EDA e auditoria de dados"]
-  N7 --> N8["Agora<br/>classificar lacunas e decidir suficiencia"]
-  N8 --> N9["Depois<br/>formula da equipe e modelos"]
+  N7 --> N8["V1 entregue<br/>financeira + clinica direta"]
+  N8 --> N9["Proximo<br/>conferir exigencias da formula da equipe"]
 ```
 
 ## Evolucao Do Projeto
@@ -431,3 +431,29 @@ RCL nao foi preenchida e MIDES nao precisou ser baixado novamente. As referencia
 estao na metodologia e no catalogo de fontes prioritarias. O proximo trabalho
 e completar os meses clinicos prioritarios e obter contratos/acesso municipal
 das redes ainda incompletas; o passo 7 continua aberto nos dados.
+
+### Fechamento V1: Uma Entrega Delimitada
+
+Depois da consulta sobre complexidade, Adriano autorizou priorizar MIDES e
+entregar com os dados existentes. RCL deixou de integrar as tabelas principais;
+documentos viraram apoio. Nao foi exigido recuperar todo prestador indireto
+ou mes antes da entrega. Essa decisao substitui a prioridade imediatamente acima.
+
+O painel de 661.928 linhas foi preservado e gerou duas tabelas: financeira
+(491.328 linhas, 73 entidades, 10.735 pares pagos) e gravitacional direta
+(323.287 linhas, 58 entidades, 5.612 pares pagos). As alternativas sem
+pagamento permanecem. O registro de 776 entidades-ano explica cada inclusao
+e exclusao. O passo 7 foi fechado para essa v1, sem estimar modelo.
+
+No exemplo continuo Igarape-CISMEP, o pagamento de 2019 permanece
+R$ 4.740.790,51; as duas clinicas historicas somam 105 profissionais, 17
+servicos/classificacoes e 1.651 horas cadastrais. Tempo minimo: 15,1 minutos.
+As horas ja estavam coletadas e agora entram como coluna separada. A tabela
+`outputs/base_v1/exemplo_igarape_cismep.csv` mostra os oito anos reais.
+
+A EDA de 2019 encontrou correlacao de 0,808 entre profissionais e horas e
+0,701 entre profissionais e servicos. Recomendadas medidas separadas e
+interpretaveis; nenhum indice PCA escolhido. Leitos SUS continuam zero nas
+54 entidades diretas desse ano, limitacao ja conhecida. Testes 13, 15 e 16
+confirmam a conservacao e as regras. A proxima decisao depende da formula
+da equipe, inclusive para combinar capacidade, tempo e valores monetarios.

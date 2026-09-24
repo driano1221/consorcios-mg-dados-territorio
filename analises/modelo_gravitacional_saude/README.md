@@ -1,5 +1,70 @@
 # Modelo Gravitacional De Saude - MG
 
+## Comece Aqui: Base V1 — 24/09/2026
+
+A v1 organiza o que ja foi coletado em **duas tabelas**. Uma linha significa
+municipio x consorcio x ano. MIDES e o eixo financeiro; nenhuma PCA ou modelo
+foi estimado. Os arquivos ficam em [outputs/base_v1](outputs/base_v1/), localmente.
+
+| Entrega | Linhas | Entidades | Pagamentos positivos | Valor nominal 2014-2021 |
+|---|---:|---:|---:|---:|
+| [Base financeira](outputs/base_v1/base_financeira_v1.csv), 19 colunas | 491.328 | 73 | 10.735 | R$ 3.315.638.156,17 |
+| [Base gravitacional](outputs/base_v1/base_gravitacional_v1.csv), 30 colunas | 323.287 | 58 | 5.612 | R$ 2.865.170.352,56 |
+
+Ambas cobrem 853 municipios e 2014-2021, com disponibilidade das entidades
+variando entre anos. A primeira tem 480.593 linhas sem pagamento positivo;
+a segunda, 317.675. Esses zeros sao possibilidades sem pagamento observado,
+nao vinculos comprovados ou ausencia comprovada de atendimento. Um registro
+MIDES com quatro transacoes zeradas permanece distinguido da falta de registro.
+
+**O que entra:** nucleo cadastral de saude nos anos admissiveis; no recorte
+gravitacional, tambem clinica direta em dezembro e tempo disponivel. Nao ha
+corte de minutos, exigencia de RCL/PDR ou filtro para manter apenas pagadores.
+As 97 entidades da grade anterior foram preservadas: o
+[registro de inclusao](outputs/base_v1/inclusao_entidade_ano.csv) explica as
+776 entidades-ano. As 940 relacoes pagas fora do nucleo (R$ 183,87 milhoes)
+continuam na origem e nesse registro; nao sao uma perda silenciosa.
+
+**O que fica como complemento:** RCL, PDR, contratos, MUNIC, CNM, mensalizacao
+e redes indiretas. Os 5.123 pares pagos de saude sem polo direto continuam na
+base financeira. O indicador de polo e 0/1; zero significa nao identificado.
+Os documentos sustentam classificacoes, mas nao sao requisito de cada pagamento.
+
+| Medida de capacidade — 54 entidades diretas em 2019 | Mediana | Maximo | Entidades com zero |
+|---|---:|---:|---:|
+| Unidades clinicas | 1 | 4 | 0 |
+| Soma dos profissionais SUS por unidade | 25,5 | 262 | 1 |
+| Soma dos servicos/classificacoes SUS por unidade | 3,5 | 44 | 11 |
+| Soma das horas registradas no PF/SUS | 218,5 | 7.866 | 1 |
+| Leitos SUS | 0 | 0 | 54 |
+
+Recomendacao inicial: profissionais e servicos como medidas separadas; horas
+como alternativa e unidades como contexto de escala. Nao ha massa escolhida.
+Profissionais-horas tem correlacao Spearman 0,808; profissionais-servicos,
+0,701. Leitos nao resumem ambulatorios. Profissionais/servicos podem repetir
+entre unidades e horas nao sao horas anuais realizadas. Nenhum CNES foi
+encontrado em duas entidades no mesmo ano; isso nao deduplica pessoas.
+
+**Exemplo real:** Igarape x CISMEP/2019: 43.045 habitantes, R$ 4.740.790,51
+em 81 transacoes; duas clinicas, 105 profissionais e 17 servicos somados,
+1.651 horas cadastradas e tempo minimo de 15,1 min ate Betim. Esses recursos
+caracterizam a oferta do consorcio, nao uma cota exclusiva de Igarape.
+[Veja os oito anos](outputs/base_v1/exemplo_igarape_cismep.csv).
+
+**Como consultar:** leia o [dicionario de variaveis](outputs/base_v1/dicionario_variaveis.csv),
+a [cobertura](outputs/base_v1/cobertura_recortes.csv) e a metodologia.
+CSV usa virgula, ponto decimal, UTF-8 e vazio para NA. Importe CNPJ/IBGE como
+texto para preservar zeros iniciais. Os mesmos dados estao em RDS, com tipos
+preservados. Os arquivos grandes sao locais e nao sao publicados no GitHub;
+scripts e documentacao sao versionados.
+
+**Estado:** passo 7 fechado para esta v1 delimitada. Ha alertas temporais em
+45 entidades-ano diretas (624 pares pagos), conservados no retrato de dezembro.
+Nao representam erros automaticamente. Proxima etapa: receber a formula da
+equipe e conferir suas exigencias, incluindo deflacao. Veja o plano canonico.
+
+## Historico Das Entregas Anteriores A V1
+
 > Ultima continuidade de 24/09: revisao documental de 14 entidades-ano,
 > diagnostico de 53 prioridades temporais e seis fotografias mensais CNES
 > concluidos. A matriz de suficiencia distingue 10.735 pares-ano pagos de

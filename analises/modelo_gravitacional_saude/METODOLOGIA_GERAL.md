@@ -1,6 +1,11 @@
 # Metodologia Geral - Modelo Gravitacional De Saude
 
-> Estado vigente em 16/09/2026: filtro funcional concluido, com 63 destinos
+> Estado vigente: v1 fechada em 24/09/2026 para o nucleo financeiro e a oferta
+> clinica direta de dezembro. Comece pelo README e pela secao final
+> "Fechamento Da Base V1". As secoes anteriores preservam o historico;
+> nao exigem reabrir todas as pendencias para utilizar esta entrega.
+
+> Marco de 16/09/2026: filtro funcional concluido, com 63 destinos
 > clinicos fixos, 20 estruturas fixas nao clinicas e 587 moveis nas 670 unidades.
 > Historico: 398 unidades-ano clinicas, 74 nao clinicas e 1.396 moveis.
 > As secoes datadas preservam a evolucao das camadas anteriores; para preparar
@@ -1639,3 +1644,117 @@ competencias faltantes) e **definicao do alcance** (perdas e recortes). Conferir
 um extrato ou cadastro nao certifica a veracidade de cada atendimento no mundo
 real. O passo 7 permanece aberto por suficiencia, nao porque toda a base esteja
 sem validacao. Esta consulta nao altera os dados ou as decisoes anteriores.
+
+### Fechamento Da Base V1 — 24/09/2026, Apos Autorizacao De Simplificacao
+
+Adriano autorizou quatro entregas: duas tabelas claras, sintese da capacidade,
+encerramento da revisao por criterios objetivos e retrato consultavel. MIDES
+permanece prioritario; RCL e fontes documentais sao complementos. Esta decisao
+substitui a exigencia de aprofundar todos os contratos/meses antes de entregar.
+O passo 7 fica concluido para a v1 delimitada, nao para toda interpretacao futura.
+
+**Antes:** painel integrado com 661.928 linhas/60 colunas, muitos produtos
+auxiliares e pendencias tratadas como prioridade aberta. **Agora:** esse painel
+permanece intacto e origina duas tabelas com finalidade explicita:
+
+| Tabela | Regra reaproveitada do script 15 | Dimensao | Alcance financeiro |
+|---|---|---|---|
+| Financeira v1 | `alternativa_cadastral_saude` | 491.328 linhas, 19 colunas, 73 entidades, 576 entidades-ano | 10.735 pares-ano positivos; R$ 3.315.638.156,17 |
+| Gravitacional v1 | `alternativa_direta_com_tempo` | 323.287 linhas, 30 colunas, 58 entidades, 379 entidades-ano | 5.612 pares-ano positivos; R$ 2.865.170.352,56 |
+
+As duas incluem 853 municipios e oito anos. A primeira conserva 480.593 linhas
+sem pagamento positivo e a segunda 317.675. Isso NAO e uma selecao apenas de
+pagadores. Os zeros resultam da ausencia de pagamento positivo nos extratos
+e do universo cadastral admitido; nao comprovam ausencia de servico. O registro
+zerado com quatro transacoes do CISNORTE/2021 permanece identificavel por
+`tem_registro_mides=TRUE` e `presente_mides=FALSE`.
+
+A regra de abertura/escopo e herdada, sem nova redefinicao de saude. Os 97
+consorcios da grade original permanecem representados em um registro de 776
+entidades-ano: 379 em ambas as bases, 197 apenas na financeira, 169 fora do
+nucleo por escopo e 31 anteriores a abertura. As 169 somam 940 pares pagos e
+R$ 183.865.390,71, mantidos na origem e no registro. As 197 somam 5.123 pares
+pagos/R$ 450.467.803,61, dos quais os 181 casos pagos ja foram conciliados.
+Nao se apagou dado dos multiarea ou de outra classificacao.
+
+**Campos e enriquecimento minimo:** nenhum pagamento, destino ou capacidade
+anterior foi corrigido sem evidencia. Os nomes de exibicao usam sigla existente
+ou razao social, sem inventar abreviacoes. A conciliacao vigente foi trazida
+para classificacao das lacunas; os alertas ST foram associados por raiz/ano.
+`polo_direto_identificado` e 0/1 para presenca de clinica em dezembro; zero
+significa nao identificada. Esse indicador nao preenche tempo ausente.
+
+Horas SUS ja existiam nos arquivos CNES por unidade. A v1 acrescenta a soma
+das horas das clinicas diretas do proprio ano; nao realiza nova coleta. O
+script 09 soma HORAOUTR, HORAHOSP e HORA_AMB de registros PF com PROF_SUS
+positivo; o script 25 agrega essas somas entre unidades. Nao sao horas anuais
+efetivamente trabalhadas, pessoas unicas ou dedicacao exclusiva ao consorcio.
+Profissionais sao distintos dentro da unidade; servicos sao pares
+SERV_ESP:CLASS_SR distintos dentro da unidade. A soma entre unidades pode
+contar novamente as mesmas pessoas ou classificacoes.
+
+**Verificacoes de capacidade:** os 1.942 registros unidade-ano (1.868 originais
+e 74 externos) nao tem duplicacao na chave raiz/ano/CNES. Tambem nao se encontrou
+um mesmo CNES em duas raizes no mesmo ano. Isso nao demonstra ausencia de
+profissionais compartilhados: a exportacao agregada nao permite deduplica-los
+entre unidades. Foram reconciliadas todas as somas clinicas com o painel
+anterior. Nenhuma ausente foi convertida em zero pelo script 25; valores zero
+dos modulos coletados conservam sua interpretacao cadastral.
+
+A EDA usa as 379 entidades-ano, e nao suas repeticoes por municipio. Contem
+45 perfis (cinco medidas x nove periodos), quantis, zeros, nulos, concentracao
+nas cinco maiores observacoes e 90 correlacoes por periodo/par de medidas.
+O periodo agregado repete entidades em anos diferentes e nao e uma amostra
+independente; nao ha p-valores ou inferencia. Perfis por funcao/tipo CNES
+usam as 1.942 unidades-ano, incluindo as fora do nucleo, sem mistura-las na
+capacidade clinica das duas tabelas.
+
+Em 2019, nas 54 entidades diretas, profissionais tem mediana 25,5, maximo
+262 e um zero; servicos, mediana 3,5, maximo 44 e 11 zeros; horas, mediana
+218,5, maximo 7.866 e um zero. ACISPES tem os tres maximos, conferidos nos
+agregados das unidades. As cinco maiores entidades concentram 34,9% das
+contagens de profissionais, 38,1% das de servicos e 47,6% das horas. Sao
+concentracoes cadastrais; nenhum extremo foi eliminado por ser grande.
+Spearman: profissionais-horas 0,808; profissionais-servicos 0,701;
+servicos-horas 0,620. Recomendacao: profissionais e servicos como medidas
+separadas, horas como alternativa, unidades como contexto. Isso nao escolhe
+a massa da formula. Leitos continuam complemento, sem utilidade discriminante
+em 2019 nesse recorte, conforme ja documentado. Nao se ajustou PCA.
+
+**Criterio de encerramento:** a v1 foi liberada porque identidade/chave,
+conservacao dos pagamentos, competencia dos destinos, coerencia das medidas,
+ausencias/zeros e rastreabilidade das exclusoes foram verificados. Presenca
+parcial e mudanca de tipo sao sinalizadas, sem converter dezembro em media
+anual: 45 entidades-ano diretas com alerta abrangem 624 pares pagos. A serie
+mensal completa e prestadores indiretos permanecem questoes de outra cobertura,
+nao falhas ocultas que impeçam entregar este recorte.
+
+Erros comprovados de identidade/valor/destino/ano bloqueiam nova liberacao ate
+correcao. Falta de RCL nao exclui observacao; falta de polo impede apenas a
+entrada no recorte gravitacional direto; cadastro de dezembro permanece
+fotografia. Contratos, MUNIC e CNM ficam como apoio ja preservado. Coleta
+adicional so se reabre por exigencia concreta da pergunta ou nova evidencia.
+
+**Exemplo:** Igarape-CISMEP/2019 conserva populacao 43.045, R$ 4.740.790,51,
+81 transacoes, duas clinicas, 17 contagens de servicos e 105 profissionais.
+Acrescenta 1.651 horas dos registros PF dessas clinicas. Tempo minimo 15,1
+minutos ate Betim, mediana 20,45 e maximo 25,8. A coluna herdada
+`distancia_minima_km` e a distancia ate o destino de menor tempo (17,748 km
+no exemplo); nao foi calculada como minimo independente de quilometragem.
+O nome foi preservado para compatibilidade, com significado corrigido no
+dicionario. Recursos caracterizam a oferta, nao uma cota exclusiva do municipio.
+
+**Limites da liberacao:** cobertura indireta/movel permanece na base financeira;
+o recorte direto conserva 52,3% dos pares pagos e 86,4% do dinheiro do nucleo.
+Valores sao nominais; deflacao depende da preparacao da especificacao. A
+matriz e estatica entre sedes; cadastro nao mede producao; capacidades somadas
+e tempo minimo ainda exigem combinacao justificada na formula. Variaveis de
+eventos descrevem trajetorias precomputadas, mas a v1 nao substitui os conjuntos
+de risco/defasagens para modelos de entrada ou interrupcao do painel completo.
+
+O script 25 grava CSV e RDS em `outputs/base_v1/` e manifesto SHA-256 de entradas
+e saidas. Se qualquer entrada mudar, ele recusa sobrescrever essa versao.
+CSV tem UTF-8, virgula, ponto decimal e vazio para NA; CNPJ e IBGE devem ser
+importados como texto. RDS conserva os tipos. Fonte original MIDES e painel
+anual foram conferidos contra seus hashes anteriores. Testes 13, 15 e 16
+passaram. Reproducao detalhada no dicionario; nenhum modelo ou dashboard alterado.

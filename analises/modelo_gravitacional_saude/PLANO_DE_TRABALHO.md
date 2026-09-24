@@ -12,11 +12,12 @@ deve criar uma segunda numeracao de etapas.
   de conclusao;
 - `[ ] Nao iniciado` depende das etapas anteriores.
 
-**Estado em 24/09/2026:** passos 1 a 6 produziram um painel e um recorte
-clinico direto **candidatos**. A EDA tecnica desse recorte foi executada, mas
-o passo 7 continua em andamento: a suficiencia dos dados para representar a
-saude consorciada em MG ainda nao foi demonstrada. Passos 8 a 10 nao foram
-iniciados; Adriano pediu foco integral nos dados.
+**Estado apos o fechamento da v1 em 24/09/2026:** passos 1 a 7 concluidos
+para a entrega delimitada dos dados: base financeira do nucleo de saude e
+base gravitacional com oferta clinica direta cadastrada em dezembro.
+Adriano autorizou simplificar: MIDES como eixo, RCL complementar e documentos
+como apoio. A v1 nao representa toda a oferta indireta/movel nem define a
+formula final. Passos 8 a 10 nao iniciados; nenhum modelo foi estimado.
 
 - [x] **1. Fechar o universo de consorcios de saude**
 - [x] **2. Auditar os vinculos**
@@ -24,7 +25,7 @@ iniciados; Adriano pediu foco integral nos dados.
 - [x] **4. Construir e temporalizar a capacidade assistencial direta**
 - [x] **5. Construir a camada-base de tempo rodoviario**
 - [x] **6. Montar o painel analitico anual e um recorte candidato**
-- [ ] **7. Executar a EDA e validar a suficiencia dos dados — em andamento**
+- [x] **7. Executar a EDA e fechar a base v1 para o recorte documentado**
 - [ ] **8. Estimar os tres blocos**
 - [ ] **9. Testar robustez**
 - [ ] **10. Integrar resultados validados ao dashboard**
@@ -200,8 +201,11 @@ a especificacao antes da estimacao.
 - [x] conferir os extremos financeiros na fonte, preservar o registro de valor
   zero e fornecer nomes de exibicao para as cinco raizes sem sigla;
 - [x] indexar produtos e registrar fontes, limites temporais e hashes da conciliacao;
-- [ ] explicitar quais recortes e variaveis sustentam cada pergunta empirica,
-  com perdas e ressalvas, antes de declarar qualquer amostra principal.
+- [x] explicitar quais recortes e variaveis sustentam cada pergunta empirica,
+  com perdas e ressalvas: duas bases v1, sem declarar formula/amostra universal;
+- [x] gerar CSV/RDS, dicionario de 30 variaveis, registro das 776 entidades-ano,
+  perfis de capacidade/modalidade, correlacoes e exemplo real de oito anos;
+- [x] conferir conservacao financeira, chaves, zeros, horas e hashes das fontes.
 
 As estatisticas preliminares dos passos anteriores foram confrontadas nesta
 EDA com os extratos financeiros, o CNES historico e a matriz rodoviaria.
@@ -268,7 +272,8 @@ unica regressao.
 
 ## Proximo Marco
 
-Fechar o **passo 7 nos dados**. As 181 entidades-ano sem polo direto estao
+**Passo 7 encerrado para a v1 delimitada**, por autorizacao de simplificacao
+de Adriano em 24/09. As 181 entidades-ano pagas sem polo direto estao
 conciliadas em tabela separada, com classificacao, fonte e limite: 57 de
 oferta movel/regulacao/transporte, 21 anteriores a operacao regional SAMU,
 28 de redes indiretas/programas, seis de cadastro intrano ou posterior,
@@ -289,17 +294,21 @@ Os tres trabalhos seguintes foram executados em 24/09, dentro do passo 7:
   de saude, 5.612 diretos, 1.052 diretos com RCL e 510 com RCL e PDR.
   Os recortes fiscais sao seletivos e nao definem a amostra final.
 
-Proximo trabalho concreto, ainda nos dados:
-1. Obter resultado/contratos do credenciamento CONSARDOCE 001/2018 e listas
-   de prestadores por ano; esclarecer retomada e municipios atendidos pelo
-   CEAE do Circuito em 2017. Pergunta documental enviada a Adriano; sem resposta
-   presumida e sem contato externo em seu nome.
-2. Completar LT/SR/PF nos meses clinicos dos quatro casos diretamente
-   vinculados do piloto; depois ampliar conforme as 53 prioridades temporais.
-   Presenca estavel nao garante capacidade estavel. Redes municipais exigem
-   vinculo e acesso documentados antes de qualquer agregacao ao consorcio.
-3. Julgar a suficiencia com esses resultados, mantendo separados cadastro,
-   pagamento e atendimento; nenhuma estimacao sera iniciada automaticamente.
+**Proximo marco:** confrontar a formula ja definida pela equipe, quando
+enviada, com as duas bases v1. Verificar desfecho, massa, combinacao de
+capacidade/tempo, tratamento dos zeros e deflacao dos valores nominais.
+Nao estimar modelos automaticamente nem ampliar coleta sem uma necessidade
+especifica. A base gravitacional conserva alternativas sem pagamento, sem
+limite arbitrario de minutos e sem exigir RCL/PDR.
+
+**Pendencias registradas, nao bloqueadoras da v1:** prestadores historicos do
+CONSARDOCE, acesso municipal ao CEAE/Circuito e serie mensal completa. As
+53 prioridades temporais continuam documentadas; 45 entidades-ano pertencem
+ao recorte direto v1 e recebem alerta. Para esta entrega, a capacidade mede
+dezembro, nao media anual. Esses casos so reabrem se a pergunta requerer
+rede indireta, acesso contratado ou capacidade ao longo de todo o ano.
+Uma comprovacao nova de erro de identidade/valor/destino/competencia exige
+correcao e nova versao; a fonte atual permanece preservada.
 
 Os extremos financeiros ja conferem com as fontes; nomes completos resolvem
 a exibicao das cinco raizes sem sigla, sem inventar abreviacoes. RCL nao sera
@@ -319,6 +328,7 @@ depois, como lista de exigencias de dados, sem iniciar modelos automaticamente.
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 24/09/2026, fechamento v1 | Passo 7 concluido para entrega delimitada: duas bases, sintese CNES, inclusao/exclusao e testes | Adriano priorizou MIDES e uma entrega simples; RCL e pesquisa documental deixam de bloquear; formula/amostra final continuam por definir |
 | 24/09/2026 | Revisados tres casos prioritarios; coletadas seis fotografias mensais e medida a cobertura dos recortes | distinguir servico movel de polo clinico; corrigir leitura incompleta da Fhemig; dimensionar coleta mensal e selecao fiscal |
 | 24/09/2026 | Conciliadas 181 entidades-ano, conferidos 60 casos financeiros e indexados produtos/fontes | distinguir classificacao resolvida de prestador anual ainda desconhecido; passo 7 continua aberto |
 | 24/09/2026 | Passo 7 reaberto como avaliacao de suficiencia; inventario de 60 variaveis, 181 lacunas entidade-ano e anomalias executado | a auditoria do recorte direto nao validava automaticamente a cobertura do fenomeno completo |

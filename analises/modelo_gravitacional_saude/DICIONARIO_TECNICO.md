@@ -1,5 +1,9 @@
 # Dicionario Tecnico - Modelo Gravitacional De Saude
 
+> Entrega vigente: `outputs/base_v1/`, fechada em 24/09/2026. A secao final
+> "Entrega V1" localiza as duas bases, o dicionario de colunas e a reproducao.
+> As secoes datadas anteriores documentam as fontes e camadas preservadas.
+
 ## Atualizacao De 16/09/2026
 
 O script `11_diagnosticar_universo_e_elegibilidade_saude.R` fecha a camada
@@ -620,3 +624,54 @@ estudos comparaveis, com URLs e limites. Dois artigos foram copiados para
 Sao referencias de pesquisa, nao entradas do painel; os demais foram lidos
 nas paginas dos autores/editoras. A verificacao de correlacoes tem comando R
 reproduzivel na metodologia; nao houve ajuste de PCA ou modelo gravitacional.
+
+## Entrega V1 — Duas Bases E Retrato Dos Dados
+
+Pasta local `outputs/base_v1/`; arquivos grandes continuam fora do GitHub.
+O README e a entrada humana; nao foi criado outro Markdown. O script
+`25_fechar_base_v1_saude.R` usa dplyr e digest ja disponiveis no ambiente.
+
+| Produto | Uso |
+|---|---|
+| `base_financeira_v1.csv` / `.rds` | 491.328 linhas x 19 colunas; nucleo de saude, com e sem pagamentos |
+| `base_gravitacional_v1.csv` / `.rds` | 323.287 x 30; subconjunto com clinica direta em dezembro e tempo, conservando zeros |
+| `inclusao_entidade_ano.csv` | 776 chaves das 97 entidades: destino de cada caso, motivo, pagamentos e alerta temporal |
+| `capacidade_entidade_ano.csv` | 379 chaves diretas sem repeticao municipal; medidas CNES e horas agregadas |
+| `perfil_capacidade.csv` | 45 perfis: quantis, zeros, nulos e concentracao de cinco medidas por periodo |
+| `correlacoes_capacidade.csv` | 90 correlacoes Spearman; constante gera NA identificado, nao zero |
+| `perfil_modalidades_cnes.csv` | Perfis por ano, funcao e tipo; universo das 1.942 unidades-ano |
+| `cnes_multiplas_entidades.csv` | Conferencia de mesmo CNES/ano em raizes diferentes; somente cabecalho porque nenhum caso foi encontrado |
+| `cobertura_recortes.csv` | Quatro recortes x nove periodos reaproveitados da matriz de suficiencia |
+| `cobertura_variaveis.csv` | Nulos e vazios por coluna das duas bases; completude nao implica atendimento comprovado |
+| `dicionario_variaveis.csv` | Definicao, tipo R, tabela e fonte das 30 variaveis distintas |
+| `exemplo_igarape_cismep.csv` | Oito linhas reais de 2014 a 2021 para leitura ponta a ponta |
+| `manifesto.csv` | SHA-256 e tamanho de oito entradas e 14 saidas; impede substituicao silenciosa por fontes diferentes |
+
+As entradas sao o painel anual, os dois arquivos CNES historicos por unidade,
+a conciliacao vigente, o diagnostico temporal, os cadastros original/externo
+e a matriz de suficiencia; os caminhos exatos estao no manifesto. Fontes remotas,
+consultas e extracoes subjacentes permanecem nas secoes anteriores e nos
+manifestos originais. A data antiga incerta do MIDES nao foi reinventada.
+
+Dentro de `analises/modelo_gravitacional_saude`, executar:
+
+```powershell
+& 'C:\Program Files\R\R-4.3.1\bin\Rscript.exe' 25_fechar_base_v1_saude.R
+```
+
+Da raiz do repositorio, validar:
+
+```powershell
+& 'C:\Program Files\R\R-4.3.1\bin\Rscript.exe' analises/modelo_gravitacional_saude/tests/16_validar_base_v1_saude.R
+```
+
+O teste verifica as chaves exatas dos filtros originais, todos os campos herdados,
+pagamentos/zeros, horas das clinicas, motivos de exclusao, CSV/RDS, exemplo real
+e hashes, inclusive preservacao do MIDES e painel originais. Nao se precisa
+rodar novamente scripts de coleta. Mudanca de entrada exige planejar uma v2.
+
+CSV: virgula, ponto decimal, UTF-8 e vazio para NA; importar CNPJ/IBGE como
+texto. Para analise em R, preferir RDS. Horas sao somas cadastrais PF, nao
+horas anuais realizadas; `distancia_minima_km` e a distancia ao destino de
+menor tempo, nome herdado. RCL/PDR e variaveis de risco detalhadas permanecem
+no painel de 60 colunas, sem funcionar como filtros das tabelas v1.
