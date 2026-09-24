@@ -513,13 +513,13 @@ script 09. Nao modifica o painel anual e nao executa consulta paga ao MIDES.
 | `outputs/conciliacao_cismas_2016_mensal.csv` | 12 competencias de 2016, tipo da unidade 6776434, municipio, URL e hash do ST |
 | `outputs/eda_extremos_conferidos_na_fonte_saude.csv` | 60 conferencias financeiras do script 21: valor e transacoes recalculados, origem e diferenca; inclui um caso de valor zero |
 | `outputs/rotulos_entidades_sem_sigla_saude.csv` | Cinco raizes, nome completo canonico e numero de pares pagos; nao inventa siglas |
-| `outputs/inventario_produtos_saude.csv` | Indice dos 122 arquivos de produtos diretamente em outputs nesta execucao, com tamanho, hash, modificacao local e scripts que os mencionam |
+| `outputs/inventario_produtos_saude.csv` | Indice dos produtos diretamente em outputs na ultima execucao, com tamanho, hash, modificacao local e scripts que os mencionam |
 | `outputs/manifesto_entradas_conciliacao_saude.csv` | Caminhos relativos ao repositorio e hashes dos extratos principais e catalogos usados |
 | `outputs/fontes_conciliacao/manifesto.csv` | URL, consulta UTC, caminho, hash e status de cada tentativa de arquivamento documental |
 | `tests/14_validar_conciliacao_lacunas_saude.py` | Verifica conservacao, cobertura, temporalidade, nomes, conferencias financeiras e integridade dos arquivos |
 
 Os dois indices CSV nao indexam um ao outro, evitando hashes circulares.
-Subpastas de cache tem seus proprios manifestos; o indice de 122 produtos nao
+Subpastas de cache tem seus proprios manifestos; esse indice nao
 e um inventario recursivo de cada arquivo bruto. Referencia textual em script
 nao identifica necessariamente o produtor do arquivo. O dicionario e os
 manifestos de cada fonte continuam sendo a referencia de reproducao.
@@ -555,3 +555,60 @@ indicada por comentario e metadados locais, sem log confirmatorio da extracao.
 O complemento usa `fronteira_mides_complementar.csv`, com consulta e data em
 `fronteira_consulta_mides_manifesto.json` (16/09/2026). Data de modificacao de
 arquivo nao deve ser apresentada como data de extracao confirmada.
+
+## Revisao Prioritaria, Piloto Mensal E Suficiencia — 24/09/2026
+
+Esta continuidade usa os mesmos quatro documentos substantivos. Nao altera
+painel, extratos brutos, regras de alternativas ou dashboard. Evidencias
+manuais e scripts ficam no Git; produtos derivados e copias integrais de
+documentos ficam locais em `outputs/`, com URLs e hashes auditaveis.
+
+| Arquivo | Granularidade, produtor e uso |
+|---|---|
+| `evidencias/fontes_prioritarios_2026_09_24.csv` | Nove fontes primarias, URL, paginas, alcance e limite; revisao manual. Aviso do CONSARDOCE e de autoria do consorcio, publicado em jornal |
+| `evidencias/revisao_prioritarios_2026_09_24.csv` | 14 chaves raiz-ano; decisao, servico, CNES quando associavel, base da associacao, periodo e pendencia. Todas sem disponibilidade clinica anual integral recuperada |
+| `23_avaliar_temporalidade_cnes_saude.py` | Diagnostico a partir da presenca mensal original/externa e elegibilidade de dezembro; flags opcionais coletam piloto, arquivam fontes e verificam candidato CONSARDOCE |
+| `outputs/diagnostico_necessidade_mensal_unidades_saude.csv` | 482 unidades-ano com algum tipo clinico; 58 com prioridade temporal; meses presentes nao significam necessariamente meses clinicos |
+| `outputs/diagnostico_necessidade_mensal_entidades_saude.csv` | 405 entidades-ano com algum tipo clinico, sendo 53 prioritarias; estabilidade de tipo/presenca nao prova estabilidade de capacidade |
+| `outputs/piloto_cnes_competencias_saude.csv` | Seis fotografias unidade-competencia: CNPJ proprio/mantenedor, tipo, municipio, vinculo, leitos, servicos, profissionais, CBO e horas SUS; sem identificadores pessoais |
+| `outputs/manifesto_cnes_piloto_temporal.csv` | 24 arquivos ST/LT/SR/PF, URL, caminho, SHA-256, bytes e verificacao UTC; quinze DBC novos e nove reutilizados nesta primeira execucao |
+| `outputs/manifesto_fontes_prioritarios_saude.csv` | Nove fontes com caminho, URL, hash e resultado do arquivamento; oito copiadas. Pagina de transporte Lagoa Santa lida via web; copia local retornou 403 |
+| `outputs/verificacao_cnes_candidato_consardoce.csv` | Oito ST de dezembro pesquisados pelo codigo 5941954, sem restringir CNPJ: ausente em todos; nao exclui atendimento sob outro cadastro |
+| `24_delimitar_suficiencia_dados_saude.R` | Le painel e diagnostico; mede oito recortes em nove periodos, incorpora revisao e confere quatro janelas financeiras; requer dplyr ja utilizado |
+| `outputs/matriz_suficiencia_recortes_saude.csv` | 72 linhas: oito recortes, oito anos e total. Quantidades, valor, RCL e PDR; os recortes se sobrepoem e nao devem ser somados |
+| `outputs/impacto_prioridade_temporal_saude.csv` | 53 prioridades; 48 com pagamento no nucleo saude, 692 pares e R$ 394.645.232,32; impacto potencial de temporalidade, nao valor incorreto |
+| `outputs/conciliacao_lacunas_com_revisao_prioritaria_saude.csv` | Visao vigente das 181 chaves: conserva classificacao/valor anteriores, adiciona 14 revisoes e `decisao_vigente`; sempre ler pendencia/alcance junto da decisao |
+| `outputs/pagamentos_janelas_clinicas_piloto_saude.csv` | Oito grupos para quatro casos; 1.022 transacoes por janela, somando `valor_final`; data financeira nao e data de atendimento |
+| `tests/15_validar_suficiencia_e_piloto_saude.py` | Conservacao das chaves/valores, identidade municipal, restricoes de vigencia, prioridades, seis fotografias, recortes e hashes |
+
+O painel possui campos documentais anteriores. A visao complementar vigente
+nao deve ser confundida com alteracao dessas colunas no RDS. Em particular,
+`cnes_associado=6019463` no Circuito e uma ligacao por nome/localidade e noticia;
+nao consta como codigo no instrumento citado nem como CNPJ direto do consorcio.
+`polo_anual_integral_recuperado=FALSE` impede interpretar identificacao parcial
+como disponibilidade integral. Regulacao e transporte nao recebem CNES ficticio.
+
+Reproducao nesta pasta, apos os produtos anteriores:
+
+```powershell
+python 22_conciliar_lacunas_e_proveniencia_saude.py
+python 23_avaliar_temporalidade_cnes_saude.py --coletar-piloto --arquivar-fontes --verificar-candidato
+Rscript 24_delimitar_suficiencia_dados_saude.R
+python -c "import runpy; runpy.run_path('22_conciliar_lacunas_e_proveniencia_saude.py')['inventory']()"
+python tests/14_validar_conciliacao_lacunas_saude.py
+python tests/15_validar_suficiencia_e_piloto_saude.py
+```
+
+O piloto reutiliza Python 3.11+, o conversor e dependencias do script 09.
+Arquivos ja baixados sao reutilizados; `ja_em_cache` descreve cada execucao.
+Sem flags, o script 23 apenas refaz o diagnostico, sem rede. O arquivamento
+documental nao faz OCR nem substitui leitura: PDFs escaneados foram lidos
+com OCR portugues e conferidos visualmente nas paginas citadas; OCR e
+previas sao auxiliares locais, sem expor CPFs ou assinaturas na tabela publica.
+Para apenas atualizar hashes apos novos produtos, usar a chamada `inventory`
+acima; isso nao refaz a conciliacao. Teste 13 continua na raiz do repositorio.
+
+Nao foi repetida a consulta MIDES. A conferencia usa o extrato original ja
+identificado por hash, preservando sua data de extracao incerta e o manifesto
+do complemento. Rerodar a consulta original sem outra necessidade nao resolve
+prestadores/contratos e sobrescreveria a fonte existente.

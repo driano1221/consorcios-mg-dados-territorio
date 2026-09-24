@@ -1369,12 +1369,13 @@ em dezembro: CIAS/2015, CISMAS/2016, Alto Sao Francisco/2017 e CISPARA/2017.
 A leitura direta dos 12 ST de 2016 mostrou que o **CISMAS, CNES 6776434**, era
 tipo 36 em janeiro-junho e tipo 64 em julho-dezembro. A mesma unidade permaneceu
 cadastrada; a mudanca de tipo nao prova fechamento nem ausencia de atendimento.
-Nao foi estimada capacidade clinica para os meses iniciais. URL e hash de cada
+Naquela primeira conciliacao nao foi extraida capacidade para os meses iniciais;
+o piloto posterior descrito abaixo recupera junho/2016. URL e hash de cada
 competencia estao em `outputs/conciliacao_cismas_2016_mensal.csv`.
 
-No Circuito das Aguas, o documento Fhemig ja auditado menciona explicitamente
-programas de janeiro/2014 a dezembro/2016: a conciliacao passa a cobrir 2016,
-sem estender a 2017. As atas de 2016 e 2017 foram localizadas no indice oficial,
+No Circuito das Aguas, a primeira leitura da Fhemig utilizou a passagem de
+2014-2016. A revisao abaixo corrige essa leitura incompleta: as paginas 9-10
+tambem descrevem instrumentos de 2017-2019. As atas de 2016 e 2017 foram localizadas no indice oficial,
 mas o PDF nao ficou legivel e o download retornou HTTP 403. Seus conteudos nao
 foram utilizados. A pagina CIS-URG foi lida pela consulta web, mas sua copia
 local tambem retornou 403; o manifesto distingue leitura de disponibilidade
@@ -1405,3 +1406,108 @@ O teste 14 verifica as 181 chaves, conservacao financeira, datas de inicio,
 mudanca mensal CISMAS, nomes completos, extremos e hashes. Permanecem abertas
 a recuperacao de prestadores indiretos anuais, a capacidade fora de dezembro
 e a suficiencia dos recortes; nenhum modelo foi estimado.
+
+### Prestadores, Temporalidade E Suficiencia — Continuidade De 24/09
+
+**Pergunta:** que parte da relacao financeira observada pode ser ligada a
+oferta clinica documentada, e onde dezembro ou a falta de controles limitam
+a descricao? Fluxo: conciliacao anterior + documentos primarios + CNES
+mensal -> revisao de 14 chaves e seis fotografias -> matriz de recortes.
+O painel de 661.928 linhas/60 colunas e os extratos financeiros permanecem
+intactos. Nenhuma exclusao, imputacao, capacidade anual nova ou modelo foi aplicado.
+
+| Caso prioritario | Antes | Evidencia acrescentada | O que ainda falta |
+|---|---|---|---|
+| CIAS, 2016-2020; 114 pares pagos, R$ 34.343.898,00 | Sem polo clinico direto; contexto de rede/mobilidade | Contrato SAMU de Ouro Preto em fevereiro/2016, com aditivos cobrindo os anos seguintes; regulacao de sete municipios em 2019 | Hospitais receptores e objeto dos outros repasses; nao e possivel atribuir todo o valor MIDES ao contrato localizado |
+| Circuito das Aguas, 2017; 18 pares, R$ 16.603.678,41 | Estrutura direta nao clinica; leitura documental restrita a 2014-2016 | CEAE/Centro Viva Vida municipal identificado; instrumento 2017-2019 e noticia contemporanea sobre atendimento e restricao | Retomada, acesso de cada municipio, cotas e capacidade efetivamente disponibilizada ao CIS |
+| CONSARDOCE, 2014-2021; 40 pares, R$ 12.893.230,11 | Repasses/programas sem prestador anual identificavel | Chamamento de clinica especializada em 2018; ficha CNES atual investigada no historico | Resultado do credenciamento, contratos e prestadores anuais |
+
+No [contrato CIAS/Ouro Preto](https://cias.mg.gov.br/uploads/contratos/Ouro_Preto.pdf),
+paginas 1-3, 11 e 18-25, ha duas USB, uma USA, um VIR e uma base descentralizada.
+O setimo aditivo chega a 03/02/2021; o oitavo a 03/07/2021. Sao servicos moveis,
+nao clinicas fixas. Pequenas diferencas de dia entre os aditivos de agosto/2018
+foram preservadas; nao foi reconstruida continuidade diaria. Vigencia contratual
+nao comprova cada atendimento. No
+[contrato de regulacao de 2019](https://cias.mg.gov.br/uploads/contratos/Contrato_de_REGULAO_SAMU_compressed.pdf),
+paginas 3 e 16, a regra geral e 12 meses desde 01/01/2019, mas Ouro Preto e
+Mariana possuem prazo excepcional de tres meses. A central fica em Belo
+Horizonte; nao foi transformada em destino de pacientes. A ata de 21/12/2020
+descreve preparacao de credenciamento clinico, sem comprovar sua operacao anual.
+
+**Correcao documental Circuito:** a
+[ata de julgamento Fhemig](https://www.fhemig.mg.gov.br/files/3070/ConsorcioEntidades-Filantropicas---CSSFe/33901/Ata-de-Julgamento---CSSFE--Edital-06/2024.pdf?preview=1),
+paginas 9-10, relaciona instrumento CEAE de janeiro/2017 a dezembro/2019,
+mantendo administracao, gestao tecnica e recursos humanos municipais. A coluna
+de experiencia pontuada nao corresponde automaticamente a vigencia. Ha referencia
+a transferencia de gestao em novembro/2019, sem fim identificavel na nota.
+A [noticia municipal de 03/05/2017](https://saolourenco.mg.gov.br/noticia.php?id=903)
+informa custeio municipal em janeiro-abril e suspensao parcial com prejuizo ao
+acesso externo. Nao se sabe quando esse acesso foi integralmente restabelecido.
+O CNES 6019463 foi associado por nome e localidade ao Centro Viva Vida; o
+instrumento citado nao fornece esse codigo. Nos ST de abril/dezembro de 2017,
+a mantenedora e o municipio, CNPJ 18188219000121, e nao o CIS. Essa associacao
+documental nao transforma toda a capacidade municipal em capacidade consorciada.
+
+No CONSARDOCE, o
+[aviso primario publicado em agosto/2018](https://www.hojeemdia.com.br/polopoly_fs/1.647310.1534168964!/menu/standard/file/Editais%20-%2011-08-2018.pdf),
+pagina 3, abre credenciamento de clinica especializada; nao nomeia contratado.
+A [ficha atual CNES 5941954](https://cnes2.datasus.gov.br/Mod_Conjunto.asp?VCo_Unidade=3154305941954)
+exibe cadastro em 12/10/2025. O codigo nao foi encontrado em nenhum dos oito
+ST de dezembro de 2014-2021, mesmo procurando pelo CNES sem filtrar CNPJ.
+Isso impede sua retroacao automatica, mas nao demonstra inexistencia de
+atendimento historico por outro estabelecimento. Fontes, paginas, limites e
+hashes estao nos dois CSV de evidencias e no manifesto local.
+
+**Diagnostico mensal:** entre 482 unidades-ano com algum tipo clinico, 58
+merecem aprofundamento por presenca parcial, mudanca de tipo ou falta de
+clinica em dezembro. Correspondem a 53 entidades-ano; 48 possuem pagamento
+no nucleo cadastral de saude: 692 pares e R$ 394.645.232,32. Este valor mede
+exposicao ao problema temporal, nao erro financeiro ou montante a excluir.
+As outras 352 entidades-ano tem presenca/tipo estaveis, mas sua capacidade
+mensal ainda nao foi verificada. Lista de meses de presenca nao equivale a
+lista de meses de tipo clinico quando ha mudanca cadastral.
+
+| Unidade / vinculo | Competencia | Leitos SUS | Servicos SUS distintos | Profissionais SUS distintos na unidade |
+|---|---|---:|---:|---:|
+| CIAS, 6150063; direto | 01/2015 | 0 | 3 | 24 |
+| CISMAS, 6776434; direto | 06/2016 | 0 | 1 | 3 |
+| Alto Sao Francisco, 2143674; direto | 06/2017 | 12 | 19 | 35 |
+| CISPARA, 6311709; direto | 10/2017 | 0 | 0 | 3 |
+| Centro Viva Vida, 6019463; municipal associado ao Circuito | 04/2017 | 0 | 7 | 35 |
+| Mesma unidade municipal | 12/2017 | 0 | 7 | 22 |
+
+O piloto reutiliza o extrator 09 e 24 arquivos ST/LT/SR/PF: 15 novos DBC
+de capacidade fora de dezembro e nove arquivos ja em cache. Sao fotografias
+pontuais, nao media anual, producao ou profissionais exclusivos do consorcio.
+Os 12 leitos do Alto em junho/2017 nao substituem os 26 conhecidos em
+dezembro/2014-2016; reforcam a necessidade de respeitar a competencia.
+No CISMAS, R$ 899.027,51 foram pagos em janeiro-junho/2016 e R$ 1.468.348,10
+em julho-dezembro. O segundo valor continua valido: pagamento posterior a
+mudanca cadastral nao comprova erro nem data de utilizacao do servico.
+As 1.022 transacoes dos quatro casos diretos foram conciliadas com os
+totais anuais, usando `valor_final`, a mesma medida do painel.
+
+**O que cada recorte sustenta:** contagens abaixo sao municipio-entidade-ano
+com pagamento positivo, nao pacientes nem pares distintos ao longo do tempo.
+
+| Recorte 2014-2021 | Pares-ano pagos | Valor MIDES (R$) | Permite descrever | Nao permite concluir |
+|---|---:|---:|---|---|
+| Grade de 97 entidades | 11.675 | 3.499.503.546,88 | Relacoes financeiras no universo pesquisado | Que todas as entidades/atividades sao de saude |
+| Nucleo cadastral de saude | 10.735 | 3.315.638.156,17 | Pagamentos e sua distribuicao temporal/territorial | Que todo pagamento financia atendimento clinico |
+| Clinica direta e tempo conhecidos | 5.612 | 2.865.170.352,56 | Pagamento associado a cadastro de oferta direta do ano e proximidade municipal | Acesso efetivo; representatividade das redes indiretas |
+| Saude sem clinica direta | 5.123 | 450.467.803,61 | Dimensao financeira das lacunas e perfis documentados | Oferta inexistente ou distancia igual a zero |
+| Direto com RCL | 1.052 | 1.350.630.594,24 | Descricao fiscal dos casos observados, sobretudo 2015-2021 | Cobertura fiscal completa ou amostra aleatoria |
+| Direto com RCL e PDR | 510 | 653.482.902,15 | Comparacao fiscal/territorial restrita a 2019-2021 | Extrapolacao automatica para oito anos |
+
+As linhas se sobrepoem: nao somar a tabela. A decomposicao exata e nucleo
+de saude = direto + sem direto. A matriz CSV tambem registra todos os anos,
+zeros, municipios e entidades-ano. RCL nao foi imputada; PDR/2019 nao foi
+retroagido. Nenhuma amostra final foi escolhida.
+
+**MIDES:** nao foi necessario repetir a consulta. Os extratos existentes
+permitem conferir as janelas financeiras e os 60 casos extremos ja auditados;
+baixar novamente a mesma selecao nao identifica clinicas contratadas ou cotas
+assistenciais. Tampouco recuperaria a data perdida da extracao antiga. Se uma
+nova pergunta exigir historico/objeto adicional ou auditoria de revisoes do
+MIDES, sera preciso guardar outro extrato com consulta e manifesto, preservando
+o atual. O script original sobrescreve sua saida e nao foi executado nesta etapa.

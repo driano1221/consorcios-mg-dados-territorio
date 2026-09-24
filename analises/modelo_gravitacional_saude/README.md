@@ -1,5 +1,13 @@
 # Modelo Gravitacional De Saude - MG
 
+> Ultima continuidade de 24/09: revisao documental de 14 entidades-ano,
+> diagnostico de 53 prioridades temporais e seis fotografias mensais CNES
+> concluidos. A matriz de suficiencia distingue 10.735 pares-ano pagos de
+> saude, 5.612 diretos e 1.052 diretos com RCL. Ha contratos SAMU do CIAS e
+> evidencia parcial para o CEAE municipal do Circuito/2017; faltam os
+> prestadores historicos do CONSARDOCE. Consulte as secoes finais da metodologia
+> e do dicionario. Painel anual e extratos MIDES preservados; passo 7 aberto.
+
 > Integracao de 23/09: o painel anual novo tem 661.928 linhas (853 municipios,
 > 97 entidades e 2014-2021). Pagamentos originais foram preservados; CNES,
 > capacidade e destinos rodoviarios variam pelo ano. O passo 6 esta concluido

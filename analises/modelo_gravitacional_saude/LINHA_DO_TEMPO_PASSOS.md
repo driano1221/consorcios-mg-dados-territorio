@@ -391,3 +391,43 @@ mantem R$ 72.822.301,96 em 186 transacoes. Cinco raizes sem sigla ganharam
 nomes completos de exibicao. Produtos e fontes receberam indices e hashes.
 O passo 7 segue aberto: explicar por que falta um destino nao equivale a
 recuperar o prestador, a vigencia e a capacidade necessarios para medi-lo.
+
+### Continuidade: O Que Foi Recuperado Depois Da Conciliacao
+
+Ainda em 24/09, a sequencia foi **priorizar tres casos -> ler contratos e
+datas -> examinar meses do CNES -> medir o alcance de cada recorte**.
+Nao houve nova etapa cientifica nem estimacao de modelos.
+
+1. **CIAS/2016-2020:** o contrato de SAMU de Ouro Preto e seus aditivos
+   documentam servico movel. Em 2019 ha tambem regulacao para sete municipios,
+   com prazo excepcional menor para Ouro Preto e Mariana. A sede da central
+   nao virou hospital; ainda faltam destinos dos pacientes e nexo dos outros repasses.
+2. **Circuito/2017:** foi corrigida uma leitura incompleta da Fhemig. O documento
+   tambem descreve instrumentos de 2017-2019. A noticia municipal identifica
+   o Centro Viva Vida, mas informa restricao ao acesso externo em maio/2017.
+   O CNES municipal associado e 6019463; nao e a unidade propria 7919204.
+3. **CONSARDOCE/2014-2021:** foi localizado chamamento para clinica em 2018,
+   sem resultado que nomeie contratado. A clinica atual 5941954 nao apareceu
+   nos oito dezembros historicos e nao foi retroagida.
+4. **Temporalidade:** 53 entidades-ano merecem aprofundamento mensal. Foram
+   coletadas seis fotografias para cinco unidades, sem transforma-las em media
+   anual. No CISMAS, junho/2016 tem tres profissionais SUS; dezembro classifica
+   a unidade como central. Os pagamentos de julho-dezembro continuam na base.
+5. **Suficiencia:** dos 10.735 pares-ano pagos do nucleo saude, 5.612 tem clinica
+   direta e tempo. Exigir RCL reduz para 1.052; exigir tambem PDR deixa 510,
+   apenas em 2019-2021. Cada recorte agora tem contagem, valor e limites explicitos.
+
+Exemplo completo desta revisao: **Circuito das Aguas em 2017** tinha 18 pares
+pagos, R$ 16.603.678,41 e nenhum polo clinico direto no painel. Os documentos
+levaram ao Centro Viva Vida de Sao Lourenco; o ST confirmou a mantenedora
+municipal, e os modulos CNES trouxeram 35 profissionais SUS em abril e 22
+em dezembro. Entretanto, a restricao ao acesso externo e a falta de cotas
+impedem entregar automaticamente essa capacidade a todos os municipios do
+CIS. O ganho e uma unidade associada, duas fotografias e uma pendencia precisa;
+o valor financeiro e a classificacao do recorte direto permanecem preservados.
+
+O painel segue com 661.928 linhas e 60 variaveis. Nenhum pagamento foi eliminado,
+RCL nao foi preenchida e MIDES nao precisou ser baixado novamente. As referencias
+estao na metodologia e no catalogo de fontes prioritarias. O proximo trabalho
+e completar os meses clinicos prioritarios e obter contratos/acesso municipal
+das redes ainda incompletas; o passo 7 continua aberto nos dados.

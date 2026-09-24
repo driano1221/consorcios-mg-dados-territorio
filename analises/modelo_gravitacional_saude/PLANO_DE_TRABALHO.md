@@ -276,13 +276,30 @@ oferta movel/regulacao/transporte, 21 anteriores a operacao regional SAMU,
 Os 5.123 pares e R$ 450.467.803,61 foram preservados. Classificar todos os
 casos nao recuperou prestadores fixos anuais nem completou os dados assistenciais.
 
-Proxima investigacao: prestadores e vigencia nos casos com maior perda
-financeira, comecando por CIAS em 2016-2020 (R$ 34,34 milhoes), Circuito das
-Aguas em 2017 (R$ 16,60 milhoes) e CONSARDOCE em 2014-2021 (R$ 12,89 milhoes).
-Consultar as evidencias conciliadas antes de novas buscas. As atas do Circuito
-foram localizadas, mas seus PDFs nao puderam ser lidos; nenhum conteudo foi
-presumido. Em paralelo, delimitar o que cada recorte permite descrever e o que
-depende de nova coleta mensal ou de contratos, sem escolher amostra final.
+Os tres trabalhos seguintes foram executados em 24/09, dentro do passo 7:
+
+- [x] Aprofundar CIAS/2016-2020, Circuito/2017 e CONSARDOCE/2014-2021:
+  14 decisoes complementares, 172 pares pagos e R$ 63.840.806,52 examinados.
+  Contratos SAMU do CIAS e unidade municipal do Circuito foram identificados;
+  prestadores historicos do CONSARDOCE continuam sem confirmacao.
+- [x] Delimitar necessidade mensal: 58 unidades-ano em 53 entidades-ano
+  prioritarias; seis fotografias de capacidade extraidas para cinco unidades.
+  Isso nao constitui a serie mensal completa nem media anual.
+- [x] Medir e documentar a suficiencia dos recortes: 10.735 pares-ano pagos
+  de saude, 5.612 diretos, 1.052 diretos com RCL e 510 com RCL e PDR.
+  Os recortes fiscais sao seletivos e nao definem a amostra final.
+
+Proximo trabalho concreto, ainda nos dados:
+1. Obter resultado/contratos do credenciamento CONSARDOCE 001/2018 e listas
+   de prestadores por ano; esclarecer retomada e municipios atendidos pelo
+   CEAE do Circuito em 2017. Pergunta documental enviada a Adriano; sem resposta
+   presumida e sem contato externo em seu nome.
+2. Completar LT/SR/PF nos meses clinicos dos quatro casos diretamente
+   vinculados do piloto; depois ampliar conforme as 53 prioridades temporais.
+   Presenca estavel nao garante capacidade estavel. Redes municipais exigem
+   vinculo e acesso documentados antes de qualquer agregacao ao consorcio.
+3. Julgar a suficiencia com esses resultados, mantendo separados cadastro,
+   pagamento e atendimento; nenhuma estimacao sera iniciada automaticamente.
 
 Os extremos financeiros ja conferem com as fontes; nomes completos resolvem
 a exibicao das cinco raizes sem sigla, sem inventar abreviacoes. RCL nao sera
@@ -302,6 +319,7 @@ depois, como lista de exigencias de dados, sem iniciar modelos automaticamente.
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 24/09/2026 | Revisados tres casos prioritarios; coletadas seis fotografias mensais e medida a cobertura dos recortes | distinguir servico movel de polo clinico; corrigir leitura incompleta da Fhemig; dimensionar coleta mensal e selecao fiscal |
 | 24/09/2026 | Conciliadas 181 entidades-ano, conferidos 60 casos financeiros e indexados produtos/fontes | distinguir classificacao resolvida de prestador anual ainda desconhecido; passo 7 continua aberto |
 | 24/09/2026 | Passo 7 reaberto como avaliacao de suficiencia; inventario de 60 variaveis, 181 lacunas entidade-ano e anomalias executado | a auditoria do recorte direto nao validava automaticamente a cobertura do fenomeno completo |
 | 24/09/2026 | EDA do passo 7 concluida para o recorte cadastral direto, com auditoria de extremos, capacidade, RCL, alternativas e marcador SUS | medir perdas e separar cadastro clinico de evidencia de atividade SUS antes de qualquer modelo |

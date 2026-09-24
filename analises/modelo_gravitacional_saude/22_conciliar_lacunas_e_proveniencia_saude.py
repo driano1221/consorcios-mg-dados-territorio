@@ -220,7 +220,8 @@ def main():
         if root == '71203715' and year == 2016:
             classification = 'programas_documentados_sem_destino_clinico_identificado'
             annual_url, evidence = d['fonte_principal'], d['evidencia_documental']
-            limit += ' Fonte Fhemig ja auditada descreve explicitamente janeiro/2014 a dezembro/2016; nao estender a 2017.'
+            limit += (' Leitura inicial utilizou o trecho Fhemig 2014-2016; a revisao complementar '
+                      'reconhece instrumentos 2017-2019 nas paginas 9-10. Consultar revisao_prioritarios_2026_09_24.csv.')
             basis = 'auditoria_documental_21_entidades_2026_09_16.csv; alcance_explicito_do_texto'
         if root == '71203715' and year == 2017:
             limit += ' Ata de 17/11/2017 localizada no indice; acesso ao PDF HTTP 403; conteudo nao utilizado.'
