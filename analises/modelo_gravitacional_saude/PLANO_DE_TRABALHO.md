@@ -280,11 +280,15 @@ formula da equipe.** Complemento visual do passo 7, sem reabrir a construcao
 da v1 ou criar outra etapa. A revisao confirmou dois mapas estaticos e um
 atlas funcional; ainda nao existe um pacote de graficos da EDA v1.
 
-Execucao visual iniciada em 24/09 com design-vault. Previa local em
-`outputs/visuais_v1/prototipo/index.html`: cobertura v1, capacidade/2019 e
-mapa CISMEP/2019, com dados reais. E rascunho, nao fechamento da entrega.
-A direcao visual aguarda retorno de Adriano conforme o fluxo da skill;
-com a aprovacao, concluir todos os itens abaixo. Bases e atlas preservados.
+Execucao visual iniciada em 24/09 com design-vault. A primeira previa,
+`outputs/visuais_v1/prototipo/index.html`, foi rejeitada por Adriano: a
+leitura do vault e a proposta visual precisavam de maior profundidade.
+Apos leitura integral das 16 notas de design e inspecao das referencias,
+a segunda proposta esta em `outputs/visuais_v1/proposta_02/index.html`:
+leitura guiada dos pagamentos/cobertura, atlas CISMEP com oito anos reais
+e especificacao dos seis blocos da entrega. E uma proposta navegavel,
+nao o pacote completo. Aguarda avaliacao de Adriano antes da implementacao
+geral, conforme a skill. Bases, atlas original e vault de design preservados.
 
 - [x] revisar o pedido da reuniao, os mapas existentes e sua coerencia com a v1;
 - [ ] ajustar as legendas de universo/data e os textos antigos de status do

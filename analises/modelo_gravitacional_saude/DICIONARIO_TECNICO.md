@@ -723,3 +723,22 @@ produtos sao locais e aguardam aprovacao visual; nao constituem o pacote
 final. Navegacao, uso offline e ausencia de overflow da pagina em tela
 estreita conferidos; figuras mantem rolagem propria para leitura. Teste 16
 reexecutado confirmou conservacao da v1 e dos hashes das fontes.
+
+**Revisao da proposta na mesma data:** a previa acima foi rejeitada e fica
+apenas como historico. A segunda proposta local esta em
+`outputs/visuais_v1/proposta_02/index.html`. Demonstra serie anual financeira,
+cobertura por relacoes e dinheiro, e atlas CISMEP/2014–2021 com ano, camadas,
+recorte regional/estadual e consulta municipal. A terceira aba especifica
+os seis blocos completos, inclusive tempos e comparacao multiarea ainda
+por implementar. Nao e substituto do atlas nem entrega final aprovada.
+
+Reproducao da proposta, a partir da raiz: executar com Rscript
+`outputs/visuais_v1/proposta_02/preparar_dados.R` (prefixado por
+`analises/modelo_gravitacional_saude/`), depois executar com Python
+`analises/modelo_gravitacional_saude/outputs/visuais_v1/proposta_02/montar.py`.
+O primeiro le as bases v1, capacidade, unidades do atlas e geometria municipal;
+o segundo incorpora `dados.json` ao HTML. Nenhuma fonte e sobrescrita.
+`atlas_2019.png` e `leitura.png` sao capturas da proposta, nao figuras finais.
+Conferidos os oito anos do CISMEP, totais da cobertura, camadas, selecao de
+Igarape, troca de escala e leitura em tela de 390 px; nova carga sem erros
+JavaScript. O HTML incorpora os dados e pode ser aberto localmente.
