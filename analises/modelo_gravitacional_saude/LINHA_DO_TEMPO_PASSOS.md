@@ -566,3 +566,26 @@ Em paralelo, organizar documentos do acervo/radar para os consorcios em geral:
 protocolo/contrato de consorcio, rateio e estatuto. A base desejada tem quatro
 eixos, incluindo recursos, producao e governanca alem dos documentos.
 Leitura registrada e dados existentes conferidos; novos modelos nao executados.
+
+### Preparacao Dos Tres Cenarios Depois Da Reuniao
+
+O script 31 preparou 2019 com todos os 853 municipios, inclusive sem pagamento.
+Antes havia a orientacao dos tres cenarios; agora ha inventario nominal,
+horas por modalidade, destinos, rotas e grades com perdas explicitas.
+S1 tem 54 consorcios com horas conhecidas; S2/S3, 63. Um desses casos,
+CISVAS, tem horas zero: a proposta com log(H) usa 53/62/62, mantendo os
+demais na grade e registrando log(1+H) como sensibilidade. Dez nao possuem
+capacidade identificada, apesar de ter sede. Os nove adicionais sao de
+modalidades moveis/nao clinicas, nao clinicas fixas que foram recuperadas.
+
+Igarape-CISMEP continua com 1.651 horas e R$ 4.740.790,51. Pelas clinicas,
+o menor trajeto e 17,748 km/15,1 minutos; pela sede cadastral de Sao Joaquim
+de Bicas, 7,466 km/8,4 minutos. Proposta: usar horas de cada unidade para
+ponderar a impedancia e estimar vinculo binario, sem repartir um unico
+positivo entre consorcios. Nenhum coeficiente novo foi ajustado.
+
+Na amostra comum, S3 repete S1. A ampliacao so aparece nos nove casos de
+sede. Teste 19 conciliou 186.807 linhas com a v1; fontes preservadas.
+A serie mensal ja coletada explica Brumadinho: a unidade aparece de janeiro
+a junho de 2021, mas nao em dezembro. A causa cadastral ainda nao foi provada.
+Preparacao encerrada; proximo passo e estimar e validar a proposta binaria.

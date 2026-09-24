@@ -1,0 +1,19 @@
+{
+  "status": "OK",
+  "ano": 2019,
+  "linhas_conciliadas": 186807,
+  "municipios": 853,
+  "consorcios_financeiros": 73,
+  "sem_capacidade": 10,
+  "horas_zero": 1,
+  "verificacoes": [
+    "pagamentos e populacao iguais a v1",
+    "horas iguais ao CNES por modalidade",
+    "rotas e pesos sem duplicacao",
+    "misto consistente com origem do destino",
+    "resumos recontados",
+    "ausencia distinta de zero",
+    "hashes preservados"
+  ],
+  "estimacao_executada": false
+}

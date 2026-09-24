@@ -2282,3 +2282,143 @@ O desenho de cadastro discutido tem quatro eixos: documentos, recursos,
 producao efetivamente entregue e governanca/funcionamento administrativo.
 Trata-se de frente complementar, sem exigir coleta documental exaustiva
 como condicao para executar o primeiro exercicio de saude.
+
+## Preparacao Dos Cenarios De Adesao Financeira — Script 31
+
+Executada depois da leitura da reuniao, por autorizacao de Adriano para
+preparar o proximo passo. Nao foram estimados coeficientes nem substituidas
+as bases v1 ou a aba do piloto. O ano de 2019 foi mantido como referencia
+tecnica para comparacao, sem busca do ano de melhor ajuste. Os produtos
+estao em `outputs/cenarios_adesao/`, com dicionario dos novos campos,
+fontes SHA-256 e manifesto dos produtos. O teste 19 concilia as 186.807
+linhas com a v1 e confere os pesos/rotas e os resumos independentemente em
+Python. Nao foi necessaria coleta nova ou instalacao de dependencias.
+
+### Entradas, Recortes E Perdas
+
+Universo de referencia: 73 consorcios, 853 municipios, 62.269 pares de 2019,
+1.376 pagamentos positivos e R$ 406.799.086,09. Tres copias identificadas
+por cenario formam a grade candidata de 186.807 linhas; ela preserva todos
+os pares para explicar inclusoes e exclusoes. Nao e amostra ja estimada.
+
+| Cenario | Entidades com destino e horas conhecidas | Entidades com horas positivas | Linhas com horas positivas | Pagamentos positivos | Valor preservado / financeiro de 2019 |
+|---|---:|---:|---:|---:|---:|
+| S1 unidades | 54 | 53 | 45.209 | 771 | R$ 360.336.147,52 / 88,58% |
+| S2 sedes | 63 | 62 | 52.886 | 1.299 | R$ 395.154.662,92 / 97,14% |
+| S3 misto | 63 | 62 | 52.886 | 1.299 | R$ 395.154.662,92 / 97,14% |
+
+Todos mantem as 853 origens, inclusive quem nao pagou a nenhum consorcio do
+recorte: 159 no S1 positivo e 74 em S2/S3 positivos. Nao se reutilizou o
+filtro de 703 municipios do piloto fracional. S1 positivo tem 74 origens
+com multiplos vinculos; S2/S3, 456. A resposta binaria preserva todos eles.
+
+O cadastral com 54/63 inclui CISVAS, que possui zero horas SUS registradas
+e dez pares positivos (R$ 1.465.922,21). Zero fica documentado e preservado;
+na proposta log(H), a amostra positiva o separa e log(1+H) e a sensibilidade.
+Usar log(1+H) nao transforma zero cadastral em ausencia real de servico.
+
+As nove entidades acrescidas nos cenarios de sede/misto sao CISRUN,
+CISRU-CENTRO SUL, CISNORJE, CISSUL, CISDESTE, CISTRI, CIS-URG OESTE,
+CONSURGE e CISREUNO. Elas possuem horas em unidades moveis/nao clinicas,
+nao clinicas fixas recuperadas. O ganho de cobertura nao comprova melhor
+comparabilidade assistencial ou melhor modelo. A decomposicao por funcao
+esta em `horas_por_modalidade_2019.csv`.
+
+Dez permanecem sem capacidade identificada nessas tabelas em 2019:
+CONSONORTE, CIS/UBA, CONSARDOCE, consorcio da regiao fronteira BA/MG/ES,
+CISMMA, CISTRISUL, CISVALES, CISAME, Alto Sao Francisco (raiz 64486822)
+e CIAS. Ausencia e NA, nunca soma vazia convertida em zero. Todas as 73
+sedes cadastrais foram ligadas a MG, mas sua vigencia historica nao foi
+validada nesta preparacao; S2 e o complemento de S3 sao exploratorios.
+
+Regra de horas mantida entre cenarios: se ha clinicas, usar a soma das
+clinicas, como na v1; se nao ha, usar horas das outras modalidades apenas
+no complemento de S2/S3. Nao adicionar horas de ambulancias ao CISMEP
+enquanto outros cenarios continuam contando somente suas clinicas.
+
+A matriz MG cobre todos os destinos identificados, sem rota ausente.
+Nao falta malha para esses pares: as perdas relevantes sao localizacao
+clinica e capacidade. A malha permanece estatica, de 2024, entre sedes
+municipais; nao e reconstruida para 2019 nem representa enderecos exatos.
+
+### Especificacao Recomendada Para O Proximo Exercicio
+
+Esta e proposta tecnica preparada a partir das decisoes, nao formula
+verbatim da reuniao ou resultado ajustado. Uma linha continua sendo o
+par municipio-consorcio. Nao duplicar o pagamento para estimar uma linha
+por unidade: os pontos clinicos servem para construir os atributos do par.
+
+    y_ij = 1(valor_ij > 0)
+    H_j = soma_u h_ju
+    q_ju = h_ju / H_j
+    L_ij = soma_u q_ju * ln(1 + d_iu / d_ref)
+    eta_ij = alpha + beta_P * ln(P_i) + beta_H * ln(H_j) - gamma * L_ij
+    p_ij = exp(eta_ij) / (1 + exp(eta_ij))
+
+P e populacao da origem; h e carga horaria SUS por unidade; d e distancia
+rodoviaria em km; proposta principal d_ref=1 km. Em S2, todas as horas
+ficam na sede e o peso e um. No complemento de S3 vale a mesma regra;
+nos demais casos, cada unidade clinica recebe seu peso cadastral de horas.
+Portanto, capacidade distante nao e toda atribuida a clinica mais proxima.
+Essa ponderacao e aproximacao de oferta, nao distribuicao observada de pacientes.
+
+Com uma unidade, as chances de vinculo (p/(1-p)) sao proporcionais a
+P^beta_P * H^beta_H / (1+d/d_ref)^gamma: estrutura gravitacional com
+potencias estimadas, mas probabilidade binaria por par. Com varias unidades,
+o fator de distancia e uma media geometrica ponderada dos fatores de cada
+ponto. A populacao nao cancela porque nao se normaliza entre consorcios.
+O denominador 1+exp(eta) compara vinculo/ausencia do par, permitindo varios
+positivos por municipio. Base tecnica: familia binomial com ligacao logit,
+documentada em [statsmodels GLM](https://www.statsmodels.org/stable/glm.html).
+A ponderacao espacial acima e escolha deste exercicio, nao prescrita pela fonte.
+
+A troca da normalizacao entre destinos significa que este modelo nao e a
+formula multinomial literal de Paulo. Ela e necessaria para a interpretacao
+binaria proposta; concorrencia explicita entre alternativas, alem das
+distancias e capacidades, pode ser estudada depois como especificacao distinta.
+Nao afirmar que esta formulacao ja estima substituicao entre consorcios.
+
+ln(1+d/d_ref) evita infinito na coincidencia municipal, mas d_ref e uma
+convencao de modelagem, nao imputacao de 1 km de viagem. Sensibilidades
+propostas: 0,5 e 5 km; tempo rodoviario em vez de distancia; menor distancia
+em vez da agregacao por horas; log(1+H) retendo CISVAS. Coeficientes ainda
+nao existem e sinais esperados devem ser confrontados com a estimacao.
+distancia_min_km e o menor comprimento entre rotas candidatas; nao e
+necessariamente o comprimento da rota de menor tempo usado na coluna
+distancia_minima_km da v1. Os nomes/origens permanecem distintos.
+
+### Exemplo E Comparacao Justa
+
+Igarape-CISMEP/2019 conserva R$ 4.740.790,51 e y=1 em todos os cenarios.
+Horas: 1.417 em Betim e 234 em Brumadinho, pesos aproximados 85,83%/14,17%.
+S1/S3: minimo 17,748 km e 15,1 min; distancia media ponderada por horas
+18,507 km, tempo medio 16,617 min; L_ij em km = 2,966703.
+S2: sede cadastral Sao Joaquim de Bicas, 7,466 km e 8,4 min, mantendo 1.651
+horas. Isso mede efeito de mudar a representacao espacial, nao melhora real
+no acesso de Igarape. A vigencia da sede deve acompanhar a interpretacao.
+
+Primeiro comparar S1 e S2 nos mesmos 53 consorcios (45.209 pares), com as
+mesmas horas e desfechos. S3 coincide com S1 nessa amostra; repetir a mesma
+regressao como terceiro resultado seria redundante. Depois, comparar S2/S3
+ampliados nos mesmos 62 consorcios, identificando as nove novas modalidades.
+Nao comparar ajustes em amostras diferentes como se fosse apenas efeito de distancia.
+
+Validacao planejada: cinco grupos de municipios, os mesmos entre cenarios;
+reter todos os pares da origem no mesmo grupo, incluindo municipios sem
+pagamento. Avaliar perda logaritmica, Brier, calibracao e precisao-revocacao
+contra prevalencia estimada apenas no treino. Acuracia de prever zero para
+tudo e inadequada (98,29% dos pares do S1 positivo sao zero). Nao balancear
+classes artificialmente e depois interpretar saidas como probabilidades
+populacionais sem correcao. Reportar dependencia por municipio e consorcio;
+eventual inferencia precisa de incerteza agrupada, nao erros iid por linha.
+Sem selecao automatica pelo melhor ajuste nem conclusao causal.
+
+### Brumadinho Em 2021
+
+A serie mensal existente registra CNES 5364167 de janeiro a junho de 2021,
+alem dos 12 meses de 2014–2020. Nao foi necessario coletar meses novamente.
+Uma leitura pontual dos STMG1912.dbc e STMG2012.dbc confirmou CNPJ 05802877000209 e tipo
+36; o codigo nao aparece em STMG2112. Logo, a ausencia na fotografia de
+dezembro nao e mero erro do mapa, nem evidencia de que nao existiu oferta
+em todo 2021. A causa da mudanca cadastral/operacional permanece em aberto.
+O arquivo `cismep_brumadinho_presenca_mensal.csv` conserva essa evidencia.

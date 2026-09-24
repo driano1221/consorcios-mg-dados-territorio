@@ -865,3 +865,37 @@ registra as fontes e refaz o ZIP. Nao ha dependencia de servico externo.
 As contas interativas usam parametros do treino correspondente a cada
 previsao. `checks/18_piloto_participacoes.json` registra conciliacao e
 comparacao da estimacao R com SciPy. A fonte v1 nao recebe colunas novas.
+
+## Preparacao Da Adesao Financeira E Tres Cenarios
+
+`31_preparar_cenarios_adesao.R` usa dplyr, digest e jsonlite ja disponiveis.
+Executar da pasta do modelo, seguido de `python tests/19_validar_cenarios_adesao.py`.
+Le a financeira v1, capacidade, sedes do diagnostico 29, unidades historicas
+originais/externas, cache Distbrasil MG e presenca mensal. Nao coleta nem estima.
+Grava somente em `outputs/cenarios_adesao/`; nao modifica a interface do piloto.
+
+| Produto | Conteudo |
+|---|---|
+| `inventario_consorcios_2019.csv` | 73 entidades: clinicas, todas as unidades, horas, fonte da massa, sede e limite temporal |
+| `horas_por_modalidade_2019.csv` | Contagem de unidades e horas por entidade/funcao; pagamentos repetidos apenas como contexto, nao somar entre funcoes |
+| `destinos_cenarios_2019.csv` | Pontos por cenario: CNES ou sede, municipio, horas e peso na massa do consorcio |
+| `rotas_por_ponto_2019.csv` | 853 origens x pontos, distancia/tempo e pesos; nao representa transacoes ou viagens observadas |
+| `grade_candidata_cenarios_2019.csv` | 186.807 x 41: todos os pares das 73 entidades nos tres cenarios, 19 campos financeiros preservados + 22 novos; flags sem exclusao fisica |
+| `dicionario_campos_novos.csv` | Definicao de todos os 22 novos campos; os 19 herdados usam o dicionario v1 |
+| `comparacao_cenarios_2019.csv` | Nove linhas: tres cenarios x cadastro conhecido/horas positivas/amostra comum; perdas, dinheiro e zeros de distancia |
+| `municipios_por_cenario_2019.csv` | 853 municipios por cenario positivo: nenhum, um ou varios vinculos |
+| `decisoes_por_consorcio_2019.csv` | 219 decisoes entidade-cenario, causas e flags |
+| `exemplos_2019.csv` | Igarape e Conceicao do Para, pagamentos e representacoes espaciais |
+| `cismep_brumadinho_presenca_mensal.csv` | CNES 5364167, 2014–2021; janeiro a junho em 2021, reaproveitando a serie coletada |
+| `resumo.json` | Totais e ressalvas; estado PREPARACAO_SEM_ESTIMACAO |
+| `fontes.csv`, `manifesto_produtos.csv` | SHA-256 de entradas e produtos |
+| `checks/19_cenarios_adesao.json` | Resultado do teste independente de conservacao, rotas/pesos, amostras e ausencia versus zero |
+
+NA em horas significa ausencia de unidade/capacidade identificada, nunca zero
+imputado. CISVAS tem zero cadastral conhecido; massa positiva e outra regra.
+S1 tem 54/53 entidades conhecidas/positivas; S2/S3, 63/62. Nove adicionais tem
+oferta movel/nao clinica, sem validar comparabilidade com clinicas. Todas as
+sedes usadas sao cadastrais, nao evidencia historica confirmada. Regra da massa:
+clinicas quando existem; outras modalidades somente no complemento exploratorio.
+S1 e S3 coincidem na amostra comum de 53 entidades. A proposta de formula,
+transformacoes, validacao e limites esta na ultima secao da metodologia.

@@ -29,6 +29,21 @@ Nao retroagir cadastro de 2026. Rever o caso CISMEP/Brumadinho em 2021 e
 melhorar a legenda do grafico de cobertura como tarefas pontuais, sem reabrir
 a coleta inteira. A frente documental geral corre separada do piloto de saude.
 
+**Preparacao posterior executada (script 31):** 2019 mantido como referencia
+tecnica comparavel ao piloto, sem escolher o ano por ajuste. Inventario nominal
+das 73 entidades e tres grades completas, com 853 municipios cada. S1 tem
+54 entidades com horas identificadas; S2/S3, 63, incluindo nove de modalidades
+nao clinicas como complemento exploratorio. Dez seguem sem capacidade e
+CISVAS tem zero horas: a proposta com log(H) tem 53/62/62 entidades; a grade
+integral preserva todos os casos e a opcao log(1+H) mantem o zero separado.
+Sedes sao referencias cadastrais, sem vigencia historica validada. Comparacao
+comum de 53 entidades separa localizacao de ampliacao da amostra. S1 e S3
+coincidem nessa amostra comum, portanto nao geram dois testes distintos nela.
+Especificacao binaria gravitacional recomendada na metodologia, com populacao,
+horas e impedancia por unidade ponderada pelas horas. Nenhuma estimacao nova.
+Brumadinho/2021: serie mensal existente confirma janeiro a junho; ausencia
+em dezembro explica o mapa. Causa cadastral/institucional permanece desconhecida.
+
 - `[x]` concluido e validado;
 - `[ ] Em andamento` possui produtos parciais, mas ainda nao cumpriu o criterio
   de conclusao;
@@ -292,8 +307,10 @@ nova adesao juridica. Metodo, perdas, resultados e validacao na metodologia.
 
 - [x] definir adesao operacional como pagamento positivo, permitindo varios
   vinculos por municipio (esclarecimento de Adriano apos reuniao de 24/09);
-- [ ] preparar cenarios de unidades, sedes e misto com horas SUS; fechar
-  funcao compativel com o desfecho, ano, impedancia, zeros e agregacao;
+- [x] preparar inventario, rotas, grades e especificacao recomendada para
+  unidades/sedes/misto com horas SUS em 2019 (script 31); teste 19;
+- [ ] estimar o desfecho binario, reportando premissas propostas de ano,
+  impedancia, zeros/agregacao, vigencia das sedes e modalidades de capacidade;
 - [ ] justificar elegibilidade do cenario estadual e comparar amostra comum
   com ampliada; recuperar sede nao recupera automaticamente capacidade;
 - [ ] distinguir presenca anual do vinculo de evento de primeiro pagamento;
@@ -321,12 +338,13 @@ unica regressao.
 
 ## Proximo Marco
 
-**Vigente apos a reuniao de 24/09:** preparar a especificacao de adesao
-operacional multipla e a tabela de viabilidade dos tres cenarios espaciais,
-com horas SUS por unidade/modalidade, sedes e distancias/tempos. Registrar
-perdas e amostra comum; resolver zeros e agregacao antes da nova estimacao.
-Conferir Brumadinho/2021 e corrigir a comunicacao de cobertura. Inventario
-documental geral e uma frente complementar; nao substitui essa especificacao.
+**Vigente apos a preparacao do script 31:** executar a primeira estimacao
+binaria nas clinicas com horas positivas e a comparacao de sedes na mesma
+amostra; tratar ampliacoes de sede/misto como sensibilidades exploratorias.
+A proposta tecnica de formula/validacao esta na metodologia e ainda nao
+foi estimada. Conferir vigencia de sedes conforme relevancia dos casos,
+modalidades e sensibilidade dos zeros. Corrigir a comunicacao de cobertura.
+Inventario documental geral segue como frente complementar.
 
 **Prioridade anterior a reuniao de 24/09, apos piloto autorizado:** discutir os
 resultados e a disponibilidade institucional das alternativas. Tempo tem
@@ -441,6 +459,7 @@ com alternativas amplas explicitadas como hipotese, ainda sem validacao instituc
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 24/09, preparacao apos reuniao | Script 31 inventaria tres cenarios, 186.807 linhas conciliadas e especificacao binaria; teste 19 | Quantificar ampliacao 54->63 (53->62 com horas positivas), preservar ausentes/zeros e separar mudanca espacial de amostral |
 | 24/09, reuniao e esclarecimento posterior | Adesao operacional definida como pagamento positivo com varios vinculos; horas SUS e tres cenarios espaciais encaminhados, ainda sem estimar | Distinguir presenca de vinculo, atracao relativa e participacao financeira; separar agenda documental geral e piloto MG |
 | 24/09, piloto autorizado | Passo 8 parcial: participacoes estimadas, validacao e aba local concluidas | Testar atracao/tempo com desfecho financeiro, explicar selecao e manter limites de acesso institucional |
 | 24/09, proposta logit | Passo 8 em especificacao; diagnostico de um ano executado, sem estimar | Pagamentos simultaneos exigem distinguir principal destino, participacoes e ocorrencia por par; sede/populacao nao equivalem a hospital |

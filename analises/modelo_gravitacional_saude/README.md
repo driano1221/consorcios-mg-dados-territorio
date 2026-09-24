@@ -8,6 +8,21 @@ participacoes financeiras, nao esse novo desfecho. O plano contem a prioridade
 vigente; a ultima secao da metodologia registra decisoes, dados reutilizaveis
 e cuidados com normalizacao, populacao e temporalidade.
 
+**Preparacao concluida, sem nova estimacao:** produtos do script 31 em
+`outputs/cenarios_adesao/`, validados pelo teste 19. Comece por `comparacao_cenarios_2019.csv` e
+`inventario_consorcios_2019.csv`. Unidades: 54 consorcios com horas conhecidas,
+53 positivas; sedes/misto: 63 conhecidas, 62 positivas, incluindo nove de
+modalidades moveis/nao clinicas como sensibilidade. Dez continuam sem horas.
+As 853 origens e todos os pagamentos/zeros foram preservados em tres grades
+com flags, somando 186.807 linhas. Sedes atuais/cadastrais nao comprovam sede
+historica. A especificacao recomendada, as perdas e o exemplo Igarape-CISMEP
+estao na ultima secao da metodologia; o proximo trabalho e a estimacao binaria.
+
+```powershell
+Rscript 31_preparar_cenarios_adesao.R
+python tests/19_validar_cenarios_adesao.py
+```
+
 **Consulta visual da v1:** abra localmente
 [outputs/visuais_v1/index.html](outputs/visuais_v1/index.html).
 A pagina explica a v1 em seis abas de dados e uma nova aba de modelo:
