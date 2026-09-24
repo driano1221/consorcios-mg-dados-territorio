@@ -165,6 +165,40 @@ extremes <- do.call(rbind, lapply(c("valor_total", "valor_por_habitante",
 }))
 write.csv(extremes, file.path(out, "eda_extremos_exploratorios_saude.csv"),
   row.names = FALSE, fileEncoding = "UTF-8")
+
+# Conferir os extremos no transacional original, sem nova consulta paga.
+# As raizes externas ausentes no extrato original usam a consulta complementar.
+root <- if (out == "outputs") file.path("..", "..") else "."
+raw <- readRDS(file.path(root, "dados", "bruto", "mides_mg_atualizado.rds"))
+raw$cnpj_raiz_8 <- substr(as.character(raw$documento_credor), 1, 8)
+extra <- read.csv(file.path(out, "fronteira_mides_complementar.csv"),
+  colClasses = c(id_municipio = "character", documento_credor = "character"))
+extra$cnpj_raiz_8 <- substr(extra$documento_credor, 1, 8)
+targets <- unique(rbind(extremes[c("ano", "id_municipio", "cnpj_raiz_8",
+  "valor_total", "n_transacoes")], as.data.frame(p[p$tem_registro_mides &
+  !p$presente_mides, c("ano", "id_municipio", "cnpj_raiz_8", "valor_total",
+  "n_transacoes")])))
+verified <- do.call(rbind, lapply(seq_len(nrow(targets)), function(i) {
+  t <- targets[i, ]
+  r <- raw[raw$ano == t$ano & raw$id_municipio == t$id_municipio &
+    raw$cnpj_raiz_8 == t$cnpj_raiz_8, ]
+  e <- extra[extra$ano == t$ano & extra$id_municipio == t$id_municipio &
+    extra$cnpj_raiz_8 == t$cnpj_raiz_8, ]
+  stopifnot((nrow(r) > 0) != (nrow(e) > 0))
+  t$fonte_conferencia <- if (nrow(r)) "dados/bruto/mides_mg_atualizado.rds" else
+    "outputs/fronteira_mides_complementar.csv"
+  t$valor_recalculado <- if (nrow(r)) sum(r$valor_final) else sum(e$valor_total)
+  t$transacoes_recalculadas <- if (nrow(r)) nrow(r) else sum(e$n_transacoes)
+  t$valores_transacionais_nulos <- if (nrow(r)) sum(is.na(r$valor_final)) else NA
+  t$transacoes_zeradas <- if (nrow(r)) sum(r$valor_final == 0) else NA
+  t$diferenca_valor <- t$valor_total - t$valor_recalculado
+  t$conferencia_ok <- abs(t$diferenca_valor) < .01 &
+    t$n_transacoes == t$transacoes_recalculadas
+  t
+}))
+stopifnot(all(verified$conferencia_ok))
+write.csv(verified, file.path(out, "eda_extremos_conferidos_na_fonte_saude.csv"),
+  row.names = FALSE, fileEncoding = "UTF-8")
 print(annual, row.names = FALSE)
 print(anomalies, row.names = FALSE)
 cat("Variaveis:", ncol(p), "| perfis:", nrow(profiles),

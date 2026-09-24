@@ -12,6 +12,13 @@
 > 60 variaveis foram auditados, mas a suficiencia ainda precisa ser julgada.
 > Nenhum modelo foi estimado. Bacias ficaram para analise territorial posterior.
 
+> Conciliacao de 24/09: as 181 entidades-ano pagas sem polo direto receberam
+> classificacao, fonte e limite em
+> `evidencias/conciliacao_181_entidades_ano_2026_09_24.csv`. Isso explica as
+> lacunas; nenhum novo polo clinico anual foi imputado. Os 60 casos financeiros
+> inspecionados conferem com as fontes. Para localizar os produtos locais,
+> consulte `outputs/inventario_produtos_saude.csv` e o dicionario tecnico.
+
 > Complemento de 16/09: revisao fora das 84 concluida nas fontes consultadas.
 > Foram triadas 137 raizes e documentados 28 casos: dez candidatas com saude
 > historica e tres com escopo a segregar. Nove candidatas estavam ausentes do
@@ -107,9 +114,9 @@ O `README.md` e o ponto de entrada. Os arquivos foram separados por funcao:
 | Local | Conteudo | Quando consultar |
 |---|---|---|
 | raiz da pasta | plano canonico, scripts e metodologia das entregas executadas | entender ou reprocessar o pipeline |
-| `tests/` | uma validacao automatizada por script | confirmar chaves, contagens e invariantes |
+| `tests/` | validacoes automatizadas dos produtos e invariantes | confirmar chaves, contagens e invariantes |
 | `checks/` | relatorios curtos com resultados validados | consultar numeros sem abrir os dados |
-| `evidencias/` | catalogo versionado de fontes documentais | auditar decisoes humanas do passo 2 |
+| `evidencias/` | catalogos de fontes e decisoes anuais versionados | auditar identidade, cobertura e limites documentais |
 | `outputs/` | CSV/RDS derivados e caches locais | analisar linhas e continuar o modelo; nao entra no Git |
 
 Cada passo deve ser lido na ordem: **script -> teste -> check -> secao

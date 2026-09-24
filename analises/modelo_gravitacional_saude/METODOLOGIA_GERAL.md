@@ -1314,8 +1314,9 @@ SUS em 119 e profissionais SUS em dez. Cinco raizes originais possuem sigla
 vazia em 314 pares pagos no periodo; o CNPJ raiz permanece disponivel para a
 identificacao. As verificacoes de chaves, pagamentos, transacoes, temporalidade,
 capacidade e tempos nao encontraram contradicoes nos campos testados. Extremos
-financeiros e por habitante foram apenas separados para inspecao: por exemplo,
-Betim-CISMEP tem R$ 72,82 milhoes em 2014; isso nao e prova de erro.
+financeiros e por habitante foram separados e depois conferidos na fonte:
+Betim-CISMEP tem R$ 72.822.301,96 em 2014, reproduzidos em 186 transacoes.
+Essa consistencia nao identifica a finalidade de cada pagamento.
 Uma excecao semantica deve ficar explicita: Sao Joao das Missoes-CISNORTE-MG
 em 2021 tem quatro transacoes no consolidado MIDES, mas valor corrente,
 restos e total iguais a zero. `tem_registro_mides` e verdadeiro e
@@ -1324,6 +1325,83 @@ foi apagada nem transformada em pagamento.
 
 Esses resultados validam a integridade mecanica de partes do painel, mas nao
 a suficiencia substantiva para o modelo gravitacional amplo de saude. A etapa
-7 continua aberta ate classificar as 181 lacunas entidade-ano e definir que
+7 continua aberta para definir que
 perguntas o recorte observavel permite responder sem confundir cadastro,
 pagamento e atendimento efetivo.
+
+### Conciliacao Das Lacunas E Proveniencia — 24/09
+
+O script 22 cruza as 181 lacunas entidade-ano com os dossies anteriores,
+unidades CNES de dezembro, presenca mensal e fontes institucionais. Sao 37
+entidades e 5.123 pares municipio-entidade-ano pagos. As 84 classificacoes
+anteriores sao preservadas em coluna propria; os 97 vazios anteriores passam
+a ter decisao na tabela complementar. O painel RDS de 60 colunas nao foi
+sobrescrito. Nenhum pagamento foi descartado e nenhum destino foi imputado.
+
+| Grupo de conciliacao | Entidades-ano | Pares pagos | Valor MIDES (R$) |
+|---|---:|---:|---:|
+| Movel, regulacao ou transporte | 57 | 3.668 | 227.782.480,73 |
+| Fase anterior a operacao regional SAMU | 21 | 603 | 15.812.901,19 |
+| Redes indiretas ou programas | 28 | 287 | 76.542.094,60 |
+| Cadastro em outro momento do ano ou posterior | 6 | 98 | 11.229.573,51 |
+| Historicas sem polo documentado | 12 | 12 | 1.129.965,47 |
+| Demais sem destino clinico suficientemente documentado | 57 | 455 | 117.970.788,11 |
+| **Total** | **181** | **5.123** | **450.467.803,61** |
+
+Os grupos sao exclusivos por entidade-ano, mas uma entidade pode mudar de
+grupo entre anos. As 22 classificacoes detalhadas permanecem no CSV. Mesmo
+uma rede documentada pode continuar sem prestador, endereco ou vigencia anual
+suficientes para calcular impedancia. Assim, 181 classificacoes preenchidas
+nao significam 181 lacunas assistenciais resolvidas.
+
+Cinco fontes oficiais precisaram ser datadas com mais cuidado. Os inicios
+informados sao CISSUL em 31/01/2015, CIS-URG Oeste em 07/06/2017, CISTRI em
+03/07/2018, primeira fase CONSURGE em 28/12/2020 e implantacao CISREUNO em
+outubro/2022. URLs, datas de publicacao conhecidas, data de consulta e limites
+estao em `evidencias/fontes_conciliacao_2026_09_24.csv`. Publicacoes posteriores
+descrevem retrospectivamente esses marcos; nao demonstram continuidade diaria
+ou cobertura de todos os municipios. Fase anterior ao SAMU nao significa
+inatividade institucional nem inexistencia de outro servico. O ano inaugural
+nao recebe disponibilidade integral; a segunda fase CONSURGE nao foi retroagida.
+
+Quatro entidades-ano tinham algum tipo clinico em outros meses, sem clinica
+em dezembro: CIAS/2015, CISMAS/2016, Alto Sao Francisco/2017 e CISPARA/2017.
+A leitura direta dos 12 ST de 2016 mostrou que o **CISMAS, CNES 6776434**, era
+tipo 36 em janeiro-junho e tipo 64 em julho-dezembro. A mesma unidade permaneceu
+cadastrada; a mudanca de tipo nao prova fechamento nem ausencia de atendimento.
+Nao foi estimada capacidade clinica para os meses iniciais. URL e hash de cada
+competencia estao em `outputs/conciliacao_cismas_2016_mensal.csv`.
+
+No Circuito das Aguas, o documento Fhemig ja auditado menciona explicitamente
+programas de janeiro/2014 a dezembro/2016: a conciliacao passa a cobrir 2016,
+sem estender a 2017. As atas de 2016 e 2017 foram localizadas no indice oficial,
+mas o PDF nao ficou legivel e o download retornou HTTP 403. Seus conteudos nao
+foram utilizados. A pagina CIS-URG foi lida pela consulta web, mas sua copia
+local tambem retornou 403; o manifesto distingue leitura de disponibilidade
+do arquivo. Quatro novas fontes puderam ser preservadas em cache com SHA-256.
+
+O script 21 conferiu **59 extremos distintos e um caso de valor zero**:
+52 casos no transacional MIDES original e oito no extrato complementar por
+CNPJ. Valores e quantidades de transacoes coincidem, sem diferenca material
+de centavos. O complemento ja e agregado: nao permite reinspecionar suas
+transacoes individuais. Sao Joao das Missoes-CISNORTE-MG/2021 tem quatro
+transacoes realmente zeradas no original, sem valores nulos. Nao foi uma soma
+de `NA` transformada em zero. Nenhum extremo foi excluido automaticamente.
+
+As cinco raizes sem sigla receberam um mapa de nomes completos de exibicao,
+derivados da razao social canonica, cobrindo 314 pares pagos. Siglas e chaves
+originais permanecem preservadas. O inventario de produtos registra caminho,
+tamanho, hash e referencias nos scripts; nao altera a organizacao fisica nem
+atribui autoria apenas porque um script menciona o nome do arquivo.
+
+**Limite da proveniencia MIDES:** comentario no script de coleta e metadados
+locais apontam 05/05/2026 para o extrato original, mas nao foi localizado log
+que confirme a data exata da extracao. Modificacao do arquivo nao e data de
+coleta comprovada. A consulta complementar tem manifesto de 16/09/2026. Os
+arquivos efetivamente usados nesta auditoria foram identificados por SHA-256.
+
+Validacao: script 21, teste 13 do painel e teste 14 da conciliacao passaram.
+O teste 14 verifica as 181 chaves, conservacao financeira, datas de inicio,
+mudanca mensal CISMAS, nomes completos, extremos e hashes. Permanecem abertas
+a recuperacao de prestadores indiretos anuais, a capacidade fora de dezembro
+e a suficiencia dos recortes; nenhum modelo foi estimado.

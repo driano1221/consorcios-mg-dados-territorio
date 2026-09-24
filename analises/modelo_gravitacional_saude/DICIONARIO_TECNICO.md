@@ -473,8 +473,8 @@ e [definicao do RREO/Anexo 03](https://siconfi.tesouro.gov.br/siconfi/pages/publ
 O tempo usa a mesma matriz Distbrasil do passo 5, com checksum conferido.
 
 Decisao de 23/09: bacia hidrografica fica para analise territorial posterior,
-fora dos controles exigidos pelo modelo gravitacional de saude. A regra
-principal usa clinica direta historica sem limite de minutos; 90/120/180
+fora dos controles exigidos pelo modelo gravitacional de saude. O recorte
+candidato usa clinica direta historica sem limite de minutos; 90/120/180
 minutos e mesma microrregiao sao sensibilidades. O PDR/2019 so se aplica a
 2019-2021; RCL faltante permanece ausente.
 
@@ -497,3 +497,61 @@ Para refazer a auditoria de 24/09, executar o script 18 e depois os scripts
 19 e 20 a partir desta pasta. O script 19 confronta os extremos com os
 extratos MIDES anteriores; o 20 confere o exemplo Igarape-CISMEP e a excecao
 CISVAS/2019 sem marcador SUS. Nenhum altera o painel `.rds`.
+
+## Conciliacao E Indice De Produtos — 24/09/2026
+
+O script `22_conciliar_lacunas_e_proveniencia_saude.py` reaproveita os dossies,
+o CNES historico e o inventario do script 21. Usa Python 3.11 ou superior;
+a verificacao opcional dos 12 ST reutiliza as dependencias e o conversor do
+script 09. Nao modifica o painel anual e nao executa consulta paga ao MIDES.
+
+| Arquivo | Conteudo e uso |
+|---|---|
+| `evidencias/conciliacao_181_entidades_ano_2026_09_24.csv` | 181 chaves raiz-ano; classificacao anterior, grupo, decisao detalhada, tratamento, CNES, fonte anual, contexto documental e limite; versionado |
+| `evidencias/fontes_conciliacao_2026_09_24.csv` | Sete referencias novas: cinco marcos SAMU e duas atas localizadas sem conteudo acessivel; datas e alcance; versionado |
+| `outputs/resumo_conciliacao_lacunas_saude.csv` | Seis grupos exclusivos com entidades-ano, pares pagos e valores |
+| `outputs/conciliacao_cismas_2016_mensal.csv` | 12 competencias de 2016, tipo da unidade 6776434, municipio, URL e hash do ST |
+| `outputs/eda_extremos_conferidos_na_fonte_saude.csv` | 60 conferencias financeiras do script 21: valor e transacoes recalculados, origem e diferenca; inclui um caso de valor zero |
+| `outputs/rotulos_entidades_sem_sigla_saude.csv` | Cinco raizes, nome completo canonico e numero de pares pagos; nao inventa siglas |
+| `outputs/inventario_produtos_saude.csv` | Indice dos 122 arquivos de produtos diretamente em outputs nesta execucao, com tamanho, hash, modificacao local e scripts que os mencionam |
+| `outputs/manifesto_entradas_conciliacao_saude.csv` | Caminhos relativos ao repositorio e hashes dos extratos principais e catalogos usados |
+| `outputs/fontes_conciliacao/manifesto.csv` | URL, consulta UTC, caminho, hash e status de cada tentativa de arquivamento documental |
+| `tests/14_validar_conciliacao_lacunas_saude.py` | Verifica conservacao, cobertura, temporalidade, nomes, conferencias financeiras e integridade dos arquivos |
+
+Os dois indices CSV nao indexam um ao outro, evitando hashes circulares.
+Subpastas de cache tem seus proprios manifestos; o indice de 122 produtos nao
+e um inventario recursivo de cada arquivo bruto. Referencia textual em script
+nao identifica necessariamente o produtor do arquivo. O dicionario e os
+manifestos de cada fonte continuam sendo a referencia de reproducao.
+
+Na tabela de conciliacao, `classificacao_anterior_painel` preserva os 97
+vazios originais como `sem_classificacao_anual_no_painel`.
+`fonte_documental_aplicada` distingue documento utilizado na decisao de
+`referencias_contextuais_nao_automaticamente_anuais`: fonte atual ou de outro
+periodo nao comprova disponibilidade no ano da linha. `fonte_cnes_url` e
+`fonte_cnes_sha256` identificam o ST de dezembro. Nas quatro excecoes mensais,
+consultar tambem a presenca mensal e o manifesto historico; CISMAS possui a
+conferencia adicional das 12 competencias. `polo_clinico_anual_recuperado`
+permanece falso em todas as linhas: classificacao nao e imputacao de destino.
+
+Reproduzir na pasta do modelo, depois dos produtos 01-21:
+
+```powershell
+Rscript 21_inventariar_qualidade_painel_saude.R
+python 22_conciliar_lacunas_e_proveniencia_saude.py --verificar-cismas --baixar-fontes
+python tests/14_validar_conciliacao_lacunas_saude.py
+```
+
+Nas reexecucoes locais, omitir as duas flags se a conferencia mensal e o cache
+ja existem. O script 22 deve rodar depois do 21 para atualizar o inventario de
+hashes. O teste 13 continua sendo executado da raiz do repositorio. Quatro
+fontes novas ficaram em cache; a pagina CIS-URG foi lida via web, mas sua copia
+local retornou 403. As duas atas Circuito nao tiveram seu conteudo lido e nao
+sustentam nenhuma afirmacao sobre prestadores.
+
+A fonte financeira original e `dados/bruto/mides_mg_atualizado.rds`;
+`scripts/01_baixar_mides_mg.R` documenta a consulta. A data 05/05/2026 e
+indicada por comentario e metadados locais, sem log confirmatorio da extracao.
+O complemento usa `fronteira_mides_complementar.csv`, com consulta e data em
+`fronteira_consulta_mides_manifesto.json` (16/09/2026). Data de modificacao de
+arquivo nao deve ser apresentada como data de extracao confirmada.

@@ -195,8 +195,11 @@ a especificacao antes da estimacao.
 - [x] comparar os conjuntos de alternativas, sem fixar ainda o principal.
 - [x] inventariar todas as 60 variaveis por ano e universo, incluindo nulos,
   vazios, zeros, distribuicoes e verificacoes de integridade;
-- [ ] classificar as lacunas de polo por entidade-ano e distinguir falta de
+- [x] classificar as lacunas de polo por entidade-ano e distinguir falta de
   registro no painel de evidencia documental ja existente;
+- [x] conferir os extremos financeiros na fonte, preservar o registro de valor
+  zero e fornecer nomes de exibicao para as cinco raizes sem sigla;
+- [x] indexar produtos e registrar fontes, limites temporais e hashes da conciliacao;
 - [ ] explicitar quais recortes e variaveis sustentam cada pergunta empirica,
   com perdas e ressalvas, antes de declarar qualquer amostra principal.
 
@@ -265,20 +268,26 @@ unica regressao.
 
 ## Proximo Marco
 
-Fechar o **passo 7 nos dados**. O inventario das 60 variaveis encontrou 5.123
-pares pagos de saude sem polo clinico direto em 2014-2021 (R$ 450,47 milhoes),
-distribuidos em 181 entidades-ano. O painel carrega classificacao documental
-anual para 84 desses 181; nos outros 97, consultar primeiro os dossies ja
-existentes antes de chamar o caso de desconhecido ou pesquisar novamente.
-Priorizar por valor e ano; separar rede movel/indireta, cadastro tardio,
-evidencia insuficiente e ausencia estrutural. Verificar ainda os extremos
-financeiros exploratorios e as cinco raizes cuja sigla esta vazia, sem alterar
-os pagamentos ou inferir atendimento a partir de zero CNES. Preservar tambem
-o unico registro MIDES com transacoes e valor anual zero, distinto de pagamento
-positivo. RCL nao sera
-imputada nem substituida por receita total. A formula da equipe sera usada
-depois como lista de exigencias de dados, nao como gatilho automatico para
-estimar os modelos.
+Fechar o **passo 7 nos dados**. As 181 entidades-ano sem polo direto estao
+conciliadas em tabela separada, com classificacao, fonte e limite: 57 de
+oferta movel/regulacao/transporte, 21 anteriores a operacao regional SAMU,
+28 de redes indiretas/programas, seis de cadastro intrano ou posterior,
+12 historicas e 57 demais casos sem destino clinico suficientemente documentado.
+Os 5.123 pares e R$ 450.467.803,61 foram preservados. Classificar todos os
+casos nao recuperou prestadores fixos anuais nem completou os dados assistenciais.
+
+Proxima investigacao: prestadores e vigencia nos casos com maior perda
+financeira, comecando por CIAS em 2016-2020 (R$ 34,34 milhoes), Circuito das
+Aguas em 2017 (R$ 16,60 milhoes) e CONSARDOCE em 2014-2021 (R$ 12,89 milhoes).
+Consultar as evidencias conciliadas antes de novas buscas. As atas do Circuito
+foram localizadas, mas seus PDFs nao puderam ser lidos; nenhum conteudo foi
+presumido. Em paralelo, delimitar o que cada recorte permite descrever e o que
+depende de nova coleta mensal ou de contratos, sem escolher amostra final.
+
+Os extremos financeiros ja conferem com as fontes; nomes completos resolvem
+a exibicao das cinco raizes sem sigla, sem inventar abreviacoes. RCL nao sera
+imputada nem substituida por receita total. A formula da equipe sera examinada
+depois, como lista de exigencias de dados, sem iniciar modelos automaticamente.
 
 ## Controle De Mudancas
 
@@ -293,6 +302,7 @@ estimar os modelos.
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 24/09/2026 | Conciliadas 181 entidades-ano, conferidos 60 casos financeiros e indexados produtos/fontes | distinguir classificacao resolvida de prestador anual ainda desconhecido; passo 7 continua aberto |
 | 24/09/2026 | Passo 7 reaberto como avaliacao de suficiencia; inventario de 60 variaveis, 181 lacunas entidade-ano e anomalias executado | a auditoria do recorte direto nao validava automaticamente a cobertura do fenomeno completo |
 | 24/09/2026 | EDA do passo 7 concluida para o recorte cadastral direto, com auditoria de extremos, capacidade, RCL, alternativas e marcador SUS | medir perdas e separar cadastro clinico de evidencia de atividade SUS antes de qualquer modelo |
 | 23/09/2026 | Passo 6 fechado na especificacao restrita; bacia adiada por decisao de Adriano | comparar alternativas demonstrou perda material de pares sem polo direto; bacia nao mede diretamente acesso assistencial |

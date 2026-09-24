@@ -363,3 +363,31 @@ pares pagos de saude sem polo direto desse ano tem capacidade e tempo CNES
 diretos ausentes por definicao do recorte, sem que isso prove ausencia de
 atendimento. Adriano pediu manter o foco nos dados; os modelos gravitacionais
 ainda nao foram estimados.
+
+### Depois Do Inventario: Conciliacao Em 24/09
+
+O proximo movimento foi explicar as lacunas sem repetir toda a coleta:
+181 entidades-ano da EDA -> dossies anteriores + CNES mensal/dezembro +
+marcos oficiais de operacao -> tabela anual com classificacao, fonte e limite.
+Os 97 casos sem classificacao transportada ao painel agora estao classificados
+nessa tabela complementar; os 5.123 pares e R$ 450,47 milhoes foram preservados.
+Nenhum novo destino clinico anual foi imputado.
+
+Exemplo: o **CISMAS em 2016** recebeu pagamentos, mas nao tem polo clinico no
+dezembro utilizado pelo painel. A consulta dos 12 arquivos mensais mostrou que
+a unidade CNES 6776434 estava classificada como clinica especializada (36) de
+janeiro a junho e central de regulacao (64) de julho a dezembro. Portanto,
+temos uma mudanca cadastral dentro do ano, que o retrato de dezembro sozinho
+nao revela. Isso nao comprova fechamento nem permite inventar capacidade mensal.
+
+Outro exemplo: o CISSUL iniciou a operacao regional SAMU em 31/01/2015,
+segundo seu relato institucional. Seus pagamentos em 2014 ficam identificados
+como anteriores a esse servico especifico, sem concluir inatividade do consorcio.
+As referencias estao no catalogo de fontes da conciliacao.
+
+Os 59 extremos financeiros distintos e o caso zerado CISNORTE foram
+conferidos nos extratos: todos reproduzem valor e transacoes. Betim-CISMEP/2014
+mantem R$ 72.822.301,96 em 186 transacoes. Cinco raizes sem sigla ganharam
+nomes completos de exibicao. Produtos e fontes receberam indices e hashes.
+O passo 7 segue aberto: explicar por que falta um destino nao equivale a
+recuperar o prestador, a vigencia e a capacidade necessarios para medi-lo.
