@@ -797,3 +797,29 @@ foram retiradas dos rodapes; fontes, periodo e competencias permanecem.
 O atlas anterior e os dois mapas de 16/09 tiveram textos/universos revistos.
 O script 27 atualiza tambem os caminhos antigos dos dois PNG em
 `outputs/figuras/`. A capacidade historica nao e projetada para 2026.
+
+## Diagnostico Da Proposta Logit De Um Ano
+
+Executar `Rscript 29_avaliar_proposta_logit.R` nesta pasta.
+Le somente sete entradas existentes, registra SHA-256 antes/depois e usa
+assertivas para chaves, totais, capacidades, populacao e participacoes.
+Nao estima coeficientes, modifica a v1 ou valida alternativas institucionais.
+Entradas/versoes em `outputs/viabilidade_logit/fontes.csv`.
+
+| Produto em outputs/viabilidade_logit/ | Unidade e uso |
+|---|---|
+| `comparacao_anos.csv` | Ano; pagadores, multiplos destinos, cobertura direta, principal pagamento e tempos zero |
+| `municipios_2019.csv` | Municipio; numero de destinos financeiros/diretos, valores e fracao do maior pagamento |
+| `exemplo_igarape_2019.csv` | Pagamentos positivos de Igarape e ligacao com tempo/capacidade |
+| `exemplo_multiplos_consorcios_2019.csv` | Quatro destinos de Conceicao do Para, com participacao financeira e condicional ao direto |
+| `tipos_cnes_2019.csv` | Funcao/tipo CNES; unidades das entidades e anos admitidos na financeira |
+| `massas_e_localizacoes_2019.csv` | 54 entidades diretas; medidas CNES, sede cadastral, populacao da sede e municipios clinicos |
+| `populacao_sede_cadastral_2019.csv` | 73 entidades; populacao de 2019 do municipio da sede cadastral disponivel, sem validar sede historica |
+| `cobertura_massas_2019.csv` | Medida de capacidade; zeros, nulos e distribuicao nos 54 consorcios |
+
+Codigos de municipio e CNPJ preservados como texto. A decodificacao de
+`<U+....>` reaproveita a regra do script 26 somente nos derivados. O
+pareamento da sede usa nome normalizado de municipio MG, com unicidade
+verificada. Obter 73 pareamentos nao transforma sede atual em sede anual.
+As populacoes dos municipios clinicos nao sao numero de pacientes ou
+populacao consorciada. A soma de destinos e descritiva, nao massa aprovada.

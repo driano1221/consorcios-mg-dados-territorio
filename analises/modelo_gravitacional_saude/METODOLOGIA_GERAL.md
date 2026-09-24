@@ -1862,3 +1862,186 @@ afetam apenas a visualizacao. O teste 17 compara cada celula aos CSVs
 originais. As duas tabelas tem zero celulas nulas nos recortes/colunas
 selecionados; isso nao implica oferta assistencial completamente conhecida.
 Nenhuma fonte, criterio da v1, formula ou amostra de estimacao foi alterada.
+
+## Compatibilidade Da Proposta Logit Com A V1
+
+Avaliacao em 24/09/2026 de uma proposta de piloto transversal para saude/MG:
+probabilidades normalizadas por exp(utilidade), com atracao por capacidade
+e impedancia espacial; populacao da sede foi sugerida como massa alternativa.
+O pedido nao especificou ano, variavel de escolha observada, alternativas,
+tratamento da nao participacao ou regra para consorcios com varias unidades.
+Nao foi acessivel o historico da interacao de IA vinculado na imagem.
+Esta avaliacao usa somente o pedido visivel, as decisoes registradas e a v1.
+
+Permanecem as decisoes anteriores: MG e saude, MIDES como pagamento,
+consolidacao por raiz, clinicas do proprio ano, leitos sem uso como massa
+unica, RCL complementar, bacia posterior e ausencia de PCA aprovada.
+O script 29 quantifica a compatibilidade sem estimar nem alterar fontes.
+
+### Dados Disponiveis E Escolha De Ano
+
+2019 e recomendado como piloto por ser anterior a pandemia, ter 54 entidades
+com capacidade/tempo e permitir cotejos ja documentados naquele ano.
+Nao foi escolhido por ajuste econometrico ou resultado favoravel.
+2018 tem tambem 54 diretas; 2020 e 2021 tem 55 e 56, respectivamente.
+As comparacoes de cobertura estao em `comparacao_anos.csv`.
+
+| Em 2019 | Financeira | Direta com clinica e tempo |
+|---|---:|---:|
+| Entidades | 73 | 54 |
+| Linhas municipio-consorcio | 62.269 | 46.062 |
+| Relacoes com pagamento positivo | 1.376 | 781 |
+| Municipios pagadores | 808 | 703 |
+| Municipios que pagam a mais de um consorcio do recorte | 497 | 75 |
+| Valor nominal | R$ 406.799.086,09 | R$ 361.802.069,73 |
+
+O direto conserva 88,94% do valor de 2019, diferente dos 86,4% nos oito anos.
+Dos 853 municipios, 45 nao tem pagamento positivo no nucleo financeiro;
+105 pagam somente a entidades fora do direto e 477 combinam pagamentos
+diretos e nao diretos. Os 150 sem pagamento direto nao sao 150 nao aderentes.
+703 x 54 = 37.962 linhas seria a grade do piloto condicional a pagamento
+direto, ainda antes de justificar alternativas. As linhas nao sao 37.962
+decisoes independentes: os casos sao os 703 municipios.
+
+### O Que Significa O Logit Neste Problema
+
+[Train, cap. 2](https://eml.berkeley.edu/books/choice2nd/Ch02_p9-33.pdf)
+define escolhas discretas entre alternativas exclusivas; o
+[cap. 3](https://eml.berkeley.edu/books/choice2nd/Ch03_p34-75.pdf)
+apresenta a normalizacao exponencial e a restricao IIA. Para atributos
+que variam entre destinos, a implementacao pertinente e o logit condicional
+de McFadden, tambem descrito na
+[documentacao Stata](https://www.stata.com/features/overview/choice-models/).
+
+Aplicacao a nossa base: marcar todos os pagamentos como 1 dentro de um
+municipio nao constitui uma unica escolha multinomial. Ha tres objetos:
+
+| Objeto | Resposta observada | Consequencia |
+|---|---|---|
+| Principal destino financeiro | 1 para o consorcio de maior valor, 0 para os demais | Logit de escolha exclusiva, mas nao explica todos os vinculos ou nova adesao |
+| Distribuicao dos pagamentos | Valor ao consorcio / total municipal no recorte | Media de participacoes com normalizacao logit; preserva multiplos destinos |
+| Ocorrencia por par | 1 quando municipio paga ao consorcio | Logit binario por par admite varios positivos; probabilidades nao somam 1 entre consorcios |
+
+A segunda via tem fundamento em
+[Mullahy, Multivariate Fractional Regression Estimation of Econometric Share Models](https://www.nber.org/papers/w16354):
+modelagem conjunta de participacoes, inclusive zeros e uns. E uma
+adaptacao proposta para a distribuicao financeira, nao o mesmo desfecho
+de escolha unica. Nao transformar reais em contagens independentes nem
+usar automaticamente n_transacoes como viagens/decisoes.
+
+Uma referencia aplicada analoga e
+[Suhara et al. (2019)](https://arxiv.org/abs/1902.03488), que examina
+Huff com dados transacionais de comercio. Mostra um uso de atracao/distancia
+para participacoes; nao valida equivalencia entre compra, pagamento
+intergovernamental, filiacao e utilizacao de saude.
+
+No primeiro caminho e preciso distinguir maior entre todos e maior entre
+os diretos. 687 municipios tem seu maior pagamento financeiro em uma
+entidade direta; 16 dos 703 pagadores diretos tem maior pagamento fora
+desse recorte. Nao substituir silenciosamente o principal global pelo
+principal direto. Nao ha empate no maior financeiro em 2019.
+A mediana da parcela do maior pagamento municipal e 96,15% no financeiro.
+Portanto, principal destino pode resumir bem muitos casos, mas tem perdas
+importantes em municipios como Conceicao do Para; deve ser nomeado como tal.
+
+No caminho de participacoes, o denominador direto soma apenas os 54
+consorcios. Ele descreve gasto condicionado a esse recorte e redistribui
+o total direto entre eles; nao recupera redes excluidas. Os municipios
+com total zero nao tem participacao definida. Uma alternativa externa
+"nao aderir" exige outro desenho; nao pode reunir falta de pagamento,
+SAMU e redes indiretas como se fossem ausencia de relacao.
+
+### Exemplo Que Diferencia As Perguntas
+
+Conceicao do Para, 2019:
+
+| Consorcio | Valor | Parcela no financeiro | Parcela dentro do direto |
+|---|---:|---:|---:|
+| CISVI | R$ 114.357,72 | 40,28% | 43,80% |
+| CISPARA | R$ 47.006,59 | 16,56% | 18,00% |
+| CISMEP | R$ 99.725,42 | 35,12% | 38,20% |
+| CIS-URG OESTE | R$ 22.841,89 | 8,04% | Fora do recorte direto |
+
+O logit do principal marcaria CISVI; as participacoes preservam os outros
+destinos dentro do recorte. A via binaria mantem os varios pagamentos.
+Igarape tem somente CISMEP como pagamento positivo no nucleo em 2019,
+portanto seu exemplo isolado nao revela a multiplicidade dos outros casos.
+
+### Massa E Impedancia
+
+As 64 unidades clinicas de 2019 sao 45 clinicas/centros de especialidade,
+dez policlinicas, seis SADT, dois consultorios e um CAPS. Nao ha hospital
+geral/especializado nesse recorte. Codigos conferidos com a
+[tabela CNES](https://cnes2.datasus.gov.br/Mod_Ind_Unidade.asp?VEstado=00).
+Nos 54 consorcios, leitos SUS sao zero em todos; profissionais e horas
+tem um zero cada (CISVAS), e servicos tem onze. Nulos dessas medidas: zero.
+Numero de clinicas varia de um a quatro. Capacidade descreve cadastro,
+nao qualidade ou producao, e pessoas podem repetir entre unidades.
+
+Proposta minima, ainda nao estimada, usando a parte observavel da utilidade:
+
+    V_ij = beta_A * log(1 + profissionais_SUS_j) - beta_T * tempo_ij / 60
+    P_ij = exp(V_ij) / soma_x_em_Ji exp(V_ix)
+
+O componente de atracao resultante e (1+A_j)^beta_A e a impedancia e
+exp(-beta_T * t_ij/60). Essa e uma derivacao algebrica da especificacao
+proposta. Mantem atracao e decaimento espacial da familia gravitacional,
+com normalizacao por alternativas, cuja interpretacao e discutida na
+[documentacao Huff](https://pro.arcgis.com/en/pro-app/3.5/tool-reference/business-analyst/understanding-huff-model.htm).
+Nao e a forma de potencia pura da distancia. Os coeficientes seriam
+estimados, com sinais esperados positivos na notacao acima, nao fixados
+arbitrariamente. log(1+A) acomoda zero cadastral; nao corrige sua qualidade.
+
+Tempo em horas aceita os 59 pares intramunicipais com zero (53 pagos)
+sem log de zero nem deslocamento ficticio. Uma variante com quilometros
+tambem e possivel. A coluna distancia_minima_km e a distancia da rota
+ate o destino de menor TEMPO, nao necessariamente o menor quilometro.
+As rotas vao entre sedes municipais, nao ao portao do estabelecimento.
+Profissionais totais da rede com tempo minimo sao uma aproximacao de
+atracao/proximidade do consorcio; nao indicam que toda capacidade esta
+no destino mais proximo. Mediana e agregacao por unidade sao sensibilidades.
+
+A populacao da sede foi ligada tecnicamente para as 73 entidades, usando
+o municipio cadastral disponivel e a populacao IBGE de 2019. A localizacao
+historica da sede nao foi validada. Para CISMEP: sede cadastral Sao Joaquim
+de Bicas, 31.578 habitantes; clinicas de 2019 em Betim (439.340) e
+Brumadinho (40.103). E uma medida de porte urbano diferente da capacidade.
+Nao usar automaticamente a soma dos habitantes dos destinos como massa.
+Se a equipe quiser um polo urbano, massa e destino devem ter definicao
+territorial coerente, com tempo ate esse polo recalculado a partir da
+matriz existente. A variante de sede administrativa e teste de centralidade,
+nao substituto comprovado de hospital.
+
+Na normalizacao proposta, um fator de populacao da ORIGEM com coeficiente
+comum cancela entre numerador e denominador; a populacao do DESTINO varia
+entre alternativas. Essa distincao e algebrica. Efeitos fixos irrestritos
+por consorcio em um unico ano absorveriam a massa constante de cada
+consorcio; nao permitem estimar separadamente seu coeficiente.
+
+### Condicoes Para O Primeiro Piloto
+
+Recomendacao analitica: 2019, profissionais e tempo, sem indice composto.
+Para preservar a distribuicao observada, preferir participacoes condicionais
+ao direto; se o objetivo for reproduzir a escolha exclusiva solicitada,
+explicitar principal destino financeiro como outro desfecho. Essa escolha
+precisa de alinhamento e nao foi tomada pelo diagnostico.
+
+Definir J_i antes da estimacao. As 54 entidades cadastralmente disponiveis
+podem ser um cenario exploratorio amplo, nao prova de acesso de cada municipio.
+Nao usar somente destinos pagos como alternativas, nem cortar rotas para
+melhorar ajuste. Qualquer restricao territorial deve ter regra previa,
+conservar ou explicar cada destino observado e reportar perdas.
+
+Validar convergencia, sinais, calibracao e previsao separando municipios,
+nao linhas aleatorias do mesmo municipio. Comparar tempo sozinho,
+capacidade+tempo e alternativa de massa, mantendo a mesma amostra quando
+possivel. Inferencia precisa respeitar casos municipais e dependencia
+territorial; 46.062 linhas nao criam 46.062 observacoes independentes.
+Investigar sensibilidade a alternativas semelhantes, zeros de capacidade
+e discrepancia entre dezembro e pagamentos do ano. Capacidade pode reagir
+a pagamentos; estimativas transversais nao demonstram efeito causal.
+Uma robustez com capacidade de 2018 e possivel sem mudar o ano do desfecho.
+
+Nao e necessario reabrir toda a coleta para discutir/rodar um piloto
+delimitado. A pendencia central agora e a definicao da pergunta, do conjunto
+de alternativas e da interpretacao. Nenhum modelo foi ajustado nesta avaliacao.

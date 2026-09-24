@@ -13,7 +13,12 @@ o pacote vigente inclui apenas as cinco utilizadas na consulta.
 Os produtos ficam locais; os scripts 26 a 28 reproduzem a entrega.
 Para compartilhar, use `outputs/visuais_v1.zip` e extraia a pasta inteira:
 o HTML precisa das subpastas `figuras` e `dados` ao lado dele.
-O proximo passo e discutir a formula da equipe com a base, antes de estimar.
+O pedido de piloto logit em um ano ja foi confrontado com a v1:
+`29_avaliar_proposta_logit.R` reproduz o diagnostico em
+`outputs/viabilidade_logit/`. A avaliacao esta ao final de
+`METODOLOGIA_GERAL.md`. Proximo passo: definir desfecho e alternativas
+antes de estimar; pagamentos a varios consorcios impedem interpretar
+automaticamente cada linha positiva como escolha exclusiva.
 
 ## Comece Aqui: Base V1 — 24/09/2026
 

@@ -498,3 +498,25 @@ e ler suas 30 colunas, sem exigir abrir o arquivo em outro programa.
 Todas as 814.615 linhas das duas tabelas estao consultaveis, com filtros
 e paginacao; todas as celulas foram comparadas aos CSVs originais.
 Essa revisao mudou a apresentacao e a consulta, sem nova coleta ou modelo.
+
+## Proposta De Piloto Logit Recebida Depois Da Entrega Visual
+
+Adriano apresentou uma mensagem propondo logit multinomial em um ano,
+saude/MG, com capacidade de atracao e impedancia espacial. A alternativa
+sugerida para massa foi populacao do municipio sede. A imagem antecede
+um separador de 17/09; a data exata da mensagem nao foi confirmada.
+O registro e a avaliacao ocorreram em 24/09. Trata-se de proposta, nao
+de autorizacao para escolher silenciosamente desfecho ou amostra.
+
+O script 29 verificou os dados: em 2019, 497 dos 808 municipios pagadores
+do nucleo financeiro pagam a varios consorcios. No direto, 75 dos 703
+pagadores fazem o mesmo. Conceicao do Para paga ao CISVI, CISPARA, CISMEP
+e CIS-URG Oeste. Um unico escolhido mudaria a pergunta para principal
+destino financeiro; participacoes preservariam a divisao do gasto.
+
+O exemplo Igarape-CISMEP continua valido: R$ 4.740.790,51, duas clinicas,
+105 profissionais SUS e tempo minimo de 15,1 minutos. A sede cadastral
+disponivel e Sao Joaquim de Bicas, mas as clinicas de 2019 sao Betim e
+Brumadinho. Portanto, populacao da sede e capacidade/destino clinico
+precisam ser distinguidos. Nenhum coeficiente foi estimado; agora falta
+alinhar o desfecho e o conjunto de alternativas do piloto.
