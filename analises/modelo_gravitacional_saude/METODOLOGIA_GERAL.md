@@ -1511,3 +1511,131 @@ assistenciais. Tampouco recuperaria a data perdida da extracao antiga. Se uma
 nova pergunta exigir historico/objeto adicional ou auditoria de revisoes do
 MIDES, sera preciso guardar outro extrato com consulta e manifesto, preservando
 o atual. O script original sobrescreve sua saida e nao foi executado nesta etapa.
+
+### Leitura Da Base, Indicadores E Literatura Comparavel — 24/09/2026
+
+Esta secao responde a uma consulta de Adriano sobre o significado das bases,
+PCA e pesquisas semelhantes. **Sao recomendacoes, nao decisoes de amostra,
+massa ou formula.** Nao houve nova coleta assistencial, exclusao ou estimacao.
+O marco oficial permanece o passo 7; a equipe ja tem uma formula, ainda nao
+enviada para confronto com as exigencias de dados.
+
+O projeto tem tres objetos que devem ser distinguidos: relacao financeira
+municipio-consorcio (MIDES), oferta cadastrada unidade-competencia (CNES) e
+proximidade geografica ate municipios de oferta (matriz rodoviaria). A ligacao
+consorcio-unidade depende de CNPJ ou evidencia documental, e varia no tempo.
+Ter esses arquivos nao prova que cada repasse financiou cada unidade, nem
+que a populacao inteira teve acesso a toda a capacidade cadastrada.
+
+**Exemplo conferido no painel:** Igarape-CISMEP/2019, municipio 3130101,
+raiz 05802877: populacao 43.045; R$ 4.740.790,51 em 81 transacoes; duas
+unidades clinicas diretas; soma de 17 contagens de servicos SUS e de 105
+profissionais SUS nas unidades; zero leitos SUS; menor tempo 15,1 minutos,
+mediana 20,45. As contagens sao da oferta do consorcio, repetida para cada
+origem no painel: nao sao 105 pessoas exclusivas, 105 atendimentos ou recursos
+reservados a Igarape. Profissionais e servicos podem repetir entre unidades.
+
+Outro limite para a formulacao futura: o painel guarda tanto capacidade
+somada entre unidades quanto tempo minimo/mediano/maximo. Usar toda a
+capacidade com apenas o menor tempo pode aproximar artificialmente a oferta
+das unidades distantes. A combinacao devera ser justificada; as medidas por
+unidade foram preservadas para permitir alternativas. Nao se conhece a
+distribuicao de cada pagamento entre os estabelecimentos do consorcio.
+
+As familias de dados de saude coletadas sao:
+
+| Familia | Medidas disponiveis nas bases auxiliares | Leitura adequada |
+|---|---|---|
+| Estrutura/localizacao | CNES, CNPJ proprio/mantenedor, municipio, tipo, funcao fixa clinica/nao clinica/movel | Onde e de que natureza e o cadastro |
+| Atendimento | Marcadores de ambulatorio, hospitalar e vinculo SUS; SADT no retrato atual | Modalidade cadastrada, nao quantidade realizada |
+| Leitos | Existentes, SUS, tipos de leito | Pertinentes a internacao; nao resumem oferta ambulatorial |
+| Servicos | Contagens de servicos especializados e servicos SUS no historico | Diversidade cadastrada, nao exames/consultas realizados |
+| Trabalho | Profissionais, ocupacoes CBO, CBO medicos, horas SUS; vinculos ativos no retrato atual | Quantidade/dedicacao e diversidade ocupacional; CBO nao comprova especialidade efetivamente ofertada |
+| Tempo e evidencia | Competencia, meses presentes, mudancas de tipo, status da consulta e fonte | Cobertura e interpretacao do dado; nao qualidade clinica |
+
+Diagnosticos, procedimentos efetivamente realizados, pacientes, filas, precos
+por procedimento e qualidade clinica nao estao integrados. Tambem nao ha
+inventario historico completo de equipamentos por tipo nesta base. Os arquivos
+brutos ST/LT/SR/PF nao devem ser confundidos com todos os modulos possiveis do CNES.
+
+**PCA:** pode ajudar a explorar dimensoes correlacionadas, mas nao resolve
+prestador desconhecido, mes ausente, acesso municipal ou diferencas entre
+hospital, ambulatorio e SAMU. Minha recomendacao e comecar com medidas
+separadas de escala, diversidade e dedicacao, estratificadas por modalidade.
+Usar PCA apenas depois de explicitar o que o indice deve medir, tratar
+assimetria/escala e testar estabilidade entre anos e diante de grandes entidades.
+Nunca incluir pagamento MIDES, populacao ou tempo numa suposta massa de oferta.
+O escore PCA pode ser negativo e nao e quantidade de capacidade; transforma-lo
+em massa positiva exige justificativa adicional. Pesos estatisticos nao sao
+pesos de importancia assistencial. Ver
+[manual OCDE/JRC de indicadores compostos (2008)](https://www.oecd.org/en/publications/handbook-on-constructing-composite-indicators-methodology-and-user-guide_9789264043466-en.html).
+
+Verificacao descritiva, sem ajustar PCA: ha 379 entidades-ano distintas com
+clinica direta e tempo; em 2019 sao 54. Para essas 54, Spearman entre
+servicos SUS e profissionais SUS e 0,701; unidades-servicos 0,408;
+unidades-profissionais 0,384. Numero de unidades tem quatro valores distintos.
+Leitos SUS sao constantes em zero, fato ja conhecido, e nao informam uma PCA
+padronizada desse recorte/ano. Isso sugere redundancia parcial, sem demonstrar
+que um unico componente seja suficiente. As 661.928 linhas nao sao observacoes
+independentes de capacidade; deduplicar por entidade-ano antes desse diagnostico,
+e ainda considerar a repeticao das mesmas entidades no tempo.
+
+Reproduzir a verificacao em R a partir desta pasta:
+
+```r
+p <- readRDS('outputs/painel_anual_integrado_saude_mg_2014_2021.rds')
+v <- c('n_destinos_clinicos_dezembro',
+       'servicos_sus_clinicos_soma_unidades',
+       'profissionais_sus_clinicos_soma_unidades')
+x <- unique(as.data.frame(p[p$alternativa_direta_com_tempo & p$ano == 2019,
+                           c('cnpj_raiz_8', v)]))
+stopifnot(nrow(x) == 54L)
+round(cor(x[v], method = 'spearman'), 3)
+```
+
+**Analise discriminante:** responde a classificacao em grupos previamente
+conhecidos, e nao a construcao neutra de uma massa. Nao e prioridade para as
+lacunas atuais. Tipologia substantiva por modalidade vem antes; agrupamentos
+podem ser explorados depois, sem tratar clusters como grupos clinicos validados.
+Referencia metodologica: [documentacao de LDA/QDA](https://scikit-learn.org/stable/modules/lda_qda.html).
+
+**Literatura selecionada:** busca dirigida por gravidade, origem-destino,
+oferta de saude, populacao e impedancia; nao e revisao sistematica. Fontes
+primarias consultadas em 24/09/2026. A semelhanca e de estrutura/conceito,
+nao identidade de desfecho ou de estimador.
+
+| Pesquisa | Estrutura e contribuicao para este projeto | Diferenca relevante |
+|---|---|---|
+| [Rocha, Rache e Nunes, IEPS (2022), A Regionalizacao da Saude no Brasil](https://ieps.org.br/wp-content/uploads/2022/06/IEPS_Estudo_Institucional_07.pdf) | SIH, CNES/AMS, SIA e IBGE; fluxos intermunicipais e painel regional 1998-2019; distingue recursos de utilizacao | Modelo gravitacional adaptado sobre proporcoes de internacoes por destinos regionais; nao replica nosso painel financeiro bilateral nem usa a mesma impedancia |
+| [Jia, Wang e Xierali (2019), Florida](https://d-nb.info/1202585205/34) | Origem residencial-hospital; populacao, leitos e tempo rodoviario; analisa variacao entre grupos | Desfecho e internacao observada; leitos correspondem a esse servico, enquanto nossos consorcios incluem ambulatorios e servicos moveis |
+| [Latruwe et al. (2023; online 2022), Belgica](https://link.springer.com/article/10.1007/s10742-022-00298-4) | Admissoes, leitos e impedancia; enfrenta hospitais com multiplos campi e fluxos disponiveis apenas no nivel agregado | Distribuicao por campus exige hipotese; parte da area foi excluida por problema de dados. Tempo de carro nao teve melhor ajuste em todos os testes |
+| [Luo (2004), escassez de medicos](https://www.niu.edu/landform/papers/LuoH%26P.pdf) | Populacao, medicos e areas de alcance; referencia complementar para acessibilidade potencial | Nao estima pagamento a consorcio nem demonstra utilizacao; ajuda a pensar oferta por modalidade e competicao por recursos |
+
+**Avaliacao:** a arquitetura origem-oferta-impedancia-tempo e coerente com
+essa literatura. A pergunta mais proxima dos dados atuais e a associacao
+entre pagamento municipal ao consorcio, oferta cadastrada documentada e
+proximidade. Interpretar o resultado como fluxo efetivo de pacientes exige
+dados adicionais. Mesmo SIH/SIA nao atribuem automaticamente a producao de
+uma unidade ao consorcio financiador; a ligacao institucional continua necessaria.
+
+**Prioridades sugeridas, sem substituir o plano:**
+1. Utilizar este mapa de camadas para alinhar com a equipe qual desfecho se
+   pretende explicar. Enviar a formula ja definida ajudara a transformar seus
+   termos numa lista de exigencias de dados, sem estimar imediatamente.
+2. Concluir os meses/casos prioritarios ja definidos e manter um registro
+   de resolvido, parcial, nao aplicavel e sem evidencia; nao exigir eliminar
+   todo NA para permitir qualquer pesquisa.
+3. Explorar capacidade por modalidade e suas correlacoes, antes de indice
+   geral. Distinguir contagem de profissionais de horas e duplicacao entre unidades.
+4. Definir deflacao dos pagamentos nominais antes de comparar montantes reais
+   ao longo de oito anos; RCL parcial permanece sensibilidade, nao exigencia geral.
+5. So ampliar PIB, estrutura etaria, oferta local alternativa ou producao
+   SIH/SIA quando a pergunta exigir; uma coleta ampla sem finalidade nao fecha
+   automaticamente a base. Producao hospitalar e ambulatorial sao caminhos diferentes.
+
+As ultimas entregas combinaram **auditoria de consistencia** (chaves, somas,
+rotas, temporalidade), **enriquecimento** (candidatas externas, contratos e
+competencias faltantes) e **definicao do alcance** (perdas e recortes). Conferir
+um extrato ou cadastro nao certifica a veracidade de cada atendimento no mundo
+real. O passo 7 permanece aberto por suficiencia, nao porque toda a base esteja
+sem validacao. Esta consulta nao altera os dados ou as decisoes anteriores.

@@ -48,6 +48,35 @@ estimar novos modelos.
 
 ## Leitura Rapida
 
+**Como enxergar a base:** uma linha do painel e um municipio x entidade x ano,
+e nao um paciente, uma unidade CNES ou um consorcio isolado. A grade de
+853 x 97 x 8 combina possibilidades; seus 661.928 registros nao representam
+essa quantidade de relacoes observadas. As 60 colunas incluem identificadores,
+regras de elegibilidade e defasagens, alem das medidas substantivas.
+
+| Camada | O que esta disponivel no modelo | Limite principal |
+|---|---|---|
+| Municipio e ano | Populacao IBGE anual; RCL parcial; regiao/micro/macro de saude conforme versao; ciclo do mandato | PIB/renda/estrutura etaria e partidos nao estao integrados nas 60 colunas; PDR so 2019-2021 |
+| Entidade | CNPJ raiz; nomes; escopo; abertura; origem nas 84 ou nas 13 externas | Matriz/filial nao e outra entidade; criacao juridica nao e inicio de cada servico |
+| Relacao financeira | Valor MIDES; transacoes; presenca; primeiro pagamento; retorno; permanencia; interrupcao | Valor nominal e vinculo financeiro observado; nao filiacao juridica ou pacientes |
+| Unidade CNES e competencia | Identificacao/localidade; tipo; vinculo CNPJ; atendimento; leitos; servicos; profissionais; ocupacoes e horas | Estrutura registrada; capacidade do mes, nao producao ou cota do consorcio |
+| Deslocamento | Matriz Distbrasil de distancia/tempo entre sedes; destinos selecionados pelo CNES do ano | Rede viaria estatica resumida; nao rota de paciente, transito ou percurso porta a porta |
+| Evidencia institucional | MUNIC, CNM, contratos e datas; decisoes de elegibilidade e limites | Fontes com datas/objetos distintos, sem serie juridica anual completa |
+
+Ha bases CNES detalhadas separadas do painel. O historico original tem
+1.868 unidades-ano e 29 campos (31 apos elegibilidade); as externas acrescentam
+74 unidades-ano. O retrato atual original tem 670 unidades e 40 campos, mas
+nao substitui o historico. ST foi coletado mensalmente; LT/SR/PF inicialmente
+em dezembro, com o piloto posterior de seis fotografias. As 60 colunas do
+painel nao sao 60 indicadores de capacidade medica.
+
+Em 2014-2021, ha 10.735 pares-ano pagos no nucleo cadastral de saude. O
+recorte direto com tempo conserva 5.612 (52,3%) e 86,4% do valor desse nucleo.
+Isso sugere selecao relevante: boa cobertura financeira nao e cobertura
+integral das modalidades assistenciais. Oferta movel/regulacao/terceirizada
+nao se transforma automaticamente em clinica fixa. Consulte a nova leitura
+critica da literatura e dos indicadores ao fim da metodologia.
+
 | Necessidade | Arquivo |
 |---|---|
 | saber a ordem, o estado e o proximo marco | `PLANO_DE_TRABALHO.md` |

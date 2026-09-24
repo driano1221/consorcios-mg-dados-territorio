@@ -612,3 +612,11 @@ Nao foi repetida a consulta MIDES. A conferencia usa o extrato original ja
 identificado por hash, preservando sua data de extracao incerta e o manifesto
 do complemento. Rerodar a consulta original sem outra necessidade nao resolve
 prestadores/contratos e sobrescreveria a fonte existente.
+
+Consulta metodologica de 24/09: o README ganhou um mapa das camadas da base;
+a secao final da metodologia explica indicadores, PCA, discriminante e quatro
+estudos comparaveis, com URLs e limites. Dois artigos foram copiados para
+`outputs/literatura/`, com URL e SHA-256 em `outputs/literatura/manifesto.csv`.
+Sao referencias de pesquisa, nao entradas do painel; os demais foram lidos
+nas paginas dos autores/editoras. A verificacao de correlacoes tem comando R
+reproduzivel na metodologia; nao houve ajuste de PCA ou modelo gravitacional.
