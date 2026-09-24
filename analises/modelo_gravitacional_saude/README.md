@@ -3,15 +3,14 @@
 > Integracao de 23/09: o painel anual novo tem 661.928 linhas (853 municipios,
 > 97 entidades e 2014-2021). Pagamentos originais foram preservados; CNES,
 > capacidade e destinos rodoviarios variam pelo ano. O passo 6 esta concluido
-> para uma amostra principal com unidades de tipo clinico diretamente
+> para um recorte candidato com unidades de tipo clinico diretamente
 > cadastradas e tempo historico conhecido, sem corte de minutos. Esse cadastro
 > nao comprova producao SUS ou deslocamento. Consulte
 > `outputs/painel_anual_integrado_resumo.csv` e
 > `outputs/diagnostico_alternativas_painel_saude_2014_2021.csv`. O passo 7
-> concluiu a validacao dos dados em 24/09: perdas, extremos, RCL, alternativas
-> e marcadores SUS. Nenhum modelo foi estimado; a formula definida pela equipe
-> sera considerada quando Adriano a enviar. Bacias ficaram para analise
-> territorial posterior.
+> segue em andamento: perdas, extremos, RCL, alternativas, marcadores SUS e as
+> 60 variaveis foram auditados, mas a suficiencia ainda precisa ser julgada.
+> Nenhum modelo foi estimado. Bacias ficaram para analise territorial posterior.
 
 > Complemento de 16/09: revisao fora das 84 concluida nas fontes consultadas.
 > Foram triadas 137 raizes e documentados 28 casos: dez candidatas com saude
@@ -98,7 +97,7 @@ flowchart LR
   M --> N[Filtro clinico e auditoria documental]
   N --> L[Painel anual restrito: passo 6]
   L --> O[EDA de dados: passo 7]
-  O --> Q[Depois: formula da equipe e modelos]
+  O --> Q[Agora: decidir suficiencia dos dados]
 ```
 
 ## Como Navegar Nesta Pasta
@@ -407,15 +406,30 @@ substituiu as pendencias de temporalizacao e controles ali descritas.
 
 Esta secao registra o diagnostico anterior de 16/09. O painel anual foi
 integrado em 23/09, preservando as 84 originais e acrescentando 13 candidatas.
-O passo 7 foi concluido em 24/09 para a base restrita. Em 2019, 781 pares
-pagantes tem tempo clinico direto, 595 pares de saude nao tem polo direto e
-137 ficam fora do recorte restrito. Os 19 tempos acima de 300 minutos foram
+O diagnostico do recorte restrito foi executado em 24/09; o passo 7 segue
+aberto quanto a suficiencia dos dados. Em 2019, 781 pares pagantes tem tempo
+clinico direto, 595 pares de saude nao tem polo direto e 137 ficam fora do
+recorte restrito. Os 19 tempos acima de 300 minutos foram
 conferidos com as rotas e com os extratos financeiros; nenhum foi apagado.
 Uma segunda auditoria separou clinica cadastrada de marcador SUS observado:
 em 2019, CISVAS tem dez pares pagantes sem esse marcador; seis pares do
 CISMARG teriam tempo maior ao exigir clinica com marcador. RCL continua
-incompleta e seletiva. O trabalho fica nos dados ate Adriano compartilhar a
-formula da equipe; nenhum modelo ou indice de massa foi estimado.
+incompleta e seletiva. O inventario de 60 variaveis encontrou 5.123 pares
+pagos de saude sem polo clinico direto entre 2014 e 2021, em 181
+entidades-ano. A classificacao documental anual esta no painel para 84
+dessas entidades-ano; as outras exigem confronto com dossies existentes.
+Um registro Sao Joao das Missoes-CISNORTE-MG em 2021 tem quatro transacoes
+MIDES e valor total zero; permanece como registro sem pagamento positivo.
+Nenhum modelo ou indice de massa foi estimado.
+
+Com o painel anual ja materializado, reproduza o inventario completo a partir
+da raiz do repositorio:
+
+```powershell
+Rscript analises/modelo_gravitacional_saude/21_inventariar_qualidade_painel_saude.R
+```
+
+Os cinco CSVs resultantes ficam em `analises/modelo_gravitacional_saude/outputs/`.
 
 Para reproduzir a nova entrega, depois dos produtos anteriores:
 

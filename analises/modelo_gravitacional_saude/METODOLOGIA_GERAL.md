@@ -47,7 +47,7 @@ criterios de conclusao ficam somente em `PLANO_DE_TRABALHO.md`.
 | 3. Definir polo de atracao assistencial | Concluido com exclusoes explicitas | 84 entidades consultadas; filtro funcional e rodada documental fechados em 16/09 |
 | 4. Construir capacidade assistencial | Concluido e reprocessado | 670 unidades; medidas separadas para 61 entidades com oferta fixa direta |
 | 5. Integrar tempo rodoviario | Concluido e reprocessado | 853 origens, 82 unidades fixas e tres camadas de impedancia |
-| 6. Montar o painel analitico anual | Concluido para amostra clinica direta; sujeito a EDA do passo 7 | 661.928 observacoes municipio x entidade x ano, preservando as 573.216 originais |
+| 6. Montar o painel analitico anual | Concluido como grade e recorte clinico direto candidato; suficiencia em avaliacao no passo 7 | 661.928 observacoes municipio x entidade x ano, preservando as 573.216 originais |
 | Complemento. Cobertura assistencial | Decisoes de uso concluidas | 38 casos iniciais, 91 entidades-ano e rodada documental das 21 nao prioritarias |
 | Complemento temporal do passo 4 | Concluido | 672 entidades-ano e 120 arquivos oficiais auditados |
 
@@ -1273,3 +1273,57 @@ foi alterada; as duas definicoes foram separadas para sensibilidade.
 Adriano orientou manter o trabalho integralmente nos dados e informou que a
 equipe ja definiu uma formula gravitacional, a ser enviada depois. Nenhum
 modelo foi estimado nem uma nova massa escolhida nesta etapa.
+
+### Inventario Completo De Variaveis E Suficiencia — 24/09
+
+O script `21_inventariar_qualidade_painel_saude.R` percorre as 60 colunas do
+painel por ano em tres universos: grade inteira, pares pagantes do nucleo
+cadastral de saude e pares pagantes com clinica direta. Registra nulos,
+strings vazias, zeros, valores distintos, quantis e extremos numericos; nao
+altera o painel. As 661.928 linhas sao uma grade balanceada, nao 661.928
+vinculos observados. Existem 11.675 pares pagos em oito anos, dos quais
+10.735 pertencem ao nucleo cadastral de saude. Destes, 5.612 tem polo clinico
+direto e 5.123 nao tem (R$ 450.467.803,61, 13,6% do valor pago pelo nucleo).
+As 5.123 observacoes se distribuem em 181 entidades-ano. O painel contem
+classificacao documental anual para 84 delas; nas outras 97, ausencia de
+classificacao *no painel* nao implica ausencia de documento nos dossies.
+
+| Ano | Pares pagos de saude | Com polo clinico direto | Sem polo clinico direto | Municipios com RCL |
+|---:|---:|---:|---:|---:|
+| 2014 | 1.277 | 641 | 636 | 0 |
+| 2015 | 1.304 | 592 | 712 | 160 |
+| 2016 | 1.288 | 588 | 700 | 219 |
+| 2017 | 1.325 | 649 | 676 | 185 |
+| 2018 | 1.357 | 774 | 583 | 227 |
+| 2019 | 1.376 | 781 | 595 | 270 |
+| 2020 | 1.386 | 784 | 602 | 154 |
+| 2021 | 1.422 | 803 | 619 | 150 |
+
+Cada ano tem 853 municipios; os pares sao municipio-entidade-ano pagos. A
+queda do numero sem polo direto em 2018 nao deve ser interpretada isoladamente
+como abertura de clinicas: a composicao e a vigencia das entidades tambem
+mudam.
+
+Em 2019, RCL esta presente para 270/853 municipios e 241/781 pares pagantes
+diretos. Capacidade e tempo direto sao nulos nos 595 pares pagos de saude sem
+polo clinico direto; esse nulo e estrutural para a regra de vinculo CNES direto,
+nao um zero assistencial. As variaveis PDR/2019 sao intencionalmente ausentes
+antes de 2019; os campos defasados sao ausentes em 2014. Entre os 781 pares
+diretos pagantes de 2019, leitos SUS registrados sao zero em todos, servicos
+SUS em 119 e profissionais SUS em dez. Cinco raizes originais possuem sigla
+vazia em 314 pares pagos no periodo; o CNPJ raiz permanece disponivel para a
+identificacao. As verificacoes de chaves, pagamentos, transacoes, temporalidade,
+capacidade e tempos nao encontraram contradicoes nos campos testados. Extremos
+financeiros e por habitante foram apenas separados para inspecao: por exemplo,
+Betim-CISMEP tem R$ 72,82 milhoes em 2014; isso nao e prova de erro.
+Uma excecao semantica deve ficar explicita: Sao Joao das Missoes-CISNORTE-MG
+em 2021 tem quatro transacoes no consolidado MIDES, mas valor corrente,
+restos e total iguais a zero. `tem_registro_mides` e verdadeiro e
+`presente_mides` e falso pela definicao de pagamento positivo; a linha nao
+foi apagada nem transformada em pagamento.
+
+Esses resultados validam a integridade mecanica de partes do painel, mas nao
+a suficiencia substantiva para o modelo gravitacional amplo de saude. A etapa
+7 continua aberta ate classificar as 181 lacunas entidade-ano e definir que
+perguntas o recorte observavel permite responder sem confundir cadastro,
+pagamento e atendimento efetivo.

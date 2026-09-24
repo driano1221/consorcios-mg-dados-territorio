@@ -1,6 +1,7 @@
 # Linha Do Tempo Dos Passos - Modelo Gravitacional De Saude
 
-> Revisao de 24/09/2026: passos 6 e 7 concluidos para a base restrita.
+> Revisao de 24/09/2026: passo 6 gerou o painel; a EDA do recorte direto foi
+> executada, mas o passo 7 segue aberto quanto a suficiencia dos dados.
 > As contagens abaixo conservam os marcos historicos de cada entrega. A
 > formula dos modelos virá da equipe; bacias ficaram para analise posterior.
 
@@ -22,7 +23,8 @@ flowchart LR
   C4 --> N3["16/09<br/>filtro clinico e decisoes fechados"]
   N3 --> N6["23/09<br/>painel anual + 13 candidatas"]
   N6 --> N7["24/09<br/>EDA e auditoria de dados"]
-  N7 --> N8["Depois<br/>formula da equipe e modelos"]
+  N7 --> N8["Agora<br/>classificar lacunas e decidir suficiencia"]
+  N8 --> N9["Depois<br/>formula da equipe e modelos"]
 ```
 
 ## Evolucao Do Projeto
@@ -322,7 +324,7 @@ tempo de 2019; numa analise de entrada, as covariaveis seriam defasadas.
 As regras de alternativas foram comparadas. Em 2019, dos 1.513 pares com
 pagamento, 781 tem clinica direta e tempo conhecido, representando 82,8% do
 valor; um limite de 90 minutos deixaria 630 pares. O recorte direto sem limite
-e a especificacao principal operacional. Redes sem unidade propria nao sao
+e o recorte direto candidato. Redes sem unidade propria nao sao
 declaradas inexistentes: seguem no painel descritivo e em sensibilidade.
 Adriano decidiu reservar bacias hidrograficas para analise territorial
 posterior. O passo 7 verificou perdas, extremos e selecao antes dos modelos.
@@ -352,5 +354,12 @@ nem prova que nao houve atendimento. No CISMARG, tres unidades nao tinham
 marcador, mas outra tinha; para seis pares pagantes o tempo ate esta ultima
 e maior. Essas diferencas ficaram documentadas como sensibilidade.
 
-Adriano pediu manter o foco nos dados e informara depois a formula definida
-pela equipe. Os modelos gravitacionais ainda nao foram estimados.
+O inventario das 60 variaveis encontrou, em oito anos, 5.123 pares pagos de
+saude sem polo clinico direto, espalhados por 181 entidades-ano. Apenas 84
+dessas entidades-ano tem classificacao documental anual transportada ao
+painel; as outras 97 exigem confronto com os dossies antes de decidir se ha
+lacuna de evidencia. Em 2019, RCL existe para 270/853 municipios. Os 595
+pares pagos de saude sem polo direto desse ano tem capacidade e tempo CNES
+diretos ausentes por definicao do recorte, sem que isso prove ausencia de
+atendimento. Adriano pediu manter o foco nos dados; os modelos gravitacionais
+ainda nao foram estimados.

@@ -421,10 +421,11 @@ documentar a grade preliminar das 84 entidades. Os produtos abaixo ficam em
 | `populacao_ibge_mg_2014_2021.sql` | Consulta reproduzivel de 6.824 municipio-ano em `basedosdados.br_ibge_populacao.municipio` | requer BigQuery e projeto de faturamento autorizado |
 | `16_extrair_rcl_siconfi_saude.py` | Consulta API oficial Siconfi, RREO-Anexo 03, sexto bimestre; um CSV por ano | 2014 sem retorno; em 2015-2021 so 160-270/853 municipios por ano retornaram RCL |
 | `17_extrair_regioes_saude_pdr_2019.py` | Le Anexo I da Deliberacao CIB-SUS/MG 3.013/2019: 853 municipios, 66 micros e 12 macros | a referencia de 2019 nao e retroagida a 2014-2018 |
-| `15_integrar_painel_anual_saude.R` | Junta 853 municipios, 97 entidades e 8 anos; recalcula tempo ate destinos clinicos do proprio ano e materializa alternativas e riscos | amostra principal condicionada a clinica direta e tempo historico; cobertura parcial |
+| `15_integrar_painel_anual_saude.R` | Junta 853 municipios, 97 entidades e 8 anos; recalcula tempo ate destinos clinicos do proprio ano e materializa alternativas e riscos | recorte direto candidato condicionado a clinica direta e tempo historico; cobertura parcial |
 | `18_diagnosticar_alternativas_painel_saude.R` | Compara cobertura das regras, retenção de pagamentos, cortes de 90/120/180 minutos e municipios sem opcao | diagnostico do passo 6, sem estimacao de modelo |
 | `19_eda_inicial_painel_saude.R` | Audita zeros, eventos, perdas por polo/escopo, RCL, capacidade, cortes territoriais e 19 tempos extremos contra MIDES/Distbrasil | passo 7; nao exclui extremos automaticamente |
 | `20_auditar_marcador_sus_e_destinos.R` | Compara clinicas CNES com vinculo ou capacidade SUS registrada; recalcula tempos para este subconjunto | teste de qualidade/sensibilidade, sem mudar o painel principal |
+| `21_inventariar_qualidade_painel_saude.R` | Perfila as 60 colunas por ano em grade, pagadores de saude e pagadores diretos; audita chaves e extremos e lista lacunas por entidade-ano | diagnostico de qualidade, sem alterar a base ou declarar amostra final |
 | `tests/13_validar_painel_anual_saude.R` | Confere montantes, chaves, historia Igarape-CISMEP, CIESP, CIMBAJE, CIMAMS e ausencia sem polo | executado apos o script 15 |
 
 Produtos principais: `painel_anual_integrado_saude_mg_2014_2021.rds`
@@ -438,11 +439,31 @@ Produtos principais: `painel_anual_integrado_saude_mg_2014_2021.rds`
 `eda_sensibilidade_alternativas_saude.csv`,
 `eda_marcadores_sus_unidades.csv`, `eda_efeito_marcador_sus_saude.csv`,
 `eda_pares_afetados_marcador_sus_saude.csv`,
+`eda_inventario_60_variaveis_painel_saude.csv`,
+`eda_cobertura_anual_painel_saude.csv`,
+`eda_lacunas_polo_entidade_ano_saude.csv`,
+`eda_anomalias_painel_saude.csv`,
+`eda_extremos_exploratorios_saude.csv`,
 `candidatas_cnes_capacidade_unidades_2014_2021.csv`,
 `candidatas_cnes_capacidade_entidade_ano_2014_2021.csv`,
 `candidatas_cnes_presenca_mensal_2014_2021.csv`,
 `populacao_municipal_ibge_2014_2021.csv`, `rcl_siconfi_mg_AAAA.csv` e
 `regionalizacao_saude_mg_pdr_2019.csv`.
+
+As 60 colunas do painel se organizam em identificacao e escopo da entidade,
+pagamento MIDES, capacidade CNES anual, decisao documental, tempo e destino
+rodoviarios, controles territoriais/fiscais, movimentos financeiros e flags de
+alternativas/risco. O arquivo `eda_inventario_60_variaveis_painel_saude.csv`
+lista **cada coluna** e sua classe, nulos, strings vazias, zeros e distribuicao
+por ano em tres universos. Leia os denominadores antes de comparar percentuais:
+na grade inteira, zero em `valor_total` significa ausencia de pagamento
+observado; nos pares pagantes sem CNES direto, `NA` em capacidade e tempo
+significa que o destino direto nao foi identificado. `NA` em `rcl_municipal`
+e falta da fonte consultada; `NA` em `regiao_saude` antes de 2019 evita
+retroagir o PDR/2019; `NA` em colunas `t_1` em 2014 decorre da borda da serie.
+Zero em `leitos_sus_clinicos` e somente zero cadastral no modulo consultado.
+As colunas de decisao documental foram preenchidas em subconjunto auditado;
+seu `NA` nao equivale a falta de pesquisa nos dossies separados.
 
 Proveniencia: [estimativas do IBGE](https://www.ibge.gov.br/estatisticas/sociais/populacao/9103-estimativas-de-populacao.html)
 via Base dos Dados/BigQuery;

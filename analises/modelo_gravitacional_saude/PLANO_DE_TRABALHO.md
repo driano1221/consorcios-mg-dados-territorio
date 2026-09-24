@@ -12,19 +12,19 @@ deve criar uma segunda numeracao de etapas.
   de conclusao;
 - `[ ] Nao iniciado` depende das etapas anteriores.
 
-**Estado em 24/09/2026:** passos 1 a 7 concluidos para a especificacao
-restrita a unidades clinicas diretamente cadastradas no CNES historico.
-Isso nao comprova producao SUS nem deslocamento de pacientes. Passos 8 a 10
-nao foram iniciados; Adriano pediu foco integral nos dados e enviara depois
-a formula definida pela equipe.
+**Estado em 24/09/2026:** passos 1 a 6 produziram um painel e um recorte
+clinico direto **candidatos**. A EDA tecnica desse recorte foi executada, mas
+o passo 7 continua em andamento: a suficiencia dos dados para representar a
+saude consorciada em MG ainda nao foi demonstrada. Passos 8 a 10 nao foram
+iniciados; Adriano pediu foco integral nos dados.
 
 - [x] **1. Fechar o universo de consorcios de saude**
 - [x] **2. Auditar os vinculos**
 - [x] **3. Definir o polo e completar a cobertura assistencial**
 - [x] **4. Construir e temporalizar a capacidade assistencial direta**
 - [x] **5. Construir a camada-base de tempo rodoviario**
-- [x] **6. Montar o painel analitico anual e fixar a amostra principal**
-- [x] **7. Executar a EDA e a validacao do universo restrito de dados**
+- [x] **6. Montar o painel analitico anual e um recorte candidato**
+- [ ] **7. Executar a EDA e validar a suficiencia dos dados — em andamento**
 - [ ] **8. Estimar os tres blocos**
 - [ ] **9. Testar robustez**
 - [ ] **10. Integrar resultados validados ao dashboard**
@@ -149,7 +149,7 @@ passo 3 sera uma camada separada, nao uma alteracao retroativa deste resultado.
 com oferta fixa direta. A ligacao anual ao conjunto final de alternativas sera
 feita no passo 6.
 
-### 6. Montar O Painel Analitico Final
+### 6. Montar O Painel Analitico Anual
 
 - [x] materializar a grade preliminar municipio x entidade x ano;
 - [x] calcular pagamento, primeiro pagamento, permanencia, retorno e interrupcao;
@@ -174,7 +174,7 @@ originais. Populacao cobre 853 municipios em cada ano. A consulta RREO/Anexo 03
 recuperou RCL para 160 a 270 municipios por ano em 2015-2021, sem retorno em
 2014. O PDR/2019 fornece mapa das 66 microrregioes apenas como referencia de
 2019-2021. As regras de alternativas e de risco ja estao materializadas como
-diagnosticos. A especificacao principal usa oferta clinica direta de dezembro
+diagnosticos. A especificacao candidata usa oferta clinica direta de dezembro
 com tempo historico conhecido, sem corte arbitrario de minutos. Para entrada,
 retorno e interrupcao, o tempo e a capacidade elegiveis sao os de `t-1`;
 para intensidade, sao os do ano do pagamento. Em 2019, 781/1.513 pares pagantes
@@ -185,19 +185,25 @@ posterior, sem bloquear o modelo de saude. RCL incompleta e mapa regional
 anterior a 2019 nao sao imputados; o passo 7 medira as perdas e avaliara
 a especificacao antes da estimacao.
 
-### 7. Executar A EDA E A Validacao Do Universo Final
+### 7. Executar A EDA E Avaliar A Suficiencia Dos Dados
 
 - [x] quantificar zeros, entradas, permanencias, retornos e interrupcoes nos
   universos finais;
 - [x] examinar alternativas por municipio e tempos extremos;
 - [x] identificar entidades sem medidas CNES SUS positivas;
 - [x] verificar censura, perdas por pareamento e cobertura das variaveis;
-- [x] comparar os conjuntos de alternativas antes de escolher o principal.
+- [x] comparar os conjuntos de alternativas, sem fixar ainda o principal.
+- [x] inventariar todas as 60 variaveis por ano e universo, incluindo nulos,
+  vazios, zeros, distribuicoes e verificacoes de integridade;
+- [ ] classificar as lacunas de polo por entidade-ano e distinguir falta de
+  registro no painel de evidencia documental ja existente;
+- [ ] explicitar quais recortes e variaveis sustentam cada pergunta empirica,
+  com perdas e ressalvas, antes de declarar qualquer amostra principal.
 
 As estatisticas preliminares dos passos anteriores foram confrontadas nesta
 EDA com os extratos financeiros, o CNES historico e a matriz rodoviaria.
 
-EDA fechada em 24/09: os 1.513 pares pagantes de 2019 se repartem em 781
+EDA diagnostica em 24/09: os 1.513 pares pagantes de 2019 se repartem em 781
 com tempo clinico direto, 595 no nucleo cadastral sem polo direto e 137 fora
 do nucleo. O tempo mediano nos 781 e 52,7 minutos; o percentil 95 e cerca de
 143 minutos. Ha 45.281 zeros nas 46.062 alternativas diretas de 2019.
@@ -213,8 +219,8 @@ prova viagem de pacientes.
 Em 2019, 90/120/180 minutos conservariam 630/708/762 dos 781 pagadores
 diretos e deixariam 151/70/21 municipios sem opcao; mesma microrregiao do
 PDR/2019 conservaria 558 e deixaria 156 municipios sem opcao. A regra sem
-corte preserva todas as 853 origens e continua principal. RCL existe para
-241 dos 781 pares principais; nesse grupo, a populacao mediana dos pares com
+corte preserva todas as 853 origens e e o recorte direto candidato. RCL existe para
+241 dos 781 pares diretos pagos; nesse grupo, a populacao mediana dos pares com
 RCL e 13.828, contra 7.098,5 nos sem RCL. Portanto, sua falta nao parece
 aleatoria e ela nao sera controle obrigatorio do modelo de oito anos.
 
@@ -259,13 +265,20 @@ unica regressao.
 
 ## Proximo Marco
 
-O proximo trabalho continua nos **dados**, por orientacao de Adriano: preservar
-e explicar as sensibilidades de marcador SUS, rede movel/indireta e RCL
-incompleta; corrigir apenas inconsistencias que evidencia adicional demonstrar.
-Onde nao ha tempo clinico direto, o pagamento permanece no painel descritivo.
-A formula da equipe sera recebida depois; so entao iniciaremos o passo 8.
-Nao imputar RCL nem trocar por receita total. Nao repetir triagens ou coleta
-original.
+Fechar o **passo 7 nos dados**. O inventario das 60 variaveis encontrou 5.123
+pares pagos de saude sem polo clinico direto em 2014-2021 (R$ 450,47 milhoes),
+distribuidos em 181 entidades-ano. O painel carrega classificacao documental
+anual para 84 desses 181; nos outros 97, consultar primeiro os dossies ja
+existentes antes de chamar o caso de desconhecido ou pesquisar novamente.
+Priorizar por valor e ano; separar rede movel/indireta, cadastro tardio,
+evidencia insuficiente e ausencia estrutural. Verificar ainda os extremos
+financeiros exploratorios e as cinco raizes cuja sigla esta vazia, sem alterar
+os pagamentos ou inferir atendimento a partir de zero CNES. Preservar tambem
+o unico registro MIDES com transacoes e valor anual zero, distinto de pagamento
+positivo. RCL nao sera
+imputada nem substituida por receita total. A formula da equipe sera usada
+depois como lista de exigencias de dados, nao como gatilho automatico para
+estimar os modelos.
 
 ## Controle De Mudancas
 
@@ -280,6 +293,7 @@ original.
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 24/09/2026 | Passo 7 reaberto como avaliacao de suficiencia; inventario de 60 variaveis, 181 lacunas entidade-ano e anomalias executado | a auditoria do recorte direto nao validava automaticamente a cobertura do fenomeno completo |
 | 24/09/2026 | EDA do passo 7 concluida para o recorte cadastral direto, com auditoria de extremos, capacidade, RCL, alternativas e marcador SUS | medir perdas e separar cadastro clinico de evidencia de atividade SUS antes de qualquer modelo |
 | 23/09/2026 | Passo 6 fechado na especificacao restrita; bacia adiada por decisao de Adriano | comparar alternativas demonstrou perda material de pares sem polo direto; bacia nao mede diretamente acesso assistencial |
 | 23/09/2026 | Primeira integracao anual de 97 entidades, capacidade externa, populacao IBGE, RCL parcial, PDR/2019 e tempos historicos materializados | comparar alternativas antes de fixar o recorte restrito no mesmo dia |
