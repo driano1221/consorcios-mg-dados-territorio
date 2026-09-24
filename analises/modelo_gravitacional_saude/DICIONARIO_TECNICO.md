@@ -756,6 +756,15 @@ fonte, chave de ligacao, tratamento e resultado.
 O mapa inclui apenas as 73 entidades e anos admitidos na v1 financeira.
 Nao ha CNM, retrato 2026, comparacao multiarea ou botoes de download.
 
+Revisao pontual de 24/09: a figura 11 passou de boxplots a barras de
+frequencia, com contagem e percentual dos 54 consorcios clinicos de 2019.
+Ha 48 com uma unica clinica (88,9%); as faixas apenas organizam a exibicao,
+sem transformar os dados da v1 ou do modelo. As legendas de cobertura e
+pagamentos anuais explicitam o denominador financeiro de saude de 2014–2021
+e que o recorte direto e parte do total, nao uma serie a ser somada a ele.
+Figuras 06/11 renderizadas e inspecionadas; consulta reconstruida e teste 17
+aprovado, incluindo conciliacao integral das tabelas com os CSVs v1.
+
 O HTML incorpora o conjunto interativo resumido. Figuras e tabelas
 completas sao arquivos locais relativos; manter as subpastas ao transferir.
 Dados e interacoes nao consultam servicos externos. A abertura direta por

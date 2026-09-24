@@ -36,7 +36,7 @@ p <- ggplot(df,aes(ano,valor/1e6,colour=recorte,linetype=recorte))+geom_line(lin
   scale_colour_manual(values=c('Núcleo de saúde'=blue,'Recorte direto'=grey))+scale_linetype_manual(values=c(1,2))+
   scale_x_continuous(breaks=2014:2021)+scale_y_continuous(labels=num,limits=c(0,700))+labs(x=NULL,y='R$ milhões nominais')
 p <- annotate_plot(p,'Pagamentos anuais aos consórcios de saúde em MG','Município × consórcio × ano com pagamento positivo. O recorte direto tem clínica cadastrada em dezembro e tempo rodoviário.','Os valores não foram corrigidos pela inflação. As linhas não medem crescimento real.')
-save_plot(p,'01_pagamentos_anuais','Pagamentos anuais','A série permite comparar a parcela com polo direto ao conjunto financeiro.','pagamentos_anuais.csv','pagamentos')
+save_plot(p,'01_pagamentos_anuais','Pagamentos anuais','Azul: todo o valor da base financeira de saúde em cada ano. Cinza: a parte desse mesmo valor com clínica direta e tempo identificado. Não somar as duas linhas.','pagamentos_anuais.csv','pagamentos')
 for(period in c('2019','2014-2021')){
  d <- t$ranking |> filter(periodo==period,valor>0) |> slice_head(n=15) |> mutate(label=stringr::str_wrap(entidade,30))
  p <- ggplot(d,aes(valor/1e6,reorder(label,valor)))+geom_col(fill=blue,width=.6)+
@@ -70,9 +70,9 @@ cov <- data.frame(medida=rep(c('Relações pagas','Valor dos pagamentos'),each=2
 cov$grupo <- factor(cov$grupo,levels=c('Sem polo direto','Com polo direto'))
 p <- ggplot(cov,aes(fracao,medida,fill=grupo))+geom_col(width=.48)+geom_text(aes(label=label_percent(accuracy=.1,decimal.mark=',')(fracao)),position=position_stack(vjust=.5),colour='white',size=6,fontface='bold')+
  scale_fill_manual(values=c('Com polo direto'=blue,'Sem polo direto'='#657884'))+scale_x_continuous(labels=pct,expand=c(0,0))+labs(x=NULL,y=NULL)
-p <- annotate_plot(p,'O recorte direto reúne 86,4% dos pagamentos','Ele contém 5.612 das 10.735 relações pagas (52,3%) e R$ 2,865 dos R$ 3,316 bilhões nominais, em 2014–2021.',
+p <- annotate_plot(p,'O recorte direto reúne 86,4% do valor pago','Ele contém 5.612 das 10.735 relações pagas (52,3%) e R$ 2,865 dos R$ 3,316 bilhões nominais, em 2014–2021.',
  'As outras 5.123 relações permanecem na base financeira. Não localizar polo direto não comprova ausência de atendimento.')
-save_plot(p,'06_cobertura','Cobertura das relações e dos valores','Separa quantidade de relações e peso financeiro com denominadores explícitos.','pagamentos_anuais.csv','cobertura',h=6.8)
+save_plot(p,'06_cobertura','Cobertura das relações e dos valores','Em 2014–2021, a base direta contém 5.612 das 10.735 relações pagas da financeira (52,3%) e R$ 2,865 dos R$ 3,316 bilhões pagos (86,4%). Uma relação é um município × consórcio × ano, não um paciente.','pagamentos_anuais.csv','cobertura',h=6.8)
 d <- annual |> select(ano,fracao_relacoes,fracao_valor) |> pivot_longer(-ano,names_to='medida',values_to='fracao') |>
  mutate(medida=recode(medida,fracao_relacoes='Relações pagas',fracao_valor='Valor dos pagamentos'))
 p <- ggplot(d,aes(ano,fracao,colour=medida,linetype=medida))+geom_line(linewidth=1.2)+geom_point(size=2.4)+
@@ -108,13 +108,35 @@ metrics <- c(n_destinos_clinicos_dezembro='Unidades clínicas',profissionais_sus
  servicos_sus_clinicos_soma_unidades='Serviços/classificações SUS',horas_sus_clinicas_soma_registros='Horas SUS cadastradas')
 d <- t$capacidade |> filter(ano==2019) |> select(cnpj_raiz_8,entidade,all_of(names(metrics))) |>
  pivot_longer(all_of(names(metrics)),names_to='medida',values_to='valor') |> mutate(medida=factor(unname(metrics[medida]),levels=unname(metrics)))
-p <- ggplot(d,aes(valor,0))+geom_boxplot(width=.3,outlier.shape=NA,fill='#EAF3F8',colour=grey)+
- geom_point(position=position_jitter(height=.12,width=0,seed=42),colour=blue,alpha=.65,size=2)+
- facet_wrap(~medida,scales='free_x',ncol=2)+scale_x_continuous(labels=num,limits=c(0,NA),expand=expansion(mult=c(.03,.06)))+
- scale_y_continuous(breaks=NULL)+labs(x='Valor cadastrado por consórcio',y=NULL)+theme(panel.grid.major.y=element_blank())
-p <- annotate_plot(p,'Capacidade clínica dos 54 consórcios diretos em 2019','Cada ponto representa um consórcio; a caixa mostra a mediana e a metade central da distribuição. Escalas próprias por medida.',
- 'Profissionais e serviços podem repetir entre unidades. Horas cadastradas não são horas anuais realizadas. Leitos não compõem um índice.')
-save_plot(p,'11_capacidade_2019','Distribuições da capacidade','Expõe diferenças de escala e concentração sem repetir capacidade por município.','capacidade.csv','capacidade',h=8.6)
+# Frequencias preservam a concentracao discreta sem uma caixa colapsada em 1.
+breaks <- list(c(0,1,2,3,Inf),c(-Inf,0,9,24,49,99,Inf),
+ c(-Inf,0,4,9,19,Inf),c(-Inf,0,99,249,499,999,Inf))
+labels <- list(c('1 clínica','2 clínicas','3 clínicas','4 ou mais'),
+ c('0','1 a 9','10 a 24','25 a 49','50 a 99','100 ou mais'),
+ c('0','1 a 4','5 a 9','10 a 19','20 ou mais'),
+ c('0','1 a 99','100 a 249','250 a 499','500 a 999','1.000 ou mais'))
+freq <- bind_rows(lapply(seq_along(metrics),function(k){
+ values <- d$valor[d$medida==unname(metrics[k])]
+ bins <- cut(values,breaks[[k]],labels=labels[[k]],right=TRUE)
+ stopifnot(length(values)==54,!anyNA(bins))
+ data.frame(medida=unname(metrics[k]),faixa=labels[[k]],
+   chave=paste(k,seq_along(labels[[k]]),labels[[k]],sep='|'),
+   consorcios=as.integer(table(bins)))
+}))
+stopifnot(all(tapply(freq$consorcios,freq$medida,sum)==54),freq$consorcios[1]==48)
+freq$chave <- factor(freq$chave,levels=rev(freq$chave))
+freq$medida <- factor(freq$medida,levels=unname(metrics))
+p <- ggplot(freq,aes(consorcios,chave))+geom_col(fill=blue,width=.62)+
+ geom_text(aes(label=paste0(consorcios,' (',label_percent(accuracy=.1,decimal.mark=',')(consorcios/54),')')),hjust=-.12,size=3.7)+
+ facet_wrap(~medida,scales='free_y',ncol=2)+
+ scale_x_continuous(limits=c(0,64),breaks=c(0,15,30,45,54),expand=c(0,0))+
+ scale_y_discrete(labels=function(x)sub('^[^|]+[|][^|]+[|]','',x))+
+ labs(x='Consórcios em cada faixa (total de 54 em cada painel)',y=NULL)+
+ theme(panel.grid.major.x=element_line(colour='#E5EAEE',linewidth=.3),panel.grid.major.y=element_blank())
+p <- annotate_plot(p,'48 dos 54 consórcios têm uma única clínica em 2019','As barras contam consórcios em faixas de capacidade cadastrada. Os rótulos mostram a contagem e a parcela dos 54; cada painel soma 100%.',
+ 'Faixas apenas descritivas, sem alterar o modelo. Profissionais e serviços podem repetir entre unidades; horas não são produção anual.')+
+ labs(caption=paste0('Faixas apenas descritivas, sem alterar o modelo. Profissionais e serviços podem repetir entre unidades; horas não são produção anual.\nFonte: CNES/DATASUS, dezembro de 2019. Recorte direto da v1.'))
+save_plot(p,'11_capacidade_2019','Distribuições da capacidade','Cada barra mostra quantos dos 54 consórcios estão na faixa indicada. São 48 com uma clínica, três com duas, dois com três e um com quatro. Os percentuais usam 54 como denominador em cada painel.','capacidade.csv','capacidade',h=9)
 d <- t$capacidade |> select(ano,all_of(names(metrics))) |> pivot_longer(-ano,names_to='medida',values_to='valor') |>
  summarise(mediana=median(valor),p25=quantile(valor,.25),p75=quantile(valor,.75),n=n(),.by=c(ano,medida)) |>
  mutate(medida=factor(unname(metrics[medida]),levels=unname(metrics)))
