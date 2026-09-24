@@ -675,3 +675,42 @@ texto. Para analise em R, preferir RDS. Horas sao somas cadastrais PF, nao
 horas anuais realizadas; `distancia_minima_km` e a distancia ao destino de
 menor tempo, nome herdado. RCL/PDR e variaveis de risco detalhadas permanecem
 no painel de 60 colunas, sem funcionar como filtros das tabelas v1.
+
+## Revisao Dos Produtos Visuais — 24/09/2026
+
+| Produto local existente | Universo e leitura correta |
+|---|---|
+| `outputs/figuras/mapa_entidades_saude_mg_presenca_mides.png` | 84 entidades originais; 66 com pagamento MIDES em 2014-2021. Localizacao municipal das sedes; nao e o universo v1. |
+| `outputs/figuras/mapa_unidades_cnes_saude_mg_por_funcao.png` | Snapshot coletado em 03/09/2026: 670 unidades, sendo 63 clinicas fixas, 20 nao clinicas e 587 moveis. Mapeia 669: CNES 5563003 sem municipio. |
+| `outputs/atlas_consorcios_saude_mg.html` | Inventario de 221 entidades, nao amostra de saude. Filtros entidade/ano/funcao/tipo; 2.612 registros unidade-periodo: 670 atuais e 1.942 historicos. |
+
+Mapas produzidos em 16/09 e revistos em 24/09. No atlas, municipios azuis
+tem pagamento MIDES no ano escolhido. O contorno CNM opcional representa
+27/08/2026, mesmo quando o ano selecionado e historico; nao prova composicao
+anual. Pontos CNES agrupam unidades no municipio, nao sao enderecos exatos.
+A coleta atual abrange as 84 originais; ausencia dessa coleta nas externas
+nao significa zero unidades. O total financeiro inclui todas as finalidades
+e nao e repartido pelos filtros de unidade. Nenhuma dessas areas demonstra
+origem dos pacientes ou cobertura contratada.
+
+**Conferencia:** `python analises/modelo_gravitacional_saude/tests/12_validar_fronteira_e_atlas.py --browser`,
+na raiz, passou em 24/09: filtros, exportacao, avisos, tela estreita e uso offline.
+As capturas `outputs/atlas_cismep_2019.png` e `outputs/atlas_ciesp_2019.png`
+sao evidencias de interface, nao novos graficos analiticos. A conciliacao em
+R por raiz/municipio/ano confirmou valores (tolerancia R$ 0,01) e transacoes
+das 10.735 relacoes pagas v1; por raiz/ano, as contagens clinicas das 379
+entidades-ano diretas tambem coincidem. CISMEP/2019: 45 municipios pagadores,
+R$ 93.342.499,23 e duas clinicas, em Betim e Brumadinho.
+
+**Ajustes pendentes antes de apresentacao:** atualizar o texto do atlas que
+ainda remete ao passo 6 e identificar as decisoes de revisao como retrato
+de 16/09; explicitar os universos nas legendas. Os mapas do dashboard geral
+pertencem a outras analises, nao sao graficos CNES da v1. Seu codigo local
+foi consultado; a publicacao online nao foi retestada nesta revisao.
+
+**Ainda nao produzido:** pacote visual da EDA v1. Seus perfis, correlacoes e
+cobertura ja existem em CSV. Usar `capacidade_entidade_ano.csv` para nao
+repetir a capacidade por municipio; valores financeiros sao nominais e
+zeros da grade nao sao transacoes observadas. Os multiarea ficam em painel
+comparativo auxiliar. A definicao da amostra do modelo nao impede esses
+graficos descritivos, mas impede interpreta-los como estimacao gravitacional.

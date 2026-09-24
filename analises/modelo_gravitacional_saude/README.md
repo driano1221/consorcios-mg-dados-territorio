@@ -65,8 +65,14 @@ scripts e documentacao sao versionados.
 
 **Estado:** passo 7 fechado para esta v1 delimitada. Ha alertas temporais em
 45 entidades-ano diretas (624 pares pagos), conservados no retrato de dezembro.
-Nao representam erros automaticamente. Proxima etapa: receber a formula da
-equipe e conferir suas exigencias, incluindo deflacao. Veja o plano canonico.
+Nao representam erros automaticamente. Proxima entrega: preparar os graficos
+descritivos antes da formula da equipe. Ja existem o
+[atlas por consorcio e ano](outputs/atlas_consorcios_saude_mg.html), o
+[mapa das 84 entidades originais](outputs/figuras/mapa_entidades_saude_mg_presenca_mides.png)
+e o [mapa CNES de 2026 por funcao](outputs/figuras/mapa_unidades_cnes_saude_mg_por_funcao.png).
+Eles nao representam automaticamente os universos de 73/58 entidades da v1.
+Faltam os graficos de capacidade, comparacao multiarea, pagamentos e cobertura
+da v1. Inventario e ressalvas no dicionario; ordem no plano canonico.
 
 ## Historico Das Entregas Anteriores A V1
 

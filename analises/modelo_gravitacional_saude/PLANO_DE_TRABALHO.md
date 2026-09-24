@@ -275,6 +275,25 @@ unica regressao.
 
 ## Proximo Marco
 
+**Prioridade atualizada em 24/09: preparar os graficos antes de receber a
+formula da equipe.** Complemento visual do passo 7, sem reabrir a construcao
+da v1 ou criar outra etapa. A revisao confirmou dois mapas estaticos e um
+atlas funcional; ainda nao existe um pacote de graficos da EDA v1.
+
+- [x] revisar o pedido da reuniao, os mapas existentes e sua coerencia com a v1;
+- [ ] ajustar as legendas de universo/data e os textos antigos de status do
+  atlas; preservar a distincao entre pagadores, CNM atual e unidades CNES;
+- [ ] mostrar unidades por consorcio, ano, funcao e tipo, reaproveitando o atlas;
+- [ ] comparar capacidade separadamente (unidades, profissionais, servicos e
+  horas), usando uma linha por entidade-ano; destacar CISREC, CONVALES e CIMBAJE
+  em comparacao auxiliar, sem inclui-los silenciosamente no nucleo v1;
+- [ ] apresentar evolucao/ranking dos pagamentos observados e cobertura dos
+  recortes, com valores nominais, denominadores e perdas explicitos.
+
+Depois desse retrato visual, confrontar a formula com os dados e justificar
+os pares/zeros antes de estimar. Os mapas descritivos continuam uteis mesmo
+sem amostra de estimacao aprovada; nao comprovam filiacao ou atendimento.
+
 **Passo 7 encerrado para a v1 delimitada**, por autorizacao de simplificacao
 de Adriano em 24/09. As 181 entidades-ano pagas sem polo direto estao
 conciliadas em tabela separada, com classificacao, fonte e limite: 57 de
