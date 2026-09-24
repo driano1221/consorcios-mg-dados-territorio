@@ -545,3 +545,24 @@ e todos os destinos. Igarape-CISMEP continua consultavel como caso de um destino
 A entrega local tem agora sete abas. Passo 8 parcial; seguintes desafios:
 alternativas institucionais e capacidade anterior ao pagamento. Os modelos
 longitudinais originais e deploy no dashboard nao foram executados por esse piloto.
+
+### Depois Da Reuniao De 24/09
+
+A equipe pediu comecar por horas SUS e comparar tres localizacoes da oferta:
+unidades, sede municipal do consorcio e misto. Adriano confirmou depois que
+adesao sera pagamento positivo, permitindo varios vinculos. Isso orienta um
+novo desfecho binario por par; nao muda o significado do piloto de participacoes.
+O cenario estadual de candidatos foi aceito como exercicio, sem prova juridica
+de acesso. Novas adesoes ao longo do tempo e comparacao com Bahia ficaram
+como extensoes. Nao foi autorizado retroagir 2026 para completar o historico.
+
+No exemplo CISMEP/2019, ja temos as horas por unidade: Betim 1.417 e
+Brumadinho 234. No cenario de sedes, a referencia cadastral disponivel seria
+Sao Joaquim de Bicas, cuja vigencia historica precisa de verificacao. No misto,
+o CISMEP manteria as unidades; sede serviria aos casos sem destino clinico.
+Essa comparacao ainda precisa fixar a agregacao das unidades e a impedancia.
+
+Em paralelo, organizar documentos do acervo/radar para os consorcios em geral:
+protocolo/contrato de consorcio, rateio e estatuto. A base desejada tem quatro
+eixos, incluindo recursos, producao e governanca alem dos documentos.
+Leitura registrada e dados existentes conferidos; novos modelos nao executados.

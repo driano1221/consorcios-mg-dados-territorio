@@ -1,5 +1,13 @@
 # Modelo Gravitacional De Saude - MG
 
+**Apos a reuniao de 24/09:** preparar adesao operacional como pagamento
+positivo, permitindo varios vinculos por municipio (confirmacao posterior
+de Adriano). Horas SUS sao a massa inicial; comparar destinos clinicos,
+sedes e cenario misto. Ainda sem nova estimacao: o piloto abaixo explica
+participacoes financeiras, nao esse novo desfecho. O plano contem a prioridade
+vigente; a ultima secao da metodologia registra decisoes, dados reutilizaveis
+e cuidados com normalizacao, populacao e temporalidade.
+
 **Consulta visual da v1:** abra localmente
 [outputs/visuais_v1/index.html](outputs/visuais_v1/index.html).
 A pagina explica a v1 em seis abas de dados e uma nova aba de modelo:
@@ -37,8 +45,9 @@ python tests/17_validar_visuais_v1.py
 
 O teste 18 usa NumPy/SciPy para verificacao independente da estimacao em R.
 Produtos grandes permanecem locais; fontes e resultados em
-`outputs/piloto_participacoes/`. Proximo passo: alternativas institucionais
-documentadas e capacidade anterior ao pagamento, sem reabrir toda a coleta.
+`outputs/piloto_participacoes/`. Proximo passo atualizado na abertura deste
+README e no plano. Alternativas institucionais e capacidade anterior ao
+pagamento continuam como cuidados de especificacao, sem reabrir toda a coleta.
 
 ## Comece Aqui: Base V1 — 24/09/2026
 

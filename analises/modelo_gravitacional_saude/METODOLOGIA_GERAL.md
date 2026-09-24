@@ -2173,3 +2173,112 @@ confere gradiente por diferencas finitas e recupera parametros sinteticos.
 Teste 17 reconcilia o pacote e as consultas anteriores. Hashes conservados.
 Reproducao no README/dicionario. Proximo: alternativas documentadas e capacidade
 anterior ao pagamento. Blocos longitudinais continuam pendentes.
+
+## Encaminhamento Da Reuniao De 24/09/2026
+
+Esta secao registra a nova especificacao em preparacao, sem alterar o piloto
+fracional anterior, seus coeficientes ou a v1. A ata integral fica no vault;
+aqui entram somente as consequencias tecnicas. A reuniao orientou comecar
+por horas SUS cadastradas, separando tres cenarios espaciais. Depois da
+leitura, Adriano confirmou expressamente: adesao sera pagamento positivo,
+permitindo varios vinculos por municipio. Define-se, portanto,
+`y_ijt = 1(valor_mides_ijt > 0)` no universo elegivel. O termo designa vinculo
+financeiro observado, nao filiacao juridica nem necessariamente nova entrada.
+Zeros significam ausencia de pagamento positivo observado.
+
+### Cenarios Encaminhados, Ainda Nao Estimados
+
+| Cenario | Destino espacial | Massa inicial | Condicao para a amostra |
+|---|---|---|---|
+| Unidades | Municipios das unidades clinicas fixas do ano | Horas SUS por unidade, agregadas com regra explicita para o consorcio | Unidade, capacidade e rota identificadas |
+| Sedes | Sede municipal do consorcio para todos os casos | Horas SUS alocadas nesse ponto como aproximacao | Sede e capacidade identificadas; nao basta recuperar endereco |
+| Misto | Unidades quando existentes; sede municipal nos demais | Horas, com modalidade e origem do destino registradas | Comparavel ao cenario de sedes; substituicoes explicitas |
+
+A reuniao reconheceu que o misto combina significados diferentes do destino.
+A ampliacao da amostra nos cenarios 2/3 e uma expectativa, nao um resultado
+confirmado. E preciso separar a mudanca de destino da mudanca de composicao:
+comparar tambem os tres cenarios numa amostra comum. Horas de ambulancias,
+regulacao e clinicas nao sao automaticamente intercambiaveis. Continuam
+pendentes o escopo da soma de horas e o tratamento de massa zero/ausente.
+Nao se aprovou usar 2026 como substituto de capacidade ou sede historica.
+
+### Formula Discutida E Compatibilidade Do Desfecho
+
+A descricao verbal corresponde a uma atracao do tipo
+`w_ij = P_i^a * H_j^b / d_ij^c`, normalizada entre destinos. Esta e uma
+traducao tecnica da fala, nao uma formula final aprovada. Os expoentes,
+a unidade de d (km ou minutos) e a regra para varias unidades nao foram
+fixados. Para uma participacao `r_ij = w_ij / soma_x(w_ix)`, a soma deve
+incluir o proprio destino j; excluir j produz uma razao contra os demais,
+nao uma probabilidade limitada a um. A expressao verbal "outros" foi
+registrada como ambiguidade a resolver, sem implementacao literal.
+
+Dois pontos matematicos precisam orientar o proximo desenho:
+
+- Como P_i e comum aos destinos do municipio i, o fator P_i^a cancela
+  nessa normalizacao. A populacao da origem nao tera efeito separavel nas
+  participacoes nessa forma. Pode ter papel num modelo binario por par ou
+  em quantidade/volume, mas isso exige especificacao explicita.
+- Um municipio pode ter varios y_ij=1. Suas probabilidades marginais de
+  vinculo nao precisam somar um. A normalizacao multinomial de escolha
+  exclusiva nao pode ser relabelada como adesao multipla. A referencia de
+  [Train, capitulo 3](https://eml.berkeley.edu/books/choice2nd/Ch03_p34-75.pdf),
+  pp. 36–37, explicita a soma um e a escolha de uma alternativa.
+
+Uma formulacao binaria gravitacional por par e uma possibilidade a preparar,
+assim como usar atracao relativa como atributo de um modelo de vinculo.
+Nenhuma foi escolhida ou estimada nesta leitura. Nao normalizar os positivos
+por sua quantidade sem reconhecer que isso mudaria novamente o desfecho.
+No novo desfecho, municipios sem pagamento tambem podem ser informativos:
+nao herdar automaticamente a exclusao dos 150 municipios do piloto fracional.
+Dependencia entre pares do mesmo municipio/consorcio deve ser considerada
+na estimacao e validacao, sem tratar todas as linhas como escolhas independentes.
+
+### O Que Os Arquivos Ja Permitem Conferir
+
+As tabelas historicas originais e de candidatas externas preservam
+`carga_horaria_sus` por codigo CNES e competencia. Em 2019, CISMEP tem
+1.417 horas em Betim (CNES 3476014) e 234 em Brumadinho (5364167), totalizando
+as 1.651 horas da v1. Desagregar horas por unidade e, portanto, possivel
+nesse exemplo. Isso nao e producao realizada nem tempo anual de atendimento.
+
+A sede cadastral disponivel do CISMEP e Sao Joaquim de Bicas, nao Ouro Preto:
+o exemplo de sede na reuniao era hipotetico. Sua vigencia historica ainda
+precisa ser sustentada para o cenario de sedes. A Distbrasil mede trajetos
+entre sedes municipais, nao entre enderecos exatos das unidades.
+
+Dos 19 consorcios somente financeiros em 2019, nove possuem registros de
+unidades com horas SUS nas tabelas historicas consultadas, apesar de nao
+terem clinica direta elegivel; dez nao possuem unidade nessas duas tabelas
+naquele ano. Nao converter esta ausencia em zero de capacidade. Esses nove
+nao sao nove inclusoes automaticas: modalidade, vinculo e sede precisam de
+conferencia. Entre as 54 entidades clinicas, CISVAS tem horas SUS zero.
+Uma funcao em potencia/logaritmo deve definir como tratar esse cadastro e
+as distancias intramunicipais iguais a zero, sem imputacao silenciosa.
+
+O CNES 5364167 de Brumadinho consta de 2014 a 2020 na tabela historica
+consultada e nao consta em 2021. Isso confirma a lacuna exibida no mapa,
+mas nao sua causa: mudanca de vinculo/CNPJ, cadastro, funcao ou funcionamento
+devem ser investigados antes de afirmar encerramento da clinica ou saida
+do municipio do consorcio. Essa e uma verificacao pontual decorrente da reuniao.
+
+### Leitura Do Grafico E Agenda Documental
+
+A equipe pediu trocar "polo direto" por descricao compreensivel de
+equipamento de saude fixo. A implementacao futura deve preservar o criterio
+clinico e a identificacao do tempo: sede administrativa/regulacao fixa nao
+vira clinica. Unidades moveis nao entram como destino fixo, mas um consorcio
+que tambem opera SAMU nao e excluido se possuir clinica elegivel.
+Os 52,3% contam pares municipio-consorcio-ano pagos, nao transacoes. Os 86,4%
+somam pagamentos aos consorcios com o recorte identificado, sem demonstrar
+destinacao do dinheiro as clinicas. Pares sem pagamento nao entram em nenhuma
+das duas cores deste grafico, embora continuem nas tabelas analiticas.
+
+A agenda documental geral passa a organizar protocolo de intencoes/contrato
+de consorcio, contrato de rateio e estatuto, com fonte e vigencia, a partir
+do acervo e do radar, priorizando MG e incluindo outras areas de politica.
+Esses documentos compoem uma camada institucional, nao a base completa.
+O desenho de cadastro discutido tem quatro eixos: documentos, recursos,
+producao efetivamente entregue e governanca/funcionamento administrativo.
+Trata-se de frente complementar, sem exigir coleta documental exaustiva
+como condicao para executar o primeiro exercicio de saude.

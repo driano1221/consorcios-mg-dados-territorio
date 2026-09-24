@@ -7,6 +7,28 @@ deve criar uma segunda numeracao de etapas.
 
 ## Leitura Do Estado
 
+**Prioridade apos a reuniao de 24/09 e esclarecimento posterior de Adriano:**
+adesao operacional = pagamento MIDES positivo, permitindo varios vinculos
+por municipio. Preparar comparacao com horas SUS cadastradas e tres destinos:
+unidades clinicas fixas, sede municipal do consorcio e combinacao com sede
+quando faltar unidade. A grade estadual foi aceita como cenario de candidatos,
+sem provar acesso institucional. Esses sao tres cenarios espaciais da mesma
+pergunta, distintos dos tres blocos longitudinais historicos deste plano.
+O piloto de participacoes do script 30 permanece como resultado anterior;
+nao foi convertido em modelo de adesao. Nesta atualizacao so houve leitura,
+conferencia dos dados existentes e documentacao, sem nova estimacao.
+
+Proximo marco, dentro do passo 8: especificar o desfecho binario por par e
+uma formulacao gravitacional compativel com multiplos positivos; inventariar
+horas por unidade/modalidade, sedes e impedancia dos tres cenarios. A soma
+normalizada entre destinos representa atracao relativa, nao automaticamente
+probabilidades marginais de vinculos simultaneos. Ver a secao da reuniao de
+24/09 ao final da metodologia. Ano, distancia em km versus tempo, zero
+intramunicipal e agregacao de varias unidades ainda requerem especificacao.
+Nao retroagir cadastro de 2026. Rever o caso CISMEP/Brumadinho em 2021 e
+melhorar a legenda do grafico de cobertura como tarefas pontuais, sem reabrir
+a coleta inteira. A frente documental geral corre separada do piloto de saude.
+
 - `[x]` concluido e validado;
 - `[ ] Em andamento` possui produtos parciais, mas ainda nao cumpriu o criterio
   de conclusao;
@@ -268,8 +290,14 @@ nova adesao juridica. Metodo, perdas, resultados e validacao na metodologia.
   municipios e grupos geograficos, sem vazamento das respostas dos grupos;
 - [x] explicar selecao, transformacoes, matematica e exemplos na aba local;
 
-- [ ] antes de estimar, definir se a pergunta trata de membros, pagamentos
-  observados ou formacao da relacao; justificar pares elegiveis e zeros.
+- [x] definir adesao operacional como pagamento positivo, permitindo varios
+  vinculos por municipio (esclarecimento de Adriano apos reuniao de 24/09);
+- [ ] preparar cenarios de unidades, sedes e misto com horas SUS; fechar
+  funcao compativel com o desfecho, ano, impedancia, zeros e agregacao;
+- [ ] justificar elegibilidade do cenario estadual e comparar amostra comum
+  com ampliada; recuperar sede nao recupera automaticamente capacidade;
+- [ ] distinguir presenca anual do vinculo de evento de primeiro pagamento;
+  a extensao de novas adesoes mencionada na reuniao nao foi executada.
 - [ ] entrada: logit ou risco discreto;
 - [ ] intensidade financeira: PPML ou modelo hurdle;
 - [ ] interrupcao/permanencia: sobrevivencia em tempo discreto.
@@ -293,7 +321,14 @@ unica regressao.
 
 ## Proximo Marco
 
-**Prioridade atualizada em 24/09, apos piloto autorizado:** discutir os
+**Vigente apos a reuniao de 24/09:** preparar a especificacao de adesao
+operacional multipla e a tabela de viabilidade dos tres cenarios espaciais,
+com horas SUS por unidade/modalidade, sedes e distancias/tempos. Registrar
+perdas e amostra comum; resolver zeros e agregacao antes da nova estimacao.
+Conferir Brumadinho/2021 e corrigir a comunicacao de cobertura. Inventario
+documental geral e uma frente complementar; nao substitui essa especificacao.
+
+**Prioridade anterior a reuniao de 24/09, apos piloto autorizado:** discutir os
 resultados e a disponibilidade institucional das alternativas. Tempo tem
 associacao forte com a distribuicao; profissionais acrescentam ganho pequeno
 na validacao. Proximas sensibilidades substantivas: alternativas documentadas
@@ -368,7 +403,7 @@ Os tres trabalhos seguintes foram executados em 24/09, dentro do passo 7:
   de saude, 5.612 diretos, 1.052 diretos com RCL e 510 com RCL e PDR.
   Os recortes fiscais sao seletivos e nao definem a amostra final.
 
-**Proximo marco:** discutir o piloto de distribuicao do gasto ja executado,
+**Marco anterior a reuniao de 24/09:** discutir o piloto de distribuicao do gasto ja executado,
 seu ganho modesto com capacidade e a regra das alternativas. Os resultados
 e as perdas estao em METODOLOGIA_GERAL.md; amostra derivada separada da v1.
 Em um so ano, a deflacao por indice comum nao muda participacoes nem ranking.
@@ -406,6 +441,7 @@ com alternativas amplas explicitadas como hipotese, ainda sem validacao instituc
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 24/09, reuniao e esclarecimento posterior | Adesao operacional definida como pagamento positivo com varios vinculos; horas SUS e tres cenarios espaciais encaminhados, ainda sem estimar | Distinguir presenca de vinculo, atracao relativa e participacao financeira; separar agenda documental geral e piloto MG |
 | 24/09, piloto autorizado | Passo 8 parcial: participacoes estimadas, validacao e aba local concluidas | Testar atracao/tempo com desfecho financeiro, explicar selecao e manter limites de acesso institucional |
 | 24/09, proposta logit | Passo 8 em especificacao; diagnostico de um ano executado, sem estimar | Pagamentos simultaneos exigem distinguir principal destino, participacoes e ocorrencia por par; sede/populacao nao equivalem a hospital |
 | 24/09/2026, fechamento v1 | Passo 7 concluido para entrega delimitada: duas bases, sintese CNES, inclusao/exclusao e testes | Adriano priorizou MIDES e uma entrega simples; RCL e pesquisa documental deixam de bloquear; formula/amostra final continuam por definir |
