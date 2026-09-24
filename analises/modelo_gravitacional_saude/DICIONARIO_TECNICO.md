@@ -764,6 +764,11 @@ pagamentos anuais explicitam o denominador financeiro de saude de 2014–2021
 e que o recorte direto e parte do total, nao uma serie a ser somada a ele.
 Figuras 06/11 renderizadas e inspecionadas; consulta reconstruida e teste 17
 aprovado, incluindo conciliacao integral das tabelas com os CSVs v1.
+Na mesma data, a aba CNES recebeu tabela de 2014–2021 com consorcios,
+clinicas, profissionais, servicos/classificacoes, horas e leitos SUS.
+O script 28 agrega `dados/capacidade.csv` por ano, uma linha por entidade-ano,
+sem repetir capacidade pelas origens. A tabela explicita dezembro e as
+mudancas de cobertura; o detalhe de 2019 permanece ligado ao piloto.
 
 O HTML incorpora o conjunto interativo resumido. Figuras e tabelas
 completas sao arquivos locais relativos; manter as subpastas ao transferir.

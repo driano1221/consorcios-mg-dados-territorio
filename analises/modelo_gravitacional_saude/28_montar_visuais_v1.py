@@ -21,7 +21,25 @@ with (DEST / 'dados' / 'tempos_extremos.csv').open(encoding='utf-8-sig', newline
 assert len(data['catalog']) == 5 and len(data['entities']) == 73
 assert data['summary']['relacoes'] == 10735 and data['summary']['relacoes_diretas'] == 5612
 template = (HERE / 'visuais_v1.html').read_text(encoding='utf-8')
+with (DEST / 'dados/capacidade.csv').open(encoding='utf-8-sig', newline='') as handle:
+    capacity = list(csv.DictReader(handle, delimiter=';'))
+assert len({(r['cnpj_raiz_8'], r['ano']) for r in capacity}) == len(capacity)
+assert {int(r['ano']) for r in capacity} == set(range(2014, 2022))
+capacity_fields = ('n_destinos_clinicos_dezembro', 'profissionais_sus_clinicos_soma_unidades',
+                   'servicos_sus_clinicos_soma_unidades', 'horas_sus_clinicas_soma_registros',
+                   'leitos_sus_clinicos')
+annual_rows = []
+for year in range(2014, 2022):
+    selected = [r for r in capacity if int(r['ano']) == year]
+    totals = [sum(float(r[k].replace(',', '.')) for r in selected) for k in capacity_fields]
+    assert all(v.is_integer() for v in totals)
+    if year == 2019:
+        assert len(selected) == 54 and totals[0] == 64
+    annual_rows.append('<tr><th scope="row">' + str(year) + '</th>' + ''.join(
+        '<td>' + format(int(v), ',').replace(',', '.') + '</td>'
+        for v in [len(selected), *totals]) + '</tr>')
 parts = {'__CSS__': (HERE / 'visuais_v1.css').read_text(encoding='utf-8'),
+         '__CNES_ANNUAL__': ''.join(annual_rows),
          '__JS__': (HERE / 'visuais_v1.js').read_text(encoding='utf-8') + '\n' + (HERE / 'modelo_v1.js').read_text(encoding='utf-8'),
          '__DATA__': json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')}
 for marker, content in parts.items():
