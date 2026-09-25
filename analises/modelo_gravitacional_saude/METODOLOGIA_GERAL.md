@@ -2552,14 +2552,15 @@ Na validacao municipal, a faixa acima de 80% tem media prevista 92,55%, mas
 1,71% observado. Assim, boa ordenacao nao garante probabilidades individuais
 bem calibradas, sobretudo ao transportar o ajuste geograficamente.
 
-Ha 58 pares cujo municipio contem ao menos uma clinica; 52 pagaram.
-Nesse grupo, o principal preve em media 97,36% fora do treino contra 89,66%
+Ha 57 pares cujo municipio contem ao menos uma clinica; 52 pagaram.
+Depois da correcao cadastral descrita abaixo, o principal preve 99,07%
+fora do treino nesse grupo contra 91,23%
 observados. Exemplos de zero com previsao perto de um: Uberaba-CISVALEGRAN,
 Uberlandia-AMVAP SAUDE, Ipatinga-CONSAUDE. Localizar clinica no municipio nao
 prova pagamento ou filiacao. Distancia zero na malha nao e viagem real nula.
 
 Acrescentou-se, como exploracao posterior, indicador de coincidencia municipal
-sem inventar quilometragem. A media cai para 87,92% nesse grupo, mas logloss
+sem inventar quilometragem. A media cai para 89,47% nesse grupo, mas logloss
 global municipal muda pouco (0,03291), Brier piora (0,00901), AP cai a 0,6584
 e logloss espacial piora levemente (0,03646). O coeficiente do indicador
 varia bastante entre folds. Portanto, nao foi adotado como correcao definitiva
@@ -2592,3 +2593,228 @@ intramunicipal, alternativas institucionais e comparabilidade das modalidades.
 Vigencia das sedes, fotografia CNES de dezembro e malha estatica continuam
 limitacoes. O exercicio ja permite discutir a associacao espacial com dados
 reais; nao encerra os modelos longitudinais nem a agenda documental geral.
+
+## Auditoria Dos Erros E Alternativas Territoriais — 24/09
+
+Esta entrega responde aos dois encaminhamentos seguintes a estimacao:
+conferir grandes erros e testar conjuntos candidatos mais plausiveis. A
+pergunta permanece: quais pares municipio-consorcio apresentam pagamento
+positivo em 2019? Multiplos vinculos sao permitidos. Nao e estimacao de nova
+filiacao juridica, de pacientes atendidos ou de efeito causal da capacidade.
+
+### O Que Foi Conferido E Corrigido
+
+O script 33 confrontou os 1.942 registros unidade-ano selecionados das 84
+originais e 13 candidatas com os oito ST brutos de dezembro de 2014-2021.
+O campo CPF_CNPJ mistura documentos. A selecao anterior usava apenas os
+primeiros oito digitos, aceitando como CNPJ um CPF preenchido com zeros.
+Os CNES **5101034 e 5254191**, consultorios PF de Uberlandia, foram assim
+atribuídos ao CISMARG. Sao 16 registros-ano, todos com zero horas SUS.
+
+O extrator compartilhado 09 agora verifica os digitos do CNPJ e rejeita
+documento proprio de PF. A mantenedora continua sendo uma via valida de
+ligacao: CNES **6230261**, em Oliveira, foi mantido porque tem CNPJ de
+mantenedora valido do CISMARG, embora tambem tenha zero horas. Nao se
+confundiu zero capacidade com erro de identidade. Os 1.926 registros validos
+formam um insumo novo; CPF nao e publicado na auditoria.
+
+Scripts 31 e 32 foram regenerados com esse insumo. Clinicas de 2019 passam
+de 64 para 62, sem mudar 54 consorcios com capacidade conhecida, 53 positiva,
+valores pagos ou horas. Em S1, o tempo minimo mudou em 113 pares do CISMARG
+e a distancia minima em 109; S3 repete essas alteracoes. Impedancia ponderada
+pelas horas e coeficientes dos quatro principais ajustes ficaram iguais.
+O diagnostico intramunicipal passa de 58 para 57 pares (52 pagos).
+
+**Limite da propagacao:** a correcao foi aplicada ao extrator e aos novos
+cenarios/modelos. Os derivados historicos da v1, atlas, figuras e piloto
+fracional foram preservados como versao anterior e precisam de republicacao.
+Nao interpretar os testes anteriores de reproducao como prova de validade
+semantica dos identificadores. O snapshot antes da correcao esta em
+`outputs/auditoria_alternativas/antes_correcao/`.
+
+Na parte financeira, o script 34 reconstruiu os **62.269 pares de 2019**
+usando a extracao MIDES original e a complementar, cujas raizes nao se
+sobrepoem. Valores e numero de transacoes coincidem (maior diferenca de
+ponto flutuante inferior a R$ 0,000001). Os 48.785 registros originais
+pertinentes a 2019 nao tem valores nulos, negativos ou datas fora do ano.
+Os **60.893 zeros** da grade sao ausencia de registro nessas extracoes,
+nao lancamentos de valor zero nem prova de ausencia de cooperacao.
+
+### Credores E Trinta Maiores Erros
+
+Conferir uma soma nao resolve a identidade do recebedor. O script 35
+recuperou os nomes da extracao complementar no BigQuery e reproduziu todos
+os agregados anteriores. Com a extracao original, o catalogo tem 1.496
+combinacoes raiz-nome (1.473 nomes distintos), cobrindo os R$ 3.315.638.156,17
+da financeira v1. Uma triagem de nomes e inspecao dos incomuns identificou:
+
+| Par | Periodo | Nome divergente no MIDES | Valor conflitante |
+|---|---|---|---:|
+| Conselheiro Pena-CISVI | 2014-2021 | MINISTERIO DA FAZENDA | R$ 212.315,78 |
+| Sao Francisco de Paula-CISMARG | 2014-2021 | SOMETAL S.METALU.ITAIPU LTDA | R$ 1.140.209,61 |
+| Ribeirao das Neves-CISMEP | 2014 | EMIVE PATRULHA 24HORAS | R$ 321,16 |
+
+Sao **17 pares-ano**, R$ 1.352.846,55 (0,0408% do total financeiro v1).
+O documento informado corresponde ao consorcio, mas o nome aponta para
+outra entidade. Isso e conflito de campos, sem evidencia suficiente para
+decidir se esta errado o nome ou o documento. Nao se reatribuiu credor nem
+transformou positivo em zero. Nomes genericos como MATRIZ, CREDOR, 0 e
+FOLHA DE PAGAMENTO foram separados para consulta, sem exclusao automatica.
+Essa triagem nao equivale a validacao documental de todos os 1.473 nomes.
+
+No exercicio de 2019, os dois primeiros pares somam **R$ 200.438,48**.
+A sensibilidade `sem_conflito_credor` retira as duas linhas completas do
+treino e teste, mantendo 853 municipios: clinico 45.207 pares/769 positivos;
+ampliado 52.884/1.297. A base de referencia conserva os registros e o alerta.
+O resultado clinico muda pouco: logloss municipal 0,032767 e espacial
+0,036148, contra 0,032974 e 0,036368. Isso nao resolve os casos individuais.
+
+Os trinta maiores erros do modelo clinico foram cotejados com pagamentos,
+CNES, geografia e MUNIC, sem trocar o criterio de selecao depois dos achados.
+Sao 23 positivos e sete zeros; sete pares possuem declaracao MUNIC positiva.
+Ausencia na tabela de cotejamento fica NA, nao foi promovida a resposta
+negativa da MUNIC. Casos representativos:
+
+- **Uberaba-CISVALEGRAN:** zero no MIDES e previsao municipal 99,9997%.
+  O [relatorio oficial de contas de 2019, p.80](https://www.uberaba.mg.gov.br/portal/acervo/portal_transparencia/arquivos/2019/prestacao%20contas/Relatorio%20do%20Controle%20Interno.pdf)
+  confirma ausencia de pagamentos, divida antiga de R$ 68.660 e notificacao
+  de janeiro de 2019 sobre nao participar como aderente do contrato de
+  rateio/2017 desde janeiro de 2018. A divida nao foi confundida com pagamento.
+  Isso sustenta o zero; nao prova impedimento juridico de qualquer outro
+  contrato ou encerra a historia de filiacao. Proximidade nao incorpora essa
+  mudanca institucional. PDF arquivado, SHA256 registrado e pagina renderizada.
+- **Conselheiro Pena-CISVI:** 14 registros/R$ 11.468,66, todos com nome
+  MINISTERIO DA FAZENDA. Tempo 491,7 min e previsao 0,0235%. A aparente
+  falha do modelo tambem envolve identidade financeira conflitante; nao e
+  exemplo validado de pagamento consorcial distante.
+- **Lagoa da Prata-CISMEP:** R$ 2.107.821,15, 67 registros com nome do
+  consorcio; 149,7 min ate a clinica mais proxima e previsao 1,1851%.
+  Um limite de 120 min retiraria esse pagamento. Identidade financeira e
+  rota coerentes nao demonstram que o recurso financiou aquela clinica;
+  pode haver servicos contratados fora da oferta direta que o modelo usa.
+- **Sao Joao del-Rei-CISVER:** zero conciliado, previsao quase 100% e
+  destino no mesmo municipio. Falta comprovacao documental da causa, como
+  tambem em outros cinco zeros prioritarios. Nao foram apagados nem declarados
+  erros cadastrais por contradizerem a previsao.
+
+### Como As Alternativas Foram Testadas
+
+Fluxo reproduzivel: **CNES com identidade validada + municipios dos destinos
+-> matriz rodoviaria + PDR/2019 -> regras sem usar pagamentos -> perdas reais
+-> mesmos folds do script 32 -> comparacao de previsoes na mesma amostra**.
+
+Foram fixadas sete regras antes de olhar suas metricas: MG inteira;
+ate 90, 120 e 180 minutos; mesma macrorregiao; mesma microrregiao; cinco
+consorcios mais proximos. Usa-se o menor tempo entre destinos validos do
+cenario, inclusive clinica cadastrada com horas zero; massa/impedancia do
+ajuste permanecem ponderadas pelas horas. Regiao e comparada entre origem
+e cada destino efetivo. No S1 nao se usa a sede administrativa para definir
+regiao da clinica. Os cinco proximos incluem empates na quinta posicao;
+por isso alguns municipios tem mais de cinco alternativas.
+
+Aplicadas aos quatro ajustes principais (S1/53, S2/53, S2/62 e S3/62), sao
+28 combinacoes. Mais quatro sensibilidades documentais. Cada uma tem cinco
+folds por municipio e cinco espaciais, totalizando **320 ajustes de treino**.
+Nenhum municipio aparece simultaneamente no treino e teste do mesmo fold.
+Nao se forca a reinclusao dos positivos excluidos: eles sao exportados.
+Uma origem sem alternativa e contada explicitamente, nao desaparece do relato.
+
+Cada recorte compara (a) previsao estadual ja salva, apenas avaliada nas
+linhas retidas; (b) modelo reestimado usando a regra nos treinos; e (c)
+prevalencia do treino desse recorte. Isso separa ganho de reestimacao da
+mudanca de composicao da amostra. As metricas de recortes diferentes nao
+devem ser ranqueadas diretamente: a prevalencia muda. Os thresholds sao
+sensibilidades analiticas, nao normas assistenciais nem acesso comprovado.
+
+Resultados de cobertura no recorte clinico de 53 consorcios, denominador
+**771 vinculos pagos e R$ 360.336.147,52 em 2019**:
+
+| Regra | Pares candidatos | Pagos retidos | Pagos excluidos | Dinheiro retido | Origens sem candidato |
+|---|---:|---:|---:|---:|---:|
+| MG inteira | 45.209 | 771 | 0 | 100% | 0 |
+| Ate 90 min | 1.441 | 622 | 149 | 88,15% | 157 |
+| Ate 120 min | 2.461 | 699 | 72 | 94,40% | 77 |
+| Ate 180 min | 5.344 | 752 | 19 | 99,34% | 22 |
+| Mesma macrorregiao | 4.814 | 714 | 57 | 90,16% | 0 |
+| Mesma microrregiao | 924 | 548 | 223 | 70,99% | 175 |
+| Cinco proximos, incluindo empates | 4.266 | 759 | 12 | 99,13% | 0 |
+
+Duas horas retiram R$ 20.175.815,08; mesma microrregiao retira
+R$ 104.535.549,44. Cinco proximos parecem menos restritivos entre clinicas,
+mas excluem 132 positivos no S2/62 e 133 no S3/62. Nao se deve transportar
+uma regra entre modalidades sem conferir suas perdas. Uma lista dos mais
+proximos tambem pode conter viagens longas em areas com pouca oferta.
+
+### O Modelo Vai Alem Dos Zeros Distantes?
+
+Sim, nas comparacoes realizadas, mas a tarefa fica mais dificil entre
+alternativas proximas. Avaliando **as mesmas previsoes estaduais** somente
+nos 2.461 pares ate 120 min, AUC cai de 0,9863 para 0,8456. Esse contraste
+reflete tambem mudanca de amostra; nao e uma estimativa isolada do efeito
+dos zeros. Nesse conjunto, Brier e 0,135206, contra 0,203587 da prevalencia
+do treino. Portanto, ainda ha capacidade de distinguir vinculos alem de
+classificar pares muito distantes como zero.
+
+Reestimar nessas mesmas linhas quase nao muda Brier municipal (0,134919);
+na validacao espacial, piora de 0,148099 para 0,153451, embora logloss mude
+muito pouco (0,490319 -> 0,490204). Isso impede declarar que o corte de duas
+horas corrigiu o modelo. Dentro da microrregiao, logloss melhora bastante,
+mas ao custo de excluir 223 pagamentos. Nenhum limite foi adotado pelo ajuste.
+
+O excesso de confianca intramunicipal continua: nas 57 origens-destinos
+coincidentes, media prevista 99,07% versus 52/57=91,23% pagos. A correcao
+dos dois CNES nao resolve esse problema substantivo. Nao se alterou desfecho
+nem se criou indicador especifico de Uberaba para melhorar a previsao.
+
+### Referencias E Melhorias Que Fazem Sentido
+
+O catalogo `evidencias/referencias_auditoria_alternativas_2026_09_24.csv`
+registra fontes primarias, trechos lidos, aplicacao e limite de cada analogia.
+As referencias ajudam a formular testes; nao validam automaticamente nossa base.
+
+| Referencia | O que aproveitamos | Diferenca que permanece |
+|---|---|---|
+| [Rocha, Rache e Nunes, IEPS 2022](https://ieps.org.br/wp-content/uploads/2022/06/IEPS_Estudo_Institucional_07.pdf) | Integrar capacidade, territorio e fluxos; examinar cruzamento de regioes | Estudam hospitalizacoes e proporcoes regionais, nao pagamentos binarios |
+| [Jia, Wang e Xierali, 2019](https://doi.org/10.1007/s10661-019-7468-2) | Estrutura origem-destino com populacao, capacidade e viagem; testar forma do decaimento | O estudo usa internacoes e estima volumes positivos; isso nao justifica remover nossos zeros |
+| [Gaynor, Propper e Seiler, AER 2016](https://www.aeaweb.org/articles?id=10.1257/aer.20121532) | Restricoes de escolha fazem parte da pergunta | Escolha hospitalar individual e reforma especifica; aqui ha varios vinculos financeiros |
+| [Baier e Bergstrand, JIE 2004](https://sites.nd.edu/jeffrey-bergstrand/files/2020/04/Economic-Determinants-of-Free-Trade-Agreements.pdf) | Exemplo de resposta binaria por par, distancia/massas e cuidado com acuracia dominada por zeros | Acordos entre paises, nao mecanismo institucional da saude |
+| [Ribeiro e Costa, IPEA 2000](https://www.ipea.gov.br/ppp/index.php/PPP/article/download/84/166) | Consorcios combinam organizacao da oferta, pactuacao e financiamento | Retrato historico; nao prova membros ou contratos de 2019 |
+
+A leitura da [Lei 11.107](https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2005/lei/l11107.htm)
+e do [Decreto 6.017](https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2007/decreto/d6017.htm)
+reforca a necessidade de distinguir contrato de consorcio, rateio e outros
+instrumentos. A localizacao do equipamento e apenas uma parte da cooperacao.
+
+Recomendacao: manter MG inteira como referencia explicita, acompanhar
+180 min/cinco proximos e regioes como sensibilidades, e investigar documentos
+dos casos concretos. Para uma proxima especificacao, vale testar a regiao como
+caracteristica do par, preservando pagamentos que cruzam fronteiras, antes de
+transforma-la em exclusao. Tambem faz sentido estudar recursos proprios da
+origem, destinos contratados e capacidade anterior ao pagamento. Esses testes
+nao foram executados nesta entrega e exigem pergunta e disponibilidade claras.
+Nao ha razao, pelos resultados atuais, para acrescentar PCA ou forcar sinal
+positivo de populacao/horas. A proxima entrega de dados deve propagar a
+correcao CNES e os alertas para v1/atlas antes de apresentar tudo como final.
+
+### Validacao E Reproducao
+
+Ordem: **33 -> 35 -> 31 -> 32 -> 34 -> testes 19, 20 e 21**. O 35 usa
+cache por padrao; `--consultar` refaz consulta agregada dos credores externos.
+O limite BigQuery foi corrigido para o campo `configuration.query` da API;
+10 GB no novo script, conferido no retorno. A extracao ampla processou cerca
+de 7,03 GB; consulta repetida usou cache. O script 13 recebeu a mesma correcao
+de posicionamento do limite existente, sem nova extracao por ele.
+
+Teste 21 reconstruiu regras geograficas a partir dos destinos, comprovou
+perdas, conferiu todos os scores dos 320 treinos e previsoes correspondentes,
+recalculou metricas com sklearn e verificou fontes por SHA256. Tambem testa
+CPF/CNPJ, mantenedora legitima, conciliacao de nomes/valores e invariancia dos
+quatro modelos principais apos a correcao. Sao 948.508 linhas de previsoes
+repetidas por cenario/regra/validacao, nao novos registros observados.
+
+Um treino oscilou com tolerancia IRLS 1e-13; em 34 ela foi ajustada para
+1e-11, maximo 200 iteracoes, mantendo verificacao independente do gradiente.
+Nao se mudou a formula ou a amostra para obter convergencia. Nenhuma nova
+biblioteca foi instalada. Validacao e do mesmo ano e dos mesmos consorcios;
+blocos espaciais nao tem faixa de separacao. Sensibilidades escolhidas apos
+inspecao dos erros nao constituem uma confirmacao numa amostra intocada.

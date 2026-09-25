@@ -906,7 +906,8 @@ Entrada: `32_estimar_adesao_financeira.R`, executado da pasta do modelo.
 Reutiliza dplyr, digest, jsonlite, sandwich e stats em R. Verificacao:
 `python tests/20_validar_adesao_financeira.py`, com NumPy, pandas, SciPy e
 scikit-learn existentes. Produtos locais em `outputs/adesao_financeira/`;
-nenhuma alteracao na v1, nos produtos 31 ou na aba do piloto fracional.
+v1 e aba do piloto fracional preservadas. A auditoria posterior 33 corrigiu
+os produtos 31 e os ajustes 32 foram regenerados; ver a secao seguinte.
 
 | Arquivo | Conteudo e uso |
 |---|---|
@@ -921,7 +922,7 @@ nenhuma alteracao na v1, nos produtos 31 ou na aba do piloto fracional.
 | `exemplos.csv` | Todas as alternativas de Igarape e Conceicao do Para nos quatro principais e teste intramunicipal |
 | `vinculos_municipais.csv` | Numero observado e soma das probabilidades por municipio; soma e quantidade esperada, nao precisa ser um |
 | `resultados_modalidade.csv` | Qualidade e calibracao separadas entre horas clinicas e moveis/nao clinicas |
-| `diagnostico_intramunicipal.csv` | 58 pares com ao menos uma clinica no municipio versus demais; principal e sensibilidade |
+| `diagnostico_intramunicipal.csv` | 57 pares com ao menos uma clinica no municipio apos correcao CNES (antes 58); principal e sensibilidade |
 | `maiores_erros.csv` | 30 maiores erros absolutos de probabilidade fora do treino no principal; nao autoriza excluir observacoes |
 | `diagnosticos.csv` | Convergencia, gradiente, posto via assert, condicao, extremos e autovalor da covariancia |
 | `ajustes.rds`, `ambiente.txt` | Objetos GLM e versoes para reproducao |
@@ -942,3 +943,67 @@ Demais identificadores/modalidades/alertas sao herdados do script 31.
 O indicador intramunicipal e posterior ao primeiro diagnostico, portanto
 sua avaliacao nao equivale a confirmacao numa amostra intocada. As duas
 validacoes usam o mesmo ano e os mesmos consorcios; nao ha teste temporal.
+
+## Auditoria De Identidade E Alternativas Territoriais
+
+Entrada em ordem: `33_auditar_identificadores_cnes.py`,
+`35_conferir_credor_mides.R`, scripts 31/32 e
+`34_testar_alternativas_territoriais.R`. Numeracao tecnica nao indica ordem
+dos passos cientificos. Executar da pasta do modelo; teste independente:
+`python tests/21_validar_auditoria_alternativas.py`.
+
+Produtos em `outputs/auditoria_alternativas/`, sem sobrescrever a v1:
+
+| Arquivo | Conteudo |
+|---|---|
+| `identificadores_cnes.csv` | 1.942 unidades-ano confrontadas com ST; PF/PJ, correspondencia de CNPJ proprio/mantenedora e decisao, sem CPF |
+| `vinculos_cnes_rejeitados.csv` | 16 registros: dois consultorios PF falsamente ligados ao CISMARG |
+| `unidades_cnes_dezembro_corrigidas.csv` | 1.926 registros validos; novo insumo do 31, campos assistenciais preservados |
+| `fontes_identificadores.csv`, `resumo_identificadores.json` | DBC e derivados com SHA256; escopo da correcao |
+| `antes_correcao/` | Snapshot dos produtos 31/32 anteriores a correcao, somente local |
+| `impacto_correcao_rotas_2019.csv` | 226 pares-cenario (113 S1 e 113 S3) com algum minimo alterado |
+| `conciliacao_financeira_2019.csv`, `resumo_conciliacao.csv` | 62.269 pares reconciliados com extracoes; zeros por ausencia de registro distintos de lancamentos |
+| `credores_complementares_2014_2021.csv` | Consulta adicional agregada por ano, municipio, documento e nome; mesmos totais anteriores |
+| `consulta_credores_complementares.sql`, `consulta_credores_manifesto.json` | SQL reproduzivel, job BigQuery, limite de bytes confirmado e SHA256 |
+| `nomes_credores_financeira_v1.csv`, `catalogo_nomes_credores.csv` | Catalogo de nomes; alertas estritos de entidade distinta e nomes genericos separados |
+| `conflitos_nome_documento.csv` | 17 pares-ano, R$ 1.352.846,55; dois pares/R$ 200.438,48 em 2019; sem reatribuicao do credor |
+| `cisvi_conselheiro_pena_2019_transacoes.csv` | Consulta pontual inicial, 14 registros com nome MINISTERIO DA FAZENDA; confirmados tambem pela consulta agregada |
+| `auditoria_30_maiores_erros.csv` | Pagamento e previsao, conciliacao, MUNIC, tempo, regiao e conclusao por caso |
+| `regras_por_par.csv` | Flags estaduais, minutos, macro/micro, ordem de proximidade e retirada documental |
+| `cobertura_regras.csv` | Numerador/denominador dos pagos e valores, municipios sem alternativa e distribuicao do numero de candidatos |
+| `pagamentos_excluidos_por_regra.csv` | Cada positivo perdido em cada cenario/regra, sem reinclusao forcada |
+| `validacao_territorial.csv` | Metricas de previsao estadual, reajustada e prevalencia no mesmo recorte; fold=0 agregado |
+| `coeficientes_treino_territorial.csv` | 320 ajustes em dados de treino; sem novos IC ou alegacoes de significancia |
+| `previsoes_territoriais.csv.gz` | 948.508 linhas repetidas entre regras/esquemas; probabilidades fora do treino |
+| `diagnostico_faixas_tempo.csv` | Desempenho estadual dentro de faixas de tempo; separa zeros proximos/distantes |
+| `fontes_territoriais.csv`, `fontes_credores.csv`, `ambiente_R.txt` | Fontes, hashes e versoes de reproducao |
+| `fontes/uberaba_controle_interno_2019.pdf`, `fontes/uberaba_p80.png` | Relatorio oficial e pagina conferida visualmente; evidencia do zero Uberaba-CISVALEGRAN |
+
+Referencias e limites de analogia em
+`evidencias/referencias_auditoria_alternativas_2026_09_24.csv`; SQL pontual
+em `evidencias/consulta_cisvi_conselheiro_pena_2019.sql`. Fontes grandes
+continuam locais. Resultado do teste em `checks/21_auditoria_alternativas.json`.
+
+`prob_estadual` e a previsao do 32, avaliada nas linhas retidas;
+`prob_reajustada` usa somente os outros folds que satisfazem a regra;
+`prob_prevalencia` usa a proporcao paga desses mesmos treinos. Nenhuma
+dessas probabilidades comprova elegibilidade institucional. `sem_conflito_credor`
+e sensibilidade de qualidade, nao regra territorial. Nomes genericos ficam
+marcados sem serem automaticamente classificados como falsos pagamentos.
+
+O script 35 usa cache por padrao. `--consultar` requer credencial BigQuery
+ja autorizada, com limite de 10 GB no campo correto da API. A v1/atlas e
+o piloto anterior ainda precisam receber a correcao CNES e os marcadores;
+nao tratar as tabelas antigas como versao corrigida.
+
+Arquivos tecnicos alterados nesta entrega: `09_temporalizar_cnes_historico_saude.py`,
+`13_detalhar_atlas_consorcios_saude.R`, `31_preparar_cenarios_adesao.R`,
+`33_auditar_identificadores_cnes.py`, `34_testar_alternativas_territoriais.R`,
+`35_conferir_credor_mides.R`, `tests/19_validar_cenarios_adesao.py`,
+`tests/21_validar_auditoria_alternativas.py`, `checks/21_auditoria_alternativas.json`,
+`evidencias/consulta_cisvi_conselheiro_pena_2019.sql`,
+`evidencias/referencias_auditoria_alternativas_2026_09_24.csv`,
+`README.md`, `PLANO_DE_TRABALHO.md`, `METODOLOGIA_GERAL.md`,
+`DICIONARIO_TECNICO.md` e `LINHA_DO_TEMPO_PASSOS.md`. O script 32 foi
+reexecutado, sem alterar seu codigo; resultados antigos preservados.
+No vault: `PAINEL_IPEA.md`, `MEMORIA_PROJETO.md` e `diario/2026-09-24.md`.

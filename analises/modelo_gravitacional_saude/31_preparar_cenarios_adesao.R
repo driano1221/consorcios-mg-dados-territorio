@@ -8,7 +8,8 @@ inputs <- paste0("outputs/", c("base_v1/base_financeira_v1.rds",
  "base_v1/capacidade_entidade_ano.csv", "viabilidade_logit/populacao_sede_cadastral_2019.csv",
  "elegibilidade_assistencial_unidades_historicas_saude_mg_2014_2021.csv",
  "candidatas_cnes_capacidade_unidades_2014_2021.csv", "rotas_mg_distbrasil_cache.rds",
- "cnes_historico_presenca_mensal_saude_mg_2014_2021.csv"))
+ "cnes_historico_presenca_mensal_saude_mg_2014_2021.csv",
+ "auditoria_alternativas/unidades_cnes_dezembro_corrigidas.csv"))
 hashes <- vapply(inputs, function(p) digest::digest(file=p,algo="sha256"),character(1))
 decode <- function(s) {
  for (i in which(!is.na(s) & grepl('<U\\+',s))) {
@@ -33,7 +34,9 @@ entities <- f |> summarise(pares_pagos=sum(adesao_financeira),
  valor_pago=sum(valor_total),.by=c(cnpj_raiz_8,entidade))
 seats <- read_csv(inputs[3]) |> select(cnpj_raiz_8,sede_cadastral,id_sede)
 stopifnot(nrow(seats)==73,!anyDuplicated(seats$cnpj_raiz_8))
-units <- bind_rows(read_csv(inputs[4]),read_csv(inputs[5])) |>
+# O script 33 valida identificadores contra os oito ST brutos. A v1 fica
+# preservada como entrega anterior; cenarios novos usam o insumo corrigido.
+units <- read_csv(inputs[8]) |>
  filter(ano=="2019") |> semi_join(entities,by="cnpj_raiz_8") |>
  mutate(horas_sus=as.numeric(carga_horaria_sus)) |>
  left_join(origins |> select(codigo_ibge_6,id_destino=id_municipio,
@@ -55,7 +58,7 @@ inventory <- entities |>
    n_unidades_cnes>0 ~ "moveis_ou_nao_clinicas_do_ano",TRUE ~ "sem_unidade_cnes_identificada"),
   sede_historica="referencia_cadastral_vigencia_2019_nao_validada")
 stopifnot(nrow(inventory)==73,sum(inventory$n_clinicas>0)==54,
- sum(inventory$n_clinicas)==64,sum(is.na(inventory$horas_base))==10)
+ sum(inventory$n_clinicas)==62,sum(is.na(inventory$horas_base))==10)
 cap <- read_csv(inputs[2]) |> filter(ano=="2019")
 check_cap <- inventory |> filter(n_clinicas>0) |>
  left_join(cap |> select(cnpj_raiz_8,horas_v1=horas_sus_clinicas_soma_registros),

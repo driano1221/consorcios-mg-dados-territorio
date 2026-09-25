@@ -7,7 +7,30 @@ deve criar uma segunda numeracao de etapas.
 
 ## Leitura Do Estado
 
-**Estado vigente, apos estimacao autorizada (script 32):** vinculo financeiro
+**Estado vigente apos auditoria e testes territoriais (24/09):** os dois
+encaminhamentos autorizados foram executados nos scripts 33-35: auditoria
+dos maiores erros e sensibilidades de alternativas. Conferidos 1.942
+registros CNES de dezembro e 62.269 pares financeiros de 2019. Dois
+consultorios PF estavam falsamente ligados ao CISMARG (16 registros-ano);
+extrator corrigido, cenarios 31 e modelos 32 regenerados. Principais resultados
+invariantes, pois os falsos vinculos tinham zero horas SUS. A versao anterior
+foi preservada localmente. Ha 17 pares-ano com conflito entre nome e documento
+do credor MIDES, dois em 2019: ficam marcados, com teste sem esses pares,
+sem converter pagamentos em zeros. Uberaba-CISVALEGRAN/2019 tem zero
+confirmado em relatorio oficial. Sete regras geograficas nos quatro ajustes
+principais e sensibilidade documental passaram pelo teste 21 (320 treinos).
+Nao foi adotado um corte territorial definitivo; mesma microrregiao perde
+28,9% dos vinculos pagos clinicos. Detalhes ao final da metodologia.
+
+**Proximo marco:** republicar os derivados v1 e depois a interface com a
+correcao dos dois CNES, marcadores de conflito financeiro e resultados
+auditados. A v1/atlas/piloto antigos ainda contem os falsos vinculos cadastrais;
+nao os apresentar como ja corrigidos. O recorte financeiro e os valores brutos
+foram preservados. Buscar documentos dos credores conflitantes e dos seis
+zeros prioritarios ainda sem explicacao institucional, em trabalho dirigido.
+Sem nova formula, novo estado ou coleta geral para perseguir melhor ajuste.
+
+**Marco anterior, apos estimacao autorizada (script 32):** vinculo financeiro
 binario estimado em 2019, com 853 municipios e comparacao clinicas/sedes nos
 mesmos 53 consorcios. Ampliacoes sedes/misto com 62 sao exploratorias.
 Doze especificacoes, validacao municipal e espacial, coeficientes com erros
@@ -474,6 +497,7 @@ com alternativas amplas explicitadas como hipotese, ainda sem validacao instituc
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 24/09, auditoria e alternativas | Scripts 33-35 e teste 21; extrator CNES corrigido; 31/32 regenerados; 28 comparacoes territoriais e quatro documentais | Separar erro cadastral, identidade financeira conflitante e limite institucional; explicitar perdas antes de escolher alternativas |
 | 24/09, estimacao apos preparacao | Script 32 estima vinculo binario, cenarios e sensibilidades; teste 20 independente | Comparar clinicas/sedes na mesma amostra, avaliar ampliacao e expor limites de horas, populacao e distancia zero |
 | 24/09, preparacao apos reuniao | Script 31 inventaria tres cenarios, 186.807 linhas conciliadas e especificacao binaria; teste 19 | Quantificar ampliacao 54->63 (53->62 com horas positivas), preservar ausentes/zeros e separar mudanca espacial de amostral |
 | 24/09, reuniao e esclarecimento posterior | Adesao operacional definida como pagamento positivo com varios vinculos; horas SUS e tres cenarios espaciais encaminhados, ainda sem estimar | Distinguir presenca de vinculo, atracao relativa e participacao financeira; separar agenda documental geral e piloto MG |

@@ -77,8 +77,15 @@ def is_positive(value: object) -> bool:
 
 def cnpj_root(value: object, target_roots: set[str]) -> str | None:
     code = digits(value, 14)
-    if len(code) != 14 or code == "0" * 14:
+    # CPF_CNPJ tambem contem CPF preenchido com zeros: prefixo nao basta.
+    if len(code) != 14 or len(set(code)) == 1:
         return None
+    numbers = [int(c) for c in code]
+    for n, weights in ((12, (5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2)),
+                       (13, (6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2))):
+        remainder = sum(a*b for a, b in zip(numbers[:n], weights)) % 11
+        if numbers[n] != (0 if remainder < 2 else 11-remainder):
+            return None
     root = code[:8]
     return root if root in target_roots else None
 
@@ -218,7 +225,8 @@ def select_establishments(
 ) -> dict[str, dict]:
     selected_units: dict[str, dict] = {}
     for row in dbf_rows(dbc_path, converter):
-        own_root = cnpj_root(row.get("CPF_CNPJ"), roots)
+        own_root = (None if str(row.get("PF_PJ")) == "1"
+                    else cnpj_root(row.get("CPF_CNPJ"), roots))
         maintainer_root = cnpj_root(row.get("CNPJ_MAN"), roots)
         if not own_root and not maintainer_root:
             continue

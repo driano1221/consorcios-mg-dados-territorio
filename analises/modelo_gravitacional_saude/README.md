@@ -1,5 +1,33 @@
 # Modelo Gravitacional De Saude - MG
 
+**Atualizacao apos auditoria de 24/09:** dois vinculos CNES de pessoa fisica
+com o CISMARG foram corrigidos no extrator e nos cenarios/modelos 31/32.
+Os quatro resultados principais permanecem iguais. A auditoria financeira
+identificou 17 pares-ano com nome de credor conflitante (dois em 2019), sem
+alterar os pagamentos originais. Uberaba-CISVALEGRAN tem zero confirmado por
+documento oficial. Testes territoriais mostram ganhos e perdas, sem impor
+regiao ou limite de viagem como regra institucional.
+
+Comece por `outputs/auditoria_alternativas/cobertura_regras.csv`,
+`auditoria_30_maiores_erros.csv`, `conflitos_nome_documento.csv` e
+`validacao_territorial.csv` (fold=0). Explicacao, referencias e resultados
+na secao **Auditoria Dos Erros E Alternativas Territoriais** da metodologia.
+**A v1, o atlas e o piloto da interface ainda sao a entrega anterior e
+precisam receber a correcao cadastral e os alertas financeiros.**
+
+Ordem de reproducao desta revisao (da pasta do modelo):
+
+```powershell
+python 33_auditar_identificadores_cnes.py
+Rscript 35_conferir_credor_mides.R # --consultar somente para atualizar o cache
+Rscript 31_preparar_cenarios_adesao.R
+Rscript 32_estimar_adesao_financeira.R
+Rscript 34_testar_alternativas_territoriais.R
+python tests/19_validar_cenarios_adesao.py
+python tests/20_validar_adesao_financeira.py
+python tests/21_validar_auditoria_alternativas.py
+```
+
 **Estimacao binaria executada apos a reuniao de 24/09:** pagamento positivo,
 permitindo varios vinculos por municipio. Script 32 usa populacao, horas SUS
 e distancia em 2019: clinicas/sedes nos mesmos 53 consorcios, ampliacoes

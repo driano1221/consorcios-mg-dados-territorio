@@ -615,3 +615,47 @@ quilometragem; corrigiu a media desse grupo, mas sem ganho consistente na
 validacao. Problema documentado, nao declarado resolvido. Resultados completos,
 exemplos e limites na metodologia e em outputs/adesao_financeira. A aba visual
 continua com o piloto fracional e deve receber essa nova leitura em seguida.
+
+### Auditoria Dos Erros E Das Alternativas Em 24/09
+
+Depois de estimar, voltamos aos registros que mais contradiziam o modelo.
+O caso Uberaba-CISVALEGRAN ganhou explicacao documental: o relatorio de
+contas de 2019 confirma que nao houve pagamento e registra mudanca na
+participacao no rateio desde 2018. A clinica estar no municipio nao bastava
+para prever o vinculo financeiro. O zero foi mantido.
+
+Ja Conselheiro Pena-CISVI exigiu outra leitura. Os 14 registros de 2019
+somam R$ 11.468,66, mas dizem MINISTERIO DA FAZENDA no nome do credor.
+Ampliamos a verificacao dos nomes: tres pares apresentam campos conflitantes
+em 17 registros-ano, R$ 1.352.846,55 entre 2014 e 2021. Nao foi possivel
+decidir apenas com o MIDES qual campo estava errado. Marcar o conflito e
+testar sem o par e diferente de apagar um pagamento ou troca-lo por zero.
+
+A revisao CNES encontrou dois consultorios PF atribuidos indevidamente ao
+CISMARG. CPF com zeros a esquerda coincidia com a raiz do CNPJ. O extrator
+foi corrigido e 1.942 unidades-ano foram conferidas no ST bruto: 16 falsos
+vinculos removidos do insumo novo. Em 2019, 64 clinicas viraram 62; 54
+consorcios continuam com horas conhecidas e 53 com horas positivas.
+Os dois consultorios tinham zero horas SUS: os quatro modelos principais
+mantiveram os coeficientes. Contagens e algumas rotas minimas mudaram.
+Uma unidade legitima do CISMARG em Oliveira foi mantida pela mantenedora.
+
+Em seguida testamos sete regras geograficas nos quatro ajustes principais,
+mais retirada dos dois pares de credor conflitante de 2019. Os 320 treinos
+foram conferidos com municipios separados entre treino e teste. Duas horas
+retêm 699 dos 771 pagos clinicos; tres horas, 752; mesma microrregiao, 548;
+cinco proximos, 759. Isso mostra por que um mapa regional nao pode virar
+filtro definitivo sem medir os pagamentos que ficariam de fora.
+
+Igarape-CISMEP continua com R$ 4.740.790,51 e 1.651 horas; nenhuma dessas
+correcoes muda seu registro. Outro exemplo, Lagoa da Prata-CISMEP, paga
+R$ 2.107.821,15 e tem 149,7 min ate a clinica mais proxima: um corte de duas
+horas excluiria o vinculo. MIDES confirma o pagamento ao consorcio, sem
+identificar a unidade que efetivamente entregou o servico.
+
+Os resultados continuam exploratorios. Antes da proxima apresentacao,
+precisamos propagar as correcoes para a v1 e suas visualizacoes e manter
+os conflitos visiveis. Esta entrega atualizou cenarios/modelos e documentacao;
+a v1/atlas/piloto antigos foram preservados. Fontes, tabelas e testes estao
+localizados no dicionario. A proxima coleta deve ser dirigida aos casos
+pendentes, sem reiniciar a construcao de toda a base.

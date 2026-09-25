@@ -21,8 +21,7 @@ finance = {(r['id_municipio'], r['cnpj_raiz_8']): r for r in
 assert len(finance) == 853*73
 unit_hours = defaultdict(lambda: defaultdict(float))
 unit_counts = Counter()
-for name in ('elegibilidade_assistencial_unidades_historicas_saude_mg_2014_2021.csv',
-             'candidatas_cnes_capacidade_unidades_2014_2021.csv'):
+for name in ('auditoria_alternativas/unidades_cnes_dezembro_corrigidas.csv',):
     for r in read(HERE / 'outputs' / name):
         if r['ano'] == '2019':
             unit_hours[r['cnpj_raiz_8']][r['funcao_assistencial']] += float(r['carga_horaria_sus'])

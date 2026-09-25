@@ -1,0 +1,22 @@
+{
+  "status": "OK",
+  "unidades_ano_conferidas": 1942,
+  "vinculos_cnes_rejeitados": 16,
+  "pares_financeiros_2019_conciliados": 62269,
+  "conflitos_credores_2014_2021": 17,
+  "ajustes_treino_verificados": 320,
+  "combinacoes_territoriais": 28,
+  "sensibilidades_documentais": 4,
+  "linhas_previsoes": 948508,
+  "pares_cenario_com_rota_corrigida": 226,
+  "verificacoes": [
+    "CPF nao vira CNPJ; mantenedora legitima preservada",
+    "regras reconstruidas sem pagamentos",
+    "positivos fora das regras listados sem reinclusao forcada",
+    "folds por municipio e espaco sem vazamento",
+    "score de cada treino e previsoes refeitas",
+    "metricas independentes sklearn",
+    "fontes SHA256 intactas",
+    "quatro modelos principais invariantes a correcao CNES"
+  ]
+}

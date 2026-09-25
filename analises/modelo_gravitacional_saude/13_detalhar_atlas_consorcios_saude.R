@@ -29,7 +29,8 @@ if('--consultar-mides' %in% commandArgs(TRUE)) {
     "AND SUBSTR(documento_credor,1,8) IN ('",paste(new_roots,collapse="','"),"') ",
     "AND LENGTH(documento_credor)=14 GROUP BY ano,id_municipio,documento_credor")
   writeLines(sql,file.path(out,'fronteira_consulta_mides.sql'))
-  job <- bigrquery::bq_perform_query(sql,billing=Sys.getenv('MIDES_BILLING_ID','ipea-consorcios'),maximumBytesBilled='100000000000')
+  job <- bigrquery::bq_perform_query(sql,billing=Sys.getenv('MIDES_BILLING_ID','ipea-consorcios'),
+    configuration=list(query=list(maximumBytesBilled=jsonlite::unbox('100000000000'))))
   bigrquery::bq_job_wait(job,quiet=TRUE)
   meta <- bigrquery::bq_job_meta(job)
   dest <- meta$configuration$query$destinationTable
