@@ -37,9 +37,9 @@
     "outputs/base_v1/base_financeira_v1.csv",
     "outputs/base_v1/base_gravitacional_v1.csv",
     "outputs/adesao_financeira/coeficientes.csv",
-    "outputs/adesao_financeira/validacao.csv",
-    "outputs/visuais_v1/index.html"
+    "outputs/adesao_financeira/validacao.csv"
   ],
+  "html_conferido": "outputs\\auditoria_alternativas\\antes_revisao_visual_2026_09_25\\index.html",
   "entradas": {
     "evidencias\\auditoria_nove_pares_2026_09_25.csv": "980f440c7efdf2f0ffe7d05f05e58da40747914f8ff3e2f598e975640c586826",
     "evidencias\\fontes_nove_pares_2026_09_25.csv": "5c545a378c8894bc609d62765578e011bb5fcedb07964bdecfd80a5de1fc1d52",

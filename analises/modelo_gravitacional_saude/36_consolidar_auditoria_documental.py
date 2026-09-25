@@ -10,10 +10,15 @@ from collections import Counter
 import csv
 import hashlib
 import json
+import argparse
 
 HERE = Path(__file__).resolve().parent
 EV = HERE / 'evidencias'
 OUT = HERE / 'outputs/auditoria_alternativas/documental_2026_09_25'
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--html-arquivado', type=Path,
+                    help='HTML original da rodada documental; permite conferir aquele snapshot após uma revisão visual.')
+args = parser.parse_args()
 
 
 def read(path):
@@ -65,7 +70,10 @@ for s in sources:
         unavailable.append(s['id_fonte'])
 
 for record in invariants:
-    assert sha(HERE / record['arquivo']) == record['sha256'], record['arquivo']
+    path = HERE / record['arquivo']
+    if record['arquivo'] == 'outputs/visuais_v1/index.html' and args.html_arquivado:
+        path = args.html_arquivado
+    assert sha(path) == record['sha256'], f'{path}: estado diferente da rodada documental original'
 
 pair_cases = {(c['id_municipio'], c['cnpj_raiz_8']): c for c in cases}
 assert len(pair_cases) == 9
@@ -131,7 +139,8 @@ report = {
     'pares_ano_conflitantes_preservados': len(flagged),
     'valor_conflitante_preservado': '1352846.55',
     'transacoes_conflitantes_preservadas': 429,
-    'arquivos_analiticos_preservados': [r['arquivo'] for r in invariants],
+    'arquivos_analiticos_preservados': [r['arquivo'] for r in invariants if not r['arquivo'].endswith('.html')],
+    'html_conferido': str(args.html_arquivado or HERE / 'outputs/visuais_v1/index.html'),
     'entradas': {str(p.relative_to(HERE)): sha(p) for p in [
         EV / 'auditoria_nove_pares_2026_09_25.csv',
         EV / 'fontes_nove_pares_2026_09_25.csv',

@@ -1,5 +1,32 @@
 # Linha Do Tempo Dos Passos - Modelo Gravitacional De Saude
 
+## 25/09: Conferir O Portal E Explicar Melhor Os Modelos
+
+**Alertas anteriores → consultas municipais → valores e objetos →
+limites registrados → apresentação dos cenários.**
+
+Antes, Conselheiro Pena tinha um conflito entre nome e CNPJ. Agora sabemos
+que o próprio portal repete o conflito: os 14 valores de 2019 coincidem
+com MIDES, mas dois empenhos somam R$ 8.836,43 em multa tributária e taxa
+de radiodifusão. Isso não comprova pagamento ao CISVI. Faltam os outros
+12 objetos e a identificação correta; os dados continuam sinalizados.
+
+Piedade–CISMIRECAR/2021 passou a ter uma conferência independente de
+R$ 779.355,34. Ipatinga–CONSAÚDE/2018 revelou diferença de R$ 137.077,88.
+Não usamos esses anos vizinhos para preencher 2019. Neves/2014 não aparece
+nos anos oferecidos pela consulta atual; São Francisco de Paula segue
+sem acesso funcional ao portal nas tentativas realizadas.
+
+Na aba Modelo, o percurso ficou explícito: 73 consórcios financeiros,
+54 com clínica e rota, 53 com horas positivas; a ampliação chega a 62.
+Os resultados existentes ganharam gráficos de erro e calibração, exemplos
+e a conta do Igarapé–CISMEP: 1.651 horas, duas clínicas e 96,67% na
+validação municipal. Esse percentual é probabilidade de pagamento.
+Nenhuma base ou estimativa mudou nesta revisão.
+
+Imagens e números conferidos. A política do navegador bloqueou o HTML
+local; a nova navegação/layout completo ainda precisa ser visto pelo usuário.
+
 > Atualizacao de 25/09: a auditoria chegou a v1 e aos mapas. O estado atual
 > e a v1 revisada, 21/32 colunas, com conflitos sinalizados; as contagens
 > anteriores abaixo pertencem a cada marco historico. A aba Modelo abre

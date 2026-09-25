@@ -1,6 +1,7 @@
 {
   "status": "OK",
   "figuras_na_consulta": 5,
+  "figuras_modelos": 3,
   "figuras_de_origem": 20,
   "formatos": [
     "PNG 300 dpi",

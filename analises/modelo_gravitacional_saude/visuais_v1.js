@@ -168,6 +168,11 @@ $('query-load').onclick=async()=>{
 const pages=['panorama','construcao','pagamentos','capacidade','atlas','consulta','modelo'];
 function switchPage(page){document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.page===page)));pages.forEach(p=>$(p).hidden=p!==page);$('tip').style.display='none';if(page==='atlas')drawAtlas();window.scrollTo({top:0,behavior:'instant'});}
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>switchPage(b.dataset.page));
-function followSectionLink(){const section=location.hash.slice(1);if(pages.includes(section))switchPage(section);}
+function followSectionLink(){
+ const id=location.hash.slice(1),target=$(id);
+ if(pages.includes(id)){switchPage(id);return;}
+ const section=target?.closest('main > section');
+ if(section){switchPage(section.id);let parent=target.parentElement;while(parent){if(parent.tagName==='DETAILS')parent.open=true;parent=parent.parentElement;}target.scrollIntoView();}
+}
 window.addEventListener('hashchange',followSectionLink);followSectionLink();
 let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if(!$('atlas').hidden)drawAtlas();},120);});

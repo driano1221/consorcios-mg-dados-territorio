@@ -7,6 +7,60 @@
 
 ## Investigacao Documental Dos Nove Pares: 25/09
 
+A investigação desta seção é o marco anterior. A consulta financeira
+posterior, abaixo, acrescenta evidências e substitui a descrição de
+Conselheiro Pena como caso sem nenhum objeto de despesa localizado.
+
+### Consulta Financeira Posterior E Revisão Visual Em 25/09
+
+Consultamos as interfaces públicas dos municípios, registrando exercício,
+termo de pesquisa, CNPJ, valor e limite de interpretação. Os dois CSVs novos
+em `evidencias/` são **transcrições manuais da interface**, não exportações
+originais assinadas nem comprovantes bancários. O teste 24 compara os
+valores com a extração MIDES já existente; não houve nova consulta paga.
+
+| Caso | Evidência observada | O que continua aberto |
+|---|---|---|
+| Conselheiro Pena × CISVI/2019 | Portal municipal associa MINISTERIO DA FAZENDA ao CNPJ 00.639.952/0001-50. Os 14 valores somam R$ 11.468,66 e coincidem com MIDES. Empenho 671: R$ 2.030,80, multa por DCTF. Empenho 6337: R$ 6.805,63, taxa de radiodifusão. | Dois objetos contradizem a atribuição consorcial. Faltam 12 objetos e identificação/correção transacional. Não extrapolar os dois a todos os anos. |
+| Piedade × CISMIRECAR/2021 | Pago e liquidado R$ 779.355,34; empenhado R$ 829.106,54. O pago confere com MIDES. | A concordância de 2021 não explica o intervalo zerado. |
+| Piedade × CISMIRECAR/2019 | Pesquisa CONS, 25 registros por página: 13 resultados, sem o consórcio. | Não é prova de zero anual; falta conferir prefeitura/fundo e recebimentos do consórcio. |
+| Ipatinga × CONSAÚDE/2018 | Portal mostra R$ 567.152,67; MIDES R$ 704.230,55. Diferença R$ 137.077,88. | Escopo contábil/restos a pagar são hipóteses. Consulta de restos oferece apenas 2022–2026. |
+| Ipatinga × CONSAÚDE/2019 | Pesquisa CONSOR retornou somente consórcio de transporte coletivo. | Ausência na consulta não encerra o zero. |
+| Ribeirão das Neves × CISMEP/2014 | Consulta atual de despesas por credor oferece 2022–2026. | Recuperar arquivo de 2014; R$ 321,16 permanecem sinalizados. |
+| São Francisco de Paula × CISMARG/2019 | Nova tentativa no portal encerrou a conexão. | R$ 188.969,82 continuam com nome SOMETAL; lei não concilia credor. |
+
+Um cuidado que mudou a consulta: a busca textual por CNPJ em Piedade
+não encontrou sequer o pagamento conhecido de 2021. Repetimos por nome,
+com paginação ampliada. Portanto, buscas vazias por documento não foram
+usadas como evidência de ausência.
+
+Dos 14 valores de Conselheiro Pena, 13 também coincidem na data. O
+empenho de R$ 10,00 é de 24/09; a transação MIDES é de 26/09. São campos
+de eventos possivelmente diferentes, não uma correção de data autorizada.
+Os dois objetos lidos somam R$ 8.836,43; os R$ 2.632,23 restantes ainda
+não tiveram objeto examinado. Concordância de total não valida beneficiário.
+Mantidos os dados observados e a flag de conflito; não criamos zero nem
+redistribuímos valores. A sensibilidade que retira pares conflitantes já
+existia e deve acompanhar qualquer interpretação do ajuste principal.
+
+A apresentação lê os CSVs dos scripts 31/32/34 sem reestimar.
+`adesao_visual.py` organiza o caminho 73 → 54 → 53 e ampliação para 62,
+descreve variáveis e gera três figuras: Brier municipal, Brier espacial e
+calibração S1. O seletor de validação só alterna resultados existentes.
+Brier e AP têm denominadores/amostras explicitados; queda de Brier não é
+percentual de acerto. Calibração alta: 246 pares, 210 pagos, previsão média
+92,5% e frequência 85,4%. Os exemplos distinguem ajuste completo e validação.
+
+As duas bases, coeficientes e validação conservam SHA256 anterior.
+O HTML anterior foi preservado e o novo recebeu testes de números,
+âncoras, imagens, manifesto e pacote. Figuras PNG foram examinadas;
+JavaScript passou por verificação sintática. **A abertura do HTML foi
+bloqueada pela política do navegador, sem tentativa de contorno.**
+A revisão completa de navegação/layout permanece pendente; capturas da
+rodada anterior não validam esta composição. Não houve deploy no Shiny.
+
+### Registro Da Rodada Documental Anterior
+
 A rodada examinou os seis zeros prioritarios de 2019 ainda abertos e os
 tres pares com nomes de credor conflitantes. O objetivo foi procurar
 explicacoes independentes, sem usar o erro do modelo como prova de erro

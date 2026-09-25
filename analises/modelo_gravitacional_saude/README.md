@@ -1,5 +1,26 @@
 # Modelo Gravitacional De Saude - MG
 
+**Atualização mais recente de 25/09:** a [aba Modelo](outputs/visuais_v1/index.html#modelo)
+passou a organizar amostra, cenários, validação e exemplos. Há comparação
+entre validação municipal e espacial, três gráficos novos e a conta do
+Igarapé–CISMEP. Bases e estimativas não foram alteradas.
+
+A conciliação encontrou um problema concreto: dois empenhos de Conselheiro
+Pena, R$ 8.836,43, descrevem multa tributária e radiodifusão apesar do CNPJ
+associado ao CISVI. Piedade–CISMIRECAR/2021 confere com o MIDES;
+Ipatinga–CONSAÚDE/2018 ainda diverge. Veja as
+[consultas e limites](evidencias/conciliacao_portais_2026_09_25.csv).
+Objetos restantes, zeros de 2019 e outros credores ainda exigem investigação.
+
+Reprodução visual: `python 28_montar_visuais_v1.py`; conferências:
+`python tests/17_validar_visuais_v1.py` e
+`python tests/24_validar_conciliacao_e_modelos.py`.
+As imagens foram examinadas, mas a política do navegador bloqueou o HTML
+local. A navegação e a composição completa desta revisão não foram
+verificadas em navegador. Não confundir com o QA da versão anterior.
+
+Os parágrafos abaixo preservam o histórico da v1 e da auditoria anterior.
+
 **V1 revisada em 25/09:** a correcao CNES e os alertas de credor chegaram
 as bases, figuras e atlas. Abra [a consulta local](outputs/visuais_v1/index.html).
 A aba Modelo comeca agora pela adesao financeira com varios vinculos e
@@ -19,7 +40,9 @@ Proximo: conciliar contas de Ipatinga/CONSAUDE e Piedade/CISMIRECAR e os
 pagamentos com nome conflitante. O modelo nao esta finalizado.
 
 Para reproduzir apenas esta conferencia, execute
-`python 36_consolidar_auditoria_documental.py`. Ela gera as trajetorias dos
+`python 36_consolidar_auditoria_documental.py --html-arquivado outputs/auditoria_alternativas/antes_revisao_visual_2026_09_25/index.html`.
+O argumento aponta para o HTML da rodada original, cujo hash é conferido.
+Ela gera as trajetorias dos
 nove pares nos oito anos e verifica fontes/chaves/valores sem reestimar.
 
 **Atualizacao apos auditoria de 24/09:** dois vinculos CNES de pessoa fisica

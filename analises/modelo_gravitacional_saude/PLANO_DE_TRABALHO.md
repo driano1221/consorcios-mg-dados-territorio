@@ -7,6 +7,32 @@ deve criar uma segunda numeracao de etapas.
 
 ## Leitura Do Estado
 
+**Última rodada de 25/09: consultas financeiras e apresentação dos modelos.**
+Sete consultas registradas em cinco pares. Piedade–CISMIRECAR/2021 confere
+com o portal (R$ 779.355,34). Ipatinga–CONSAÚDE/2018 diverge em
+R$ 137.077,88; a hipótese de restos a pagar segue sem prova. Em Conselheiro
+Pena, os 14 valores de 2019 conferem, mas os dois objetos examinados
+(R$ 8.836,43) são multa tributária e taxa de radiodifusão. Não validar o
+vínculo CISVI só porque o total coincide. Os outros 12 objetos seguem abertos.
+Nenhum zero de 2019 recebeu causa financeira encerrada nesta rodada.
+
+Aba Modelo reorganizada: formação da amostra, três cenários, comparação
+municipal/espacial, calibração, quatro exemplos e conta do Igarapé–CISMEP.
+Três gráficos novos em PNG/SVG; bases e estimativas preservadas.
+Gráficos examinados como imagens e conteúdo conferido por testes. A política
+do navegador bloqueou a abertura do HTML local: a nova navegação e o layout
+completo ainda precisam de conferência humana. O QA anterior é histórico.
+
+**Próximo marco vigente:** terminar a conciliação dos 12 objetos restantes
+de Conselheiro Pena e sua identidade, esclarecer a diferença de Ipatinga
+com razão/restos a pagar históricos e obter comprovantes dos outros dois
+credores conflitantes. Manter a sensibilidade sem esses pares enquanto a
+correção transacional não estiver documentada. Para os zeros de 2019,
+buscar recebimentos dos consórcios e cobertura prefeitura/fundo. Conferir
+também a nova apresentação no navegador; não reestimar para melhorar aparência.
+
+Os blocos seguintes registram os marcos anteriores.
+
 **Estado vigente em 25/09:** correcoes propagadas para v1, atlas e interface.
 Derivados anteriores preservados em snapshot. Consultorios PF excluidos do
 historico e rotas refeitas; 17 pares-ano sinalizados nas duas bases e na
@@ -22,7 +48,7 @@ nenhum conflito foi resolvido. Mantidos os 17 pares-ano sinalizados e todos
 os valores, resultados e graficos. Ha 17 referencias, 15 com copia local
 conferida; indice web e portal indisponivel ficam explicitamente separados.
 
-**Proximo marco:** conciliacao financeira dirigida, com prioridade para
+**Marco previsto antes desta consulta:** conciliacao financeira dirigida, com prioridade para
 Ipatinga–CONSAUDE/2019 e Piedade–CISMIRECAR/2019 (pagamentos observados em
 outros anos), e comprovantes dos tres credores conflitantes. A tabela
 `evidencias/auditoria_nove_pares_2026_09_25.csv` especifica a conferencia
