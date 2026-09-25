@@ -1,5 +1,55 @@
 # Metodologia Geral - Modelo Gravitacional De Saude
 
+## 25/09: Coleta Histórica No TCE/SICOM
+
+**Consulta pública → ZIP preservado → CSV pagamento-fonte → CNPJ e objetos
+→ comparação de datas/valores/multiplicidades → decisão separada.**
+
+O caminho foi encontrado ao consultar o repositório
+[mg_city_expenditure_time_series](https://github.com/LucasLage/mg_city_expenditure_time_series).
+Ele oferece dados agregados e aponta o [TCE](https://dadosabertos.tce.mg.gov.br/);
+nenhum coletor de terceiros foi instalado. Na interface oficial, selecionar
+Jurisdicionado, Despesas, município e exercício, e baixar o botão `despesa`.
+Foram preservados seis ZIPs, identificados pelo nome interno e ano dos registros.
+A interface manteve resultados antigos em algumas trocas de filtro; uma cópia
+duplicada de São Francisco/2018 não foi contada. Não confiar só no seletor.
+
+| Caso | Evidência obtida | Decisão e limite |
+|---|---|---|
+| São Francisco–CISMARG/2019 | 55 linhas; R$ 188.969,82; datas/valores/multiplicidades iguais ao MIDES; 30 objetos citam CISMARG (R$ 59.226,60), demais 25 descrevem transporte/atendimento (R$ 129.743,22) | Sustenta vínculo financeiro; nome SOMETAL permanece conflitante. Não certifica beneficiário bancário |
+| Neves–CISMEP/2014 | Dois pagamentos de R$ 160,58; 29/10 e 20/11; objetos de monitoramento do prédio da Câmara; nome EMIVE | Rejeitar atribuição desses lançamentos ao CISMEP; y auditado ausente, sem converter o ano em zero |
+| Conselheiro Pena–CISVI/2019 | 14 pagamentos; R$ 11.468,66; datas/valores iguais ao MIDES; tributos/radiodifusão | Confirma decisão anterior; documento correto do favorecido ainda pendente |
+| Ipatinga–CONSAÚDE/2019 | 26.305 linhas de pagamento-fonte, 12 meses; nenhum CNPJ ou menção CONSA em nome/objeto | Ausência no arquivo confirmada; não explica causa nem certifica integralidade fora da remessa |
+| Piedade–CISMIRECAR/2019 | 5.883 linhas, 12 meses; nenhum CNPJ ou menção MIRECAR | Mesmo limite: não promover a zero documental independente |
+| Ipatinga–CONSAÚDE/2018 | Consulta Despesas do TCE sem arquivo disponível | R$ 137.077,88 de restos continuam sem confirmação externa |
+
+Os 130 registros filtrados incluem 59 de São Francisco/2018 (R$ 154.416,04),
+um controle histórico recuperado durante a navegação, sem retroagir a decisão
+de 2019. Duas menções a CISMARG com outros documentos em 2019 referem-se a
+diária e atendimento não contemplado pelo consórcio; não foram somadas ao par.
+Descrições com caracteres corrompidos na fonte foram preservadas, sem reconstrução
+inventada. Não foram exportados dados de pacientes dessas menções laterais.
+
+MIDES e SICOM podem compartilhar a origem municipal. Igualdade entre eles é
+reconciliação, não triangulação independente. A novidade são os objetos e
+identificadores contábeis. As bases e quatro produtos analíticos mantiveram seus
+hashes; a nova tabela de decisão deve acompanhar seu uso. A sensibilidade antiga
+sem nomes conflitantes continua conservadora e não foi reestimada nesta rodada.
+
+Outras buscas: 28 URLs da PCA Ipatinga/2019 catalogadas, sem PDF recuperado
+(erro de cadeia de certificado no Python; requisição Windows normal retornou
+manutenção do serviço). O PL 006/2019 de Piedade foi baixado, mas a página 1
+trata de CIMVA e não CISMIRECAR: não comprova o pagamento procurado. Pastas
+CONSAÚDE consultadas: serviços 2023–2026, rateio 2024–2025, demonstrativos
+somente diárias. Site CISMARG não resolveu DNS. O link Sigmix da Câmara de
+Piedade aponta `transparenciacamara`, sem evidência sobre despesas da prefeitura.
+Nenhum desses insucessos foi convertido em ausência de pagamento.
+
+Reprodução: `python 39_conferir_pacotes_sicom.py` e
+`python tests/25_validar_busca_historica.py`. Catálogo e coleta de PDFs no
+script 38; não confundir falha de download com documento lido. Solicitações
+documentais permanecem não enviadas e foram atualizadas com os achados.
+
 > Estado vigente: v1 revisada em 25/09/2026 para o nucleo financeiro e a oferta
 > clinica direta de dezembro. Comece pelo README e pela secao final
 > "Fechamento Da Base V1". As secoes anteriores preservam o historico;

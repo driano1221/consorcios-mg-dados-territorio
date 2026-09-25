@@ -1,5 +1,25 @@
 # Linha Do Tempo Dos Passos - Modelo Gravitacional De Saude
 
+## 25/09: Recuperar O Histórico Que O Portal Municipal Não Mostrou
+
+**Alerta de nome → download TCE/SICOM → descrição do pagamento → decisão.**
+
+Exemplo: São Francisco de Paula aparecia pagando R$ 188.969,82 a um credor
+chamado SOMETAL, com CNPJ do CISMARG. O portal municipal não mostrava 2019.
+O ZIP do TCE recuperou os 55 pagamentos: 30 objetos citam o consórcio e os
+demais descrevem saúde/transporte. O vínculo financeiro ganhou suporte;
+o nome cadastral ainda precisa de confirmação ou correção.
+
+Em Neves, ocorreu o contrário: dois pagamentos de R$ 160,58, associados ao
+CNPJ do CISMEP, descrevem monitoramento da Câmara. A decisão auditada rejeita
+essa atribuição. Não apagamos o registro original nem inventamos zero anual.
+Em Conselheiro Pena, o arquivo reforçou a conclusão anterior sobre tributos.
+
+Seis ZIPs foram guardados e testados. Ipatinga/Piedade de 2019 continuam sem
+pagamento localizado ao credor procurado; o motivo não está explicado.
+Restos de Ipatinga/2018 permanecem pendentes. A base e os modelos não foram
+reestimados: avançou a interpretação documentada dos registros.
+
 ## 25/09: Conferir O Portal E Explicar Melhor Os Modelos
 
 **Alertas anteriores → consultas municipais → valores e objetos →

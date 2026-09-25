@@ -1,0 +1,162 @@
+{
+  "status": "OK",
+  "pacotes_baixados": 6,
+  "linhas_prioritarias": 130,
+  "decisoes": 6,
+  "bases_e_estimativas_preservadas": true,
+  "fontes": [
+    {
+      "arquivo": "SICOM.2018.3131307.despesa.zip",
+      "status": "nao_baixado",
+      "url": "https://dadosabertos.tce.mg.gov.br/#/public/detalhar-categoria/jurisdicionado/menu/despesa"
+    },
+    {
+      "arquivo": "SICOM.2019.3131307.despesa.zip",
+      "status": "baixado",
+      "url": "https://dadosabertos.tce.mg.gov.br/#/public/detalhar-categoria/jurisdicionado/menu/despesa",
+      "sha256": "4b1a0c84ac9debb97916da1f1b357caa6cb58a40fbc21ffbfe0f78abaa7ee675",
+      "bytes": 4080120,
+      "verificado_utc": "2026-09-25T18:51:47.345698+00:00",
+      "origem": "Download pela interface pública TCE-MG; filtros município/ano; botão despesa",
+      "membro_pagamentos": "2019.3131307.despesa.pagamento.csv",
+      "limite": "SICOM pode compartilhar origem com MIDES; não é comprovação bancária independente."
+    },
+    {
+      "arquivo": "SICOM.2019.3150158.despesa.zip",
+      "status": "baixado",
+      "url": "https://dadosabertos.tce.mg.gov.br/#/public/detalhar-categoria/jurisdicionado/menu/despesa",
+      "sha256": "e32e3f34e622721437eaf16f9a6e906e2a5f46d670f19d16927f22c1f901f2ea",
+      "bytes": 879429,
+      "verificado_utc": "2026-09-25T18:51:47.465635+00:00",
+      "origem": "Download pela interface pública TCE-MG; filtros município/ano; botão despesa",
+      "membro_pagamentos": "2019.3150158.despesa.pagamento.csv",
+      "limite": "SICOM pode compartilhar origem com MIDES; não é comprovação bancária independente."
+    },
+    {
+      "arquivo": "SICOM.2019.3161205.despesa.zip",
+      "status": "baixado",
+      "url": "https://dadosabertos.tce.mg.gov.br/#/public/detalhar-categoria/jurisdicionado/menu/despesa",
+      "sha256": "cbf810cf85e34b3b8a448e177b8416ab9178715f452c4f673c3a8b5a0774ab55",
+      "bytes": 1023126,
+      "verificado_utc": "2026-09-25T18:51:47.610654+00:00",
+      "origem": "Download pela interface pública TCE-MG; filtros município/ano; botão despesa",
+      "membro_pagamentos": "2019.3161205.despesa.pagamento.csv",
+      "limite": "SICOM pode compartilhar origem com MIDES; não é comprovação bancária independente."
+    },
+    {
+      "arquivo": "SICOM.2014.3154606.despesa.zip",
+      "status": "baixado",
+      "url": "https://dadosabertos.tce.mg.gov.br/#/public/detalhar-categoria/jurisdicionado/menu/despesa",
+      "sha256": "a3eebe4162b48112a229f649e5902f082f43617f1828b409bc1caf3d528c32c7",
+      "bytes": 1889092,
+      "verificado_utc": "2026-09-25T18:51:47.817734+00:00",
+      "origem": "Download pela interface pública TCE-MG; filtros município/ano; botão despesa",
+      "membro_pagamentos": "2014.3154606.despesa.pagamento.csv",
+      "limite": "SICOM pode compartilhar origem com MIDES; não é comprovação bancária independente."
+    },
+    {
+      "arquivo": "SICOM.2019.3118403.despesa.zip",
+      "status": "baixado",
+      "url": "https://dadosabertos.tce.mg.gov.br/#/public/detalhar-categoria/jurisdicionado/menu/despesa",
+      "sha256": "9b3338060e0001d25d31115b8414c92f86d7ebb67b05d4b5a634972f14f5c280",
+      "bytes": 1083910,
+      "verificado_utc": "2026-09-25T18:51:47.965452+00:00",
+      "origem": "Download pela interface pública TCE-MG; filtros município/ano; botão despesa",
+      "membro_pagamentos": "2019.3118403.despesa.pagamento.csv",
+      "limite": "SICOM pode compartilhar origem com MIDES; não é comprovação bancária independente."
+    },
+    {
+      "arquivo": "SICOM.2018.3161205.despesa.zip",
+      "status": "baixado",
+      "url": "https://dadosabertos.tce.mg.gov.br/#/public/detalhar-categoria/jurisdicionado/menu/despesa",
+      "sha256": "12caea2905e998ee6865b6a940ca066765667dfe00139da13856824b883e94a9",
+      "bytes": 1008286,
+      "verificado_utc": "2026-09-25T18:51:48.118391+00:00",
+      "origem": "Download pela interface pública TCE-MG; filtros município/ano; botão despesa",
+      "membro_pagamentos": "2018.3161205.despesa.pagamento.csv",
+      "limite": "SICOM pode compartilhar origem com MIDES; não é comprovação bancária independente."
+    }
+  ],
+  "resumo": [
+    {
+      "ano": "2019",
+      "id_municipio": "3131307",
+      "municipio": "Ipatinga",
+      "cnpj": "00853908000148",
+      "linhas_arquivo": "26305",
+      "meses": "1,2,3,4,5,6,7,8,9,10,11,12",
+      "linhas_cnpj": "0",
+      "pago_bruto": "0",
+      "anulacoes": "0",
+      "mencoes_outro_cnpj": "0",
+      "comparacao_mides": "nao_comparado"
+    },
+    {
+      "ano": "2019",
+      "id_municipio": "3150158",
+      "municipio": "Piedade de Caratinga",
+      "cnpj": "00980259000146",
+      "linhas_arquivo": "5883",
+      "meses": "1,2,3,4,5,6,7,8,9,10,11,12",
+      "linhas_cnpj": "0",
+      "pago_bruto": "0",
+      "anulacoes": "0",
+      "mencoes_outro_cnpj": "0",
+      "comparacao_mides": "nao_comparado"
+    },
+    {
+      "ano": "2019",
+      "id_municipio": "3161205",
+      "municipio": "São Francisco de Paula",
+      "cnpj": "00079634000181",
+      "linhas_arquivo": "6516",
+      "meses": "1,2,3,4,5,6,7,8,9,10,11,12",
+      "linhas_cnpj": "55",
+      "pago_bruto": "188969.82",
+      "anulacoes": "0",
+      "mencoes_outro_cnpj": "2",
+      "comparacao_mides": "datas_valores_e_multiplicidades_iguais"
+    },
+    {
+      "ano": "2014",
+      "id_municipio": "3154606",
+      "municipio": "Ribeirão das Neves",
+      "cnpj": "05802877000110",
+      "linhas_arquivo": "14346",
+      "meses": "1,2,3,4,5,6,7,8,9,10,11,12",
+      "linhas_cnpj": "2",
+      "pago_bruto": "321.16",
+      "anulacoes": "0",
+      "mencoes_outro_cnpj": "0",
+      "comparacao_mides": "datas_valores_e_multiplicidades_iguais"
+    },
+    {
+      "ano": "2019",
+      "id_municipio": "3118403",
+      "municipio": "Conselheiro Pena",
+      "cnpj": "00639952000150",
+      "linhas_arquivo": "7243",
+      "meses": "1,2,3,4,5,6,7,8,9,10,11,12",
+      "linhas_cnpj": "14",
+      "pago_bruto": "11468.66",
+      "anulacoes": "0",
+      "mencoes_outro_cnpj": "0",
+      "comparacao_mides": "datas_valores_e_multiplicidades_iguais"
+    },
+    {
+      "ano": "2018",
+      "id_municipio": "3161205",
+      "municipio": "São Francisco de Paula",
+      "cnpj": "00079634000181",
+      "linhas_arquivo": "6779",
+      "meses": "1,2,3,4,5,6,7,8,9,10,11,12",
+      "linhas_cnpj": "59",
+      "pago_bruto": "154416.04",
+      "anulacoes": "0",
+      "mencoes_outro_cnpj": "3",
+      "comparacao_mides": "nao_comparado"
+    }
+  ],
+  "decisoes_sha256": "fddf7b312cc006702a805db6d2d0075ae4b01f6c1425d4ce1c51a200aa9067f6",
+  "limite": "SICOM não é comprovante bancário independente; zeros anuais sem causa encerrada; sem nova validação visual do HTML."
+}

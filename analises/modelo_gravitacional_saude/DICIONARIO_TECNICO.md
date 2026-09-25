@@ -1,5 +1,24 @@
 # Dicionario Tecnico - Modelo Gravitacional De Saude
 
+## Coleta Histórica Dirigida De 25/09
+
+| Arquivo | Uso |
+|---|---|
+| `38_coletar_documentos_historicos.py` | Baixa PDFs das URLs catalogadas, preserva originais, texto por página e SHA256; registra falhas |
+| `evidencias/fontes_busca_historica_2026_09_25.csv` | 29 URLs observadas: 28 PCA Ipatinga/2019 e PL 006/2019 de Piedade; descoberta não equivale a leitura |
+| `39_conferir_pacotes_sicom.py` | Copia somente os ZIPs esperados de Downloads para o acervo; confere ano, integridade e datas/valores com MIDES; não altera bases |
+| `evidencias/decisoes_sicom_2026_09_25.csv` | Seis decisões por município/consórcio/ano; y original separado de y auditado |
+| `outputs/auditoria_alternativas/busca_historica_2026_09_25/sicom/` | Seis ZIPs oficiais locais, incluindo controle São Francisco/2018; não publicados no Git |
+| `outputs/auditoria_alternativas/busca_historica_2026_09_25/pagamentos_sicom_prioritarios.csv` | 130 linhas filtradas, valores em reais, uma linha por pagamento-fonte; não deduplicar só por data/valor |
+| `resumo_sicom.csv`, `manifesto_sicom.json` na mesma pasta | Cobertura mensal, contagem e soma por CNPJ; origem, hash e membro interno do ZIP |
+| `tests/25_validar_busca_historica.py`, `checks/25_busca_historica.json` | Conferência das fontes, decisões e invariantes; resultado e hashes publicáveis |
+
+Na coleta UI, conferir também o conteúdo do ZIP: mudanças de filtro podem
+manter a resposta anterior. O script usa bibliotecas padrão; script 38 usa
+requests e PyMuPDF já instalados. `seq_rsp` e tipo de pagamento foram preservados;
+não inferir restos apenas pelo ano do empenho. Ausência no arquivo não é prova
+de ausência em todas as contas. Descrições da fonte não são atestado bancário.
+
 > Entrega vigente: `outputs/base_v1/`, revisada em 25/09/2026. A secao final
 > "Entrega V1" localiza as duas bases, o dicionario de colunas e a reproducao.
 > As secoes datadas anteriores documentam as fontes e camadas preservadas.

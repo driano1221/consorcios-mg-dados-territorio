@@ -1,6 +1,17 @@
 # Modelo Gravitacional De Saude - MG
 
-**Atualização mais recente de 25/09:** a [aba Modelo](outputs/visuais_v1/index.html#modelo)
+**Coleta histórica posterior de 25/09:** seis ZIPs do TCE/SICOM recuperados,
+com ano, município e hashes conferidos. São Francisco/2019: 55 pagamentos,
+R$ 188.969,82; objetos sustentam vínculo financeiro com CISMARG, apesar do
+nome SOMETAL. Neves/2014: dois objetos de monitoramento da Câmara rejeitam
+a atribuição de R$ 321,16 ao CISMEP. Não foram convertidos em zero anual.
+Veja [seis decisões e limites](evidencias/decisoes_sicom_2026_09_25.csv).
+Ipatinga e Piedade/2019 continuam sem credor no arquivo anual; causa aberta.
+Restos de Ipatinga/2018 ainda sem confirmação externa. Bases e estimativas
+preservadas; texto da aba Modelo atualizado. Reprodução: script 39 e teste 25.
+As solicitações anteriores foram ajustadas ao que já foi encontrado.
+
+**Rodada visual anterior de 25/09:** a [aba Modelo](outputs/visuais_v1/index.html#modelo)
 passou a organizar amostra, cenários, validação e exemplos. Há comparação
 entre validação municipal e espacial, três gráficos novos e a conta do
 Igarapé–CISMEP. Bases e estimativas não foram alteradas.

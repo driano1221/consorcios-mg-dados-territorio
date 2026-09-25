@@ -7,7 +7,21 @@ deve criar uma segunda numeracao de etapas.
 
 ## Leitura Do Estado
 
-**Última rodada de 25/09: objetos concluídos e diferença contábil explicada.**
+**Continuação posterior: arquivos históricos recuperados no TCE/SICOM.**
+Seis ZIPs conferidos; 130 linhas priorizadas, incluindo controle de
+São Francisco/2018. Em São Francisco/2019, 55 lançamentos e R$ 188.969,82
+conferem com MIDES e descrevem consórcio/saúde: vínculo financeiro sustentado,
+nome cadastral ainda conflitante. Neves/2014: dois objetos de monitoramento
+da Câmara rejeitam atribuição ao CISMEP. Conselheiro Pena mantém rejeição.
+As decisões ficam separadas em `evidencias/decisoes_sicom_2026_09_25.csv`;
+não houve alteração dos dados ou reestimativa. O arquivo SICOM não constitui
+comprovante bancário independente. Permanecem: razão de restos Ipatinga/2018,
+causa dos zeros Ipatinga e Piedade/2019 e retificação dos cadastros conflitantes.
+As cinco solicitações preparadas foram reduzidas ao conteúdo ainda necessário.
+Não repetir a busca dos objetos agora recuperados. QA completo do HTML segue
+pendente pelo bloqueio já registrado; texto e estrutura passam por testes.
+
+**Rodada anterior de 25/09: objetos concluídos e diferença contábil explicada.**
 Conselheiro Pena: lidos os 14 objetos de 2019, R$ 11.468,66 em DCTF, ITR,
 radiodifusão e acréscimos. Atribuição consorcial rejeitada na decisão derivada
 do script 37; y auditado fica ausente, nunca zero inferido. Original e ajustes
@@ -26,7 +40,7 @@ Gráficos examinados como imagens e conteúdo conferido por testes. A política
 do navegador bloqueou a abertura do HTML local: a nova navegação e o layout
 completo ainda precisam de conferência humana. O QA anterior é histórico.
 
-**Próximo marco vigente:** obter os documentos históricos especificados em
+**Marco definido antes da coleta SICOM:** obter os documentos históricos especificados em
 `evidencias/solicitacoes_financeiras_pendentes_2026_09_25.csv`. São cinco
 pedidos preparados e não enviados: Neves/2014, São Francisco/2019,
 Ipatinga/2018–2019, Piedade/2019 e identificação correta de Conselheiro Pena.
