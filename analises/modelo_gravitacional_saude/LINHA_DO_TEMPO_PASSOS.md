@@ -784,3 +784,35 @@ de 45.209 pares e 771 positivos a 45.208 e 770. O Brier municipal,
 comparado **nas mesmas 45.208 linhas**, passa de 0,008885392 a 0,008885596.
 O resultado agregado quase não muda. A base e o piloto originais continuam
 disponíveis; esta é uma sensibilidade documental, não o modelo final.
+
+## 25/09: Da Grade Anual Aos Três Pilotos Longitudinais
+
+**MIDES 2014–2021 -> decisões de credor -> clínica/horas/tempo em `t−1`
+-> candidatos estaduais, até 180 min ou cinco mais próximos -> primeiro
+pagamento, interrupção e valor -> validação municipal, espacial e 2021.**
+O ano de 2014 serve de histórico; ninguém é classificado como nova adesão
+jurídica por aparecer pagando nele. Uma relação pode pagar a mais de um
+consórcio e cada par mantém sua história própria.
+
+O recorte com clínica direta no ano anterior tem 260.165 pares-ano de
+2015–2021. Na versão auditada, 4.660 relações pagas representam 49,3%
+das 9.458 pagas no núcleo, mas 83,8% do valor. Há 173 primeiros pagamentos
+observados, 208 interrupções entre relações previamente pagas e 4.660
+valores positivos analisáveis. Até 180 minutos perderia 17 das 173
+primeiras relações; cinco destinos mais próximos perderiam 16. Por isso
+nenhum corte foi adotado como verdade institucional.
+
+Exemplo: Ubá pagou R$ 28.000 ao CISMEP em 2021, embora o menor tempo até
+clínica cadastrada no ano anterior fosse 250,8 minutos. Uma regra de duas
+ou três horas o exclui. Já São João del-Rei não registrou primeiro pagamento
+ao CISVER em 2021, apesar de clínica no próprio município; o modelo com
+tempo zero previu 93,2%. O primeiro caso mostra que pagamentos podem cruzar
+distâncias longas; o segundo mostra que proximidade não comprova vínculo.
+Substituições hipotéticas só dos tempos zero reduziram a previsão excessiva,
+mas não forneceram tempo intramunicipal medido nem calibraram o modelo de
+forma estável nos blocos espaciais.
+
+Os três blocos são pilotos financeiros. A versão auditada deixa Neves/2014
+e Conselheiro Pena/2019 indeterminados; São Francisco/2019 segue positivo.
+Ainda não há conjunto de alternativas com elegibilidade jurídica confirmada,
+nem modelo final de valor deflacionado ou sobrevivência institucional.

@@ -3153,3 +3153,127 @@ e `python tests/26_validar_piloto_auditado_sicom.py`. O teste confere hashes,
 linhas retidas, desfechos, mesmos folds, scores dos 40 treinos, previsões e
 métricas por cálculo independente. O exercício continua exploratório e
 limitado a 2019; não testa entrada, intensidade financeira nem persistência.
+
+## Pilotos Longitudinais Com Oferta Do Ano Anterior
+
+Após a sensibilidade de 2019, os scripts 41/42 usam a v1 financeira do
+núcleo de saúde (73 consórcios) e a v1 de clínicas fixas diretas. A unidade
+é município × consórcio × ano. As respostas são de 2015–2021; 2014 informa
+o passado observado e a oferta, **não a data de entrada**. População IBGE,
+horas SUS cadastradas e menor tempo rodoviário são de `t−1`. O tempo vai
+da sede municipal de origem ao município da clínica mais próxima; zero
+significa mesmo município, não deslocamento físico nulo. O modelo anual usa
+`log(1+tempo_minimo)` e `log(horas_clinicas)`, diferente da impedância em km
+ponderada pelas horas no piloto transversal de 2019. Eles não devem ser
+comparados como se tivessem a mesma especificação.
+
+Cada risco é definido sem olhar o pagamento futuro: **primeiro pagamento
+observado** exige nenhum positivo conhecido antes de `t`; **interrupção**
+exige positivo em `t−1` e registra ausência de positivo em `t`; **valor**
+usa somente pagamentos positivos em `t`, em `log(reais nominais)`. Um retorno
+após ano zero não é nova primeira entrada. No recorte direto, a fórmula de
+referência usa `log(população_t−1)` e tendência linear do ano; a fórmula
+gravitacional acrescenta `log(horas_t−1)` e `log(1+tempo_t−1)`. Para
+interrupção há ainda a versão que acrescenta `log(1+valor_pago_t−1)`.
+É regressão binária por par nos dois primeiros blocos e regressão do log do
+valor **condicional a pagar** no terceiro. Não é o logit multinomial de
+alternativas exclusivas, nem um modelo de filiação jurídica ou causalidade.
+
+### O Que Entra E O Que Fica De Fora
+
+No MIDES da v1 financeira há 9.458 relações pagas e R$ 3.005.764.268,30
+nominais em 2015–2021. Quando se exige clínica fixa direta, horas positivas
+e tempo **em `t−1`**, restam 260.165 pares-ano candidatos de 57 consórcios
+em algum ano. A versão auditada contém 4.660 relações pagas (49,3% das
+9.458 originais) e R$ 2.517.984.988,48 (83,8% do valor original). Essa
+cobertura financeira alta não significa representar as 4.798 relações
+restantes, que incluem oferta indireta/móvel, ausência de capacidade no ano
+anterior e o par indeterminado da auditoria. Nenhuma ganhou clínica fictícia.
+Dos 436
+primeiros positivos da v1 após 2014, 431 têm ano financeiro anterior
+observado e **173** satisfazem também a oferta direta em `t−1`.
+
+| Alternativas clínicas em `t−1`, versão auditada | Pares candidatos | Relações pagas | Primeiros pagamentos | Interrupções entre pares sob risco | Origens-ano sem candidato |
+|---|---:|---:|---:|---:|---:|
+| Todos em MG | 260.165 | 4.660 | 173 | 208 | 0 |
+| Até 180 minutos | 32.336 | 4.519 | 156 | 169 | 354 |
+| Cinco menores tempos, com empates | 29.864 | 4.592 | 157 | 184 | 0 |
+
+As regras territoriais usam somente tempos do ano anterior. Nenhum pagamento
+de `t` é reincluído depois de aplicar o filtro. Assim, 180 minutos deixam
+de fora 17 primeiros pagamentos que de fato ocorreram no recorte estadual;
+cinco próximos deixam de fora 16. Os filtros são **sensibilidades
+geográficas**, não prova de que os restantes eram alternativas legalmente
+disponíveis. Tampouco se pode escolher o filtro por Brier ou AUC: cada um
+muda a prevalência e o conjunto de casos avaliados.
+
+A versão **original** mantém todos os positivos MIDES. Na **auditada**,
+Neves–CISMEP/2014 e Conselheiro Pena–CISVI/2019 são indeterminados, nunca
+zeros imputados; São Francisco–CISMARG/2019 continua positivo. Na versão
+**estrita**, outros conflitos nome/CNPJ sem comprovação anual também ficam
+indeterminados, mas São Francisco/2019 permanece sustentado pelos objetos.
+Os primeiros pagamentos elegíveis continuam 173 nas três versões: os pares
+afetados já tinham positivo observado ou histórico incerto. Para
+interrupção, o risco estadual muda de 4.631 pares originais para 4.628
+auditados e 4.617 estritos; os 208 eventos observados permanecem. Para o
+valor, há 4.661, 4.660 e 4.649 pagamentos respectivamente. Diferenças de
+erro entre essas versões não são ganhos se as amostras mudaram.
+
+### Verificação Fora Do Treino E Resultado
+
+Foram fixados cinco grupos de municípios, cinco blocos espaciais sem zona
+de separação e um teste temporal: treinar em 2015–2020, prever 2021. As
+referências global e por consórcio são calculadas apenas no treino. Há 22
+especificações, incluindo sensibilidades posteriores explicitamente
+identificadas. A tabela seguinte mostra o **recorte estadual auditado em
+2021**, comparando cada modelo somente dentro do seu universo:
+
+| Pergunta em 2021 | Amostra/eventos | Resultado principal | Leitura |
+|---|---:|---|---|
+| Primeiro pagamento | 44.301 pares / 30 eventos | Precisão média 0,0154 com gravidade, contra 0,0035 da frequência por consórcio; Brier 0,000712 contra 0,000677 da prevalência global | Ordena melhor, mas a probabilidade é excessivamente confiante em poucos pares |
+| Interrupção observada | 766 pares previamente pagos / 29 interrupções | Acrescentar valor de `t−1` leva precisão média de 0,0877 a 0,2959 e Brier de 0,03639 a 0,03181 | Valor anterior tem informação preditiva; não prova causa da continuidade |
+| Valor entre pagantes | 786 pagamentos | Raiz do erro quadrático médio em log cai de 1,084 (população/ano) para 1,007 (com horas/tempo) | Ganho moderado, somente entre pagamentos positivos e em reais nominais |
+
+Nos blocos espaciais, a precisão média da entrada gravitacional é 0,0210,
+mas Brier 0,000725 continua pior que a referência global 0,000678. A
+interrupção com valor anterior tem precisão média 0,4330 e Brier 0,03235;
+o erro em log do valor é 1,158 contra 1,256 da referência população/ano.
+Isso não valida transferência para outros estados ou períodos. Os 30/29
+eventos de 2021 são poucos, e as métricas não substituem exame de casos.
+
+Dois exemplos de 2021 explicam a calibração da entrada: São João del-Rei–
+CISVER e Uberlândia–AMVAP Saúde tinham clínica cadastrada no próprio
+município em 2020 e nenhum primeiro pagamento observado em 2021; o modelo
+com zero minuto lhes atribuiu 93,2% e 88,6%. Em contraste, Ubá pagou
+R$ 28.000 ao CISMEP, embora o menor tempo cadastrado em 2020 fosse
+250,8 minutos; a probabilidade estimada foi 0,0425%. Proximidade/capacidade
+não substituem vínculos institucionais, e um destino clínico cadastrado
+não prova onde pacientes foram atendidos. Os dois falsos positivos de
+tempo zero respondem pela maior parte da diferença de Brier frente à
+referência global em 2021.
+
+Após esse diagnóstico, testaram-se **somente nos tempos iguais a zero**
+substituições hipotéticas de 5, 15 e 30 minutos. O Brier temporal da
+entrada foi de 0,000712 (zero original) para 0,000694, 0,000684 e
+0,000682. Nos blocos espaciais, a melhora não foi monotônica: piso de
+30 minutos deu Brier 0,000726, ainda acima do 0,000678 global. Esses
+tempos não foram medidos; a análise foi posterior aos erros e não escolhe
+um valor definitivo. O teste de 2021 deixa de ser amostra intocada para
+essa escolha. O limite de viagem intramunicipal permanece substantivo.
+
+O piloto não deflaciona os pagamentos, não cobre toda a oferta assistencial,
+não verifica filiação ou disponibilidade jurídica anual e não resolve
+mudanças de sede. A tendência linear do ano é uma aproximação para prever
+2021, não substitui índice de preços. A entrada observada depois de 2014
+continua censurada à esquerda quanto à adesão jurídica anterior; uma
+interrupção significa **zero pagamento positivo no MIDES**, não saída
+formal do consórcio. O bloco de valor é condicional a pagar e não é ainda
+PPML/hurdle final. Nenhum resultado deve ir ao dashboard como modelo final.
+
+Reproduzir, nessa ordem, na pasta do modelo:
+`python 41_preparar_riscos_longitudinais.py`,
+`python 42_estimar_blocos_longitudinais.py`,
+`python tests/27_validar_longitudinal_exploratorio.py`. Os produtos locais
+estão em `outputs/longitudinal_exploratorio/`; o teste reconstrói chaves,
+recortes, covariáveis de `t−1`, decisões auditadas, scores dos 110 treinos
+municipais e 110 espaciais, 22 testes temporais e todas as métricas.

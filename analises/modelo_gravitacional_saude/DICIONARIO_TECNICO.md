@@ -1143,3 +1143,38 @@ Produtos locais em `outputs/auditoria_sicom_modelo_2019/`:
 O passo longitudinal ainda precisa aplicar a decisão Neves/2014. Casos sem
 documentos adicionais seguem sinalizados; esta saída é sensibilidade, não
 uma nova base financeira definitiva.
+
+## Riscos E Modelos Longitudinais Exploratórios
+
+Executar na pasta do modelo: `python 41_preparar_riscos_longitudinais.py`,
+`python 42_estimar_blocos_longitudinais.py` e
+`python tests/27_validar_longitudinal_exploratorio.py`. A entrada financeira
+é `outputs/base_v1/base_financeira_v1.csv`; clínica, horas e tempo anuais
+vêm de `outputs/base_v1/base_gravitacional_v1.csv`. As decisões SICOM e
+os grupos municipais/espaciais do piloto de 2019 completam as fontes;
+`fontes.csv` registra hashes. Nenhum desses scripts altera a v1.
+
+Produtos locais em `outputs/longitudinal_exploratorio/`:
+
+| Arquivo | Unidade e leitura |
+|---|---|
+| `pares_risco.csv.gz` | 260.165 município–consórcio–ano de 2015–2021 com clínica, horas e tempo disponíveis em `t−1`; pagamentos e riscos originais, auditados e estritos; flags estadual/180 min/cinco mais próximos |
+| `cobertura_alternativas.csv` | 3 versões × 3 regras × total/sete anos: candidatos, origens sem candidato, pagamentos, primeiros, interrupções e valor nominal |
+| `resumo_preparacao.json`, `fontes.csv` | Escopo e SHA256 das quatro entradas |
+| `especificacoes.csv`, `amostras_modelos.csv` | 22 versões identificadas por regra, auditoria, pergunta, fórmula e fase inicial/posterior; denominadores e eventos |
+| `coeficientes_modelos.csv` | Coeficientes da amostra inteira, 110 treinos municipais, 110 espaciais e 22 treinos anteriores a 2021; sem erro-padrão causal |
+| `metricas_modelos.csv` | Brier/logloss/precisão média/AUC para eventos; raiz do erro quadrático médio e erro absoluto médio em log para valores; três referências por validação |
+| `previsoes_longitudinais.csv.gz` | Previsões por par/ano fora do treino municipal e espacial, além de 2021; probabilidades do modelo e referências global/por consórcio |
+| `fonte_modelos.json` | Hash da tabela de risco, fórmulas efetivas e divisões de validação |
+
+`risco_primeiro_*` exige ausência de pagamentos e de estados indeterminados
+antes do ano. `risco_continuidade_*` exige pagamento positivo no ano anterior;
+a variável resposta do modelo é **interrupção**, isto é, pagamento zero no
+ano atual. `risco_valor_*` seleciona valor positivo atual, mas a seleção
+de candidato/atributos veio do ano anterior. Na versão auditada, Neves/2014
+e Conselheiro Pena/2019 são indeterminados; na estrita, também os demais
+conflitos sem confirmação anual, com São Francisco/2019 preservado.
+
+`checks/27_longitudinal_exploratorio.json` resume a conferência independente.
+Os CSV/GZ grandes são derivados locais regeneráveis; a metodologia registra
+os denominadores, resultados e limites necessários à revisão no GitHub.

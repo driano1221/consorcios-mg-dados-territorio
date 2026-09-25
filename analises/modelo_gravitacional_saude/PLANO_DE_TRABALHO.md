@@ -7,6 +7,25 @@ deve criar uma segunda numeracao de etapas.
 
 ## Leitura Do Estado
 
+**Rodada longitudinal exploratória de 25/09 concluída, sem novos documentos.**
+Scripts 41/42 e teste 27 preparam covariáveis em `t−1`, três conjuntos
+geográficos de candidatos e três perguntas separadas: primeiro pagamento
+observado, interrupção após pagamento e valor positivo. Foram estimadas 22
+especificações (iniciais e diagnósticos posteriores), com 110 treinos por
+municípios, 110 por blocos espaciais e 22 previsões de 2021 a partir dos
+anos anteriores. Todas passaram na conferência independente. O recorte
+estadual auditado tem 260.165 pares-ano candidatos em 2015–2021; 173
+primeiros pagamentos, 208 interrupções entre 4.628 pares sob risco e 4.660
+pagamentos positivos para o bloco de valor. Esses 4.660 são 49,3% das
+relações pagas do núcleo no período e 83,8% do valor. Logo, os modelos
+não descrevem automaticamente redes móveis, indiretas ou toda a v1.
+Tempo e horas ajudam a ordenar entradas, mas não calibram bem suas
+probabilidades; continuidade ganha com valor pago anterior. Cortes de
+180 minutos/cinco mais próximos excluem 17/16 entradas observadas.
+O passo 8 permanece **parcial**: pilotos longitudinais não fecham a regra
+institucional das alternativas, a capacidade fora das clínicas, preços
+nominais nem modelos finais. O passo 9 continua aberto; passo 10 não mudou.
+
 **Continuação de 25/09 sem depender de novos documentos.** Adriano optou
 por seguir com as evidências disponíveis. O script 40 reestima os quatro
 recortes principais de 2019 numa sensibilidade separada: mantém São Francisco
@@ -178,7 +197,7 @@ piloto nao encerram o passo 9. Aba local entregue; deploy do passo 10 pendente.
 - [x] **5. Construir a camada-base de tempo rodoviario**
 - [x] **6. Montar o painel analitico anual e um recorte candidato**
 - [x] **7. Executar a EDA e fechar a base v1 para o recorte documentado**
-- [ ] **8. Estimar os tres blocos — pilotos transversais de participacoes e vinculo financeiro concluidos; blocos longitudinais pendentes**
+- [ ] **8. Estimar os tres blocos — pilotos transversais e longitudinais exploratorios concluidos; especificacao final pendente**
 - [ ] **9. Testar robustez**
 - [ ] **10. Integrar resultados validados ao dashboard**
 
@@ -427,13 +446,17 @@ nova adesao juridica. Metodo, perdas, resultados e validacao na metodologia.
   melhora do modelo (script 32); validade institucional permanece limitada;
 - [x] reestimar quatro recortes de 2019 com decisão SICOM dirigida, preservando
   originais e comparando as mesmas linhas (script 40; teste 26);
+- [x] preparar riscos em `t−1` e estimar pilotos exploratórios de primeiro
+  pagamento, interrupção e valor positivo, com versões original/auditada/
+  estrita, três conjuntos geográficos e validações municipal, espacial e
+  temporal (scripts 41/42; teste 27);
 - [ ] validar elegibilidade institucional e vigencia das sedes relevantes;
   recuperar sede nao recupera automaticamente capacidade;
 - [ ] distinguir presenca anual do vinculo de evento de primeiro pagamento;
   a extensao de novas adesoes mencionada na reuniao nao foi executada.
-- [ ] entrada: logit ou risco discreto;
-- [ ] intensidade financeira: PPML ou modelo hurdle;
-- [ ] interrupcao/permanencia: sobrevivencia em tempo discreto.
+- [ ] versao final da entrada: logit ou risco discreto, apos definir alternativas;
+- [ ] versao final da intensidade: PPML ou modelo hurdle com tratamento de precos;
+- [ ] versao final da interrupcao/permanencia: sobrevivencia em tempo discreto.
 
 Os tres modelos respondem perguntas diferentes e nao devem ser fundidos em uma
 unica regressao.
@@ -457,7 +480,64 @@ unica regressao.
 
 ## Proximo Marco
 
-**Vigente após a sensibilidade SICOM:** avançar na elegibilidade das
+**Vigente após scripts 41/42:** não promover um conjunto geográfico ou piso
+intramunicipal a regra final por desempenho. Apresentar o recorte direto,
+as perdas e a calibração imperfeita; depois estudar elegibilidade institucional
+e capacidade das modalidades móveis/indiretas como frente separada, se houver
+evidência disponível. Para valor nominal, definir deflator ou limitar a
+interpretação temporal; para interrupção, distinguir ausência observada de
+saída jurídica. Pedidos externos continuam em espera. O dashboard aguarda
+resultados finalizados e QA visual.
+
+### Protocolo Fixo Para A Rodada Longitudinal Exploratória
+
+Este protocolo foi definido após conferir viabilidade e antes de estimar os
+novos modelos. A unidade continua município × consórcio × ano, 2015–2021;
+2014 fornece histórico e atributos anteriores, mas nunca uma entrada datada.
+Fonte financeira: v1 de 73 consórcios do núcleo de saúde. A amostra com
+atributos gravitacionais exige clínica fixa direta, horas SUS positivas e
+tempo no **ano anterior**. Por isso não representa redes móveis/indiretas.
+
+1. **Alternativas predeterminadas em `t−1`:** todos os consórcios com esses
+   atributos em MG; até 180 minutos; cinco menores tempos por município
+   (incluindo empates). Os filtros não usam o pagamento de `t` nem reincluem
+   positivos após observar a resposta. Relatar pagamentos e origens perdidos
+   antes de qualquer comparação; não escolher regra por melhor métrica.
+2. **Três perguntas separadas:** primeiro pagamento observado entre pares sem
+   positivo prévio; continuidade entre pares pagos em `t−1`; log do valor
+   nominal entre pagamentos positivos em `t`. Retornos não são primeiras
+   entradas. Capacidade, tempo e população vêm de `t−1` em todos os blocos.
+3. **Versões:** MIDES original versus auditada. Na auditada, Neves–CISMEP/2014
+   e Conselheiro Pena–CISVI/2019 são indeterminados, nunca zeros inventados;
+   São Francisco–CISMARG/2019 permanece positivo. Um histórico anterior
+   indeterminado exclui o par do risco de primeira entrada até haver positivo
+   confirmado. Descrever a diferença de amostra antes das métricas.
+4. **Comparações predefinidas:** referência de população e tendência anual
+   versus essas variáveis mais horas e tempo. Para continuidade, testar ainda
+   o valor pago em `t−1`. Validar por municípios não vistos e, em separado,
+   treinar em 2015–2020 para prever 2021. Comparar cada modelo com uma
+   prevalência/média aprendida apenas no treino.
+5. **Interpretação:** Brier/logloss para eventos e erro em log reais para
+   valor; contar eventos e perdas por versão, ano e alternativa. Métricas de
+   filtros diferentes têm denominadores diferentes e não demonstram qual
+   conjunto é institucionalmente correto. Valor é nominal e condicionado a
+   pagar; nenhum coeficiente será chamado de efeito causal ou adesão legal.
+
+Após a primeira rodada, a inspeção dos 17 alertas já existentes motivou
+uma **terceira sensibilidade, posterior ao protocolo inicial**: deixar
+indeterminados os 16 pares-ano com nome/documento conflitante ainda sem
+comprovação anual, preservando São Francisco–CISMARG/2019, já sustentado
+pelos objetos. Ela não é uma nova verdade nem será escolhida pela métrica.
+O diagnóstico posterior também compara substituições arbitrárias de 5/15/30 min
+somente para viagens intramunicipais registradas como zero pela matriz, apenas no
+bloco de primeiro pagamento. O exercício identifica a sensibilidade à
+convenção de tempo zero; não observa o tempo real dentro do município e
+não seleciona um piso pelo desempenho de 2021.
+Como robustez adicional, repetir a validação dos mesmos modelos nos cinco
+blocos espaciais já fixados pelo piloto de 2019. Os blocos não têm zona de
+separação; isso mede transferência entre grupos geográficos, não outro ano.
+
+**Marco histórico após a sensibilidade SICOM:** avançar na elegibilidade das
 alternativas e nos blocos longitudinais de vínculo financeiro. Ao usar 2014,
 aplicar a decisão de Neves–CISMEP como desfecho indeterminado, não zero.
 Manter os casos sem prova documental em análise de sensibilidade, sem esperar

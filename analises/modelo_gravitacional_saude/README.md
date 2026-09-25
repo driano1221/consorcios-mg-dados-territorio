@@ -1,5 +1,19 @@
 # Modelo Gravitacional De Saude - MG
 
+**Pilotos longitudinais exploratórios de 25/09:** a base anual agora tem
+três exercícios distintos: primeiro pagamento observado, interrupção e
+valor positivo em 2015–2021. Clínica, horas SUS, tempo e população vêm do
+ano anterior. A versão auditada do recorte direto contém 173 primeiros
+pagamentos, 208 interrupções entre pares sob risco e 4.660 valores
+positivos. Variações estadual/180 minutos/cinco mais próximos e
+original/auditada/estrita medem perdas e incerteza, sem definir filiação
+legal. Há validação por municípios, blocos espaciais e previsão de 2021;
+probabilidades de entrada ainda têm problemas de calibração. Comece pela
+seção final de [METODOLOGIA_GERAL.md](METODOLOGIA_GERAL.md). Reprodução:
+`python 41_preparar_riscos_longitudinais.py`,
+`python 42_estimar_blocos_longitudinais.py`,
+`python tests/27_validar_longitudinal_exploratorio.py`.
+
 **Sensibilidade auditada de 2019 (25/09):** os quatro recortes principais
 foram reestimados sem depender de documentos adicionais. A versão separada
 mantém São Francisco de Paula–CISMARG e retira Conselheiro Pena–CISVI,
