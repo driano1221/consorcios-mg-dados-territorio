@@ -7,6 +7,21 @@ deve criar uma segunda numeracao de etapas.
 
 ## Leitura Do Estado
 
+**Continuação de 25/09 sem depender de novos documentos.** Adriano optou
+por seguir com as evidências disponíveis. O script 40 reestima os quatro
+recortes principais de 2019 numa sensibilidade separada: mantém São Francisco
+de Paula–CISMARG (objetos SICOM sustentam o vínculo), retira apenas
+Conselheiro Pena–CISVI (objetos contradizem a atribuição) e não transforma
+essa linha em zero. Os 53 consórcios ficam com 45.208 pares e 770 positivos;
+os 62, com 52.885 e 1.298. Comparação do original e auditado usa as mesmas
+linhas e folds municipais/espaciais; métricas agregadas mudam pouco. Base v1,
+piloto original, regra histórica `sem_conflito_credor` e interface não foram
+substituídos. Neves/2014 permanece decisão separada para a etapa anual.
+O próximo trabalho é definir e testar a elegibilidade das alternativas e
+os blocos longitudinais do passo 8, com casos sem comprovação em
+sensibilidade explícita. A obtenção dos documentos externos fica em espera,
+por escolha de Adriano, sem bloquear esse trabalho.
+
 **Continuação posterior: arquivos históricos recuperados no TCE/SICOM.**
 Seis ZIPs conferidos; 130 linhas priorizadas, incluindo controle de
 São Francisco/2018. Em São Francisco/2019, 55 lançamentos e R$ 188.969,82
@@ -410,6 +425,8 @@ nova adesao juridica. Metodo, perdas, resultados e validacao na metodologia.
   impedancia, zeros/agregacao, vigencia das sedes e modalidades de capacidade;
 - [x] comparar amostra comum e ampliada sem atribuir ganho de cobertura a
   melhora do modelo (script 32); validade institucional permanece limitada;
+- [x] reestimar quatro recortes de 2019 com decisão SICOM dirigida, preservando
+  originais e comparando as mesmas linhas (script 40; teste 26);
 - [ ] validar elegibilidade institucional e vigencia das sedes relevantes;
   recuperar sede nao recupera automaticamente capacidade;
 - [ ] distinguir presenca anual do vinculo de evento de primeiro pagamento;
@@ -440,7 +457,14 @@ unica regressao.
 
 ## Proximo Marco
 
-**Vigente apos o script 32:** levar os resultados binarios e suas limitacoes
+**Vigente após a sensibilidade SICOM:** avançar na elegibilidade das
+alternativas e nos blocos longitudinais de vínculo financeiro. Ao usar 2014,
+aplicar a decisão de Neves–CISMEP como desfecho indeterminado, não zero.
+Manter os casos sem prova documental em análise de sensibilidade, sem esperar
+novos comprovantes para prosseguir. A v1 e os modelos de 2019 permanecem
+exploratórios; publicação no dashboard vem somente após validação.
+
+**Marco histórico apos o script 32:** levar os resultados binarios e suas limitacoes
 para a aba do modelo, distinguindo-os do piloto de participacoes, e corrigir
 a comunicacao da cobertura. Antes de promover a modelo final: aprofundar
 elegibilidade institucional, calibracao intramunicipal e capacidade por

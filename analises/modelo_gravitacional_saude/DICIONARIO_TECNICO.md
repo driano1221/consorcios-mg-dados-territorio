@@ -1117,3 +1117,29 @@ Arquivos tecnicos alterados nesta entrega: `09_temporalizar_cnes_historico_saude
 `DICIONARIO_TECNICO.md` e `LINHA_DO_TEMPO_PASSOS.md`. O script 32 foi
 reexecutado, sem alterar seu codigo; resultados antigos preservados.
 No vault: `PAINEL_IPEA.md`, `MEMORIA_PROJETO.md` e `diario/2026-09-24.md`.
+
+## Piloto Auditado Pelo SICOM, Sem Alterar A V1
+
+Execute `Rscript 40_reestimar_piloto_auditado_sicom.R` e
+`python tests/26_validar_piloto_auditado_sicom.py` da pasta do modelo.
+Entrada documental: `evidencias/decisoes_sicom_2026_09_25.csv`. A chave
+do par é `id_municipio` + raiz de oito dígitos do CNPJ; somente as decisões
+de 2019 entram no piloto transversal. O script confere ano, desfecho e
+valor contra a grade de candidatos antes de retirar Conselheiro Pena.
+São Francisco permanece. Originais do script 32 não são sobrescritos.
+
+Produtos locais em `outputs/auditoria_sicom_modelo_2019/`:
+
+| Arquivo | Leitura |
+|---|---|
+| `amostras.csv` | Pares, positivos e valores antes/depois por cenário |
+| `decisoes_2019.csv` | Dois pares auditados e desfechos, inclusive ausência em vez de zero |
+| `coeficientes.csv`, `coeficientes_validacao.csv` | Ajustes integrais comparados ao original e 40 treinos de validação |
+| `previsoes_comparacao.csv.gz` | Mesmos pares com previsão fora do treino original e auditada, identificados por fold |
+| `validacao_mesma_amostra.csv` | Brier, logloss, precisão média e AUC sobre denominador idêntico; 16 linhas |
+| `fontes.csv`, `ambiente.txt`, `resumo.json` | SHA256, versões e limites de reprodução |
+
+`checks/26_piloto_auditado_sicom.json` registra a validação independente.
+O passo longitudinal ainda precisa aplicar a decisão Neves/2014. Casos sem
+documentos adicionais seguem sinalizados; esta saída é sensibilidade, não
+uma nova base financeira definitiva.

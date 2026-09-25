@@ -769,3 +769,18 @@ conflitos e zeros; a rodada seguinte esta registrada em "25/09: Dos Alertas
 Aos Documentos". Esta propagacao melhora a consistencia entre dado,
 modelo e tela; nao resolve sozinha elegibilidade institucional ou sedes
 historicas, nem elimina o excesso de confianca em distancia municipal zero.
+
+## 25/09: Decisões Documentais -> Piloto Auditado
+
+**Objetos de pagamento -> decisão por par -> mesma grade e mesmos folds ->
+reestimação -> comparação na mesma amostra.** São Francisco de Paula–CISMARG
+permanece positivo em 2019: os objetos SICOM sustentam o vínculo apesar do
+nome conflitante. Conselheiro Pena–CISVI sai apenas da versão auditada:
+os 14 objetos não são despesa consorcial, mas isso não demonstra um zero
+anual. Neves–CISMEP é de 2014 e ficará para o exercício longitudinal.
+
+Nos quatro recortes, a alteração é uma linha. Por exemplo, clínicas/53 passa
+de 45.209 pares e 771 positivos a 45.208 e 770. O Brier municipal,
+comparado **nas mesmas 45.208 linhas**, passa de 0,008885392 a 0,008885596.
+O resultado agregado quase não muda. A base e o piloto originais continuam
+disponíveis; esta é uma sensibilidade documental, não o modelo final.

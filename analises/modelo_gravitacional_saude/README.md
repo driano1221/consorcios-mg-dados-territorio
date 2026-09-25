@@ -1,5 +1,15 @@
 # Modelo Gravitacional De Saude - MG
 
+**Sensibilidade auditada de 2019 (25/09):** os quatro recortes principais
+foram reestimados sem depender de documentos adicionais. A versão separada
+mantém São Francisco de Paula–CISMARG e retira Conselheiro Pena–CISVI,
+sem converter o par retirado em zero. A comparação usa as mesmas linhas e
+folds; as métricas agregadas mudam pouco. Base v1, piloto original e aba
+Modelo permanecem preservados. Reproduza com
+`Rscript 40_reestimar_piloto_auditado_sicom.R` e
+`python tests/26_validar_piloto_auditado_sicom.py`; resultados e limites
+na seção final de [METODOLOGIA_GERAL.md](METODOLOGIA_GERAL.md).
+
 **Coleta histórica posterior de 25/09:** seis ZIPs do TCE/SICOM recuperados,
 com ano, município e hashes conferidos. São Francisco/2019: 55 pagamentos,
 R$ 188.969,82; objetos sustentam vínculo financeiro com CISMARG, apesar do

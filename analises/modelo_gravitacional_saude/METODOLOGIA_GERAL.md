@@ -3111,3 +3111,45 @@ Nao se mudou a formula ou a amostra para obter convergencia. Nenhuma nova
 biblioteca foi instalada. Validacao e do mesmo ano e dos mesmos consorcios;
 blocos espaciais nao tem faixa de separacao. Sensibilidades escolhidas apos
 inspecao dos erros nao constituem uma confirmacao numa amostra intocada.
+
+## Sensibilidade Documental Dirigida Do Piloto De 2019
+
+A coleta SICOM de 25/09 permitiu distinguir os dois pares de 2019 antes
+agrupados como `sem_conflito_credor`. Em São Francisco de Paula–CISMARG,
+55 pagamentos e R$ 188.969,82 coincidem com o MIDES; 30 objetos citam
+expressamente o consórcio. O nome SOMETAL continua incorreto/conflitante,
+mas o par permanece como vínculo financeiro observado. Em Conselheiro
+Pena–CISVI, os 14 objetos e R$ 11.468,66 dizem respeito a tributos e
+radiodifusão; esse par sai da **amostra auditada**, sem virar zero. A decisão
+Neves–CISMEP pertence a 2014 e não modifica um modelo transversal de 2019.
+Os zeros de Ipatinga e Piedade permanecem zeros **observados no MIDES**, sem
+causa anual comprovada nem recodificação.
+
+`40_reestimar_piloto_auditado_sicom.R` lê as decisões separadas, a grade do
+script 31 e os folds/previsões originais do script 32. Reestima a mesma
+fórmula binária para S1 clínicas/53, S2 sedes/53, S2 sedes/62 e S3 misto/62;
+compara cada previsão original e auditada **nas mesmas linhas**. Há cinco
+treinos por divisão municipal e cinco por divisão espacial em cada recorte.
+Os originais são preservados; a sensibilidade fica em
+`outputs/auditoria_sicom_modelo_2019/`.
+
+| Recorte | Pares original -> auditado | Pagos original -> auditado | Brier municipal original -> auditado | Brier espacial original -> auditado |
+|---|---:|---:|---:|---:|
+| Clínicas/53 | 45.209 -> 45.208 | 771 -> 770 | 0,008885392 -> 0,008885596 | 0,009651449 -> 0,009657450 |
+| Sedes/53 | 45.209 -> 45.208 | 771 -> 770 | 0,008957608 -> 0,008957629 | 0,009653912 -> 0,009659508 |
+| Sedes/62 | 52.886 -> 52.885 | 1.299 -> 1.298 | 0,013838208 -> 0,013838629 | 0,015133666 -> 0,015136868 |
+| Misto/62 | 52.886 -> 52.885 | 1.299 -> 1.298 | 0,013802781 -> 0,013803289 | 0,015171067 -> 0,015174578 |
+
+O impacto agregado é pequeno, mas isso não valida os demais pagamentos nem
+resolve a elegibilidade institucional dos zeros. O Brier do original nesta
+tabela foi recalculado **após retirar a mesma linha**, portanto difere do
+Brier estadual publicado sobre a amostra integral. Não usar diferenças
+minúsculas para escolher um cenário: a auditoria corrige a interpretação do
+desfecho, não constitui uma seleção de modelo. SICOM pode compartilhar
+origem com o MIDES e não fornece confirmação bancária independente.
+
+Reprodução, na pasta do modelo: `Rscript 40_reestimar_piloto_auditado_sicom.R`
+e `python tests/26_validar_piloto_auditado_sicom.py`. O teste confere hashes,
+linhas retidas, desfechos, mesmos folds, scores dos 40 treinos, previsões e
+métricas por cálculo independente. O exercício continua exploratório e
+limitado a 2019; não testa entrada, intensidade financeira nem persistência.
