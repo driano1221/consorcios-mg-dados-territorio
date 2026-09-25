@@ -9,8 +9,18 @@ Financeira: **491.328 x 21**; direta: **323.287 x 32**. As duas colunas novas
 sinalizam conflito de credor e seu valor, sem alterar pagamentos.
 Em 2019 sao **62 clinicas**, antes 64; horas, profissionais e servicos
 permanecem iguais. As coberturas **52,3% e 86,4%** nao mudaram.
-O proximo trabalho e documental: conflitos de credor e seis zeros
-prioritarios ainda sem explicacao institucional. O modelo nao esta finalizado.
+**Revisao documental de 25/09 concluida para os nove casos priorizados:**
+sete ganharam contexto institucional; dois continuam sem documento
+conciliador. Isso nao encerra a causa financeira dos seis zeros nem resolve
+os tres conflitos de credor. Bases, previsoes e interface foram preservadas.
+Veja [as nove decisoes](evidencias/auditoria_nove_pares_2026_09_25.csv)
+e [as fontes com limites](evidencias/fontes_nove_pares_2026_09_25.csv).
+Proximo: conciliar contas de Ipatinga/CONSAUDE e Piedade/CISMIRECAR e os
+pagamentos com nome conflitante. O modelo nao esta finalizado.
+
+Para reproduzir apenas esta conferencia, execute
+`python 36_consolidar_auditoria_documental.py`. Ela gera as trajetorias dos
+nove pares nos oito anos e verifica fontes/chaves/valores sem reestimar.
 
 **Atualizacao apos auditoria de 24/09:** dois vinculos CNES de pessoa fisica
 com o CISMARG foram corrigidos no extrator e nos cenarios/modelos 31/32.

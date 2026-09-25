@@ -11,6 +11,26 @@
 > proposta de um ano foi recebida e um piloto de participacoes foi autorizado
 > e estimado depois. Bacias ficaram para analise posterior.
 
+## 25/09: Dos Alertas Aos Documentos
+
+Depois de propagar a correcao CNES para a v1, foram investigados seis zeros
+de 2019 e tres pares com nome de credor conflitante. Sete casos ganharam
+contexto; dois seguem sem documento conciliador. Foram reunidas 17
+referencias, 15 com copia local, e reconstruidas 72 observacoes anuais.
+Isso ainda nao encerrou a causa financeira dos zeros nem corrigiu credores.
+
+Exemplo: **Ipatinga–CONSAUDE** aparece no MIDES com R$ 704.230,55 em
+2018 e zero em 2019. Ipatinga tambem consta do rol institucional do contrato
+CEGED 005/2019. O documento ajuda a investigar o vinculo, mas nao comprova
+que a prefeitura transferiu recursos naquele ano. Por isso o zero permanece,
+com prioridade para conferir pagamento municipal e recebimento consorcial.
+
+Outro cuidado: contrato Uberlandia/2015 guardado na pasta AMVAP e do
+CISTRI, outro CNPJ. Fonte foi identificada e preservada, sem usar a pasta
+como prova de identidade. V1, mapa e resultados ficaram exatamente iguais.
+O proximo trabalho e buscar os comprovantes especificados na tabela
+`evidencias/auditoria_nove_pares_2026_09_25.csv`, nao reconstruir a base.
+
 ## Visao Geral
 
 O trabalho avancou da decisao de escopo ate duas bases anuais verificadas e
@@ -693,7 +713,8 @@ de pagamento desse par, 96,67% na validacao municipal do S1, e a compara
 com erros reais, como Uberaba-CISVALEGRAN. O piloto de participacoes fica
 guardado para consulta, com seus resultados atualizados pela correcao.
 
-Proximo trabalho: buscar evidencia documental para os conflitos e zeros
-ainda sem explicacao. Esta propagacao melhora a consistencia entre dado,
+O encaminhamento deste marco foi buscar evidencia documental para os
+conflitos e zeros; a rodada seguinte esta registrada em "25/09: Dos Alertas
+Aos Documentos". Esta propagacao melhora a consistencia entre dado,
 modelo e tela; nao resolve sozinha elegibilidade institucional ou sedes
 historicas, nem elimina o excesso de confianca em distancia municipal zero.

@@ -1,0 +1,48 @@
+{
+  "data_revisao": "2026-09-25",
+  "casos": 9,
+  "trajetorias_pares_ano": 72,
+  "status": {
+    "contexto_localizado": 7,
+    "sem_documento_conciliador": 2
+  },
+  "fontes_com_copia_conferida": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07",
+    "S08",
+    "S09",
+    "S10",
+    "S11",
+    "S12",
+    "S14",
+    "S15",
+    "S16"
+  ],
+  "fontes_sem_copia": [
+    "S13",
+    "S17"
+  ],
+  "zeros_2019_conciliados_com_extracao": 6,
+  "zeros_com_causa_financeira_anual_encerrada_nesta_rodada": 0,
+  "conflitos_credor_resolvidos_nesta_rodada": 0,
+  "pares_ano_conflitantes_preservados": 17,
+  "valor_conflitante_preservado": "1352846.55",
+  "transacoes_conflitantes_preservadas": 429,
+  "arquivos_analiticos_preservados": [
+    "outputs/base_v1/base_financeira_v1.csv",
+    "outputs/base_v1/base_gravitacional_v1.csv",
+    "outputs/adesao_financeira/coeficientes.csv",
+    "outputs/adesao_financeira/validacao.csv",
+    "outputs/visuais_v1/index.html"
+  ],
+  "entradas": {
+    "evidencias\\auditoria_nove_pares_2026_09_25.csv": "980f440c7efdf2f0ffe7d05f05e58da40747914f8ff3e2f598e975640c586826",
+    "evidencias\\fontes_nove_pares_2026_09_25.csv": "5c545a378c8894bc609d62765578e011bb5fcedb07964bdecfd80a5de1fc1d52",
+    "evidencias\\invariantes_nove_pares_2026_09_25.csv": "29b796929334cddf23a28d3e5027c947c64d56557eaae81810af62ae16b440b8"
+  }
+}

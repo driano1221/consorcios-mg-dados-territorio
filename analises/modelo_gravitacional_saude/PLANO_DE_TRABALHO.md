@@ -14,11 +14,22 @@ consulta. A aba Modelo agora abre a adesao financeira (53/62 consorcios);
 o piloto fracional permanece identificado como anterior. Testes conferem
 valores preservados, destinos, previsoes e interface em desktop/celular.
 
-**Proximo marco:** investigacao documental dirigida dos tres pares com
-conflito de credor e dos seis zeros prioritarios ainda sem explicacao.
-Registrar o que tiver evidencia e o que permanecer aberto. Acesso
-institucional, sedes historicas e excesso de confianca em distancia zero
-continuam limites; nao adotar corte geografico ou nova formula por conveniencia.
+**Revisao documental em 25/09:** os nove casos foram examinados e
+catalogados no script 36: seis zeros/2019 e tres pares com conflito de
+credor. Sete receberam contexto documental, dois nao tiveram comprovante
+conciliador localizado. Nenhuma causa financeira anual foi encerrada e
+nenhum conflito foi resolvido. Mantidos os 17 pares-ano sinalizados e todos
+os valores, resultados e graficos. Ha 17 referencias, 15 com copia local
+conferida; indice web e portal indisponivel ficam explicitamente separados.
+
+**Proximo marco:** conciliacao financeira dirigida, com prioridade para
+Ipatinga–CONSAUDE/2019 e Piedade–CISMIRECAR/2019 (pagamentos observados em
+outros anos), e comprovantes dos tres credores conflitantes. A tabela
+`evidencias/auditoria_nove_pares_2026_09_25.csv` especifica a conferencia
+de cada caso. Para os demais zeros, recuperar atos e contas do proprio ano.
+Nao reiniciar pesquisa geral, retroagir documentos recentes ou ajustar a
+amostra para corrigir previsoes ruins. Acesso institucional, sedes historicas
+e excesso de confianca em distancia zero continuam limites.
 
 **Estado vigente apos auditoria e testes territoriais (24/09):** os dois
 encaminhamentos autorizados foram executados nos scripts 33-35: auditoria

@@ -5,6 +5,86 @@
 > "Fechamento Da Base V1". As secoes anteriores preservam o historico;
 > nao exigem reabrir todas as pendencias para utilizar esta entrega.
 
+## Investigacao Documental Dos Nove Pares: 25/09
+
+A rodada examinou os seis zeros prioritarios de 2019 ainda abertos e os
+tres pares com nomes de credor conflitantes. O objetivo foi procurar
+explicacoes independentes, sem usar o erro do modelo como prova de erro
+no dado. A revisao produziu contexto para sete casos; em Conselheiro
+Pena–CISVI e Ribeirao das Neves–CISMEP nao foi localizado documento que
+concilie o beneficiario. **Nenhum dos tres conflitos foi encerrado e
+nenhuma causa financeira anual dos seis zeros ficou comprovada.**
+
+Percurso: lista dos erros/credores -> trajetoria MIDES 2014–2021 ->
+acervo documental e fontes publicas -> conferencia de entidade, data,
+objeto e pagina -> decisao com limite e documento ainda necessario.
+Foram inventariados 26 PDFs do acervo Ives/Jadson relativos a cinco
+entidades, alem da verificacao do contrato de Uberlandia. A selecao de
+fontes efetivamente citadas esta no catalogo de 17 referencias: 15 com
+copia local e SHA256, uma noticia recuperada apenas no indice web e um
+portal que encerrou a conexao. Copia local nao significa evidencia
+conclusiva: a consulta MIDES e o dado investigado, e os portais atuais
+apenas indicam onde continuar a busca.
+
+### O Que As Fontes Permitem Dizer
+
+| Par investigado | Evidencia encontrada | O que continua aberto |
+|---|---|---|
+| Sao Joao del-Rei–CISVER | Edital 001/2018 para selecao em janeiro/2019 lista 16 municipios sem Sao Joao; entrevista de 2023 ao presidente afirma nao consorciamento | Rol em edital e entrevista posterior nao comprovam ausencia de qualquer pagamento em todo 2019 |
+| Governador Valadares–CISDOCE | SES registra ausencia de consorciamento generalista em levantamento posterior; projeto 262/2025 menciona participacao anterior | Nao chamar 2025 de primeira adesao; MIDES tem R$ 9.908,06 em 2020. Faltam atos e contas de 2019 |
+| Uberlandia–AMVAP/CISTM | Noticia oficial de 11/10/2019 lista 20 municipios sem Uberlandia; protocolo de 2013 a inclui entre possiveis subscritores | Faltam ratificacao/permanencia e recebimentos anuais; noticia disponivel apenas no indice web |
+| Ipatinga–CONSAUDE | Ipatinga consta do rodape institucional do contrato CEGED 005/2019, conferido no PDF | Esse contrato e com prestador, nao com a prefeitura. MIDES tem R$ 704.230,55 em 2018 e zero em 2019; conferir contas |
+| Santa Rita de Minas–CISMIRECAR | Protocolo de 2011 inclui o municipio; captura COSECS/2024 nao o lista | Nao datar retirada por duas fotografias. Zero MIDES em 2014–2021 nao comprova ausencia de atendimento |
+| Piedade de Caratinga–CISMIRECAR | Protocolo de 2011 inclui o municipio; MIDES positivo em 2014–2016 e 2021 | Intervalo 2017–2020 zerado exige conferencia, nao interpolacao. Em 2021 sao R$ 779.355,34 |
+| Sao Francisco de Paula–CISMARG | Ementa da lei 979/2017 autoriza rateio de divida com FELUMA/FCMMG | Nao valida pagamentos com nome SOMETAL: R$ 1.140.209,61 em 351 registros |
+| Conselheiro Pena–CISVI | 14 transacoes de 2019 conferidas na extracao: R$ 11.468,66; nome MINISTERIO DA FAZENDA | Falta comprovante para decidir se nome ou CNPJ esta errado |
+| Ribeirao das Neves–CISMEP | Dois registros de 2014, R$ 321,16, com nome EMIVE | Falta comprovante do beneficiario; portal atual localizado nao resolve automaticamente o historico |
+
+Referencias por caso, URLs, datas, paginas, caminhos e ressalvas:
+`evidencias/auditoria_nove_pares_2026_09_25.csv` e
+`evidencias/fontes_nove_pares_2026_09_25.csv`. A minuta de 2025 foi
+obtida na pasta publica do processo disponibilizada pelo vereador; nao
+foi tratada como lei sancionada. A entrevista UFSJ foi baixada com
+verificacao TLS desativada apos falha de certificado, registrada no catalogo.
+
+### Cuidado Com O Acervo E Consequencias Para O Modelo
+
+O arquivo `UBERLANDIA.pdf`, arquivado em AMVAP/Contratos 2015, e o
+contrato 25/2015 com **CISTRI, CNPJ 19.455.924/0001-00**. Nao e contrato
+com AMVAP/CISTM, raiz 18151467. A pagina foi conferida visualmente;
+arquivo original preservado e ressalva registrada na fonte S11. Nao foi
+encontrada evidencia de que esse PDF tenha alimentado a v1. Portanto, a
+correcao e na interpretacao documental, sem retirar linha da base.
+
+O contrato CONSAUDE distingue sede administrativa, clinica e prestador
+credenciado. Isso reforca que o endereco do consorcio nao identifica
+necessariamente o destino financiado por cada pagamento. Nao houve
+inclusao automatica do prestador, nova capacidade ou rota.
+
+Os nove casos formam uma amostra dirigida pelos alertas, sem
+representatividade para estimar a taxa de erro do MIDES. Nenhum documento
+posterior foi retroagido; nenhum zero foi convertido em positivo.
+Permanecem os 17 pares-ano conflitantes, 429 transacoes e R$ 1.352.846,55.
+O teste sem os pares ja existente continua sendo sensibilidade, nao
+correcao documental validada. Esta rodada nao melhora nem piora as
+metricas do modelo: coeficientes e validacao permaneceram identicos.
+
+### Conferencia Reproduzivel E Proximo Trabalho
+
+`python 36_consolidar_auditoria_documental.py` confere os hashes das
+15 copias, referencias, nove chaves e 72 pares-ano; concilia os seis zeros
+com a extracao e os 17 conflitos com a auditoria 35. Tambem compara SHA256
+das duas bases, coeficientes, validacao e HTML com o inicio desta rodada.
+Resultado: `checks/23_auditoria_documental_nove_pares.json`.
+OCR foi usado para localizar trechos escaneados; as paginas decisivas do
+contrato CISTRI, projeto 262/2025 e contrato CONSAUDE foram vistas.
+
+A proxima busca deve ser contabil: razao do credor, empenho, liquidacao,
+pagamento/beneficiario e recebimentos do consorcio. Priorizar
+Ipatinga–CONSAUDE e Piedade–CISMIRECAR em 2019 e os tres nomes conflitantes.
+Os outros zeros ainda precisam de documentacao institucional e financeira
+do ano. Nao houve contato com prefeituras ou terceiros nesta rodada.
+
 ## Propagacao Da Auditoria Para A V1 E Interface: 25/09
 
 A auditoria 33-35 foi incorporada aos produtos de consulta, sem nova coleta.
@@ -2875,8 +2955,9 @@ transforma-la em exclusao. Tambem faz sentido estudar recursos proprios da
 origem, destinos contratados e capacidade anterior ao pagamento. Esses testes
 nao foram executados nesta entrega e exigem pergunta e disponibilidade claras.
 Nao ha razao, pelos resultados atuais, para acrescentar PCA ou forcar sinal
-positivo de populacao/horas. A proxima entrega de dados deve propagar a
-correcao CNES e os alertas para v1/atlas antes de apresentar tudo como final.
+positivo de populacao/horas. A propagacao da correcao CNES e dos alertas
+para v1/atlas, indicada neste marco, foi concluida em 25/09 e esta
+documentada na secao de propagacao. Isso nao encerra os limites do modelo.
 
 ### Validacao E Reproducao
 

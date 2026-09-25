@@ -4,6 +4,30 @@
 > "Entrega V1" localiza as duas bases, o dicionario de colunas e a reproducao.
 > As secoes datadas anteriores documentam as fontes e camadas preservadas.
 
+## Auditoria Documental Dos Nove Pares: 25/09
+
+| Arquivo | Conteudo |
+|---|---|
+| `36_consolidar_auditoria_documental.py` | Conferencia sem rede ou reestimacao; executar com Python na pasta do modelo |
+| `evidencias/auditoria_nove_pares_2026_09_25.csv` | Nove decisoes: chave, achado, limite, fontes e proxima conferencia; sete com contexto e dois sem comprovante conciliador |
+| `evidencias/fontes_nove_pares_2026_09_25.csv` | 17 referencias; 15 copias locais com SHA256; indice web e conexao encerrada separados |
+| `evidencias/invariantes_nove_pares_2026_09_25.csv` | Hashes anteriores das duas bases, coeficientes, validacao e HTML; protegem contra alteracao nesta rodada |
+| `outputs/auditoria_alternativas/documental_2026_09_25/trajetorias_72_pares_ano.csv` | Cada um dos nove pares nos oito anos, pagamento, transacoes e alerta herdados da v1 |
+| `outputs/auditoria_alternativas/documental_2026_09_25/decisoes_nove_pares.csv` | Decisoes enriquecidas com anos positivos e valores reais; nao e uma nova base de estimacao |
+| `outputs/auditoria_alternativas/fontes/documental_2026_09_25/` | PDFs/HTML coletados, OCR, paginas renderizadas e inventario de 26 PDFs do acervo preexistente |
+| `checks/23_auditoria_documental_nove_pares.json` | Resultado da conferencia de integridade, chaves, 17 conflitos e invariancia dos produtos |
+
+`status=contexto_localizado` nao significa zero explicado ou credor
+validado. `alterar_base=FALSE` vale para todos os nove casos. S13 e leitura
+de noticia oficial no indice web, sem copia original; S17 registra falha
+de conexao, sem dado financeiro. SHA256 atesta integridade, nao veracidade.
+Fontes do acervo ficam no caminho original, sem duplicacao nem alteracao.
+O contrato Uberlandia/2015 da pasta AMVAP tem CNPJ CISTRI e foi rejeitado
+como prova AMVAP. Para reproduzir em outra maquina, restaurar os documentos
+nos caminhos catalogados ou adaptar explicitamente os caminhos, preservando hashes.
+Uma mudanca futura intencional na v1 exigira nova revisao dos invariantes;
+nao recalcular seus hashes apenas para fazer o teste passar.
+
 ## Revisao V1 De 25/09: Fontes, Arquivos E Reproducao
 
 O script 25 agora le `auditoria_alternativas/unidades_cnes_dezembro_corrigidas.csv`
@@ -1035,9 +1059,9 @@ e sensibilidade de qualidade, nao regra territorial. Nomes genericos ficam
 marcados sem serem automaticamente classificados como falsos pagamentos.
 
 O script 35 usa cache por padrao. `--consultar` requer credencial BigQuery
-ja autorizada, com limite de 10 GB no campo correto da API. A v1/atlas e
-o piloto anterior ainda precisam receber a correcao CNES e os marcadores;
-nao tratar as tabelas antigas como versao corrigida.
+ja autorizada, com limite de 10 GB no campo correto da API. A propagacao
+para v1/atlas e piloto, pendente neste marco, foi concluida em 25/09.
+Consultar a secao de propagacao para distinguir as tabelas corrigidas.
 
 Arquivos tecnicos alterados nesta entrega: `09_temporalizar_cnes_historico_saude.py`,
 `13_detalhar_atlas_consorcios_saude.R`, `31_preparar_cenarios_adesao.R`,
