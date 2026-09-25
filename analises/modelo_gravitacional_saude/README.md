@@ -1,5 +1,17 @@
 # Modelo Gravitacional De Saude - MG
 
+**V1 revisada em 25/09:** a correcao CNES e os alertas de credor chegaram
+as bases, figuras e atlas. Abra [a consulta local](outputs/visuais_v1/index.html).
+A aba Modelo comeca agora pela adesao financeira com varios vinculos e
+compara os tres cenarios espaciais. O piloto anterior de participacoes
+continua em uma secao recolhida, reestimado com os destinos corrigidos.
+Financeira: **491.328 x 21**; direta: **323.287 x 32**. As duas colunas novas
+sinalizam conflito de credor e seu valor, sem alterar pagamentos.
+Em 2019 sao **62 clinicas**, antes 64; horas, profissionais e servicos
+permanecem iguais. As coberturas **52,3% e 86,4%** nao mudaram.
+O proximo trabalho e documental: conflitos de credor e seis zeros
+prioritarios ainda sem explicacao institucional. O modelo nao esta finalizado.
+
 **Atualizacao apos auditoria de 24/09:** dois vinculos CNES de pessoa fisica
 com o CISMARG foram corrigidos no extrator e nos cenarios/modelos 31/32.
 Os quatro resultados principais permanecem iguais. A auditoria financeira
@@ -12,10 +24,12 @@ Comece por `outputs/auditoria_alternativas/cobertura_regras.csv`,
 `auditoria_30_maiores_erros.csv`, `conflitos_nome_documento.csv` e
 `validacao_territorial.csv` (fold=0). Explicacao, referencias e resultados
 na secao **Auditoria Dos Erros E Alternativas Territoriais** da metodologia.
-**A v1, o atlas e o piloto da interface ainda sao a entrega anterior e
-precisam receber a correcao cadastral e os alertas financeiros.**
+Essa auditoria foi propagada aos derivados e a interface em 25/09.
 
-Ordem de reproducao desta revisao (da pasta do modelo):
+Ordem da auditoria original abaixo. Para regenerar tambem v1 e interface,
+seguir **Revisao V1 De 25/09** no DICIONARIO_TECNICO.md, incluindo scripts
+13, 25-28 e reestimacao do piloto 30. O snapshot anterior e necessario
+para a comparacao do teste 22.
 
 ```powershell
 python 33_auditar_identificadores_cnes.py
@@ -37,8 +51,8 @@ em `outputs/adesao_financeira/`: comece por `amostras.csv`, `validacao.csv`
 Distancia tem associacao forte; horas acrescentam pouco entre clinicas.
 Sedes nao superam clinicas de forma relevante; distancias zero exigem cuidado
 com probabilidades individuais. Metodo, referencias e limites na ultima
-secao de `METODOLOGIA_GERAL.md`. A aba visual ainda mostra participacoes,
-nao o novo desfecho binario. Nenhuma fonte v1 ou interface foi alterada.
+secao de `METODOLOGIA_GERAL.md`. A aba visual atual abre esse desfecho
+binario; o piloto de participacoes permanece em uma secao recolhida.
 
 ```powershell
 Rscript 32_estimar_adesao_financeira.R
@@ -64,10 +78,10 @@ python tests/19_validar_cenarios_adesao.py
 [outputs/visuais_v1/index.html](outputs/visuais_v1/index.html).
 A pagina explica a v1 em seis abas de dados e uma nova aba de modelo:
 base, construcao, pagamentos, CNES, tempos/mapa, consulta completa e
-piloto gravitacional de participacoes de 2019. Sao cinco figuras de dados, com
+adesao financeira em 2019, com o piloto anterior recolhido. Sao cinco figuras de dados, com
 ranking, trajetorias e mapa interativos dos 73 consorcios da v1.
-As duas tabelas podem ser consultadas integralmente: 491.328 x 19 e
-323.287 x 30, com filtros e paginacao. Os fluxos mostram fontes, chaves
+As duas tabelas podem ser consultadas integralmente: 491.328 x 21 e
+323.287 x 32, com filtros e paginacao. Os fluxos mostram fontes, chaves
 de ligacao e o que cada tratamento acrescentou. Nao ha botoes de download.
 As 20 figuras da primeira entrega permanecem como produtos de origem;
 o pacote vigente inclui apenas as cinco utilizadas na consulta.
@@ -110,8 +124,8 @@ O piloto descrito acima e derivado separado. Os arquivos da v1 ficam em
 
 | Entrega | Linhas | Entidades | Pagamentos positivos | Valor nominal 2014-2021 |
 |---|---:|---:|---:|---:|
-| [Base financeira](outputs/base_v1/base_financeira_v1.csv), 19 colunas | 491.328 | 73 | 10.735 | R$ 3.315.638.156,17 |
-| [Base gravitacional](outputs/base_v1/base_gravitacional_v1.csv), 30 colunas | 323.287 | 58 | 5.612 | R$ 2.865.170.352,56 |
+| [Base financeira](outputs/base_v1/base_financeira_v1.csv), 21 colunas | 491.328 | 73 | 10.735 | R$ 3.315.638.156,17 |
+| [Base gravitacional](outputs/base_v1/base_gravitacional_v1.csv), 32 colunas | 323.287 | 58 | 5.612 | R$ 2.865.170.352,56 |
 
 Ambas cobrem 853 municipios e 2014-2021, com disponibilidade das entidades
 variando entre anos. A primeira tem 480.593 linhas sem pagamento positivo;

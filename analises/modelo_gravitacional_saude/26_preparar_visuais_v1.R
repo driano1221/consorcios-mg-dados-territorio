@@ -40,8 +40,7 @@ ranking <- bind_rows(entity_year |> transmute(periodo=as.character(ano),cnpj_rai
   group_by(periodo) |> arrange(desc(valor),cnpj_raiz_8,.by_group=TRUE) |>
   mutate(posicao=row_number(),participacao=valor/sum(valor),acumulada=cumsum(participacao)) |> ungroup()
 units <- clean(atlas$units) |> mutate(ano=as.character(ano))
-hist <- bind_rows(read_data('elegibilidade_assistencial_unidades_historicas_saude_mg_2014_2021.csv'),
-  read_data('candidatas_cnes_capacidade_unidades_2014_2021.csv')) |>
+hist <- read_data('auditoria_alternativas/unidades_cnes_dezembro_corrigidas.csv') |>
   mutate(ano=as.integer(ano),across(c(n_profissionais_sus_distintos,n_servicos_especializados_sus,carga_horaria_sus,leitos_sus),as.numeric))
 cap_all <- hist |> filter(funcao_assistencial=='destino_clinico_fixo') |>
   summarise(unidades=n(),profissionais=sum(n_profissionais_sus_distintos),servicos=sum(n_servicos_especializados_sus),
@@ -57,7 +56,7 @@ aux <- ledger |> semi_join(aux_roots,by='cnpj_raiz_8') |>
 absent <- paid |> filter(!elegivel_gravitacional_v1) |>
   left_join(ledger |> select(cnpj_raiz_8,ano,grupo_conciliacao),by=c('cnpj_raiz_8','ano'),relationship='many-to-one') |>
   summarise(relacoes=n(),valor=sum(valor_total),.by=c(grupo_conciliacao,classificacao_oferta))
-times <- direct |> select(cnpj_raiz_8,entidade,ano,id_municipio,municipio,valor_total,tempo_minimo_min,destino_clinico_mais_proximo_id)
+times <- direct |> select(cnpj_raiz_8,entidade,ano,id_municipio,municipio,valor_total,tempo_minimo_min,destino_clinico_mais_proximo_id,conflito_credor_mides)
 time_dist <- times |> mutate(faixa=floor(tempo_minimo_min/30)*30) |> summarise(relacoes=n(),valor=sum(valor_total),.by=faixa) |> arrange(faixa)
 time_ecdf <- times |> summarise(relacoes=n(),valor=sum(valor_total),.by=tempo_minimo_min) |> arrange(tempo_minimo_min) |>
   mutate(fracao_relacoes=cumsum(relacoes)/sum(relacoes),fracao_valor=cumsum(valor)/sum(valor))
@@ -81,7 +80,7 @@ units <- units |> left_join(st_drop_geometry(geom) |> select(code,x,y),by=c('cod
 summary <- list(relacoes=nrow(paid),valor=sum(paid$valor_total),relacoes_diretas=nrow(direct),valor_direto=sum(direct$valor_total),
   municipios=n_distinct(paid$id_municipio),consorcios=n_distinct(f$cnpj_raiz_8),consorcios_diretos=n_distinct(g$cnpj_raiz_8),
   capacidade_entidades_ano=nrow(cap),linhas_financeira=nrow(f),linhas_direta=nrow(g),zeros_financeira=sum(f$valor_total==0),zeros_direta=sum(g$valor_total==0))
-stopifnot(summary$relacoes==10735,summary$relacoes_diretas==5612,nrow(cap)==379,nrow(units)==2612,
+stopifnot(summary$relacoes==10735,summary$relacoes_diretas==5612,nrow(cap)==379,nrow(units)==2596,
   nrow(entities)==221,nrow(geom)==853,nrow(aux_roots)==3,
   sum(absent$relacoes)==5123,abs(sum(annual$valor)-3315638156.17)<.01,
   !anyDuplicated(units[c('cnpj_raiz_8','ano','cnes')]))
@@ -109,10 +108,11 @@ v1cap <- cap |> transmute(cnpj_raiz_8,ano,unidades=n_destinos_clinicos_dezembro,
   profissionais=profissionais_sus_clinicos_soma_unidades,servicos=servicos_sus_clinicos_soma_unidades,
   horas=horas_sus_clinicas_soma_registros,leitos=leitos_sus_clinicos)
 data <- list(summary=summary,overview=overview,annual=annual,entity_year=entity_year,ranking=ranking,cap=cap,
+  auditoria=clean(read_data('auditoria_alternativas/conflitos_nome_documento.csv')),
   units_profile=unit_profile,absence=absent,times=time_stats,
   entities=entities |> filter(raiz %in% f$cnpj_raiz_8),
   units=units |> semi_join(v1keys,by=c('cnpj_raiz_8','ano')),cap_all=v1cap,
-  payments=paid |> transmute(cnpj_raiz_8,ano,codigo_ibge_6=substr(id_municipio,1,6),valor=valor_total,n_transacoes),
+  payments=paid |> transmute(cnpj_raiz_8,ano,codigo_ibge_6=substr(id_municipio,1,6),valor=valor_total,n_transacoes,conflito_credor_mides),
   ledger=ledger |> semi_join(v1keys |> mutate(ano=as.integer(ano)),by=c('cnpj_raiz_8','ano')),polys=polys,
   example=clean(read_data('base_v1/exemplo_igarape_cismep.csv')))
 write_json(data,file.path(dest,'dados','visuais.json'),dataframe='rows',auto_unbox=TRUE,digits=8,na='null')
@@ -131,6 +131,6 @@ for(kind in c('financeira','direta')) {
 saveRDS(list(tables=tables,geom=geom,units=units,entities=entities,ledger=ledger,summary=summary,
   source_files=c('base_v1/base_financeira_v1.rds','base_v1/base_gravitacional_v1.rds',
   'base_v1/capacidade_entidade_ano.csv','base_v1/inclusao_entidade_ano.csv','atlas_dados.json',
-  'elegibilidade_assistencial_unidades_historicas_saude_mg_2014_2021.csv','candidatas_cnes_capacidade_unidades_2014_2021.csv')),
+  'auditoria_alternativas/unidades_cnes_dezembro_corrigidas.csv','auditoria_alternativas/conflitos_nome_documento.csv')),
   file.path(dest,'dados','preparacao.rds'))
 cat('Dados visuais preparados sem alterar a v1.\n');print(aux_roots);print(time_stats)

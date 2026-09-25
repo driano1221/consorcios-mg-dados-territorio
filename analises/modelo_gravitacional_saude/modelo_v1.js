@@ -118,7 +118,7 @@ function drawCalculation(){
 ['model-municipality','model-prediction'].forEach(id=>$(id).addEventListener('change',drawExample));
 $('model-calc-entity').addEventListener('change',drawCalculation);drawExample();
 $('model-alert-note').textContent=M.resumo.alertas+' consórcios têm alerta temporal, envolvendo '+M.resumo.pares_pagos_alerta+' relações pagas. Esses alertas não são imputações nem prova de erro.';
-$('model-next').textContent='O piloto sustenta continuar a investigação com tempo e capacidade, mas o ganho da capacidade é modesto e a disponibilidade institucional continua aberta. O próximo avanço deve testar uma regra documental de alternativas e a capacidade anterior ao pagamento. Horas e tempo mediano tiveram resultados próximos; não foram promovidos automaticamente a modelo final. Não é necessário refazer a coleta inteira para discutir estes resultados.';
+$('model-next').textContent='Este piloto de participações foi anterior à decisão de modelar pagamento positivo com vários vínculos. A versão atual de adesão financeira e os testes territoriais estão no início desta aba. Capacidade anterior ao pagamento e acesso institucional documentado continuam pendentes.';
 // Links internos mantêm a nova aba aberta ao compartilhar/recarregar a consulta.
 if(location.hash.startsWith('#modelo'))switchPage('modelo');
 document.querySelector('nav button[data-page="modelo"]').addEventListener('click',()=>history.replaceState(null,'','#modelo'));

@@ -23,7 +23,9 @@ document.querySelectorAll('[data-figure]').forEach(box=>{
  box.innerHTML='<figure><a href="figuras/'+c.id+'.svg" target="_blank" aria-label="Ampliar: '+esc(c.titulo)+'"><img src="figuras/'+c.id+'.svg" alt="'+esc(c.titulo)+ '" loading="lazy"></a><figcaption>'+esc(c.leitura)+'</figcaption></figure>';
 });
 const fieldLabels={id_municipio:'Código do município',municipio:'Município',cnpj_raiz_8:'Raiz do CNPJ',entidade:'Consórcio',ano:'Ano',populacao_ibge:'População',valor_total:'Pagamento (R$)',n_transacoes:'Registros MIDES',ano_abertura:'Ano de abertura',origem_universo:'Origem no cadastro',grupo_escopo:'Escopo',tem_registro_mides:'Há registro MIDES',presente_mides:'Pagamento positivo',valor_por_habitante:'R$ por habitante',evento_movimento:'Movimento financeiro',polo_direto_identificado:'Polo direto (0/1)',elegivel_gravitacional_v1:'Entra na tabela direta',classificacao_oferta:'Classificação da oferta',alerta_temporal:'Alerta temporal',n_destinos_clinicos_dezembro:'Unidades clínicas',n_municipios_clinicos_dezembro:'Municípios com clínica',servicos_sus_clinicos_soma_unidades:'Serviços SUS',profissionais_sus_clinicos_soma_unidades:'Profissionais SUS',horas_sus_clinicas_soma_registros:'Horas SUS',leitos_sus_clinicos:'Leitos SUS',tempo_minimo_min:'Menor tempo (min)',tempo_mediano_min:'Tempo mediano (min)',tempo_maximo_min:'Maior tempo (min)',distancia_minima_km:'Km até o destino de menor tempo',destino_clinico_mais_proximo_id:'Código do destino de menor tempo'};
-function valueText(v,key){if(v===null||v===undefined)return 'Não disponível';if(key==='ano'||key==='ano_abertura')return String(v);if(typeof v==='boolean')return v?'Sim':'Não';if(typeof v==='number')return fmt(v,['valor_total','valor_por_habitante','distancia_minima_km'].includes(key)?2:key.startsWith('tempo_')?1:0);return v;}
+function valueText(v,key){if(v===null||v===undefined)return 'Não disponível';if(key==='ano'||key==='ano_abertura')return String(v);if(typeof v==='boolean')return v?'Sim':'Não';if(typeof v==='number')return fmt(v,['valor_total','valor_por_habitante','valor_credor_conflitante','distancia_minima_km'].includes(key)?2:key.startsWith('tempo_')?1:0);return v;}
+fieldLabels.conflito_credor_mides='Conflito de credor';fieldLabels.valor_credor_conflitante='Valor com conflito (R$)';
+$('creditor-audit').innerHTML=table(D.auditoria,[['municipio','Município'],['entidade','Consórcio pelo CNPJ'],['ano','Ano'],['nomes','Nome no MIDES'],['valor_conflitante','Valor sinalizado',cash]]);
 const dict=D.overview.variables.map(v=>'<div class="variable"><b>'+esc(fieldLabels[v.variavel]||v.variavel)+'</b><code>'+esc(v.variavel)+'</code><p>'+esc(v.definicao)+'</p><small>'+ (v.tabela==='ambas'?'Nas duas tabelas':'Somente na direta')+'</small></div>').join('');
 $('variable-list').innerHTML=dict;$('query-dictionary').innerHTML=dict;
 $('base-stats').innerHTML=D.overview.stats.map(s=>'<article><h3>'+ (s.base==='financeira'?'Financeira':'Direta, com CNES e tempo')+'</h3><strong class="base-size">'+fmt(s.linhas)+' <small>linhas</small></strong><p>'+s.colunas+' variáveis · '+s.consorcios+' consórcios · '+s.municipios+' municípios</p><dl><div><dt>Linhas com pagamento</dt><dd>'+fmt(s.pagas)+'</dd></div><div><dt>Sem pagamento positivo</dt><dd>'+fmt(s.zeros)+' ('+fmt(s.zeros/s.linhas*100,2)+'%)</dd></div><div><dt>Valor no período</dt><dd>'+cash(s.valor)+'</dd></div><div><dt>Combinações de consórcio e ano</dt><dd>'+fmt(s.entidades_ano)+'</dd></div></dl></article>').join('');
@@ -90,7 +92,7 @@ function mapMarkup(){
 function showMunicipality(){
  if(!selectedCode){$('map-selection').textContent='Selecione um município no mapa ou na lista para consultar o pagamento.';return;}
  const p=D.polys.find(p=>p.code===selectedCode),r=atlasPaid.find(r=>r.codigo_ibge_6===selectedCode);
- $('map-selection').innerHTML='<strong>'+esc(p.name)+' · '+year+'</strong>'+(r?cash(r.valor)+' em '+fmt(r.n_transacoes)+' registros financeiros.':'Sem pagamento positivo observado a este consórcio no ano.');
+ $('map-selection').innerHTML='<strong>'+esc(p.name)+' · '+year+'</strong>'+(r?cash(r.valor)+' em '+fmt(r.n_transacoes)+' registros financeiros.'+(r.conflito_credor_mides?' Alerta: nome do credor conflita com o CNPJ. Valor preservado, vínculo sob verificação.':''):'Sem pagamento positivo observado a este consórcio no ano.');
 }
 function drawAtlas(){
  root=$('atlas-entity').value;year=$('atlas-year').value;currentEntity=D.entities.find(e=>e.raiz===root);
@@ -103,6 +105,7 @@ function drawAtlas(){
  $('atlas-name').textContent=currentEntity.rotulo;$('atlas-title-year').textContent=year;$('atlas-description').textContent=currentEntity.nome;
  $('atlas-scope').textContent=clinical?'Tabela financeira e direta':'Somente tabela financeira';
  $('atlas-notice').textContent='Pagamentos e unidades do consórcio no mesmo ano. CNES de dezembro.'+(!clinical?' Não há clínica direta identificada para compor a tabela direta.':'')+(ledger?.alerta_temporal==='TRUE'?' Há alerta de variação cadastral durante o ano.':'')+(unlocated?' '+unlocated+' unidade(s) sem localização.':'');
+ const flagged=atlasPaid.filter(p=>p.conflito_credor_mides);if(flagged.length)$('atlas-notice').textContent+=' '+flagged.length+' município(s) com pagamento sob conflito de credor, mantido no total; consulte o município no mapa.';
  $('side-period').textContent='Dados de '+year;
  $('atlas-numbers').innerHTML='<div class="wide"><strong>'+million(atlasPaid.reduce((s,r)=>s+r.valor,0))+'</strong><span>pagamento na v1, em reais nominais</span></div><div><strong>'+atlasPaid.length+'</strong><span>municípios pagadores</span></div><div><strong>'+selectedUnits.length+'</strong><span>unidades selecionadas</span></div>';
  $('capacity-rows').innerHTML=[['Unidades clínicas','unidades'],['Profissionais SUS','profissionais'],['Serviços/classificações SUS','servicos'],['Horas SUS cadastradas','horas']].map(([label,key])=>'<div class="profile-row"><span>'+label+'</span><strong>'+(clinical?fmt(clinical[key]):'Não disponível')+'</strong></div>').join('');
@@ -113,7 +116,7 @@ function drawAtlas(){
  $('map-municipality').value=selectedCode;showMunicipality();$('tip').style.display='none';
  $('main-map').querySelectorAll('[data-code]').forEach(p=>{p.addEventListener('click',()=>{selectedCode=p.dataset.code;drawAtlas();});p.addEventListener('pointermove',e=>{
  const m=D.polys.find(x=>x.code===p.dataset.code),paid=atlasPaid.find(x=>x.codigo_ibge_6===p.dataset.code);
- $('tip').innerHTML='<b>'+esc(m.name)+'</b>'+(paid?cash(paid.valor):'Sem pagamento positivo observado');
+ $('tip').innerHTML='<b>'+esc(m.name)+'</b>'+(paid?cash(paid.valor)+(paid.conflito_credor_mides?' · conflito de credor':''):'Sem pagamento positivo observado');
  $('tip').style.cssText='display:block;left:'+Math.max(8,Math.min(e.clientX+12,innerWidth-260))+'px;top:'+Math.max(8,Math.min(e.clientY+12,innerHeight-85))+'px';
  });p.addEventListener('pointerleave',()=>{$('tip').style.display='none';});});
 }
@@ -147,7 +150,7 @@ function renderQuery(){
 }
 $('query-prev').onclick=()=>{queryPage--;renderQuery();};$('query-next').onclick=()=>{queryPage++;renderQuery();};
 $('query-load').onclick=async()=>{
- const base=$('query-base').value,yr=$('query-year').value,entity=$('query-entity').value,mun=$('query-municipality').value,paid=$('query-paid').value;
+ const base=$('query-base').value,yr=$('query-year').value,entity=$('query-entity').value,mun=$('query-municipality').value,paid=$('query-paid').value,conflict=$('query-conflict').value;
  const controls=[...document.querySelectorAll('.query-controls select'),$('query-load')];controls.forEach(e=>e.disabled=true);$('query-status').textContent='Carregando as linhas da base…';
  queryRows=[];queryColumns=[];queryPage=0;renderQuery();
  // Liberar a outra tabela limita a memoria quando o leitor troca de base.
@@ -156,8 +159,8 @@ $('query-load').onclick=async()=>{
   const years=yr==='all'?Array.from({length:8},(_,i)=>2014+i):[+yr];
   for(const y of years){
    const chunk=await loadChunk(base,y);queryColumns=chunk.columns;
-   const ci=queryColumns.indexOf('cnpj_raiz_8'),mi=queryColumns.indexOf('id_municipio'),vi=queryColumns.indexOf('valor_total');
-   for(const row of chunk.rows)if((!entity||row[ci]===entity)&&(!mun||String(row[mi]).slice(0,6)===mun)&&(!paid||(paid==='yes'?row[vi]>0:row[vi]===0)))queryRows.push(row);
+   const ci=queryColumns.indexOf('cnpj_raiz_8'),mi=queryColumns.indexOf('id_municipio'),vi=queryColumns.indexOf('valor_total'),ai=queryColumns.indexOf('conflito_credor_mides');
+   for(const row of chunk.rows)if((!entity||row[ci]===entity)&&(!mun||String(row[mi]).slice(0,6)===mun)&&(!paid||(paid==='yes'?row[vi]>0:row[vi]===0))&&(!conflict||row[ai]===true))queryRows.push(row);
   }
   renderQuery();$('query-status').textContent=fmt(queryRows.length)+(queryRows.length===1?' linha encontrada':' linhas encontradas')+' · '+queryColumns.length+' variáveis · '+(yr==='all'?'2014–2021':yr)+'. Os cabeçalhos mostram o significado e o nome original de cada coluna.';
  }catch(error){$('query-status').textContent=error.message;}finally{controls.forEach(e=>e.disabled=false);}
@@ -165,4 +168,6 @@ $('query-load').onclick=async()=>{
 const pages=['panorama','construcao','pagamentos','capacidade','atlas','consulta','modelo'];
 function switchPage(page){document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.page===page)));pages.forEach(p=>$(p).hidden=p!==page);$('tip').style.display='none';if(page==='atlas')drawAtlas();window.scrollTo({top:0,behavior:'instant'});}
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>switchPage(b.dataset.page));
+function followSectionLink(){const section=location.hash.slice(1);if(pages.includes(section))switchPage(section);}
+window.addEventListener('hashchange',followSectionLink);followSectionLink();
 let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if(!$('atlas').hidden)drawAtlas();},120);});

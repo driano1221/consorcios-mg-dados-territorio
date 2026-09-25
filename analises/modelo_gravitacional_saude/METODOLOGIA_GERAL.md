@@ -1,9 +1,91 @@
 # Metodologia Geral - Modelo Gravitacional De Saude
 
-> Estado vigente: v1 fechada em 24/09/2026 para o nucleo financeiro e a oferta
+> Estado vigente: v1 revisada em 25/09/2026 para o nucleo financeiro e a oferta
 > clinica direta de dezembro. Comece pelo README e pela secao final
 > "Fechamento Da Base V1". As secoes anteriores preservam o historico;
 > nao exigem reabrir todas as pendencias para utilizar esta entrega.
+
+## Propagacao Da Auditoria Para A V1 E Interface: 25/09
+
+A auditoria 33-35 foi incorporada aos produtos de consulta, sem nova coleta.
+A entrega anterior completa esta em
+`outputs/auditoria_alternativas/antes_propagacao_2026_09_25/`: bases,
+manifestos, visuais, piloto fracional e atlas. As fontes brutas e o painel
+integrado anterior do script 15 permanecem intactos como camadas historicas.
+Para a v1 vigente, usar o script 25 e o insumo corrigido do 33; nao copiar
+os destinos CNES do painel antigo como se ja contivessem esta revisao.
+
+### O Que Mudou E O Que Permaneceu
+
+| Produto | Antes | Depois |
+|---|---|---|
+| Unidades-ano de dezembro, universo 97 | 1.942 | 1.926; 16 vinculos PF rejeitados |
+| Clinicas na v1 em 2019 | 64, em 54 entidades | 62, nas mesmas 54 entidades |
+| Financeira v1 | 491.328 x 19 | 491.328 x 21; mesmos valores e chaves |
+| Direta v1 | 323.287 x 30 | 323.287 x 32; mesmos valores e chaves |
+| Consulta do atlas, historico + atual | 2.612 registros de unidades por periodo | 2.596; retrato atual de 670 intacto |
+| Unidades por periodo na consulta v1 | 1.914 | 1.898, somente 2014-2021 elegiveis |
+| Aba Modelo | Piloto de participacoes financeiras | Adesao financeira e tres cenarios primeiro; piloto anterior recolhido |
+
+Os campos novos sao `conflito_credor_mides` e `valor_credor_conflitante`.
+Os 17 pares-ano sinalizados pertencem as duas bases: R$ 1.352.846,55,
+ja incluidos no valor total, nunca adicionados novamente. FALSE/zero
+significam nenhum conflito identificado nesta auditoria; nao validacao
+documental de todo credor. Nomes genericos continuam no catalogo de auditoria,
+sem exclusao automatica. O filtro de consulta e os mapas exibem o alerta.
+
+O script 25 recalcula contagens e viagens pelos municipios clinicos validos,
+sem mudar a regra de elegibilidade. As 6.824 linhas CISMARG x municipio x ano
+mudam nas contagens de unidades e municipios de destino. Mudam 927 minimos,
+6.824 medianas e 5.837 maximos de tempo. Distancia e destino de menor tempo
+mudam nos mesmos 927 pares-ano. Nenhum minimo alterado pertence a par pago.
+Horas SUS, profissionais, servicos e leitos nao mudam: os dois consultorios
+tinham zero nessas medidas SUS. Oliveira/6230261 permanece ligado por
+mantenedora valida, mesmo tendo zero horas; nao se excluem unidades por zero.
+
+Os denominadores financeiros ficam iguais: 10.735 pares-ano pagos e
+R$ 3.315.638.156,17 na financeira; 5.612 e R$ 2.865.170.352,56 na direta.
+Portanto, **52,3% das relacoes e 86,4% do valor** continuam corretos.
+As tabelas atuais tem zero celulas nulas, dentro dos recortes escolhidos;
+isso nao significa que toda modalidade ou evidencia institucional foi coletada.
+
+### Modelos E Interface
+
+Scripts 30-32 e 34 reexecutados com as entradas atuais e novos hashes.
+Os quatro modelos principais de adesao e as sensibilidades territoriais
+conservam os resultados da auditoria. O piloto fracional muda porque usa
+o destino de menor tempo, inclusive entre alternativas sem pagamento:
+profissionais + tempo, validacao municipal, principal correto
+78,38% -> **78,52%** e erro de distribuicao 34,08% -> **33,00%**.
+Isso e efeito da correcao dos dados, nao evidencia de nova formula superior.
+As metricas do piloto antigo nao medem o desempenho da adesao binaria.
+
+A aba atual explica a selecao 73 -> 54 -> 53, ampliacao para 62,
+as transformacoes de populacao/horas/distancia, Brier municipal/espacial,
+quatro exemplos reais e perdas ao restringir alternativas. Uberaba aparece
+como probabilidade >99,99%, sem arredondar para certeza. O relato oficial
+continua contradizendo essa previsao; o problema nao foi declarado resolvido.
+As sete abas mantem a identidade visual aprovada; os 814.615 registros das
+duas tabelas continuam consultaveis com todos os campos e filtro de conflito.
+
+### Verificacao E Limites Restantes
+
+Teste 16 confere todas as chaves/valores e reconstroi as rotas CISMARG nos
+oito anos diretamente da matriz. Teste 22 compara a entrega preservada
+com a revisada, limita mudancas as sete colunas esperadas e duas novas,
+confere flags e snapshot por SHA256. Teste 17 compara todas as celulas
+publicadas na consulta com os CSVs. Testes 18-21 verificam os modelos,
+incluindo 12 reestimativas independentes e 320 treinos territoriais.
+Teste 12 verifica o atlas. Revisao visual em desktop 1440 px e celular
+390 px, sem erro JavaScript nem transbordamento horizontal da pagina;
+tabelas largas conservam rolagem interna.
+
+Permanece a investigacao dirigida dos tres pares com conflito e dos seis
+zeros prioritarios sem explicacao institucional. Nenhum documento novo foi
+coletado nesta propagacao. Sedes historicas, acesso institucional e excesso
+de confianca intramunicipal continuam abertos. Sem deploy no Shiny, sem
+troca de formula e sem coleta MIDES nova. A versao local e seu ZIP foram
+regenerados; codigo e documentacao acompanham a revisao no repositorio.
 
 > Marco de 16/09/2026: filtro funcional concluido, com 63 destinos
 > clinicos fixos, 20 estruturas fixas nao clinicas e 587 moveis nas 670 unidades.

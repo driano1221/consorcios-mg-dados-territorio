@@ -34,8 +34,8 @@ entities <- f |> summarise(pares_pagos=sum(adesao_financeira),
  valor_pago=sum(valor_total),.by=c(cnpj_raiz_8,entidade))
 seats <- read_csv(inputs[3]) |> select(cnpj_raiz_8,sede_cadastral,id_sede)
 stopifnot(nrow(seats)==73,!anyDuplicated(seats$cnpj_raiz_8))
-# O script 33 valida identificadores contra os oito ST brutos. A v1 fica
-# preservada como entrega anterior; cenarios novos usam o insumo corrigido.
+# O script 33 valida identificadores contra os oito ST brutos. Cenarios e
+# v1 revisada usam esse mesmo insumo; a primeira entrega esta arquivada.
 units <- read_csv(inputs[8]) |>
  filter(ano=="2019") |> semi_join(entities,by="cnpj_raiz_8") |>
  mutate(horas_sus=as.numeric(carga_horaria_sus)) |>

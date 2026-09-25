@@ -54,7 +54,8 @@ function(el, x, data) {
       const p=layer.feature.properties, value=payByCode[p.codigo_ibge_6];
       layer.setStyle({color:'#b6c6d2',weight:.45,fillColor:document.getElementById('payments').checked&&value>0?'#afd8ec':'#fff',fillOpacity:1});
       layer.bindTooltip(esc(p.municipio));
-      layer.bindPopup(`<b>${esc(p.municipio)}</b><br>${current?'MIDES: sem série 2026 neste atlas.':value>0?`Pagamento em ${period}: ${money(value)}`:`Sem pagamento positivo observado em ${period}.`}<br><small>Pagamento não comprova filiação jurídica ou uso de serviços.</small>`);
+      const conflict=paid.find(r=>r.codigo_ibge_6===p.codigo_ibge_6)?.conflito_credor_mides;
+      layer.bindPopup(`<b>${esc(p.municipio)}</b><br>${current?'MIDES: sem série 2026 neste atlas.':value>0?`Pagamento em ${period}: ${money(value)}`:`Sem pagamento positivo observado em ${period}.`}${conflict?'<br><b>Alerta: nome e documento do credor conflitantes. Valor mantido sob verificação.</b>':''}<br><small>Pagamento não comprova filiação jurídica ou uso de serviços.</small>`);
       if(document.getElementById('cnm').checked&&cnmCodes.includes(p.codigo_ibge_6)) {
         L.geoJSON(layer.feature,{interactive:false,style:{color:'#c4850d',weight:2,fillOpacity:0,dashArray:'4 3'}}).addTo(outlines);
       }
@@ -78,6 +79,8 @@ function(el, x, data) {
       'CNES atual não coletado para esta entidade da revisão externa. Selecione 2014–2021 para ver a triagem histórica. O contador vazio não significa ausência de atendimento.' :
       `${current?'Retrato CNES atual; sem pagamento de 2026 neste atlas.':'CNES de dezembro; unidades presentes somente em outros meses não aparecem aqui.'} ${allUnits.length===0?'Não foi localizada unidade diretamente vinculada neste recorte; isso não demonstra capacidade zero. ':''}Pontos são municipais. Unidades móveis não definem destinos fixos nem área de atendimento.`;
     const counts=Object.entries(labels).map(([k,l])=>`${l}: ${allUnits.filter(u=>u.funcao===k).length}`).join(' · ');
+    const flagged=paid.filter(p=>p.conflito_credor_mides);
+    if(flagged.length)document.getElementById('atlas-notice').textContent+=` Há ${flagged.length} pagamento(s) municipal(is) com conflito entre nome e documento do credor. Valores mantidos; o vínculo precisa de verificação documental.`;
     document.getElementById('atlas-detail').innerHTML=`<h2>${esc(entity.sigla)} · ${esc(period)}</h2>
       <p>${esc(entity.nome)}<br><span class="muted">CNPJ ${esc(entity.cnpj)} · sede cadastral: ${esc(entity.sede)} · ${esc(entity.grupo)}</span></p>
       <p>${esc(counts)}</p><p><b>Tratamento da revisão:</b> ${esc(entity.decisao.replaceAll('_',' '))}</p>

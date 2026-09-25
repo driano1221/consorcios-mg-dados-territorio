@@ -7,6 +7,19 @@ deve criar uma segunda numeracao de etapas.
 
 ## Leitura Do Estado
 
+**Estado vigente em 25/09:** correcoes propagadas para v1, atlas e interface.
+Derivados anteriores preservados em snapshot. Consultorios PF excluidos do
+historico e rotas refeitas; 17 pares-ano sinalizados nas duas bases e na
+consulta. A aba Modelo agora abre a adesao financeira (53/62 consorcios);
+o piloto fracional permanece identificado como anterior. Testes conferem
+valores preservados, destinos, previsoes e interface em desktop/celular.
+
+**Proximo marco:** investigacao documental dirigida dos tres pares com
+conflito de credor e dos seis zeros prioritarios ainda sem explicacao.
+Registrar o que tiver evidencia e o que permanecer aberto. Acesso
+institucional, sedes historicas e excesso de confianca em distancia zero
+continuam limites; nao adotar corte geografico ou nova formula por conveniencia.
+
 **Estado vigente apos auditoria e testes territoriais (24/09):** os dois
 encaminhamentos autorizados foram executados nos scripts 33-35: auditoria
 dos maiores erros e sensibilidades de alternativas. Conferidos 1.942
@@ -22,13 +35,8 @@ principais e sensibilidade documental passaram pelo teste 21 (320 treinos).
 Nao foi adotado um corte territorial definitivo; mesma microrregiao perde
 28,9% dos vinculos pagos clinicos. Detalhes ao final da metodologia.
 
-**Proximo marco:** republicar os derivados v1 e depois a interface com a
-correcao dos dois CNES, marcadores de conflito financeiro e resultados
-auditados. A v1/atlas/piloto antigos ainda contem os falsos vinculos cadastrais;
-nao os apresentar como ja corrigidos. O recorte financeiro e os valores brutos
-foram preservados. Buscar documentos dos credores conflitantes e dos seis
-zeros prioritarios ainda sem explicacao institucional, em trabalho dirigido.
-Sem nova formula, novo estado ou coleta geral para perseguir melhor ajuste.
+O encaminhamento de propagar essa auditoria foi concluido em 25/09.
+Os paragrafos seguintes preservam o historico das decisoes.
 
 **Marco anterior, apos estimacao autorizada (script 32):** vinculo financeiro
 binario estimado em 2019, com 853 municipios e comparacao clinicas/sedes nos
@@ -38,7 +46,7 @@ agrupados por municipio/consorcio e exemplos exportados. Distancia mostra
 associacao forte; horas acrescentam pouco no recorte clinico. Distancia zero
 gera excesso de confianca em alguns pares; teste intramunicipal preservado
 como sensibilidade posterior, sem ganho consistente. Resultados e limites
-na ultima secao da metodologia. A aba visual ainda mostra o piloto fracional.
+na metodologia. Naquele marco a aba visual ainda mostrava o piloto fracional.
 
 **Encaminhamento historico apos a reuniao de 24/09:**
 adesao operacional = pagamento MIDES positivo, permitindo varios vinculos

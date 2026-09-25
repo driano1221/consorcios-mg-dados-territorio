@@ -12,7 +12,10 @@ inputs <- file.path(out, c("painel_anual_integrado_saude_mg_2014_2021.rds",
   "conciliacao_lacunas_com_revisao_prioritaria_saude.csv",
   "diagnostico_necessidade_mensal_entidades_saude.csv",
   "universo_saude_mg_entidades.csv", "revisao_fora_84_resultado.csv",
-  "matriz_suficiencia_recortes_saude.csv"))
+  "matriz_suficiencia_recortes_saude.csv",
+  "auditoria_alternativas/unidades_cnes_dezembro_corrigidas.csv",
+  "auditoria_alternativas/conflitos_nome_documento.csv",
+  "rotas_mg_distbrasil_cache.rds"))
 input_manifest <- data.frame(papel = "entrada", arquivo = inputs,
   sha256 = vapply(inputs, sha, character(1)), bytes = file.info(inputs)$size,
   row.names = NULL)
@@ -20,25 +23,31 @@ manifest_path <- file.path(dest, "manifesto.csv")
 if (file.exists(manifest_path)) {
   previous <- read_table(manifest_path)
   previous <- previous[previous$papel == "entrada", ]
-  stopifnot(identical(previous$arquivo, input_manifest$arquivo),
-            identical(previous$sha256, input_manifest$sha256))
+  if (!identical(previous$arquivo, input_manifest$arquivo)) {
+    # Migracao explicita da primeira entrega, preservada integralmente.
+    archived <- file.path(out, "auditoria_alternativas/antes_propagacao_2026_09_25/base_v1/manifesto.csv")
+    stopifnot("--revisar-cnes" %in% commandArgs(TRUE), file.exists(archived),
+      sha(archived) == sha(manifest_path),
+      identical(previous$arquivo, head(input_manifest$arquivo, 8L)),
+      identical(previous$sha256, head(input_manifest$sha256, 8L)))
+  } else stopifnot(identical(previous$sha256, input_manifest$sha256))
 }
 # A mudanca de entradas exige nova versao: nao substituir silenciosamente a v1.
 p <- readRDS(inputs[1])
 stopifnot(nrow(p) == 661928L, ncol(p) == 60L,
           !anyDuplicated(p[c("id_municipio", "cnpj_raiz_8", "ano")]))
-units <- bind_rows(lapply(inputs[2:3], read_table)) |>
+units <- read_table(inputs[9]) |>
   mutate(ano = as.integer(ano), across(c(leitos_sus,
     n_servicos_especializados_sus, n_profissionais_sus_distintos,
     carga_horaria_sus), as.numeric))
-stopifnot(nrow(units) == 1942L,
+stopifnot(nrow(units) == 1926L,
   !anyDuplicated(units[c("cnpj_raiz_8", "ano", "cnes")]),
   all(units$competencia_referencia == paste0(units$ano, "12")),
   !anyNA(units[c("leitos_sus", "n_servicos_especializados_sus",
     "n_profissionais_sus_distintos", "carga_horaria_sus")]))
 clinical <- units |> filter(funcao_assistencial == "destino_clinico_fixo")
 capacity <- clinical |> group_by(cnpj_raiz_8, ano) |>
-  summarise(n_unidades = n(), servicos = sum(n_servicos_especializados_sus),
+  summarise(n_unidades = n(), n_municipios = n_distinct(codigo_ibge_6), servicos = sum(n_servicos_especializados_sus),
     profissionais = sum(n_profissionais_sus_distintos), leitos = sum(leitos_sus),
     horas_sus_clinicas_soma_registros = sum(carga_horaria_sus), .groups = "drop")
 check_capacity <- p |> filter(clinica_direta_dezembro) |>
@@ -47,10 +56,49 @@ check_capacity <- p |> filter(clinica_direta_dezembro) |>
     leitos_sus_clinicos) |>
   left_join(capacity, by = c("cnpj_raiz_8", "ano"), relationship = "one-to-one")
 stopifnot(nrow(check_capacity) == nrow(capacity),
-  all(check_capacity$n_destinos_clinicos_dezembro == check_capacity$n_unidades),
+  all(check_capacity$n_destinos_clinicos_dezembro >= check_capacity$n_unidades),
   all(check_capacity$servicos_sus_clinicos_soma_unidades == check_capacity$servicos),
   all(check_capacity$profissionais_sus_clinicos_soma_unidades == check_capacity$profissionais),
   all(check_capacity$leitos_sus_clinicos == check_capacity$leitos))
+
+# Recalcular a oferta e todas as rotas com municipios clinicos validos.
+# O painel anterior permanece como fonte financeira e arquivo historico.
+municipios <- p |> distinct(id_municipio) |>
+  mutate(codigo_ibge_6 = substr(id_municipio, 1, 6))
+destinations <- clinical |> distinct(cnpj_raiz_8, ano, codigo_ibge_6) |>
+  left_join(municipios |> rename(destino_id = id_municipio),
+    by = "codigo_ibge_6", relationship = "many-to-one")
+stopifnot(!anyNA(destinations$destino_id))
+road <- readRDS(inputs[11])
+routes <- merge(municipios |> select(id_municipio), destinations, by = NULL) |>
+  mutate(a = pmin(id_municipio, destino_id), b = pmax(id_municipio, destino_id)) |>
+  left_join(road, by = c("a", "b"), relationship = "many-to-one") |>
+  mutate(tempo_min = if_else(id_municipio == destino_id, 0, tempo_min),
+    distancia_km = if_else(id_municipio == destino_id, 0, distancia_km))
+stopifnot(!anyNA(routes$tempo_min), !anyNA(routes$distancia_km))
+times <- routes |> group_by(id_municipio, cnpj_raiz_8, ano) |>
+  arrange(tempo_min, destino_id, .by_group = TRUE) |>
+  summarise(tempo_minimo_min = first(tempo_min), tempo_mediano_min = median(tempo_min),
+    tempo_maximo_min = max(tempo_min), distancia_minima_km = first(distancia_km),
+    destino_clinico_mais_proximo_id = first(destino_id), .groups = "drop")
+cap_columns <- c("n_destinos_clinicos_dezembro", "n_municipios_clinicos_dezembro",
+  "servicos_sus_clinicos_soma_unidades", "profissionais_sus_clinicos_soma_unidades", "leitos_sus_clinicos")
+corrected_cap <- capacity |> transmute(cnpj_raiz_8, ano,
+  n_destinos_clinicos_dezembro = as.integer(n_unidades),
+  n_municipios_clinicos_dezembro = as.integer(n_municipios),
+  servicos_sus_clinicos_soma_unidades = servicos,
+  profissionais_sus_clinicos_soma_unidades = profissionais, leitos_sus_clinicos = leitos)
+p <- p |> select(-all_of(c(cap_columns, names(times)[4:8]))) |>
+  left_join(corrected_cap, by = c("cnpj_raiz_8", "ano"), relationship = "many-to-one") |>
+  left_join(times, by = c("id_municipio", "cnpj_raiz_8", "ano"), relationship = "one-to-one")
+stopifnot(identical(p$clinica_direta_dezembro, !is.na(p$n_destinos_clinicos_dezembro)))
+conflicts <- read_table(inputs[10]) |> mutate(ano = as.integer(ano),
+  conflito_credor_mides = TRUE, valor_credor_conflitante = as.numeric(valor_conflitante)) |>
+  select(id_municipio, cnpj_raiz_8, ano, conflito_credor_mides, valor_credor_conflitante)
+stopifnot(nrow(conflicts) == 17L, !anyDuplicated(conflicts[1:3]))
+p <- p |> left_join(conflicts, by = c("id_municipio", "cnpj_raiz_8", "ano"), relationship = "one-to-one") |>
+  mutate(conflito_credor_mides = coalesce(conflito_credor_mides, FALSE),
+    valor_credor_conflitante = coalesce(valor_credor_conflitante, 0))
 
 original <- read_table(inputs[6])
 external <- read_table(inputs[7])
@@ -91,7 +139,8 @@ common <- c("id_municipio", "municipio", "cnpj_raiz_8", "entidade", "ano",
   "origem_universo", "grupo_escopo", "ano_abertura", "populacao_ibge",
   "valor_total", "n_transacoes", "tem_registro_mides", "presente_mides",
   "valor_por_habitante", "evento_movimento", "polo_direto_identificado",
-  "elegivel_gravitacional_v1", "classificacao_oferta", "alerta_temporal")
+  "elegivel_gravitacional_v1", "classificacao_oferta", "alerta_temporal",
+  "conflito_credor_mides", "valor_credor_conflitante")
 extra <- c("n_destinos_clinicos_dezembro", "n_municipios_clinicos_dezembro",
   "servicos_sus_clinicos_soma_unidades", "profissionais_sus_clinicos_soma_unidades",
   "horas_sus_clinicas_soma_registros", "leitos_sus_clinicos", "tempo_minimo_min",
@@ -164,6 +213,8 @@ coverage_vars <- bind_rows(lapply(c("financeira", "gravitacional"), function(nam
       row.names = NULL)
   }))
 dictionary_text <- c(
+  conflito_credor_mides = "TRUE: nome do credor conflita com a entidade identificada pelo CNPJ na auditoria 35. Valores e desfecho preservados; FALSE significa nenhum conflito identificado nessa auditoria, nao validacao documental completa.",
+  valor_credor_conflitante = "Parcela em reais nominais com conflito de nome/documento; ja contida em valor_total, nunca somar novamente. Zero significa nenhum valor sinalizado nessa auditoria.",
   id_municipio = "Codigo IBGE de sete digitos; importar como texto.",
   municipio = "Nome do municipio de origem.",
   cnpj_raiz_8 = "Raiz CNPJ de oito digitos; matriz/filiais consolidadas; importar como texto.",
@@ -199,11 +250,13 @@ dictionary <- data.frame(variavel = names(gravity),
   tabela = ifelse(names(gravity) %in% common, "ambas", "gravitacional"),
   tipo_r = vapply(gravity, function(x) class(x)[1], character(1)),
   definicao = unname(dictionary_text[names(gravity)]),
-  fonte = ifelse(names(gravity) == "horas_sus_clinicas_soma_registros",
-    "CNES PF; unidades historicas scripts 09/14; soma script 25",
+  fonte = ifelse(names(gravity) %in% c("conflito_credor_mides", "valor_credor_conflitante"),
+    "MIDES; auditoria 35, conflitos_nome_documento.csv; sem alterar o pagamento",
+    ifelse(names(gravity) %in% extra,
+    "CNES dezembro corrigido pelo script 33; matriz distbrasil; agregacao script 25",
     ifelse(names(gravity) %in% c("entidade", "classificacao_oferta", "alerta_temporal"),
       "Cadastros/conciliacao/diagnostico ST; entradas no manifesto",
-      "Painel anual script 15; derivacao/rotulo script 25; METODOLOGIA_GERAL.md")))
+      "Painel anual script 15; derivacao/rotulo script 25; METODOLOGIA_GERAL.md"))))
 dir.create(dest, recursive = TRUE, showWarnings = FALSE)
 save_table <- function(x, name) write.csv(x, file.path(dest, paste0(name, ".csv")),
   row.names = FALSE, na = "", fileEncoding = "UTF-8")

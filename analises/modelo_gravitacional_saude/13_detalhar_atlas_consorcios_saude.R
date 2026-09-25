@@ -56,6 +56,12 @@ payments <- bind_rows(financial,extra) |>
   filter(cnpj_raiz_8 %in% c(original$cnpj_raiz_8,front$cnpj_raiz_8),ano %in% 2014:2021) |>
   summarise(valor=sum(valor_total),n_transacoes=sum(n_transacoes),.by=c(cnpj_raiz_8,codigo_ibge_6,ano))
 positive <- payments |> filter(valor>0)
+conflicts <- read_chars('auditoria_alternativas/conflitos_nome_documento.csv') |>
+  transmute(cnpj_raiz_8, codigo_ibge_6=substr(id_municipio,1,6), ano=as.integer(ano),
+    conflito_credor_mides=TRUE, valor_credor_conflitante=as.numeric(valor_conflitante))
+positive <- positive |> left_join(conflicts,by=c('cnpj_raiz_8','codigo_ibge_6','ano'),relationship='one-to-one') |>
+  mutate(conflito_credor_mides=coalesce(conflito_credor_mides,FALSE),
+    valor_credor_conflitante=coalesce(valor_credor_conflitante,0))
 summary <- positive |> summarise(n_anos_mides=n_distinct(ano),n_municipios_mides=n_distinct(codigo_ibge_6),
   valor_mides=sum(valor),anos_mides=paste(sort(unique(ano)),collapse=' | '),.by=cnpj_raiz_8)
 audit <- front |> left_join(decisions,by='cnpj_raiz_8',relationship='one-to-one') |>
@@ -87,12 +93,11 @@ types <- c('04'='Policlinica','05'='Hospital geral','22'='Consultorio isolado','
   '39'='SADT isolado','62'='Hospital/dia','70'='Centro de atencao psicossocial',
   '32'='Unidade movel fluvial','40'='Unidade movel terrestre','42'='Unidade movel pre-hospitalar',
   '64'='Central regulacao','68'='Central gestao saude','76'='Central regulacao medica urgencias','81'='Central regulacao acesso')
-historical <- bind_rows(read_chars('elegibilidade_assistencial_unidades_historicas_saude_mg_2014_2021.csv'),
-  read_chars('fronteira_cnes_unidades_2014_2021.csv')) |>
+historical <- read_chars('auditoria_alternativas/unidades_cnes_dezembro_corrigidas.csv') |>
   transmute(cnpj_raiz_8,ano,cnes,codigo_ibge_6,nome=paste('CNES',cnes),
     tipo=unname(types[tipo_unidade_codigo]),funcao=funcao_assistencial,fonte=paste('DATASUS ST',competencia_referencia))
 units <- bind_rows(current,historical) |> left_join(lookup,by='codigo_ibge_6',relationship='many-to-one')
-stopifnot(nrow(units)==670+1868+74,!anyDuplicated(units[c('cnpj_raiz_8','ano','cnes')]))
+stopifnot(nrow(units)==670+1926,!anyDuplicated(units[c('cnpj_raiz_8','ano','cnes')]))
 write.csv(units,file.path(out,'atlas_unidades_consorcio_periodo.csv'),row.names=FALSE,na='',fileEncoding='UTF-8')
 entities <- bind_rows(
   original |> transmute(raiz=cnpj_raiz_8,cnpj=cnpj_canonico,sigla=sigla_canonica,nome=razao_social_canonica,
@@ -107,7 +112,7 @@ cnm <- read.csv('C:/IPEA/dados cnm/snapshots/2026-08-27/data/base_unificada_cons
 geofile <- file.path(out,'atlas_municipios.geojson')
 st_write(mg,geofile,delete_dsn=TRUE,quiet=TRUE)
 payload <- list(entities=entities,units=units,payments=positive,cnm=cnm,
-               municipalities=fromJSON(geofile,simplifyVector=FALSE),date='16/09/2026')
+               municipalities=fromJSON(geofile,simplifyVector=FALSE),date='25/09/2026')
 write_json(payload,file.path(out,'atlas_dados.json'),auto_unbox=TRUE,na='null',digits=8)
 widget <- leaflet(height=650,options=leafletOptions(preferCanvas=TRUE,minZoom=5,maxZoom=13)) |>
   fitBounds(-51.2,-23.1,-39.6,-14.2) |>

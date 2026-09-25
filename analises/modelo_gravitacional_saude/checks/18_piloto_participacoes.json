@@ -6,12 +6,12 @@
   "positivos": 781,
   "zeros": 37181,
   "coeficientes_R": [
-    0.393931348265997,
-    3.00498144205892
+    0.376093109588315,
+    2.99541205337751
   ],
   "coeficientes_scipy": [
-    0.39393135538416807,
-    3.0049810980250715
+    0.37609283659131904,
+    2.9954083211983344
   ],
   "verificado": "Celulas originais preservadas; participacoes, selecao, softmax e metricas conciliadas; otimizacao independente; gradiente do treino e previsoes dos 10 grupos conferidos; hashes intactos."
 }

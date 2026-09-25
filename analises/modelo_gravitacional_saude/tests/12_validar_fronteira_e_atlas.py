@@ -48,8 +48,8 @@ for source in sources:
     assert hashlib.file_digest(path.open('rb'), 'sha256').hexdigest() == source['sha256']
 
 units = read('atlas_unidades_consorcio_periodo.csv')
-assert len(units) == len({(r['cnpj_raiz_8'], r['ano'], r['cnes']) for r in units}) == 2612
-assert Counter('original' if r['cnpj_raiz_8'] in original else 'externo' for r in units) == {'original': 2538, 'externo': 74}
+assert len(units) == len({(r['cnpj_raiz_8'], r['ano'], r['cnes']) for r in units}) == 2596
+assert Counter('original' if r['cnpj_raiz_8'] in original else 'externo' for r in units) == {'original': 2522, 'externo': 74}
 current = [r for r in units if r['ano'] == 'atual']
 assert len(current) == 670 and sum(bool(r['lat']) for r in current) == 669
 def cismep_clinics(year):

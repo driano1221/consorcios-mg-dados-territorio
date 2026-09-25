@@ -1,5 +1,10 @@
 # Linha Do Tempo Dos Passos - Modelo Gravitacional De Saude
 
+> Atualizacao de 25/09: a auditoria chegou a v1 e aos mapas. O estado atual
+> e a v1 revisada, 21/32 colunas, com conflitos sinalizados; as contagens
+> anteriores abaixo pertencem a cada marco historico. A aba Modelo abre
+> agora adesao financeira, com o piloto antigo em secao recolhida.
+
 > Fechamento v1 de 24/09/2026: passo 7 concluido para duas bases delimitadas,
 > financeira e clinica direta. Pendencias mensais/indiretas ficam documentadas.
 > As contagens abaixo conservam os marcos historicos de cada entrega. A
@@ -659,3 +664,36 @@ os conflitos visiveis. Esta entrega atualizou cenarios/modelos e documentacao;
 a v1/atlas/piloto antigos foram preservados. Fontes, tabelas e testes estao
 localizados no dicionario. A proxima coleta deve ser dirigida aos casos
 pendentes, sem reiniciar a construcao de toda a base.
+
+## 25/09: Da Auditoria Aos Dados Que Aparecem Na Tela
+
+**Auditoria CNES e MIDES -> v1 revisada -> mapas e figuras -> modelos
+regenerados -> consulta com alertas -> verificacao visual.**
+
+Antes, as correcoes estavam nos cenarios do modelo, mas a tela ainda lia
+a v1 original. Preservamos uma copia completa daquela entrega e ligamos
+os geradores ao CNES corrigido. Em 2019 sao 62 clinicas, em vez de 64.
+No historico completo, retiramos 16 registros-ano de dois consultorios PF
+que nao pertenciam ao CISMARG. A unidade legitima de Oliveira foi mantida.
+
+Exemplo: CISMARG em 2019 aparece agora com duas unidades, Oliveira e
+Santo Antonio do Amparo, 25 profissionais SUS e 352 horas SUS cadastradas.
+Os dois consultorios de Uberlandia deixaram de aparecer. Mudaram 927
+minimos de viagem na grade 2014-2021, todos em alternativas sem pagamento.
+Por isso as barras de cobertura seguem em 52,3% das relacoes e 86,4% do valor.
+
+Na mesma tela, selecionar Sao Francisco de Paula-CISMARG/2019 mostra
+R$ 188.969,82 e um alerta: o nome do credor consta como Sometal no MIDES.
+O dinheiro nao foi apagado nem convertido em zero. O filtro de auditoria
+encontra os 17 pares-ano conhecidos; dois sao de 2019.
+
+Igarape-CISMEP conserva R$ 4.740.790,51, duas clinicas, 1.651 horas SUS
+e menor tempo de 15,1 minutos. A aba do modelo mostra agora a probabilidade
+de pagamento desse par, 96,67% na validacao municipal do S1, e a compara
+com erros reais, como Uberaba-CISVALEGRAN. O piloto de participacoes fica
+guardado para consulta, com seus resultados atualizados pela correcao.
+
+Proximo trabalho: buscar evidencia documental para os conflitos e zeros
+ainda sem explicacao. Esta propagacao melhora a consistencia entre dado,
+modelo e tela; nao resolve sozinha elegibilidade institucional ou sedes
+historicas, nem elimina o excesso de confianca em distancia municipal zero.

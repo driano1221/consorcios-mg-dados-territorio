@@ -9,9 +9,9 @@
   "relacoes_financeiras": 10735,
   "relacoes_diretas": 5612,
   "entidades_mapa_v1": 73,
-  "unidades_periodo_v1": 1914,
+  "unidades_periodo_v1": 1898,
   "linhas_consultaveis": 814615,
-  "colunas_financeira": 19,
-  "colunas_direta": 30,
+  "colunas_financeira": 21,
+  "colunas_direta": 32,
   "verificado": "Todas as celulas das duas tabelas consultaveis conciliadas com CSVs v1; escopo anual, valores, fontes, capacidade, tempos, arquivos e manifestos."
 }

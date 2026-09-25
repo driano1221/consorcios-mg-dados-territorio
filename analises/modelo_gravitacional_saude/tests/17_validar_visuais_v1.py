@@ -93,8 +93,8 @@ for original, prepared in zip(expected_units, data['units']):
         assert original[key] == prepared[key]
 assert sum(r['relacoes'] for r in data['absence']) == 5123
 assert all(str(r['ano']) in {str(y) for y in range(2014,2022)} for r in data['units'])
-assert [(s['linhas'],s['colunas'],s['nulos']) for s in data['overview']['stats']] == [(491328,19,0),(323287,30,0)]
-assert len(data['overview']['variables']) == 30
+assert [(s['linhas'],s['colunas'],s['nulos']) for s in data['overview']['stats']] == [(491328,21,0),(323287,32,0)]
+assert len(data['overview']['variables']) == 32
 time_rows = list(read(DEST / 'dados/tempos_relacoes.csv', ';'))
 assert len(time_rows) == 5612 and max(dec(r['tempo_minimo_min']) for r in time_rows) == Decimal('761.3')
 assert sum(dec(r['tempo_minimo_min']) == 0 for r in time_rows) == 368
@@ -163,7 +163,7 @@ with ZipFile(OUT / 'visuais_v1.zip') as bundle:
 
 report={'status':'OK','figuras_na_consulta':5,'figuras_de_origem':20,'formatos':['PNG 300 dpi','SVG'],'relacoes_financeiras':10735,
         'relacoes_diretas':5612,'entidades_mapa_v1':73,'unidades_periodo_v1':len(data['units']),
-        'linhas_consultaveis':814615,'colunas_financeira':19,'colunas_direta':30,
+        'linhas_consultaveis':814615,'colunas_financeira':21,'colunas_direta':32,
         'verificado':'Todas as celulas das duas tabelas consultaveis conciliadas com CSVs v1; escopo anual, valores, fontes, capacidade, tempos, arquivos e manifestos.'}
 (HERE / 'checks/17_visuais_v1.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps(report,ensure_ascii=False))

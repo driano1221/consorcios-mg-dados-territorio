@@ -1,8 +1,50 @@
 # Dicionario Tecnico - Modelo Gravitacional De Saude
 
-> Entrega vigente: `outputs/base_v1/`, fechada em 24/09/2026. A secao final
+> Entrega vigente: `outputs/base_v1/`, revisada em 25/09/2026. A secao final
 > "Entrega V1" localiza as duas bases, o dicionario de colunas e a reproducao.
 > As secoes datadas anteriores documentam as fontes e camadas preservadas.
+
+## Revisao V1 De 25/09: Fontes, Arquivos E Reproducao
+
+O script 25 agora le `auditoria_alternativas/unidades_cnes_dezembro_corrigidas.csv`
+e `conflitos_nome_documento.csv`, alem das fontes anteriores e matriz de rotas.
+Acrescenta `conflito_credor_mides` (logico) e `valor_credor_conflitante` (reais,
+parcela ja incluida no total). Recalcula destinos e viagens sem alterar MIDES.
+O dicionario exportado acompanha as 32 colunas da direta e 21 da financeira.
+Manifestos e SHA256 distinguem esta revisao da primeira entrega.
+
+Antes da primeira migracao, preservar integralmente `base_v1/`, `visuais_v1/`,
+`piloto_participacoes/` e arquivos do atlas em
+`outputs/auditoria_alternativas/antes_propagacao_2026_09_25/`.
+O script 25 so aceita mudar as oito entradas da primeira entrega para as
+onze atuais com `--revisar-cnes` e manifesto antigo identico ao preservado.
+Depois da migracao, execucoes normais exigem os hashes da revisao atual.
+Nao apagar o manifesto para contornar uma divergencia.
+
+Ordem da propagacao (13/26/27 e teste 16 partem da raiz do repo; demais,
+da pasta do modelo):
+
+1. 33 -> 35 (cache) para obter os insumos auditados, caso ainda nao existam.
+2. 13 (sem consulta MIDES) -> 25 `--revisar-cnes` na primeira migracao.
+3. 26 -> 27, preparando dados e renderizando figuras corrigidas.
+4. 30; 31 -> 32 -> 34. Reestimar e registrar hashes atuais dos insumos.
+5. 35 pelo cache se o hash da financeira mudou; nenhuma consulta nova.
+6. 28, empacotando HTML e ZIP depois de todos os resultados atuais.
+7. Testes 12, 16, 17, 18, 19, 20, 21 e 22; `22 --browser` verifica as sete
+   abas, filtros de conflitos e dimensoes desktop/celular. Screenshots locais
+   ficam em `outputs/visuais_v1/qa_2026_09_25/`, fora do ZIP de consulta.
+
+Arquivos tecnicos alterados nesta propagacao: scripts 13, 25, 26, 28 e
+comentario do 31; `atlas_consorcios.js`, `visuais_v1.html`, `visuais_v1.js`,
+`modelo_v1.js`; testes 12, 16, 17 e novo 22; checks 17, 18 e 22; os cinco
+documentos centrais. Scripts 27, 30, 32, 34 e 35 foram reexecutados sem
+mudanca de codigo. Vault: painel, memoria consolidada e diario de 25/09.
+
+O painel do script 15 e extracoes originais continuam como camadas historicas
+anteriores a correcao, necessarias ao teste 33 e a rastreabilidade. Para uso
+atual, preferir a v1 revisada e os cenarios 31. Nao reconstruir a v1 copiando
+diretamente os destinos antigos. O HTML abre a adesao financeira; o piloto
+fracional permanece recolhido e explicitamente anterior.
 
 ## Atualizacao De 16/09/2026
 
@@ -633,8 +675,8 @@ O README e a entrada humana; nao foi criado outro Markdown. O script
 
 | Produto | Uso |
 |---|---|
-| `base_financeira_v1.csv` / `.rds` | 491.328 linhas x 19 colunas; nucleo de saude, com e sem pagamentos |
-| `base_gravitacional_v1.csv` / `.rds` | 323.287 x 30; subconjunto com clinica direta em dezembro e tempo, conservando zeros |
+| `base_financeira_v1.csv` / `.rds` | 491.328 linhas x 21 colunas; nucleo de saude, com e sem pagamentos; dois campos de auditoria adicionados em 25/09 |
+| `base_gravitacional_v1.csv` / `.rds` | 323.287 x 32; subconjunto com clinica direta em dezembro e tempo, conservando zeros e alertas |
 | `inclusao_entidade_ano.csv` | 776 chaves das 97 entidades: destino de cada caso, motivo, pagamentos e alerta temporal |
 | `capacidade_entidade_ano.csv` | 379 chaves diretas sem repeticao municipal; medidas CNES e horas agregadas |
 | `perfil_capacidade.csv` | 45 perfis: quantis, zeros, nulos e concentracao de cinco medidas por periodo |
@@ -799,8 +841,9 @@ stringi, patchwork, ragg e svglite. Python usa a biblioteca padrao.
 Interacoes: ranking por periodo, trajetoria financeira e municipios
 pagadores; mapa das 73 entidades, ano admissivel, funcao/tipo CNES,
 pagamentos/unidades, enquadramento regional/estadual e consulta municipal.
-Na aba Consultar bases, escolher financeira (491.328 x 19) ou direta
-(323.287 x 30), ano ou todos os anos, municipio, consorcio e pagamento.
+Na aba Consultar bases, escolher financeira (491.328 x 21) ou direta
+(323.287 x 32), ano ou todos os anos, municipio, consorcio e pagamento.
+O filtro de auditoria mostra somente os registros com conflito de credor.
 Cada pagina mostra 25 linhas e todas as colunas, com rolagem horizontal.
 Cabecalhos preservam o nome original e acrescentam um rotulo legivel;
 o dicionario explica as 30 variaveis distintas. A representacao dos numeros
@@ -849,7 +892,7 @@ verificacao independente usa NumPy/SciPy. Semente 24092026. Sem consulta externa
 
 | Produto em outputs/piloto_participacoes/ | Conteudo |
 |---|---|
-| `base_estimacao_2019.csv` | 37.962 x 40; 30 colunas v1 preservadas + total, participacao, log profissionais, horas de viagem, dois grupos, utilidade e tres previsoes |
+| `base_estimacao_2019.csv` | 37.962 x 42 apos revisao; 32 colunas v1 + total, participacao, log profissionais, horas de viagem, dois grupos, utilidade e tres previsoes |
 | `municipios_2019.csv` | 703 origens, totais direto/financeiro, destinos pagos, grupos, alerta e erro de validacao |
 | `consorcios_2019.csv` | 54 destinos, capacidade e alerta; uma linha por entidade |
 | `selecao_consorcios_2019.csv` | As 97 entidades investigadas e seu destino na v1 em 2019 |

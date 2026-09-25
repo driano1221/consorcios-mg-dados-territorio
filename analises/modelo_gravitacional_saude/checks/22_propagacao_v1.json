@@ -1,0 +1,32 @@
+{
+  "financeira": {
+    "linhas": 491328,
+    "colunas": 21,
+    "conflitos": 17,
+    "valor": 3315638156.17
+  },
+  "alteracoes_por_coluna": {
+    "n_destinos_clinicos_dezembro": 6824,
+    "n_municipios_clinicos_dezembro": 6824,
+    "tempo_minimo_min": 927,
+    "tempo_mediano_min": 6824,
+    "tempo_maximo_min": 5837,
+    "distancia_minima_km": 927,
+    "destino_clinico_mais_proximo_id": 927
+  },
+  "gravitacional": {
+    "linhas": 323287,
+    "colunas": 32,
+    "conflitos": 17,
+    "valor": 2865170352.56
+  },
+  "status": "OK",
+  "registros_cnes_retirados": 16,
+  "tempos_minimos_pagos_alterados": 0,
+  "navegador": {
+    "abas_desktop_mobile": 7,
+    "erros_javascript": [],
+    "consulta_conflitos_todos_anos": 17,
+    "consulta_direta_2019": 2
+  }
+}

@@ -11,8 +11,8 @@ f <- readRDS(file.path(dest, "base_financeira_v1.rds"))
 g <- readRDS(file.path(dest, "base_gravitacional_v1.rds"))
 keys <- c("id_municipio", "cnpj_raiz_8", "ano")
 key <- function(x) do.call(paste, c(x[keys], sep = "_"))
-stopifnot(nrow(f) == 491328L, ncol(f) == 19L,
-  nrow(g) == 323287L, ncol(g) == 30L,
+stopifnot(nrow(f) == 491328L, ncol(f) == 21L,
+  nrow(g) == 323287L, ncol(g) == 32L,
   !anyDuplicated(f[keys]), !anyDuplicated(g[keys]),
   setequal(key(f), key(p[p$alternativa_cadastral_saude, ])),
   setequal(key(g), key(p[p$alternativa_direta_com_tempo, ])),
@@ -24,7 +24,11 @@ stopifnot(nrow(f) == 491328L, ncol(f) == 19L,
 # Nenhuma alteracao de valores ou identificadores herdados, nao apenas totais.
 for (z in list(f, g)) {
   original <- p[match(key(z), key(p)), ]
-  for (v in intersect(names(z), names(p))) stopifnot(identical(z[[v]], original[[v]]))
+  revised <- c("n_destinos_clinicos_dezembro", "n_municipios_clinicos_dezembro",
+    "tempo_minimo_min", "tempo_mediano_min", "tempo_maximo_min", "distancia_minima_km",
+    "destino_clinico_mais_proximo_id")
+  for (v in setdiff(intersect(names(z), names(p)), revised))
+    stopifnot(isTRUE(all.equal(z[[v]], original[[v]], tolerance=0, check.attributes=FALSE)))
   stopifnot(all(nchar(z$cnpj_raiz_8) == 8), all(nchar(z$id_municipio) == 7),
     all(nzchar(z$entidade)), !anyNA(z$populacao_ibge))
 }
@@ -35,8 +39,7 @@ stopifnot(nrow(raw_zero) == 1L)
 zero <- f[match(key(raw_zero), key(f)), ]
 stopifnot(zero$tem_registro_mides, zero$valor_total == 0, zero$n_transacoes == 4)
 # As horas derivam somente de clinicas do proprio ano; nenhum modulo movel entra.
-units <- bind_rows(lapply(c("elegibilidade_assistencial_unidades_historicas_saude_mg_2014_2021.csv",
-  "candidatas_cnes_capacidade_unidades_2014_2021.csv"), function(x) read_table(file.path(out, x))))
+units <- read_table(file.path(out, "auditoria_alternativas/unidades_cnes_dezembro_corrigidas.csv"))
 hours <- units |> filter(funcao_assistencial == "destino_clinico_fixo") |>
   mutate(ano = as.integer(ano), carga_horaria_sus = as.numeric(carga_horaria_sus)) |>
   group_by(cnpj_raiz_8, ano) |> summarise(horas = sum(carga_horaria_sus), .groups = "drop")
@@ -47,6 +50,31 @@ stopifnot(nrow(checked) == 379L, !anyNA(checked$horas),
   all(g$polo_direto_identificado == 1L), all(g$elegivel_gravitacional_v1),
   all(g$tempo_minimo_min <= g$tempo_mediano_min),
   all(g$tempo_mediano_min <= g$tempo_maximo_min), all(g$tempo_minimo_min >= 0))
+# Reconstroi rotas do CISMARG diretamente da matriz, sem usar o agregador 25.
+road <- readRDS(file.path(out, "rotas_mg_distbrasil_cache.rds"))
+lookup <- setNames(seq_len(nrow(road)), paste(road$a, road$b))
+ids <- unique(g$id_municipio)
+for (year in 2014:2021) {
+  dest6 <- unique(units$codigo_ibge_6[units$cnpj_raiz_8 == "00079634" &
+    units$ano == year & units$funcao_assistencial == "destino_clinico_fixo"])
+  dests <- sort(ids[substr(ids,1,6) %in% dest6])
+  z <- g[g$cnpj_raiz_8 == "00079634" & g$ano == year, ]
+  tm <- km <- matrix(0, nrow(z), length(dests))
+  for (j in seq_along(dests)) {
+    ix <- lookup[paste(pmin(z$id_municipio,dests[j]),pmax(z$id_municipio,dests[j]))]
+    tm[,j] <- ifelse(z$id_municipio == dests[j],0,road$tempo_min[ix])
+    km[,j] <- ifelse(z$id_municipio == dests[j],0,road$distancia_km[ix])
+  }
+  nearest <- max.col(-tm, ties.method="first")
+  stopifnot(!anyNA(tm), all(z$tempo_minimo_min == apply(tm,1,min)),
+    all(z$tempo_mediano_min == apply(tm,1,median)),
+    all(z$tempo_maximo_min == apply(tm,1,max)),
+    all(z$destino_clinico_mais_proximo_id == dests[nearest]),
+    all(z$distancia_minima_km == km[cbind(seq_len(nrow(z)),nearest)]),
+    all(z$n_municipios_clinicos_dezembro == length(dests)),
+    all(z$n_destinos_clinicos_dezembro == sum(units$cnpj_raiz_8=="00079634" &
+      units$ano==year & units$funcao_assistencial=="destino_clinico_fixo")))
+}
 igarape <- g |> filter(id_municipio == "3130101", cnpj_raiz_8 == "05802877", ano == 2019)
 stopifnot(nrow(igarape) == 1L, abs(igarape$valor_total - 4740790.51) < .01,
   igarape$n_transacoes == 81L, igarape$populacao_ibge == 43045,
