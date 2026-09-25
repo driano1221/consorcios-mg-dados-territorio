@@ -1,5 +1,20 @@
 # Modelo Gravitacional De Saude - MG
 
+**Comece pelo que foi combinado na reunião de 24/09:** exercício de 2019
+para vínculo financeiro de saúde em MG. Pagamento positivo é o desfecho
+operacional, e um município pode pagar vários consórcios. O piloto usa
+população, horas SUS cadastradas e distância rodoviária; compara clínicas,
+sedes e o cenário misto. Scripts 31/32/40 e testes 19/20/26 já executaram
+e conferiram esse trabalho. Clínicas versus sedes são comparáveis nos mesmos
+53 consórcios; sedes versus misto ampliados, nos mesmos 62. Os produtos
+estão em `outputs/adesao_financeira/` e a explicação em
+`METODOLOGIA_GERAL.md`, seção **Estimacao Do Vinculo Financeiro Em 2019**.
+A fórmula de competição normalizada entre consórcios foi discutida, mas não
+fixada para vínculos múltiplos; este piloto usa logit binário por par.
+Os modelos anuais abaixo são exploração posterior, não requisito para
+apresentar o exercício da reunião. O próximo marco está no
+`PLANO_DE_TRABALHO.md`.
+
 **Pilotos longitudinais exploratórios de 25/09:** a base anual agora tem
 três exercícios distintos: primeiro pagamento observado, interrupção e
 valor positivo em 2015–2021. Clínica, horas SUS, tempo e população vêm do

@@ -3277,3 +3277,12 @@ Reproduzir, nessa ordem, na pasta do modelo:
 estão em `outputs/longitudinal_exploratorio/`; o teste reconstrói chaves,
 recortes, covariáveis de `t−1`, decisões auditadas, scores dos 110 treinos
 municipais e 110 espaciais, 22 testes temporais e todas as métricas.
+
+**Prioridade esclarecida após releitura da transcrição de 24/09:** esta seção
+anual documenta uma extensão posterior. O exercício que a equipe pediu para
+começar é o transversal de 2019, descrito em **Estimacao Do Vinculo Financeiro
+Em 2019: Script 32**: vínculo por pagamento positivo, horas SUS, população,
+distância e três cenários espaciais. A formulação binária permite múltiplos
+vínculos; ela não estima literalmente a fração de atração normalizada entre
+consórcios mencionada na conversa. Os resultados anuais não são condição
+para apresentar o exercício de 2019.

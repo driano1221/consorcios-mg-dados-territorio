@@ -7,6 +7,32 @@ deve criar uma segunda numeracao de etapas.
 
 ## Leitura Do Estado
 
+**Foco retomado na decisão da reunião de 24/09, por orientação de Adriano.**
+O exercício imediato é **transversal em 2019, saúde/MG**: pagamento positivo
+no MIDES como vínculo financeiro operacional, podendo existir vários vínculos
+por município; população de origem, horas SUS cadastradas e distância
+rodoviária; comparação de três localizações da oferta: unidades clínicas,
+sede municipal do consórcio e misto. Os 853 municípios permanecem candidatos,
+inclusive com pagamento zero. O piloto de 2019 **já foi preparado, estimado e
+auditado** pelos scripts 31/32/40 e testes 19/20/26. Na comparação limpa,
+clínicas e sedes usam os mesmos 53 consórcios, 45.209 pares e 771 pagamentos;
+sedes e misto ampliados usam os mesmos 62, 52.886 pares e 1.299 pagamentos.
+Os 73 consórcios permanecem na base financeira; dez não têm horas SUS
+identificadas e um tem horas clínicas iguais a zero nesse ano. Não aplicar
+corte de 180 minutos, cinco vizinhos ou histórico `t−1` a este exercício.
+
+**O que falta no escopo da reunião:** apresentar os quatro ajustes centrais
+em comparação justa, seus exemplos e limites; conferir a vigência da sede
+somente onde sua interpretação depender dela; não transformar cadastro CNES
+em atendimento realizado nem pagamento em filiação jurídica. A normalização
+literal da atração pelo somatório dos consórcios foi discutida, mas não
+fechada como fórmula estimável para vários vínculos simultâneos. O logit
+binário por par é a tradução operacional já executada; não afirmar que ele
+estima a competição normalizada de Paulo. A forma relativa pode ser estudada
+depois, se a equipe a quiser como **indicador**, não como probabilidade
+multinomial de escolha exclusiva. Os scripts 41/42 ficam documentados como
+exploração adicional, sem orientar o próximo marco nem exigir novos documentos.
+
 **Rodada longitudinal exploratória de 25/09 concluída, sem novos documentos.**
 Scripts 41/42 e teste 27 preparam covariáveis em `t−1`, três conjuntos
 geográficos de candidatos e três perguntas separadas: primeiro pagamento
@@ -480,7 +506,18 @@ unica regressao.
 
 ## Proximo Marco
 
-**Vigente após scripts 41/42:** não promover um conjunto geográfico ou piso
+**Prioridade atual após a releitura da reunião:** fechar a apresentação do
+piloto binário de 2019 já estimado. Usar `outputs/adesao_financeira/amostras.csv`,
+`validacao.csv`, `coeficientes.csv` e a sensibilidade auditada do script 40.
+Mostrar primeiro clínicas versus sedes nos mesmos 53; depois sedes versus
+misto nos mesmos 62. Explicar a formação dos recortes a partir dos 73, o
+sentido de cada zero e um exemplo como Igarapé–CISMEP. Reportar que horas
+SUS são capacidade cadastrada, que as sedes são aproximações cadastrais e
+que a distância zero não mede viagem porta a porta. Nenhum novo ajuste ou
+coleta é necessário para executar essa apresentação. Os modelos anuais e os
+recortes geográficos dos scripts 41/42 são extensões opcionais futuras.
+
+**Marco anterior após scripts 41/42:** não promover um conjunto geográfico ou piso
 intramunicipal a regra final por desempenho. Apresentar o recorte direto,
 as perdas e a calibração imperfeita; depois estudar elegibilidade institucional
 e capacidade das modalidades móveis/indiretas como frente separada, se houver
