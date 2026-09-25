@@ -5,13 +5,20 @@ passou a organizar amostra, cenários, validação e exemplos. Há comparação
 entre validação municipal e espacial, três gráficos novos e a conta do
 Igarapé–CISMEP. Bases e estimativas não foram alteradas.
 
-A conciliação encontrou um problema concreto: dois empenhos de Conselheiro
-Pena, R$ 8.836,43, descrevem multa tributária e radiodifusão apesar do CNPJ
-associado ao CISVI. Piedade–CISMIRECAR/2021 confere com o MIDES;
-Ipatinga–CONSAÚDE/2018 ainda diverge. Veja as
+A conciliação leu os 14 objetos de Conselheiro Pena/2019: R$ 11.468,66
+em DCTF, ITR e radiodifusão, com acréscimos. A atribuição ao CISVI foi
+rejeitada na decisão auditada separada; o par não virou zero.
+Ipatinga/2018 ficou explicado: R$ 567.152,67 sem restos conferem com o
+portal, e R$ 137.077,88 estão marcados como restos no MIDES original.
+Falta confirmação externa dos restos e esclarecimento dos zeros de 2019.
+Piedade–CISMIRECAR/2021 confere com o MIDES. Veja as
 [consultas e limites](evidencias/conciliacao_portais_2026_09_25.csv).
-Objetos restantes, zeros de 2019 e outros credores ainda exigem investigação.
+Cinco [solicitações documentais](evidencias/solicitacoes_financeiras_pendentes_2026_09_25.csv)
+estão preparadas, sem envio. São Francisco de Paula oferece acesso, mas
+2019 fica vazio até sem filtro de credor; Neves não oferece 2014.
+Não usar essas buscas vazias como confirmação de ausência de pagamento.
 
+Conciliação: `Rscript 37_conciliar_transacoes_portais.R`, na pasta do modelo.
 Reprodução visual: `python 28_montar_visuais_v1.py`; conferências:
 `python tests/17_validar_visuais_v1.py` e
 `python tests/24_validar_conciliacao_e_modelos.py`.

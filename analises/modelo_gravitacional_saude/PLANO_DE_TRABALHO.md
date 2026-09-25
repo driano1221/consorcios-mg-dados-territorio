@@ -7,13 +7,16 @@ deve criar uma segunda numeracao de etapas.
 
 ## Leitura Do Estado
 
-**Última rodada de 25/09: consultas financeiras e apresentação dos modelos.**
-Sete consultas registradas em cinco pares. Piedade–CISMIRECAR/2021 confere
-com o portal (R$ 779.355,34). Ipatinga–CONSAÚDE/2018 diverge em
-R$ 137.077,88; a hipótese de restos a pagar segue sem prova. Em Conselheiro
-Pena, os 14 valores de 2019 conferem, mas os dois objetos examinados
-(R$ 8.836,43) são multa tributária e taxa de radiodifusão. Não validar o
-vínculo CISVI só porque o total coincide. Os outros 12 objetos seguem abertos.
+**Última rodada de 25/09: objetos concluídos e diferença contábil explicada.**
+Conselheiro Pena: lidos os 14 objetos de 2019, R$ 11.468,66 em DCTF, ITR,
+radiodifusão e acréscimos. Atribuição consorcial rejeitada na decisão derivada
+do script 37; y auditado fica ausente, nunca zero inferido. Original e ajustes
+anteriores preservados, com alerta e sensibilidade sem os pares conflitantes.
+Ipatinga/2018: R$ 567.152,67 sem indicador de restos, iguais ao portal,
+mais R$ 137.077,88 classificados como restos no MIDES. A diferença está
+explicada internamente; falta confirmação externa dessa segunda parcela.
+São Francisco de Paula: portal acessível, mas 2019 não retorna despesas
+mesmo sem filtros. Controle 2026 funciona, sem resolver o passado.
 Nenhum zero de 2019 recebeu causa financeira encerrada nesta rodada.
 
 Aba Modelo reorganizada: formação da amostra, três cenários, comparação
@@ -23,13 +26,15 @@ Gráficos examinados como imagens e conteúdo conferido por testes. A política
 do navegador bloqueou a abertura do HTML local: a nova navegação e o layout
 completo ainda precisam de conferência humana. O QA anterior é histórico.
 
-**Próximo marco vigente:** terminar a conciliação dos 12 objetos restantes
-de Conselheiro Pena e sua identidade, esclarecer a diferença de Ipatinga
-com razão/restos a pagar históricos e obter comprovantes dos outros dois
-credores conflitantes. Manter a sensibilidade sem esses pares enquanto a
-correção transacional não estiver documentada. Para os zeros de 2019,
-buscar recebimentos dos consórcios e cobertura prefeitura/fundo. Conferir
-também a nova apresentação no navegador; não reestimar para melhorar aparência.
+**Próximo marco vigente:** obter os documentos históricos especificados em
+`evidencias/solicitacoes_financeiras_pendentes_2026_09_25.csv`. São cinco
+pedidos preparados e não enviados: Neves/2014, São Francisco/2019,
+Ipatinga/2018–2019, Piedade/2019 e identificação correta de Conselheiro Pena.
+Não repetir a leitura dos 14 objetos nem a decomposição já encerrada.
+A decisão separada de Conselheiro Pena deve acompanhar o uso analítico;
+o ajuste original não é uma versão final com todos os credores validados.
+Conferir também a nova apresentação no navegador; o bloqueio de abertura
+local continua sem contorno, e o QA humano está pendente.
 
 Os blocos seguintes registram os marcos anteriores.
 

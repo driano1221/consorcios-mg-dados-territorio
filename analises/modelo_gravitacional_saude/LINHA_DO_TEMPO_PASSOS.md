@@ -6,16 +6,20 @@
 limites registrados → apresentação dos cenários.**
 
 Antes, Conselheiro Pena tinha um conflito entre nome e CNPJ. Agora sabemos
-que o próprio portal repete o conflito: os 14 valores de 2019 coincidem
-com MIDES, mas dois empenhos somam R$ 8.836,43 em multa tributária e taxa
-de radiodifusão. Isso não comprova pagamento ao CISVI. Faltam os outros
-12 objetos e a identificação correta; os dados continuam sinalizados.
+que o próprio portal repete o conflito. Primeiro lemos dois objetos;
+na continuação, terminamos os 14: R$ 11.468,66 em DCTF, ITR e radiodifusão,
+com multas e juros. A decisão derivada rejeita a atribuição ao CISVI
+em 2019, sem inventar pagamento zero. O original e os ajustes anteriores
+permanecem identificados; o beneficiário bancário correto não foi comprovado.
 
 Piedade–CISMIRECAR/2021 passou a ter uma conferência independente de
-R$ 779.355,34. Ipatinga–CONSAÚDE/2018 revelou diferença de R$ 137.077,88.
-Não usamos esses anos vizinhos para preencher 2019. Neves/2014 não aparece
-nos anos oferecidos pela consulta atual; São Francisco de Paula segue
-sem acesso funcional ao portal nas tentativas realizadas.
+R$ 779.355,34. A diferença de Ipatinga/2018 foi explicada no MIDES original:
+R$ 567.152,67 sem restos, iguais ao portal, mais R$ 137.077,88 com restos.
+Ainda falta a conferência externa dos restos. Não usamos anos vizinhos
+para preencher 2019. Neves/2014 não aparece na consulta atual. O portal de
+São Francisco de Paula passou a abrir, mas 2019 retorna vazio até sem
+filtros; 2026 tem registros. Foram preparados cinco pedidos de documentos
+históricos, sem envio externo.
 
 Na aba Modelo, o percurso ficou explícito: 73 consórcios financeiros,
 54 com clínica e rota, 53 com horas positivas; a ampliação chega a 62.

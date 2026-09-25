@@ -31,9 +31,10 @@ mides = read('outputs/auditoria_alternativas/cisvi_conselheiro_pena_2019_transac
 assert Counter(D(r['valor_pago']) for r in empenhos) == Counter(D(r['valor_final']) for r in mides)
 assert sum(D(r['valor_pago']) for r in empenhos) == D('11468.66')
 objetos = [r for r in empenhos if r['objeto_consultado'] == 'TRUE']
-assert {r['empenho'] for r in objetos} == {'671', '6337'}
+assert len(objetos) == 14
 assert all(r['descricao_transcrita'] and r['url_detalhe'] for r in objetos)
-assert sum(D(r['valor_pago']) for r in objetos) == D('8836.43')
+assert sum(D(r['valor_pago']) for r in objetos) == D('11468.66')
+assert all(any(s in r['descricao_transcrita'] for s in ['DCTF','I.T.R.','RADIODIFUS','RADIODIOFUS']) for r in objetos)
 assert all(not r['descricao_transcrita'] for r in empenhos if r['objeto_consultado'] == 'FALSE')
 dates_portal = Counter((r['data_empenho'], D(r['valor_pago'])) for r in empenhos)
 dates_mides = Counter((r['data'], D(r['valor_final'])) for r in mides)
@@ -50,6 +51,21 @@ for row in ledger:
         assert row['valor_pago_portal'] == ''
 assert D(ledger[3]['valor_mides']) - D(ledger[3]['valor_pago_portal']) == D('137077.88')
 assert D(ledger[1]['valor_mides']) == D(ledger[1]['valor_pago_portal'])
+conciliation = 'outputs/auditoria_alternativas/conciliacao_financeira_2026_09_25/'
+transactions = read(conciliation+'transacoes_originais_prioritarias.csv')
+ipatinga = [r for r in transactions if r['id_municipio']=='3131307' and r['ano']=='2018']
+without = sum(D(r['valor_final']) for r in ipatinga if r['indicador_restos_pagar']=='FALSE')
+restos = sum(D(r['valor_final']) for r in ipatinga if r['indicador_restos_pagar']=='TRUE')
+assert without == D('567152.67') and restos == D('137077.88')
+assert without+restos == D('704230.55')
+assert not [r for r in transactions if r['id_municipio']=='3131307' and r['ano']=='2019']
+assert sum(r['id_municipio']=='3161205' for r in transactions) == 55
+assert sum(r['id_municipio']=='3154606' for r in transactions) == 2
+decision = read(conciliation+'decisao_conselheiro_pena_2019.csv')
+assert len(decision)==1 and decision[0]['y_original']=='1'
+assert decision[0]['y_auditado']=='' and decision[0]['usar_como_positivo_validado']=='FALSE'
+requests = read('evidencias/solicitacoes_financeiras_pendentes_2026_09_25.csv')
+assert len(requests)==5 and all(r['status_envio']=='NAO_ENVIADO' for r in requests)
 
 invariants = read('evidencias/invariantes_nove_pares_2026_09_25.csv')
 for row in invariants:
@@ -70,7 +86,8 @@ parser = Links(); parser.feed(html)
 assert len(parser.ids) == len(set(parser.ids))
 assert set(parser.targets) <= set(parser.ids)
 assert len(parser.images) == 3 and all(a.get('alt') for a in parser.images)
-assert '53 → 62' in html and '8.836,43' in html and '137.077,88' in html
+assert '53 → 62' in html and '14 objetos' in html and '137.077,88' in html
+assert 'Valor MIDES com atribuição rejeitada' in html
 assert '__ADESAO_ATUAL__' not in html
 with (HERE/'outputs/visuais_v1/dados/manifesto.csv').open(encoding='utf-8-sig',newline='') as f:
     manifest=list(csv.DictReader(f,delimiter=';'))
@@ -95,17 +112,26 @@ for name in ['modelo_brier_municipios','modelo_brier_espacial','modelo_calibraca
 report={
     'status':'OK', 'data':'2026-09-25', 'consultas_registradas':len(ledger),
     'empenhos_valores_conferidos_com_mides':14, 'total_conselheiro_pena':'11468.66',
-    'objetos_consultados':2, 'valor_objetos_nao_consorciais':'8836.43',
-    'objetos_pendentes':12, 'datas_coincidentes':13,
+    'objetos_consultados':14, 'valor_objetos_nao_consorciais':'11468.66',
+    'objetos_pendentes':0, 'datas_coincidentes':13,
     'diferenca_data_10_reais':'Empenho 24/09; MIDES 26/09. Não são necessariamente o mesmo evento.',
-    'piedade_2021_pago_conferido':'779355.34','ipatinga_2018_diferenca_aberta':'137077.88',
+    'piedade_2021_pago_conferido':'779355.34',
+    'ipatinga_2018_sem_restos_confere_portal':str(without),
+    'ipatinga_2018_diferenca_explicada_pelo_indicador_restos':str(restos),
+    'ipatinga_restos_conferencia_externa':'pendente',
+    'conselheiro_pena_decisao':'Atribuição consorcial rejeitada para os 14 lançamentos; y auditado ausente, não zero.',
+    'solicitacoes_documentais_preparadas_nao_enviadas':len(requests),
+    'fonte_mides_original_sha256':sha(HERE.parents[1]/'dados/bruto/mides_mg_atualizado.rds'),
     'zeros_2019_com_causa_encerrada':0, 'bases_e_estimativas_alteradas':False,
     'html_anterior_preservado':True,'figuras_modelos':figures,
     'html_ids_ancoras_numeros_manifesto_pacote':'OK',
     'qa_navegador':'Não executado: abertura do HTML local bloqueada pela política do navegador. QA anterior não se aplica à nova composição.',
     'fontes':{str(p.relative_to(HERE)):sha(p) for p in [
         HERE/'evidencias/conciliacao_portais_2026_09_25.csv',
-        HERE/'evidencias/conselheiro_pena_empenhos_2019_portal.csv']}
+        HERE/'evidencias/conselheiro_pena_empenhos_2019_portal.csv',
+        HERE/'evidencias/solicitacoes_financeiras_pendentes_2026_09_25.csv',
+        HERE/(conciliation+'resumo_por_restos.csv'),
+        HERE/(conciliation+'decisao_conselheiro_pena_2019.csv')]}
 }
 (HERE/'checks/24_conciliacao_e_modelos.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(report,ensure_ascii=False,indent=2))

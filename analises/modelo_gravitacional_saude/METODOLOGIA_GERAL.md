@@ -21,13 +21,13 @@ valores com a extração MIDES já existente; não houve nova consulta paga.
 
 | Caso | Evidência observada | O que continua aberto |
 |---|---|---|
-| Conselheiro Pena × CISVI/2019 | Portal municipal associa MINISTERIO DA FAZENDA ao CNPJ 00.639.952/0001-50. Os 14 valores somam R$ 11.468,66 e coincidem com MIDES. Empenho 671: R$ 2.030,80, multa por DCTF. Empenho 6337: R$ 6.805,63, taxa de radiodifusão. | Dois objetos contradizem a atribuição consorcial. Faltam 12 objetos e identificação/correção transacional. Não extrapolar os dois a todos os anos. |
+| Conselheiro Pena × CISVI/2019 | Portal associa MINISTERIO DA FAZENDA ao CNPJ 00.639.952/0001-50. Lidos os 14 objetos e valores: R$ 11.468,66 em DCTF, ITR, radiodifusão e acréscimos. | Atribuição consorcial rejeitada para esses lançamentos; beneficiário bancário e CNPJ correto não comprovados. Não extrapolar para outros anos nem declarar zero anual. |
 | Piedade × CISMIRECAR/2021 | Pago e liquidado R$ 779.355,34; empenhado R$ 829.106,54. O pago confere com MIDES. | A concordância de 2021 não explica o intervalo zerado. |
 | Piedade × CISMIRECAR/2019 | Pesquisa CONS, 25 registros por página: 13 resultados, sem o consórcio. | Não é prova de zero anual; falta conferir prefeitura/fundo e recebimentos do consórcio. |
-| Ipatinga × CONSAÚDE/2018 | Portal mostra R$ 567.152,67; MIDES R$ 704.230,55. Diferença R$ 137.077,88. | Escopo contábil/restos a pagar são hipóteses. Consulta de restos oferece apenas 2022–2026. |
+| Ipatinga × CONSAÚDE/2018 | MIDES original decomposto: R$ 567.152,67 sem indicador de restos, iguais ao portal, mais R$ 137.077,88 com indicador de restos. Total R$ 704.230,55. | Diferença explicada aritmeticamente e pela classificação da extração. Falta conferência externa dos restos históricos; não eliminar essa parcela. |
 | Ipatinga × CONSAÚDE/2019 | Pesquisa CONSOR retornou somente consórcio de transporte coletivo. | Ausência na consulta não encerra o zero. |
 | Ribeirão das Neves × CISMEP/2014 | Consulta atual de despesas por credor oferece 2022–2026. | Recuperar arquivo de 2014; R$ 321,16 permanecem sinalizados. |
-| São Francisco de Paula × CISMARG/2019 | Nova tentativa no portal encerrou a conexão. | R$ 188.969,82 continuam com nome SOMETAL; lei não concilia credor. |
+| São Francisco de Paula × CISMARG/2019 | Portal abriu na continuação. Busca por CNPJ e controle de 2019 com filtros efetivamente vazios retornam zero registros; em 2026, CONS e mesmo CNPJ mostram cinco empenhos e R$ 311.085,38 pagos. | Não comprova zero histórico nem concilia os 55 lançamentos de 2019, R$ 188.969,82 com nome SOMETAL. Controle de 2026 só comprova funcionamento recente da consulta. |
 
 Um cuidado que mudou a consulta: a busca textual por CNPJ em Piedade
 não encontrou sequer o pagamento conhecido de 2021. Repetimos por nome,
@@ -37,11 +37,37 @@ usadas como evidência de ausência.
 Dos 14 valores de Conselheiro Pena, 13 também coincidem na data. O
 empenho de R$ 10,00 é de 24/09; a transação MIDES é de 26/09. São campos
 de eventos possivelmente diferentes, não uma correção de data autorizada.
-Os dois objetos lidos somam R$ 8.836,43; os R$ 2.632,23 restantes ainda
-não tiveram objeto examinado. Concordância de total não valida beneficiário.
-Mantidos os dados observados e a flag de conflito; não criamos zero nem
-redistribuímos valores. A sensibilidade que retira pares conflitantes já
-existia e deve acompanhar qualquer interpretação do ajuste principal.
+Na primeira consulta, dois objetos somavam R$ 8.836,43. A continuação
+encerrou os 12 restantes, R$ 2.632,23; agora todos os objetos contradizem
+a atribuição consorcial. Concordância de total não valida beneficiário.
+O script 37 materializa a decisão em arquivo derivado: y original = 1,
+y auditado ausente e usar_como_positivo_validado = FALSE. Isso rejeita
+a evidência positiva deste conjunto, sem provar ausência de qualquer
+outro pagamento anual ao CISVI. O CNPJ bancário correto não foi inventado.
+As bases originais e a flag de conflito ficam preservadas; a sensibilidade
+que retira os pares conflitantes já existia e deve acompanhar o ajuste.
+Não houve nova estimação nesta rodada.
+
+O mesmo script lê o RDS MIDES original, sem nova extração remota, e exporta
+as transações prioritárias e resumo por indicador de restos a pagar.
+O teste 24 confere os valores de Ipatinga em centavos e registra SHA256
+do RDS fonte. R$ 567.152,67 + R$ 137.077,88 = R$ 704.230,55. Isso fecha
+a divergência interna de escopo, não uma auditoria bancária dos restos.
+Ipatinga/2019 continua sem lançamento no recorte original.
+
+Na consulta de São Francisco de Paula, esvaziar campos inicialmente não
+limpou os filtros. Repetimos a limpeza pelo teclado e conferimos os campos
+visíveis: exercício 2019, prefeitura e todos os demais campos vazios.
+O resultado continuou sem registros. Logo, essa interface não fornece
+evidência útil para confirmar ausência de pagamento do credor em 2019.
+No CONSAÚDE, o seletor oferece 2024–2026; o link para anos anteriores não
+abriu outro relatório nas tentativas. Não foi obtido extrato de 2019.
+
+Cinco solicitações objetivas estão em
+`evidencias/solicitacoes_financeiras_pendentes_2026_09_25.csv`, com ano,
+CNPJ, valores e documento necessário. Neves foi delimitado aos dois
+lançamentos de R$ 160,58, em 29/10 e 20/11/2014; São Francisco aos 55
+lançamentos de 2019. Nenhuma solicitação foi enviada a terceiros.
 
 A apresentação lê os CSVs dos scripts 31/32/34 sem reestimar.
 `adesao_visual.py` organiza o caminho 73 → 54 → 53 e ampliação para 62,

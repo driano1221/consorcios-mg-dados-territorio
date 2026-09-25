@@ -64,7 +64,11 @@ sources += [HERE / f for f in ('26_preparar_visuais_v1.R', '27_renderizar_visuai
 sources += [HERE / 'outputs/piloto_participacoes/piloto.json']
 sources += [HERE / 'outputs' / p for p in model_sources]
 sources += [HERE / 'evidencias' / p for p in (
-    'conciliacao_portais_2026_09_25.csv', 'conselheiro_pena_empenhos_2019_portal.csv')]
+    'conciliacao_portais_2026_09_25.csv', 'conselheiro_pena_empenhos_2019_portal.csv',
+    'solicitacoes_financeiras_pendentes_2026_09_25.csv')]
+sources += [HERE / '37_conciliar_transacoes_portais.R']
+sources += [HERE / 'outputs/auditoria_alternativas/conciliacao_financeira_2026_09_25' / p
+            for p in ('resumo_por_restos.csv', 'decisao_conselheiro_pena_2019.csv')]
 products = [DEST / 'index.html', *model_figures]
 products += [DEST / 'figuras' / (figure + '.' + ext) for figure in sorted(active_figures) for ext in ('png', 'svg')]
 products += [DEST / 'dados' / name for name in sorted({r['dados'] for r in data['catalog']} | {'visuais.json'})]

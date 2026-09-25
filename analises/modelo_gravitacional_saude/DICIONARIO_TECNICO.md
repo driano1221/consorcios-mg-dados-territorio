@@ -11,14 +11,18 @@
 | Arquivo | Conteúdo e limite |
 |---|---|
 | `evidencias/conciliacao_portais_2026_09_25.csv` | Sete consultas em cinco pares; transcrições da UI com URL, exercício, filtro, valor e limite. Campo pago vazio significa não observado, nunca zero inferido. |
-| `evidencias/conselheiro_pena_empenhos_2019_portal.csv` | 14 linhas públicas de empenhos; dois objetos transcritos e 12 ainda não lidos. Datas são de empenho. |
+| `evidencias/conselheiro_pena_empenhos_2019_portal.csv` | 14 valores e 14 objetos transcritos com URL individual. Todos contradizem atribuição ao CISVI em 2019. Datas são de empenho. |
+| `37_conciliar_transacoes_portais.R` | Lê o RDS MIDES original; decompõe Ipatinga por indicador de restos; preserva os 55 lançamentos de São Francisco e dois de Neves; gera decisão separada de Conselheiro Pena. Não atualiza as bases originais. |
+| `outputs/auditoria_alternativas/conciliacao_financeira_2026_09_25/` | Transações prioritárias, resumo por restos e decisão com y original 1, y auditado ausente e usar_como_positivo_validado FALSE. Ausência não é zero. |
+| `evidencias/solicitacoes_financeiras_pendentes_2026_09_25.csv` | Cinco pedidos documentais delimitados por município, CNPJ, ano e valor. Nenhum enviado. |
 | `adesao_visual.py` | Gera apresentação do ajuste binário e três figuras a partir dos CSVs; não estima modelo. Integrado ao empacotador 28. |
 | `outputs/visuais_v1/figuras/modelo_*.png` e `.svg` | Brier municipal/espacial e calibração S1; PNG 300 dpi e SVG. Pacote tem oito figuras, cinco da base e três do modelo. |
 | `tests/24_validar_conciliacao_e_modelos.py` | Confere transcrição, valores, diferença de datas, hashes analíticos, números/âncoras/imagens do HTML. Não usa navegador. |
 | `checks/24_conciliacao_e_modelos.json` | Resultado e hashes das transcrições, com limite explícito do QA de navegador. |
 | `outputs/auditoria_alternativas/antes_revisao_visual_2026_09_25/index.html` | Snapshot anterior; hash continua sendo o registrado na auditoria documental. |
 
-Reproduzir: `python 28_montar_visuais_v1.py`, depois testes 17 e 24.
+Reproduzir: `Rscript 37_conciliar_transacoes_portais.R`, depois
+`python 28_montar_visuais_v1.py` e testes 17 e 24.
 O script 36 aceita `--html-arquivado outputs/auditoria_alternativas/antes_revisao_visual_2026_09_25/index.html`
 para verificar a sua rodada histórica após a revisão visual, sem atualizar
 silenciosamente o hash esperado. O check 23 é daquele marco; o 24 é atual.
