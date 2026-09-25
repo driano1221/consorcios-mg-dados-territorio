@@ -1,5 +1,28 @@
 # Dicionario Tecnico - Modelo Gravitacional De Saude
 
+## Teste Da Atracao Relativa De Paulo: 25/09
+
+Executar `python 43_testar_atracao_relativa_paulo.py` e
+`python tests/28_validar_atracao_relativa_paulo.py`. O ensaio usa a grade
+2019 do script 31, rotas por ponto, folds do script 32, previsoes auditadas
+do script 40 e decisoes SICOM. `fontes.csv` registra caminhos e SHA256.
+NumPy, pandas, SciPy, scikit-learn e matplotlib sao necessarios.
+
+| Arquivo | Conteudo |
+|---|---|
+| `43_testar_atracao_relativa_paulo.py` | Ajusta dois modelos novos nos mesmos 40 folds: atracao propria por unidade e atracao relativa normalizada; preserva todos os resultados anteriores |
+| `outputs/atracao_relativa_paulo_2019/parametros_validacao.csv` | 80 ajustes, treino, convergencia, expoentes, intercepto e diferenca dos dois inicios numericos |
+| `metricas_mesma_amostra.csv`, `metricas_por_fold.csv` na mesma pasta | Tres especificacoes, Brier, logloss, precisao media, AUC e denominadores, em oito comparacoes e por fold |
+| `calibracao.csv`, `ganhos_pareados.csv` na mesma pasta | Faixas de probabilidade e 2.000 reamostragens pareadas de municipios; intervalos descritivos, sem reestimar e sem corrigir dependencia espacial |
+| `previsoes.csv.gz` na mesma pasta | Municipio × consorcio × cenario × validacao; resposta auditada, valor MIDES, participacao relativa, previsao propria, relativa e auditada anterior; 392.372 linhas |
+| `diagnostico_validacao.png`, `resumo.json`, `fontes.csv` na mesma pasta | Grafico inspecionado, formulas/limites e proveniencia; produtos derivados locais, ignorados pelo Git |
+| `tests/28_validar_atracao_relativa_paulo.py`, `checks/28_atracao_relativa_paulo.json` | Reconstroi amostras, folds, metricas e a atracao de Igarape a partir das rotas; teste e comprovante versionados |
+
+O par Conselheiro Pena–CISVI/2019 continua candidato no denominador, mas
+sua resposta contestada nao entra no treino/teste. A fracao relativa soma
+um entre os candidatos; as probabilidades binarias nao. Nada desta rodada
+altera `outputs/visuais_v1/` ou a base v1.
+
 ## Coleta Histórica Dirigida De 25/09
 
 | Arquivo | Uso |

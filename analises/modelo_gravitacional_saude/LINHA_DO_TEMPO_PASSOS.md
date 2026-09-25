@@ -1,5 +1,29 @@
 # Linha Do Tempo Dos Passos - Modelo Gravitacional De Saude
 
+## 25/09: Testar A Comparacao Entre Consorcios Sem Trocar O Piloto
+
+**Unidades e horas SUS de 2019 → distancias de cada municipio a cada ponto
+→ atracao propria → divisao pela atracao dos 53/62 candidatos → chance
+binaria de pagamento → teste fora do treino.** A divisao segue a intuicao
+gravitacional de Paulo, enquanto a ultima etapa permite que um municipio
+pague varios consorcios. O piloto anterior ficou intacto; tambem foi testado
+o efeito da atracao propria sem essa divisao.
+
+Igarape–CISMEP pagou R$ 4.740.790,51 em 2019. No recorte com 53
+consorcios e clinicas, as duas unidades do CISMEP somam 1.651 horas SUS;
+a menor distancia desde Igarape e 17,748 km. A atracao relativa do CISMEP
+e 73,15% da soma candidata. Isso **nao** diz que Igarape teve 73,15% de
+chance de aderir: e uma medida comparativa de oferta e distancia. O modelo
+binario previu 98,15% de chance de pagamento fora do treino, contra 96,72%
+do piloto auditado; o pagamento foi observado. Em Jacinto–CISRAL, a forma
+nova errou muito: previu 95,11%, e o MIDES nao mostra pagamento.
+
+Os quatro recortes melhoraram no Brier, logloss e precisao media nas
+validacoes por municipio e espaciais; todos os 40 folds tiveram ganho de
+Brier. O teste 28 reconstruiu os denominadores e a conta de Igarape.
+Ainda falta estabelecer quais consorcios eram alternativas juridicamente
+plausiveis em 2019. Nenhum resultado foi levado a aba Modelo.
+
 ## 25/09: Recuperar O Histórico Que O Portal Municipal Não Mostrou
 
 **Alerta de nome → download TCE/SICOM → descrição do pagamento → decisão.**

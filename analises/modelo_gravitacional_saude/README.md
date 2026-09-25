@@ -11,6 +11,15 @@ estão em `outputs/adesao_financeira/` e a explicação em
 `METODOLOGIA_GERAL.md`, seção **Estimacao Do Vinculo Financeiro Em 2019**.
 A fórmula de competição normalizada entre consórcios foi discutida, mas não
 fixada para vínculos múltiplos; este piloto usa logit binário por par.
+Em 25/09, um **ensaio separado** testou a atração relativa como atributo
+de um logit que continua permitindo vários pagamentos. Nos mesmos pares e
+folds do piloto auditado, melhorou Brier, logloss e precisão média nos
+quatro recortes, inclusive na validação espacial. O teste 28 confere a
+conta e os resultados; a aba Modelo e a v1 não foram alteradas.
+Reprodução: `python 43_testar_atracao_relativa_paulo.py`, depois
+`python tests/28_validar_atracao_relativa_paulo.py`. Veja a seção final
+**Teste Separado Da Atracao Relativa De Paulo** em
+`METODOLOGIA_GERAL.md` para números, exemplos e limites.
 Os modelos anuais abaixo são exploração posterior, não requisito para
 apresentar o exercício da reunião. O próximo marco está no
 `PLANO_DE_TRABALHO.md`.

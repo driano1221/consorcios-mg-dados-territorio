@@ -21,16 +21,28 @@ Os 73 consórcios permanecem na base financeira; dez não têm horas SUS
 identificadas e um tem horas clínicas iguais a zero nesse ano. Não aplicar
 corte de 180 minutos, cinco vizinhos ou histórico `t−1` a este exercício.
 
+**Teste adicional de Paulo concluído em 25/09, separado da interface.**
+O script 43 divide a atração de cada consórcio pela soma dos 53/62
+candidatos e usa essa fração para prever cada pagamento sem impor escolha
+exclusiva. Comparou-se ao piloto binário auditado e a um controle que usa
+a mesma atração sem o denominador concorrente, nas mesmas linhas e folds.
+Nos oito pares recorte/validação, Brier, logloss e precisão média melhoraram;
+o Brier clínico/53 caiu de 0,008886 para 0,007084 na validação municipal e
+de 0,009657 para 0,007206 na espacial. Todos os 40 folds melhoraram.
+O controle sem competição ficou próximo do piloto atual. Os erros concretos
+e a elegibilidade institucional impedem promover esse ensaio a modelo final.
+Script, teste 28, saídas e ressalvas constam da metodologia e do dicionário.
+Nenhuma base v1 ou aba foi alterada.
+
 **O que falta no escopo da reunião:** apresentar os quatro ajustes centrais
 em comparação justa, seus exemplos e limites; conferir a vigência da sede
 somente onde sua interpretação depender dela; não transformar cadastro CNES
 em atendimento realizado nem pagamento em filiação jurídica. A normalização
 literal da atração pelo somatório dos consórcios foi discutida, mas não
-fechada como fórmula estimável para vários vínculos simultâneos. O logit
-binário por par é a tradução operacional já executada; não afirmar que ele
-estima a competição normalizada de Paulo. A forma relativa pode ser estudada
-depois, se a equipe a quiser como **indicador**, não como probabilidade
-multinomial de escolha exclusiva. Os scripts 41/42 ficam documentados como
+fechada como probabilidade de vários vínculos simultâneos. O piloto binário
+original não estima essa competição. O ensaio separado do script 43 usa a
+fração relativa como **indicador dentro de um logit binário**, sem chamá-la
+de probabilidade multinomial de adesão. Os scripts 41/42 ficam documentados como
 exploração adicional, sem orientar o próximo marco nem exigir novos documentos.
 
 **Rodada longitudinal exploratória de 25/09 concluída, sem novos documentos.**
@@ -505,6 +517,32 @@ unica regressao.
 - [ ] testar todas as telas e exportacoes antes do deploy.
 
 ## Proximo Marco
+
+**Próximo:** apresentar lado a lado o piloto binário auditado, o controle
+sem competição e o ensaio relativo de 2019, mostrando os acertos e os erros
+reais. Com Paulo e a equipe, decidir quais consórcios eram alternativas
+institucionalmente plausíveis para cada município e como verificar sedes
+históricas. Só então considerar uma nova sensibilidade ou a inclusão do
+resultado na aba, preservando o piloto atual.
+
+**Teste delimitado da ideia de Paulo, concluído sem alterar a aba:** manter
+os quatro ajustes binários auditados de 2019 como referência e não alterar
+a aba Modelo. Nos mesmos pares e cinco folds municipais/espaciais, calcular
+atração relativa de cada consórcio a partir de horas SUS por unidade e
+distância rodoviária. Para várias unidades, somar a atração de cada ponto,
+ponderando suas horas; na sede, concentrar as horas no município sede.
+O denominador inclui **todos os 53 ou 62 candidatos do cenário**, inclusive
+pares com pagamento zero e o par cujo credor ficou indeterminado na auditoria;
+apenas sua resposta fica fora da estimação. A população da origem cancela
+nessa fração, mas pode entrar separadamente na chance binária de pagamento.
+Estimar os expoentes de capacidade e distância somente no treino; comparar
+as previsões fora do treino com o logit existente **na mesma amostra**.
+Relatar logloss, Brier, precisão média, calibração, casos concretos e
+sensibilidade por cenário. Fração normalizada é atração relativa, nunca
+uma filiação observada ou, sozinha, uma probabilidade de vínculo. Publicar
+resultados em produto separado; não escolher a nova forma apenas por uma
+métrica e não sobrescrever v1, modelos anteriores ou interface. O script 43
+e o teste 28 executaram esse protocolo.
 
 **Prioridade atual após a releitura da reunião:** fechar a apresentação do
 piloto binário de 2019 já estimado. Usar `outputs/adesao_financeira/amostras.csv`,

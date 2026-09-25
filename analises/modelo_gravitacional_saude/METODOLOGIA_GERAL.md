@@ -3286,3 +3286,92 @@ distância e três cenários espaciais. A formulação binária permite múltipl
 vínculos; ela não estima literalmente a fração de atração normalizada entre
 consórcios mencionada na conversa. Os resultados anuais não são condição
 para apresentar o exercício de 2019.
+
+## 25/09: Teste Separado Da Atracao Relativa De Paulo
+
+A pergunta deste ensaio e: **a posição de um consorcio diante dos demais
+destinos disponiveis melhora a previsao de pagamento observado em 2019?**
+O desfecho continua `1(valor MIDES > 0)` por municipio-consorcio; varios
+consorcios podem ser positivos para o mesmo municipio. Esta e uma adaptacao
+testavel da normalizacao discutida na reuniao, **nao** a interpretacao de
+uma unica escolha multinomial. Nenhuma base v1, piloto original ou aba Modelo
+foi substituida.
+
+Para cada par `i,j`, `H_j` soma as horas SUS das unidades do cenario,
+`w_ju = h_ju/H_j` e `d_iu` e a distancia rodoviaria em km entre as sedes
+municipais de origem e da unidade. Com sedes, todas as horas ficam num ponto;
+com clinicas, cada unidade entra com seu peso. Foram estimados no treino:
+
+```
+A_ij = H_j^bH * soma_u [w_ju / (1 + d_iu)^g]
+s_ij = A_ij / soma_{k em J_i} A_ik
+logit Pr(y_ij=1) = a + bP*(ln Pop_i - 10) + l*logit(s_ij)
+```
+
+`bH`, `g` e `l` sao restringidos a valores nao negativos; todos os 53 ou 62
+candidatos entram em `J_i`, inclusive os pares com zero. Conselheiro Pena–
+CISVI/2019 permanece no **denominador**, pois sua oferta candidata nao
+desaparece com a duvida sobre o credor; a resposta indeterminada nao entra
+no ajuste nem nas metricas. A populacao de origem cancelaria em `s_ij` se
+fosse multiplicada por todas as atracoes; por isso entra separada no logit.
+`s_ij` soma um por municipio, mas as probabilidades binarias de pagamento
+nao precisam somar um. Em clinicas/53, 74 municipios fizeram mais de um
+pagamento positivo; impor uma escolha exclusiva descartaria esse fato.
+
+O controle de ablação usa **a mesma soma por unidade**, porem sem comparar
+outros consorcios: `logit Pr(y=1) = a + bP*(ln Pop_i-10) + ln A_ij`.
+Assim se distingue o efeito da agregacao por pontos do efeito do
+denominador concorrente. O piloto auditado do script 40 e a terceira
+referencia. As tres previsoes sao comparadas nas mesmas 45.208 linhas e
+770 positivos dos recortes com 53, ou nas mesmas 52.885 linhas e 1.298
+positivos dos recortes com 62. Ha cinco folds de municipios e cinco
+espaciais; nenhum municipio e dividido entre treino e teste. Dois inicios
+numericos concordaram; derivadas foram conferidas por diferencas finitas.
+
+| Recorte / validação | Brier atual | Ablação sem competição | Brier relativo | Precisão média atual -> relativa |
+|---|---:|---:|---:|---:|
+| Clínicas 53 / municípios | 0,008886 | 0,008898 | **0,007084** | 0,669 -> 0,757 |
+| Clínicas 53 / espacial | 0,009657 | 0,009671 | **0,007206** | 0,631 -> 0,751 |
+| Sedes 53 / municípios | 0,008958 | 0,008958 | **0,007184** | 0,663 -> 0,749 |
+| Sedes 53 / espacial | 0,009660 | 0,009648 | **0,007296** | 0,627 -> 0,744 |
+| Sedes 62 / municípios | 0,013839 | 0,013839 | **0,012408** | 0,621 -> 0,681 |
+| Sedes 62 / espacial | 0,015137 | 0,015137 | **0,012724** | 0,576 -> 0,669 |
+| Misto 62 / municípios | 0,013803 | 0,013819 | **0,012351** | 0,624 -> 0,685 |
+| Misto 62 / espacial | 0,015175 | 0,015212 | **0,012685** | 0,578 -> 0,672 |
+
+Logloss tambem melhora nas oito comparacoes, e o ganho de Brier apareceu
+em cada um dos 40 folds. Reamostragem pareada de 2.000 conjuntos de
+municipios manteve ganho positivo nos oito recortes; os intervalos sao
+**descritivos**, condicionados aos ajustes feitos e sem representar a
+dependencia entre municipios vizinhos. Nao comparar o escore de 53 com o
+de 62 como se tivessem o mesmo desfecho/amostra.
+
+Exemplo reproduzido a partir das rotas: Igarape pagou R$ 4.740.790,51
+ao CISMEP em 2019. Em clinicas/53, suas duas clinicas utilizadas neste
+recorte somam 1.651 horas SUS; a menor distancia rodoviaria e 17,748 km.
+Na validacao municipal fora do treino, a participacao do CISMEP na
+atracao dos 53 e 0,7315. O piloto auditado previu 0,9672 para o
+pagamento; a versao relativa, 0,9815. Um acerto mais informativo e
+Centralina–AMVAP Saude: pagou R$ 107.000, mas o piloto previa 0,0451;
+a forma relativa previu 0,6298. Ha tambem falhas: Jacinto–CISRAL nao
+pagou, e a previsao subiu de 0,4076 para 0,9511. Portanto, o ganho
+medio nao transforma as probabilidades em fatos nem define elegibilidade.
+
+O resultado sugere que o contexto das alternativas tem informacao alem
+das horas e distancias do proprio consorcio. Ainda nao identifica se cada
+alternativa podia receber aquele municipio em 2019; sedes sao aproximacoes
+cadastrais, e o denominador de 53/62 exclui consorcios financeiros sem horas
+e destino aptos neste exercicio. Logo, a participacao relativa muda se o
+universo de alternativas mudar. A malha e estatica, horas SUS nao medem producao e distancia
+entre municipios nao mede trajeto ate a porta. Capacidade e pagamento do
+mesmo ano impedem leitura causal ou previsao temporal genuina. A forma
+literal `s_ij` so serviria como probabilidade se houvesse uma escolha
+exclusiva; aqui ela e um atributo de um logit binario. Antes de adotar ou
+mostrar na aba, discutir com a equipe a restricao institucional do
+denominador, erros como Jacinto e a estabilidade historica das sedes.
+
+Reproducao: `python 43_testar_atracao_relativa_paulo.py` e
+`python tests/28_validar_atracao_relativa_paulo.py`. Os CSVs, previsoes
+comprimidas e o grafico diagnostico ficam em
+`outputs/atracao_relativa_paulo_2019/`; `fontes.csv` guarda SHA256 das cinco
+entradas. `checks/28_atracao_relativa_paulo.json` registra a auditoria.
