@@ -1,5 +1,7 @@
 # Modelo Gravitacional De Saude - MG
 
+**Aba Modelo atualizada em 25/09:** [abra a apresentação local](outputs/visuais_v1/index.html#modelo). Ela compara, nos mesmos pares auditados de 2019, o logit binário de horas e distância com o teste de atração relativa proposto por Paulo. O percurso mostra fontes, seleção 73 → 54 → 53/62, EDA dos pagamentos e distâncias, fórmulas, quatro recortes, validação municipal/espacial, casos reais e limites. O piloto antigo permanece em seção recolhida. A base v1 e as estimativas não foram modificadas nesta atualização visual. Reproduza com `python 28_montar_visuais_v1.py` e confira com os testes 17, 24 e 43. O HTML e o ZIP são locais; não houve publicação no dashboard Shiny.
+
 **Comece pelo que foi combinado na reunião de 24/09:** exercício de 2019
 para vínculo financeiro de saúde em MG. Pagamento positivo é o desfecho
 operacional, e um município pode pagar vários consórcios. O piloto usa
@@ -15,7 +17,7 @@ Em 25/09, um **ensaio separado** testou a atração relativa como atributo
 de um logit que continua permitindo vários pagamentos. Nos mesmos pares e
 folds do piloto auditado, melhorou Brier, logloss e precisão média nos
 quatro recortes, inclusive na validação espacial. O teste 28 confere a
-conta e os resultados; a aba Modelo e a v1 não foram alteradas.
+conta e os resultados. Naquela rodada, a aba Modelo e a v1 não foram alteradas; a comparação entrou na aba depois, na atualização visual descrita acima.
 Reprodução: `python 43_testar_atracao_relativa_paulo.py`, depois
 `python tests/28_validar_atracao_relativa_paulo.py`. Veja a seção final
 **Teste Separado Da Atracao Relativa De Paulo** em

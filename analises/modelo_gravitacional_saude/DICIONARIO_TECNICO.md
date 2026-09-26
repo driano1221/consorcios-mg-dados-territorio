@@ -1,5 +1,19 @@
 # Dicionario Tecnico - Modelo Gravitacional De Saude
 
+## Aba Modelo Comparativa: 25/09
+
+| Arquivo | Função |
+|---|---|
+| `comparacao_modelos_visual.py` | Lê resultados auditados dos scripts 40/43, verifica contagens, gera pipeline/EDA/equações/casos/tabelas e dois gráficos; não reestima modelos |
+| `visuais_v1.html`, `visuais_v1.css`, `28_montar_visuais_v1.py` | Modelo da página, estilo seguindo o design-vault e empacotador; a apresentação antiga continua recolhida |
+| `outputs/visuais_v1/index.html`, `outputs/visuais_v1.zip` | Apresentação local com as sete abas e pacote autocontido; saídas ignoradas pelo Git, regeneradas pelo script 28 |
+| `outputs/visuais_v1/figuras/modelo_comparacao_{municipios,espacial}.{svg,png}` | Brier dos quatro recortes nas duas validações; SVG da página e PNG 300 dpi |
+| `outputs/visuais_v1/dados/manifesto.csv` | Caminho, tamanho e SHA256 de fontes e produtos do pacote |
+| `tests/43_validar_comparacao_modelos.py`, `checks/43_comparacao_modelos.json` | Recalcula o Brier dos dois modelos nas oito comparações diretamente das 392.372 previsões fora do treino; confere amostras, 40 grupos, números e artefatos; salva hashes das fontes |
+| `checks/17_visuais_v1.json`, `checks/24_conciliacao_e_modelos.json` | Conferência integral dos dados publicados e integridade do HTML, imagens e ZIP; QA da interface anotado no 24 |
+
+Entrada da comparação: `outputs/auditoria_sicom_modelo_2019/amostras.csv` e `outputs/atracao_relativa_paulo_2019/{metricas_mesma_amostra.csv,metricas_por_fold.csv,previsoes.csv.gz,parametros_validacao.csv,fontes.csv}`. O gráfico e a tabela comparam apenas linhas auditadas iguais; na ampliação, 53 e 62 são amostras diferentes. Executar `python 28_montar_visuais_v1.py`, depois os testes 17, 24, 28 e 43. Para reproduzir as estimativas do início, seguir a sequência da metodologia. Nenhuma mudança foi enviada ao dashboard Shiny.
+
 ## Teste Da Atracao Relativa De Paulo: 25/09
 
 Executar `python 43_testar_atracao_relativa_paulo.py` e
@@ -20,8 +34,9 @@ NumPy, pandas, SciPy, scikit-learn e matplotlib sao necessarios.
 
 O par Conselheiro Pena–CISVI/2019 continua candidato no denominador, mas
 sua resposta contestada nao entra no treino/teste. A fracao relativa soma
-um entre os candidatos; as probabilidades binarias nao. Nada desta rodada
-altera `outputs/visuais_v1/` ou a base v1.
+um entre os candidatos; as probabilidades binarias nao. Na rodada de estimação,
+o teste não alterou `outputs/visuais_v1/` ou a base v1; a apresentação entrou
+na aba depois, conforme a seção acima.
 
 ## Coleta Histórica Dirigida De 25/09
 
@@ -58,7 +73,7 @@ de ausência em todas as contas. Descrições da fonte não são atestado bancá
 | `outputs/auditoria_alternativas/conciliacao_financeira_2026_09_25/` | Transações prioritárias, resumo por restos e decisão com y original 1, y auditado ausente e usar_como_positivo_validado FALSE. Ausência não é zero. |
 | `evidencias/solicitacoes_financeiras_pendentes_2026_09_25.csv` | Cinco pedidos documentais delimitados por município, CNPJ, ano e valor. Nenhum enviado. |
 | `adesao_visual.py` | Gera apresentação do ajuste binário e três figuras a partir dos CSVs; não estima modelo. Integrado ao empacotador 28. |
-| `outputs/visuais_v1/figuras/modelo_*.png` e `.svg` | Brier municipal/espacial e calibração S1; PNG 300 dpi e SVG. Pacote tem oito figuras, cinco da base e três do modelo. |
+| `outputs/visuais_v1/figuras/modelo_*.png` e `.svg` | Brier municipal/espacial, calibração S1 e dois gráficos da comparação A × B; PNG 300 dpi e SVG. Pacote atual tem dez figuras, cinco da base e cinco do modelo. |
 | `tests/24_validar_conciliacao_e_modelos.py` | Confere transcrição, valores, diferença de datas, hashes analíticos, números/âncoras/imagens do HTML. Não usa navegador. |
 | `checks/24_conciliacao_e_modelos.json` | Resultado e hashes das transcrições, com limite explícito do QA de navegador. |
 | `outputs/auditoria_alternativas/antes_revisao_visual_2026_09_25/index.html` | Snapshot anterior; hash continua sendo o registrado na auditoria documental. |

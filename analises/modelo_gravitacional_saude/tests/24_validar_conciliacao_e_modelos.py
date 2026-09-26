@@ -85,7 +85,7 @@ class Links(HTMLParser):
 parser = Links(); parser.feed(html)
 assert len(parser.ids) == len(set(parser.ids))
 assert set(parser.targets) <= set(parser.ids)
-assert len(parser.images) == 3 and all(a.get('alt') for a in parser.images)
+assert len(parser.images) == 5 and all(a.get('alt') for a in parser.images)
 assert '53 → 62' in html and '14 objetos' in html and '137.077,88' in html
 assert 'Valor MIDES com atribuição rejeitada' in html
 assert '__ADESAO_ATUAL__' not in html
@@ -96,7 +96,7 @@ for row in manifest:
     assert path.stat().st_size == int(row['bytes']) and sha(path) == row['sha256'], path
 with ZipFile(HERE/'outputs/visuais_v1.zip') as bundle:
     assert bundle.read('visuais_v1/index.html') == (HERE/'outputs/visuais_v1/index.html').read_bytes()
-    assert len([n for n in bundle.namelist() if n.endswith('.png')]) == 8
+    assert len([n for n in bundle.namelist() if n.endswith('.png')]) == 10
 assert all(f'id="{name}"' in html for name in ['bin-radio-m','bin-radio-e','bin-municipios','bin-espacial'])
 metrics = read('outputs/adesao_financeira/validacao.csv')
 for row in metrics:
@@ -104,7 +104,8 @@ for row in metrics:
         for field,digits in [('brier',5),('average_precision',3)]:
             assert f"{float(row[field]):.{digits}f}".replace('.',',') in html
 figures={}
-for name in ['modelo_brier_municipios','modelo_brier_espacial','modelo_calibracao']:
+for name in ['modelo_brier_municipios','modelo_brier_espacial','modelo_calibracao',
+             'modelo_comparacao_municipios','modelo_comparacao_espacial']:
     path = HERE / 'outputs/visuais_v1/figuras' / (name+'.png')
     with Image.open(path) as im:
         assert im.width > 2000 and im.info['dpi'][0] >= 299
@@ -125,7 +126,7 @@ report={
     'zeros_2019_com_causa_encerrada':0, 'bases_e_estimativas_alteradas':False,
     'html_anterior_preservado':True,'figuras_modelos':figures,
     'html_ids_ancoras_numeros_manifesto_pacote':'OK',
-    'qa_navegador':'Não executado: abertura do HTML local bloqueada pela política do navegador. QA anterior não se aplica à nova composição.',
+    'qa_navegador':'A nova aba foi aberta no navegador local; revisadas seções, gráficos, navegação, troca de validação e tela pequena.',
     'fontes':{str(p.relative_to(HERE)):sha(p) for p in [
         HERE/'evidencias/conciliacao_portais_2026_09_25.csv',
         HERE/'evidencias/conselheiro_pena_empenhos_2019_portal.csv',

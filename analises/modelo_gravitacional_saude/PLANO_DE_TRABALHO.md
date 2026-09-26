@@ -7,6 +7,10 @@ deve criar uma segunda numeracao de etapas.
 
 ## Leitura Do Estado
 
+**Apresentação comparativa concluída em 25/09.** A aba Modelo agora coloca lado a lado o piloto binário auditado e a atração relativa de Paulo, com pipeline, EDA, fórmulas, quatro recortes, validação municipal e espacial, exemplos e limites. Para comparar previsões nas mesmas linhas, o recorte de 53 usa **45.208 pares/770 pagos** e o de 62 usa **52.885/1.298**: Conselheiro Pena–CISVI foi retirado do treino/teste como indeterminado, não convertido em zero. Os números 45.209/771 e 52.886/1.299 abaixo descrevem o piloto original preservado. O controle sem denominador aparece na tabela detalhada. Base v1, resultados estimados e dashboard Shiny não mudaram. Testes 17, 24, 28 e 43 e inspeção no navegador desktop/celular sustentam a apresentação.
+
+**Próximo marco:** levar à equipe a comparação e os erros reais, sobretudo Jacinto–CISRAL, para discutir quais dos 53/62 candidatos eram alternativas institucionais plausíveis em 2019. Verificar a vigência das sedes onde essa interpretação depender dela. Só então decidir se alguma especificação vira modelo substantivo ou se é preciso reduzir o conjunto candidato. Passo 8 continua parcial; passos 9 e 10 não foram fechados.
+
 **Foco retomado na decisão da reunião de 24/09, por orientação de Adriano.**
 O exercício imediato é **transversal em 2019, saúde/MG**: pagamento positivo
 no MIDES como vínculo financeiro operacional, podendo existir vários vínculos
@@ -21,7 +25,7 @@ Os 73 consórcios permanecem na base financeira; dez não têm horas SUS
 identificadas e um tem horas clínicas iguais a zero nesse ano. Não aplicar
 corte de 180 minutos, cinco vizinhos ou histórico `t−1` a este exercício.
 
-**Teste adicional de Paulo concluído em 25/09, separado da interface.**
+**Teste adicional de Paulo concluído em 25/09, inicialmente separado da interface.**
 O script 43 divide a atração de cada consórcio pela soma dos 53/62
 candidatos e usa essa fração para prever cada pagamento sem impor escolha
 exclusiva. Comparou-se ao piloto binário auditado e a um controle que usa
@@ -32,10 +36,10 @@ de 0,009657 para 0,007206 na espacial. Todos os 40 folds melhoraram.
 O controle sem competição ficou próximo do piloto atual. Os erros concretos
 e a elegibilidade institucional impedem promover esse ensaio a modelo final.
 Script, teste 28, saídas e ressalvas constam da metodologia e do dicionário.
-Nenhuma base v1 ou aba foi alterada.
+Naquela rodada, nenhuma base v1 ou aba foi alterada; a atualização visual posterior está descrita acima.
 
-**O que falta no escopo da reunião:** apresentar os quatro ajustes centrais
-em comparação justa, seus exemplos e limites; conferir a vigência da sede
+**O que falta no escopo da reunião:** discutir os quatro ajustes centrais
+já apresentados em comparação justa; conferir a vigência da sede
 somente onde sua interpretação depender dela; não transformar cadastro CNES
 em atendimento realizado nem pagamento em filiação jurídica. A normalização
 literal da atração pelo somatório dos consórcios foi discutida, mas não

@@ -40,10 +40,24 @@
         1608
       ],
       "dpi": 299.9994
+    },
+    "modelo_comparacao_municipios": {
+      "pixels": [
+        3064,
+        1524
+      ],
+      "dpi": 299.9994
+    },
+    "modelo_comparacao_espacial": {
+      "pixels": [
+        3064,
+        1524
+      ],
+      "dpi": 299.9994
     }
   },
   "html_ids_ancoras_numeros_manifesto_pacote": "OK",
-  "qa_navegador": "Não executado: abertura do HTML local bloqueada pela política do navegador. QA anterior não se aplica à nova composição.",
+  "qa_navegador": "A nova aba foi aberta no navegador local; revisadas seções, gráficos, navegação, troca de validação e tela pequena.",
   "fontes": {
     "evidencias\\conciliacao_portais_2026_09_25.csv": "93fbeef75acd5a90f2ded8b9149a1bef00d93ca30836738f412feed7f9d3a96c",
     "evidencias\\conselheiro_pena_empenhos_2019_portal.csv": "200240b21864d2b24bb7c19acfe6e1961a6e6159e2657602862ac1a214255f0b",

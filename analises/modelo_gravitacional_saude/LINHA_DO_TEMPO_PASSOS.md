@@ -1,5 +1,11 @@
 # Linha Do Tempo Dos Passos - Modelo Gravitacional De Saude
 
+## 25/09: As Duas Ideias Na Mesma Aba
+
+**MIDES 2019 → 73 consórcios financeiros → CNES/IBGE/Distbrasil → 53 ou 62 com capacidade e destino → auditoria do desfecho → dois modelos nos mesmos pares → validação fora do treino → casos e limites.** A aba Modelo apresenta esse caminho. O piloto binário usa horas SUS e distância próprias; o teste de Paulo divide a atração de cada consórcio pela soma das atrações concorrentes antes de prever o pagamento. O teste continua binário para admitir vários pagamentos. A versão anterior da aba ficou recolhida como histórico.
+
+No recorte clínico de 53, a auditoria deixa 45.208 pares e 770 pagamentos. Igarapé–CISMEP é um deles: R$ 4.740.790,51 pagos em 2019; Betim e Brumadinho somam 1.651 horas SUS. O piloto prevê 96,72% de pagamento fora do treino e a forma relativa 98,15%; a fração de atração é 73,15%, que não é probabilidade. A mediana da distância aos polos é 52 km entre pagos e 491 km entre zeros. O Brier municipal cai de 0,008886 para 0,007084, mas Jacinto–CISRAL mostra um erro da forma relativa (95,11% previstos e nenhum pagamento). O próximo passo é discutir alternativas institucionais e sedes, sem tratar desempenho preditivo como prova de filiação.
+
 ## 25/09: Testar A Comparacao Entre Consorcios Sem Trocar O Piloto
 
 **Unidades e horas SUS de 2019 → distancias de cada municipio a cada ponto
@@ -22,7 +28,8 @@ Os quatro recortes melhoraram no Brier, logloss e precisao media nas
 validacoes por municipio e espaciais; todos os 40 folds tiveram ganho de
 Brier. O teste 28 reconstruiu os denominadores e a conta de Igarape.
 Ainda falta estabelecer quais consorcios eram alternativas juridicamente
-plausiveis em 2019. Nenhum resultado foi levado a aba Modelo.
+plausiveis em 2019. Naquela rodada, nenhum resultado foi levado à aba Modelo;
+a apresentação entrou depois, conforme o marco acima.
 
 ## 25/09: Recuperar O Histórico Que O Portal Municipal Não Mostrou
 

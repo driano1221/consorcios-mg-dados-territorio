@@ -158,10 +158,10 @@ with ZipFile(OUT / 'visuais_v1.zip') as bundle:
         relative = Path(name).relative_to('visuais_v1')
         assert bundle.read(name) == (DEST / relative).read_bytes()
     assert 'visuais_v1/index.html' in bundle.namelist()
-    assert len([n for n in bundle.namelist() if n.endswith('.png')]) == 8
+    assert len([n for n in bundle.namelist() if n.endswith('.png')]) == 10
     assert len([n for n in bundle.namelist() if '/consulta/' in n]) == 16
 
-report={'status':'OK','figuras_na_consulta':5,'figuras_modelos':3,'figuras_de_origem':20,'formatos':['PNG 300 dpi','SVG'],'relacoes_financeiras':10735,
+report={'status':'OK','figuras_na_consulta':5,'figuras_modelos':5,'figuras_de_origem':20,'formatos':['PNG 300 dpi','SVG'],'relacoes_financeiras':10735,
         'relacoes_diretas':5612,'entidades_mapa_v1':73,'unidades_periodo_v1':len(data['units']),
         'linhas_consultaveis':814615,'colunas_financeira':21,'colunas_direta':32,
         'verificado':'Todas as celulas das duas tabelas consultaveis conciliadas com CSVs v1; escopo anual, valores, fontes, capacidade, tempos, arquivos e manifestos.'}

@@ -1,0 +1,108 @@
+{
+  "status": "OK",
+  "previsoes_fora_treino": 392372,
+  "brier_recalculados": [
+    {
+      "recorte": "clinicas53",
+      "validacao": "espacial",
+      "especificacao": "atual",
+      "brier": 0.00965745029110399
+    },
+    {
+      "recorte": "clinicas53",
+      "validacao": "espacial",
+      "especificacao": "atracao_relativa",
+      "brier": 0.007205802696865376
+    },
+    {
+      "recorte": "clinicas53",
+      "validacao": "municipios",
+      "especificacao": "atual",
+      "brier": 0.008885595681893772
+    },
+    {
+      "recorte": "clinicas53",
+      "validacao": "municipios",
+      "especificacao": "atracao_relativa",
+      "brier": 0.007084332848315102
+    },
+    {
+      "recorte": "misto62",
+      "validacao": "espacial",
+      "especificacao": "atual",
+      "brier": 0.015174577852264103
+    },
+    {
+      "recorte": "misto62",
+      "validacao": "espacial",
+      "especificacao": "atracao_relativa",
+      "brier": 0.012684903913459463
+    },
+    {
+      "recorte": "misto62",
+      "validacao": "municipios",
+      "especificacao": "atual",
+      "brier": 0.01380328922387105
+    },
+    {
+      "recorte": "misto62",
+      "validacao": "municipios",
+      "especificacao": "atracao_relativa",
+      "brier": 0.012351411593629631
+    },
+    {
+      "recorte": "sedes53",
+      "validacao": "espacial",
+      "especificacao": "atual",
+      "brier": 0.009659508360823216
+    },
+    {
+      "recorte": "sedes53",
+      "validacao": "espacial",
+      "especificacao": "atracao_relativa",
+      "brier": 0.007296082647534645
+    },
+    {
+      "recorte": "sedes53",
+      "validacao": "municipios",
+      "especificacao": "atual",
+      "brier": 0.00895762931373814
+    },
+    {
+      "recorte": "sedes53",
+      "validacao": "municipios",
+      "especificacao": "atracao_relativa",
+      "brier": 0.007183974982018955
+    },
+    {
+      "recorte": "sedes62",
+      "validacao": "espacial",
+      "especificacao": "atual",
+      "brier": 0.015136867885326895
+    },
+    {
+      "recorte": "sedes62",
+      "validacao": "espacial",
+      "especificacao": "atracao_relativa",
+      "brier": 0.012724154015396286
+    },
+    {
+      "recorte": "sedes62",
+      "validacao": "municipios",
+      "especificacao": "atual",
+      "brier": 0.013838629138656387
+    },
+    {
+      "recorte": "sedes62",
+      "validacao": "municipios",
+      "especificacao": "atracao_relativa",
+      "brier": 0.012408309114988192
+    }
+  ],
+  "folds_com_melhora": 40,
+  "fontes_sha256": {
+    "metricas_mesma_amostra.csv": "e4e71b9a1ceb0b038f0a065376bc0eb62d42cdccb0e23bf2d1470b1e8bcb87f0",
+    "metricas_por_fold.csv": "1683095b40ac88a2578d1cba6395257753fd4b095e1d4abc021f7b61d01e2588",
+    "previsoes.csv.gz": "4dfd739dcae4fec2ee5207fc2417c665e9d7d45b19b98aff6d53d52c8a17a3f3"
+  }
+}
