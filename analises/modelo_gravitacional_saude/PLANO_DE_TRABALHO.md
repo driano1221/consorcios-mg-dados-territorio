@@ -7,6 +7,8 @@ deve criar uma segunda numeracao de etapas.
 
 ## Leitura Do Estado
 
+**Comunicação da base v1 (28/09):** o mini dash foi publicado no [GitHub Pages](https://driano1221.github.io/consorcios-mg-dados-territorio/) com seis abas de dados. A aba Modelo e seus resultados ficaram fora desse pacote público; a apresentação local de sete abas foi preservada. Essa publicação não altera o estado das etapas do modelo descritas abaixo.
+
 **Apresentação comparativa concluída em 25/09.** A aba Modelo agora coloca lado a lado o piloto binário auditado e a atração relativa de Paulo, com pipeline, EDA, fórmulas, quatro recortes, validação municipal e espacial, exemplos e limites. Para comparar previsões nas mesmas linhas, o recorte de 53 usa **45.208 pares/770 pagos** e o de 62 usa **52.885/1.298**: Conselheiro Pena–CISVI foi retirado do treino/teste como indeterminado, não convertido em zero. Os números 45.209/771 e 52.886/1.299 abaixo descrevem o piloto original preservado. O controle sem denominador aparece na tabela detalhada. Base v1, resultados estimados e dashboard Shiny não mudaram. Testes 17, 24, 28 e 43 e inspeção no navegador desktop/celular sustentam a apresentação.
 
 **Próximo marco:** levar à equipe a comparação e os erros reais, sobretudo Jacinto–CISRAL, para discutir quais dos 53/62 candidatos eram alternativas institucionais plausíveis em 2019. Verificar a vigência das sedes onde essa interpretação depender dela. Só então decidir se alguma especificação vira modelo substantivo ou se é preciso reduzir o conjunto candidato. Passo 8 continua parcial; passos 9 e 10 não foram fechados.

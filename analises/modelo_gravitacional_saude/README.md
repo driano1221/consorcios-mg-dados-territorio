@@ -1,5 +1,7 @@
 # Modelo Gravitacional De Saude - MG
 
+**Mini dash público da base v1:** [acesse aqui](https://driano1221.github.io/consorcios-mg-dados-territorio/). As seis abas de dados estão publicadas; a aba Modelo permanece apenas na versão local completa em `outputs/visuais_v1/index.html#modelo`. Para reconstruir a apresentação, execute `python 28_montar_visuais_v1.py` e depois `python 44_preparar_site_publico.py`. O segundo script gera `outputs/visuais_publicos/` sem a aba, os resultados ou os arquivos de modelo. Essa pasta é a fonte da branch `gh-pages`. O dashboard Shiny anterior continua separado.
+
 **Aba Modelo atualizada em 25/09:** [abra a apresentação local](outputs/visuais_v1/index.html#modelo). Ela compara, nos mesmos pares auditados de 2019, o logit binário de horas e distância com o teste de atração relativa proposto por Paulo. O percurso mostra fontes, seleção 73 → 54 → 53/62, EDA dos pagamentos e distâncias, fórmulas, quatro recortes, validação municipal/espacial, casos reais e limites. O piloto antigo permanece em seção recolhida. A base v1 e as estimativas não foram modificadas nesta atualização visual. Reproduza com `python 28_montar_visuais_v1.py` e confira com os testes 17, 24 e 43. O HTML e o ZIP são locais; não houve publicação no dashboard Shiny.
 
 **Comece pelo que foi combinado na reunião de 24/09:** exercício de 2019

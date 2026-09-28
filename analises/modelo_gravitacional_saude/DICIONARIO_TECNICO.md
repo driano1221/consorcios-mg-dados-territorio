@@ -1,5 +1,15 @@
 # Dicionario Tecnico - Modelo Gravitacional De Saude
 
+## Mini Dash Publico: 28/09
+
+| Arquivo | Função |
+|---|---|
+| `44_preparar_site_publico.py` | Lê o HTML local completo e produz uma cópia sem a aba Modelo, seus dados, código e imagens; confere os arquivos incluídos |
+| `outputs/visuais_publicos/` | Pacote local de seis abas, reconstruível e ignorado pelo Git na branch principal |
+| Branch `gh-pages` | Publica o pacote em https://driano1221.github.io/consorcios-mg-dados-territorio/ |
+
+Reprodução: `python 28_montar_visuais_v1.py`, depois `python 44_preparar_site_publico.py`. A versão de sete abas continua em `outputs/visuais_v1/index.html`; essa pasta não foi alterada pela preparação pública. O repositório técnico principal já é público e conserva scripts e documentação dos modelos. O dashboard Shiny é outro produto.
+
 ## Aba Modelo Comparativa: 25/09
 
 | Arquivo | Função |
