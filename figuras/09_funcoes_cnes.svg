@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='972.00pt' height='468.00pt' viewBox='0 0 972.00 468.00'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw5NzIuMDB8MC4wMHw0NjguMDA='>
+    <rect x='0.00' y='0.00' width='972.00' height='468.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw5NzIuMDB8MC4wMHw0NjguMDA=)'>
+<rect x='0.00' y='-0.00000000000011' width='972.00' height='468.00' style='stroke-width: 1.26; stroke: none; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpMTI3LjI5fDk0NC4xMHw4OC4yM3wzNzYuNzE='>
+    <rect x='127.29' y='88.23' width='816.81' height='288.48' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMTI3LjI5fDk0NC4xMHw4OC4yM3wzNzYuNzE=)'>
+<polyline points='127.29,322.62 944.10,322.62 ' style='stroke-width: 1.26; stroke: #EBEBEB; stroke-linecap: butt;' />
+<polyline points='127.29,232.47 944.10,232.47 ' style='stroke-width: 1.26; stroke: #EBEBEB; stroke-linecap: butt;' />
+<polyline points='127.29,142.32 944.10,142.32 ' style='stroke-width: 1.26; stroke: #EBEBEB; stroke-linecap: butt;' />
+<rect x='127.29' y='209.93' width='212.74' height='45.07' style='stroke-width: 1.26; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #2980B9;' />
+<rect x='127.29' y='300.08' width='30.88' height='45.07' style='stroke-width: 1.26; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #2980B9;' />
+<rect x='127.29' y='119.79' width='710.27' height='45.07' style='stroke-width: 1.26; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #2980B9;' />
+<text x='343.29' y='237.55' style='font-size: 14.23px; font-family: "Noto Sans";' textLength='16.28px' lengthAdjust='spacingAndGlyphs'>62</text>
+<text x='159.80' y='327.70' style='font-size: 14.23px; font-family: "Noto Sans";' textLength='8.14px' lengthAdjust='spacingAndGlyphs'>9</text>
+<text x='842.45' y='147.40' style='font-size: 14.23px; font-family: "Noto Sans";' textLength='24.42px' lengthAdjust='spacingAndGlyphs'>207</text>
+</g>
+<g clip-path='url(#cpMC4wMHw5NzIuMDB8MC4wMHw0NjguMDA=)'>
+<text x='121.46' y='326.33' text-anchor='end' style='font-size: 10.40px;fill: #45545F; font-family: "Noto Sans";' textLength='99.55px' lengthAdjust='spacingAndGlyphs'>Estrutura não clínica</text>
+<text x='121.46' y='236.18' text-anchor='end' style='font-size: 10.40px;fill: #45545F; font-family: "Noto Sans";' textLength='52.14px' lengthAdjust='spacingAndGlyphs'>Clínica fixa</text>
+<text x='121.46' y='146.03' text-anchor='end' style='font-size: 10.40px;fill: #45545F; font-family: "Noto Sans";' textLength='73.50px' lengthAdjust='spacingAndGlyphs'>Unidade móvel</text>
+<text x='127.29' y='389.96' text-anchor='middle' style='font-size: 10.40px;fill: #45545F; font-family: "Noto Sans";' textLength='5.94px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='298.86' y='389.96' text-anchor='middle' style='font-size: 10.40px;fill: #45545F; font-family: "Noto Sans";' textLength='11.88px' lengthAdjust='spacingAndGlyphs'>50</text>
+<text x='470.42' y='389.96' text-anchor='middle' style='font-size: 10.40px;fill: #45545F; font-family: "Noto Sans";' textLength='17.81px' lengthAdjust='spacingAndGlyphs'>100</text>
+<text x='641.98' y='389.96' text-anchor='middle' style='font-size: 10.40px;fill: #45545F; font-family: "Noto Sans";' textLength='17.81px' lengthAdjust='spacingAndGlyphs'>150</text>
+<text x='813.55' y='389.96' text-anchor='middle' style='font-size: 10.40px;fill: #45545F; font-family: "Noto Sans";' textLength='17.81px' lengthAdjust='spacingAndGlyphs'>200</text>
+<text x='535.70' y='403.55' text-anchor='middle' style='font-size: 11.00px;fill: #1A252F; font-family: "Noto Sans";' textLength='203.16px' lengthAdjust='spacingAndGlyphs'>Unidades CNES diretamente vinculadas</text>
+<text x='21.92' y='63.44' style='font-size: 12.00px;fill: #566570; font-family: "Noto Sans";' textLength='570.84px' lengthAdjust='spacingAndGlyphs'>Entidades elegíveis ao núcleo financeiro v1 em 2019. Inclui unidades móveis e estruturas não clínicas.</text>
+<text x='21.92' y='37.63' style='font-size: 22.00px; font-weight: bold;fill: #1A252F; font-family: "Noto Sans";' textLength='622.62px' lengthAdjust='spacingAndGlyphs'>Funções das unidades cadastradas em dezembro de 2019</text>
+<text x='21.92' y='433.26' style='font-size: 10.00px;fill: #566570; font-family: "Noto Sans";' textLength='384.41px' lengthAdjust='spacingAndGlyphs'>As categorias não são somadas para definir a capacidade clínica do recorte direto.</text>
+<text x='21.92' y='447.66' style='font-size: 10.00px;fill: #566570; font-family: "Noto Sans";' textLength='250.00px' lengthAdjust='spacingAndGlyphs'>Fontes: MIDES e CNES/DATASUS. Período: 2014–2021.</text>
+</g>
+</g>
+</svg>
