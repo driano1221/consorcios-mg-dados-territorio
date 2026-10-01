@@ -3,6 +3,8 @@ from pathlib import Path
 import hashlib
 import json
 import math
+import re
+from xml.etree import ElementTree
 
 import pandas as pd
 
@@ -50,6 +52,10 @@ for validation in ("municipios", "espacial"):
     assert f'id="mc-{validation}"' in html
 assert "Igarapé × CISMEP" in html and "Jacinto × CISRAL" in html
 assert "1,70% dos pares têm pagamento" in html
+equations = re.findall(r"<math\b[^>]*>.*?</math>", html, flags=re.S)
+assert len(equations) == 5
+for equation in equations:
+    assert ElementTree.fromstring(equation).attrib.get("aria-label")
 source_paths = [OUT / "atracao_relativa_paulo_2019/metricas_mesma_amostra.csv",
                 OUT / "atracao_relativa_paulo_2019/metricas_por_fold.csv",
                 OUT / "atracao_relativa_paulo_2019/previsoes.csv.gz"]
