@@ -9,13 +9,16 @@ const txt=(x,y,s,opts='')=>`<text x="${x}" y="${y}" ${opts}>${esc(s)}</text>`;
 const svg=(w,h,s,title)=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title>${s}</svg>`;
 const table=(rows,cols)=>`<table><thead><tr>${cols.map(c=>`<th scope="col">${esc(c[1])}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td>${esc(c[2]?c[2](r[c[0]]):r[c[0]])}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${cols.length}">Nenhum registro neste recorte.</td></tr>`}</tbody></table>`;
 function lineChart(rows,key,title,{money=true,selected=null,colour=blue}={}){
- const w=760,h=260,l=66,r=48,t=33,b=44,ys=Array.from({length:8},(_,i)=>2014+i),max=Math.max(1,...rows.map(x=>Number(x[key])||0))*1.22;
+ const w=760,h=260,l=66,r=48,t=33,b=44,ys=Array.from({length:8},(_,i)=>2014+i),peak=Math.max(0,...rows.map(x=>Number(x[key])||0));
+ const magnitude=10**Math.floor(Math.log10(peak>0?peak/4:1)),rawStep=Math.ceil((peak>0?peak/4:1)/magnitude)*magnitude,step=money?rawStep:Math.max(1,Math.ceil(rawStep));
+ const top=Math.max(step,Math.ceil(peak/step)*step),max=top*1.1,unit=money?(peak>=1e6?1e6:peak>=1e3?1e3:1):1;
+ const digits=Math.max(0,-Math.floor(Math.log10(step/unit))),ticks=Array.from({length:peak?Math.round(top/step)+1:1},(_,i)=>i*step);
  const x=y=>l+(y-2014)*(w-l-r)/7,y=v=>h-b-v/max*(h-b-t),values=new Map(rows.map(r=>[+r.ano,r]));let body='';
- for(let i=0;i<=4;i++){const v=max*i/4;body+=`<line x1="${l}" y1="${y(v)}" x2="${w-r}" y2="${y(v)}" stroke="#E1E7EB"/>`+txt(l-10,y(v)+4,fmt(money?v/1e6:v,money?1:0),'text-anchor="end" font-size="13"');}
+ for(const v of ticks)body+=`<line x1="${l}" y1="${y(v)}" x2="${w-r}" y2="${y(v)}" stroke="#E1E7EB"/>`+txt(l-10,y(v)+4,fmt(v/unit,digits),'text-anchor="end" font-size="13"');
  let path='';ys.forEach(yr=>{body+=txt(x(yr),h-16,yr,'text-anchor="middle" font-size="13"');const row=values.get(yr);if(!row){path+=' ';return;}path+=(values.has(yr-1)&&yr!==2014?'L':'M')+x(yr)+','+y(row[key]);});
  body+=`<path d="${path}" fill="none" stroke="${colour}" stroke-width="2.6"/>`;
- rows.forEach(row=>{const v=Number(row[key]),yr=+row.ano;body+=`<circle cx="${x(yr)}" cy="${y(v)}" r="${yr===selected?6:3}" fill="${colour}"><title>${yr}: ${money?cash(v):fmt(v)}</title></circle>`;if(rows.length<2||yr===2014||yr===2021||yr===selected)body+=txt(x(yr),y(v)-14,money?fmt(v/1e6,1):fmt(v),'text-anchor="middle" font-size="13" font-weight="700"');});
- body+=txt(l,14,money?'R$ milhões nominais':'Municípios pagadores','font-size="12"');return svg(w,h,body,title);
+ rows.forEach(row=>{const v=Number(row[key]),yr=+row.ano;body+=`<circle cx="${x(yr)}" cy="${y(v)}" r="${yr===selected?6:3}" fill="${colour}"><title>${yr}: ${money?cash(v):fmt(v)}</title></circle>`;if(rows.length<2||yr===2014||yr===2021||yr===selected)body+=txt(x(yr)+(yr===2014?8:yr===2021?-8:0),y(v)-14,money?(v?fmt(v/unit,Math.max(1,digits)):'0'):fmt(v),`text-anchor="${yr===2014?'start':yr===2021?'end':'middle'}" font-size="13" font-weight="700"`);});
+ body+=txt(l,14,money?unit===1e6?'R$ milhões nominais':unit===1e3?'R$ mil nominais':'R$ nominais':'Municípios pagadores','font-size="12"');return svg(w,h,body,title);
 }
 
 document.querySelectorAll('[data-figure]').forEach(box=>{
