@@ -1226,3 +1226,28 @@ conflitos sem confirmação anual, com São Francisco/2019 preservado.
 `checks/27_longitudinal_exploratorio.json` resume a conferência independente.
 Os CSV/GZ grandes são derivados locais regeneráveis; a metodologia registra
 os denominadores, resultados e limites necessários à revisão no GitHub.
+
+## Diagnóstico De Estabilidade MIDES Para A Reunião De 01/10
+
+Executar `python 45_auditar_estabilidade_mides.py` e
+`python tests/44_validar_estabilidade_mides.py` na pasta do modelo.
+Entradas: `outputs/base_v1/base_financeira_v1.csv`, grade e rotas dos
+cenários de 2019, grupos de validação, previsões originais A/B e decisão
+SICOM sobre Conselheiro Pena–CISVI. `fontes.csv` guarda SHA256 das seis
+entradas. A v1 e as previsões originais são somente lidas.
+
+Saídas locais em `outputs/estabilidade_mides_saude_mg/`:
+
+| Arquivo | Leitura |
+|---|---|
+| `index.html` | Relatório separado para reunião: fluxo, distribuições, 17 casos, sensibilidade e tabela consultável dos 73 consórcios |
+| `consorcio_ano.csv`, `ate_dois_consorcio_ano.csv` | Pagadores e valor por raiz-ano; segundo arquivo retém os 17 casos com 1–2 pagadores |
+| `transicoes.csv`, `diagnostico_consorcios.csv` | Entradas, saídas, rotatividade, correlação e casos de movimento oposto |
+| `corte_2019_amostra_identica.csv` | Prova tabular de que o corte anual de 2019 não remove nenhum candidato dos quatro cenários |
+| `metricas_modelos_mesmas_linhas.csv` | Brier e logloss dos ajustes antigos e reestimados sem AMVAP nas mesmas linhas; quatro cenários × duas validações × dois modelos |
+| `previsoes_sem_AMVAP.csv.gz`, `parametros_modelos.csv` | Previsões por par fora do treino e coeficientes dos 80 ajustes reestimados |
+| `verificacao_reproducao.csv`, `resumo.json`, `fontes.csv` | Igualdade numérica com previsões originais, escopo, limites e hashes |
+
+O corte de 1–2 pagadores é uma **sensibilidade exploratória**, não uma
+regra aprovada de limpeza do MIDES. Os arquivos de QA visual `qa_*.png`
+são auxiliares locais, não dados de pesquisa.

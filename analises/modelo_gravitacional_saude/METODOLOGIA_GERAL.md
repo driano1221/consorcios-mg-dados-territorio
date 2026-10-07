@@ -3404,3 +3404,58 @@ Reproducao: `python 43_testar_atracao_relativa_paulo.py` e
 comprimidas e o grafico diagnostico ficam em
 `outputs/atracao_relativa_paulo_2019/`; `fontes.csv` guarda SHA256 das cinco
 entradas. `checks/28_atracao_relativa_paulo.json` registra a auditoria.
+
+## Estabilidade Dos Pagamentos Antes De Filtrar Os Pilotos (07/10/2026)
+
+A reunião de 01/10 pediu verificar a consistência das trajetórias financeiras
+antes de decidir filtros. `python 45_auditar_estabilidade_mides.py` usa a
+`base_financeira_v1.csv`: uma linha por município × raiz de CNPJ × ano,
+inclusive zeros. Pagador é município com `valor_total > 0` naquele ano;
+não equivale a filiado jurídico. São 491.328 linhas, 10.735 pares positivos,
+73 raízes, 576 raízes-ano elegíveis, 559 com algum pagamento e 17 com zero.
+Entre os positivos, **17 raízes-ano têm um ou dois pagadores**, em seis
+raízes, 20 pares pagos e R$ 2.140.608,83. Em 2019: CIS/UBA (um, R$ 6.184),
+raiz `02287790` (um, R$ 16.319,73) e CISAME (dois, R$ 25.800): quatro pares
+e R$ 48.303,73. Os três continuam na base financeira.
+
+Para cada par de anos consecutivos elegíveis, entradas e saídas são
+diferenças entre conjuntos de municípios pagadores; rotatividade é
+`(entradas + saídas) / pagadores do ano atual`, indefinida se o denominador
+é zero. A distribuição usa apenas transições com pagamento nos dois anos.
+Correlação de Pearson entre número de pagadores e valor nominal recebido é
+calculada por consórcio somente com ao menos quatro anos positivos e
+variação nas duas séries; não é teste de validade. Há 503 transições
+consecutivas, 484 com pagamento nos dois anos; 64 correlações calculáveis,
+18 negativas. Oscilação, correlação negativa ou valor pequeno são sinais
+para leitura do caso, sem provar erro.
+
+Dois filtros possíveis foram separados. **Corte anual de 2019:** as três
+raízes pequenas não pertencem a nenhum dos quatro cenários de 53/62
+candidatos, logo linhas, horas, rotas, denominadores e previsões dos
+modelos A/B são matematicamente idênticos, sem necessidade de reestimativa.
+**Corte histórico permanente:** excluir toda raiz que teve qualquer ano
+com um ou dois pagadores remove apenas AMVAP Saúde dos cenários de 2019.
+Ela tinha um pagador e R$ 9.900 em 2015, mas 19 pagadores e
+R$ 6.332.519,73 em 2019. No cenário clínico/53 auditado, a amostra cai
+de 45.208 pares/770 pagos para 44.355/751.
+
+Para o segundo corte, A e B foram reestimados nos quatro cenários,
+preservando os cinco grupos de validação por município e os cinco blocos
+espaciais. As previsões antigas foram avaliadas **nas mesmas linhas
+restantes** antes de comparar com as novas, para não confundir mudança da
+amostra com mudança do ajuste. No cenário clínico/53, o Brier municipal de
+A foi 0,008689 → 0,008693 e o de B, 0,007065 → 0,007127. Na validação
+espacial: A 0,009472 → 0,009445; B 0,007193 → 0,007482. Menor é melhor;
+não há ganho consistente. B continua com Brier menor que A nas oito
+comparações, mas nenhum dos dois passa a explicar filiação jurídica ou
+acesso institucional. O corte histórico não foi aprovado pela equipe e
+seleciona candidatos usando o próprio desfecho; permanece sensibilidade.
+
+O relatório local `outputs/estabilidade_mides_saude_mg/index.html` mostra
+pipeline, distribuições, 17 casos, tabela dos 73 consórcios, contraste dos
+filtros e métricas de todos os cenários. Saídas tabulares e SHA256 das
+entradas estão no mesmo diretório. `python tests/44_validar_estabilidade_mides.py`
+confere contagens, conservação do valor, amostras e Brier independentemente;
+a reprodução de um fold dos modelos A/B originais difere das previsões
+guardadas em no máximo `3,6e-14` e `1,1e-16`, respectivamente. Nenhuma
+base v1, previsão original ou aba Modelo foi sobrescrita.

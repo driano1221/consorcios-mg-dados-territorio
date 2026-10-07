@@ -7,11 +7,32 @@ deve criar uma segunda numeracao de etapas.
 
 ## Leitura Do Estado
 
+**Diagnóstico da reunião de 01/10 executado em 07/10.** A base financeira
+de saúde/MG tem 73 consórcios e 576 consórcios-ano elegíveis em 2014–2021.
+Entre os 559 com pagamento, 17 têm apenas um ou dois municípios pagadores
+(seis raízes distintas). Em 2019 são três raízes, quatro pares pagos e
+R$ 48.303,73; nenhuma integra os recortes de 53/62 candidatos. Logo, um
+corte aplicado apenas a 2019 deixa os modelos A/B **idênticos**. A
+sensibilidade mais dura, excluir a raiz inteira se houve qualquer ano com
+até dois pagadores, retira apenas AMVAP Saúde dos recortes de 2019, embora
+ela tenha 19 pagadores naquele ano. Ambos os modelos foram reestimados nos
+quatro cenários e nas validações municipal/espacial, sem ganho consistente.
+Relatório separado: `outputs/estabilidade_mides_saude_mg/index.html`;
+reprodução: script 45 e teste 44. A v1, a aba Modelo e os pilotos originais
+permanecem intactos.
+
+**Próximo marco após esse diagnóstico:** levar à equipe os 17 casos, a
+distribuição de rotatividade/correlação e o contraste dos dois filtros.
+Decidir se algum caso exige conferência específica do MIDES e como tratar
+elegibilidade institucional antes de escolher A ou B. Não excluir
+automaticamente correlações negativas, pagamentos pequenos ou um consórcio
+inteiro por um ano atípico.
+
 **Comunicação da base v1 (28/09):** o mini dash foi publicado no [GitHub Pages](https://driano1221.github.io/consorcios-mg-dados-territorio/) com seis abas de dados. A aba Modelo e seus resultados ficaram fora desse pacote público; a apresentação local de sete abas foi preservada. Essa publicação não altera o estado das etapas do modelo descritas abaixo.
 
 **Apresentação comparativa concluída em 25/09.** A aba Modelo agora coloca lado a lado o piloto binário auditado e a atração relativa de Paulo, com pipeline, EDA, fórmulas, quatro recortes, validação municipal e espacial, exemplos e limites. Para comparar previsões nas mesmas linhas, o recorte de 53 usa **45.208 pares/770 pagos** e o de 62 usa **52.885/1.298**: Conselheiro Pena–CISVI foi retirado do treino/teste como indeterminado, não convertido em zero. Os números 45.209/771 e 52.886/1.299 abaixo descrevem o piloto original preservado. O controle sem denominador aparece na tabela detalhada. Base v1, resultados estimados e dashboard Shiny não mudaram. Testes 17, 24, 28 e 43 e inspeção no navegador desktop/celular sustentam a apresentação.
 
-**Próximo marco:** levar à equipe a comparação e os erros reais, sobretudo Jacinto–CISRAL, para discutir quais dos 53/62 candidatos eram alternativas institucionais plausíveis em 2019. Verificar a vigência das sedes onde essa interpretação depender dela. Só então decidir se alguma especificação vira modelo substantivo ou se é preciso reduzir o conjunto candidato. Passo 8 continua parcial; passos 9 e 10 não foram fechados.
+Depois da discussão do diagnóstico MIDES, levar à equipe a comparação e os erros reais dos pilotos, sobretudo Jacinto–CISRAL, para discutir quais dos 53/62 candidatos eram alternativas institucionais plausíveis em 2019. Verificar a vigência das sedes onde essa interpretação depender dela. Só então decidir se alguma especificação vira modelo substantivo ou se é preciso reduzir o conjunto candidato. Passo 8 continua parcial; passos 9 e 10 não foram fechados.
 
 **Foco retomado na decisão da reunião de 24/09, por orientação de Adriano.**
 O exercício imediato é **transversal em 2019, saúde/MG**: pagamento positivo
@@ -746,6 +767,7 @@ com alternativas amplas explicitadas como hipotese, ainda sem validacao instituc
 
 | Data | Alteracao | Motivo |
 |---|---|---|
+| 07/10/2026 | Script 45, teste 44 e relatório local de estabilidade MIDES; 17 consórcios-ano pequenos e sensibilidade A/B sem AMVAP | Atender à reunião de 01/10 sem substituir a v1 ou promover filtro exploratório a regra final |
 | 24/09, auditoria e alternativas | Scripts 33-35 e teste 21; extrator CNES corrigido; 31/32 regenerados; 28 comparacoes territoriais e quatro documentais | Separar erro cadastral, identidade financeira conflitante e limite institucional; explicitar perdas antes de escolher alternativas |
 | 24/09, estimacao apos preparacao | Script 32 estima vinculo binario, cenarios e sensibilidades; teste 20 independente | Comparar clinicas/sedes na mesma amostra, avaliar ampliacao e expor limites de horas, populacao e distancia zero |
 | 24/09, preparacao apos reuniao | Script 31 inventaria tres cenarios, 186.807 linhas conciliadas e especificacao binaria; teste 19 | Quantificar ampliacao 54->63 (53->62 com horas positivas), preservar ausentes/zeros e separar mudanca espacial de amostral |
