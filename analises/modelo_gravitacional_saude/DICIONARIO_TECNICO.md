@@ -1240,14 +1240,15 @@ Saídas locais em `outputs/estabilidade_mides_saude_mg/`:
 
 | Arquivo | Leitura |
 |---|---|
-| `index.html` | Relatório separado para reunião: fluxo, distribuições, 17 casos, sensibilidade e tabela consultável dos 73 consórcios |
-| `consorcio_ano.csv`, `ate_dois_consorcio_ano.csv` | Pagadores e valor por raiz-ano; segundo arquivo retém os 17 casos com 1–2 pagadores |
+| `index.html` | Relatório separado para reunião: corte pelo período inteiro, distribuições, casos anuais auxiliares e tabela consultável dos 73 consórcios |
+| `consorcios_periodo_completo.csv`, `ate_dois_periodo_completo.csv` | Municípios pagadores **distintos** por raiz em 2014–2021; segundo arquivo contém a única raiz com até dois |
+| `consorcio_ano.csv`, `ate_dois_consorcio_ano.csv` | Pagadores e valor por raiz-ano; segundo arquivo retém 17 casos anuais, uma pergunta diferente |
 | `transicoes.csv`, `diagnostico_consorcios.csv` | Entradas, saídas, rotatividade, correlação e casos de movimento oposto |
-| `corte_2019_amostra_identica.csv` | Prova tabular de que o corte anual de 2019 não remove nenhum candidato dos quatro cenários |
+| `corte_periodo_amostra_identica.csv`, `corte_2019_amostra_identica.csv` | Provam que nem o corte pedido para o período todo nem o diagnóstico anual de 2019 removem candidatos dos quatro cenários |
 | `metricas_modelos_mesmas_linhas.csv` | Brier e logloss dos ajustes antigos e reestimados sem AMVAP nas mesmas linhas; quatro cenários × duas validações × dois modelos |
 | `previsoes_sem_AMVAP.csv.gz`, `parametros_modelos.csv` | Previsões por par fora do treino e coeficientes dos 80 ajustes reestimados |
 | `verificacao_reproducao.csv`, `resumo.json`, `fontes.csv` | Igualdade numérica com previsões originais, escopo, limites e hashes |
 
-O corte de 1–2 pagadores é uma **sensibilidade exploratória**, não uma
+O corte de 1–2 municípios distintos em todo o período é uma **sensibilidade exploratória**, não uma
 regra aprovada de limpeza do MIDES. Os arquivos de QA visual `qa_*.png`
 são auxiliares locais, não dados de pesquisa.

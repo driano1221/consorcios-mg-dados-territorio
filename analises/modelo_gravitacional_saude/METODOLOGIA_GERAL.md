@@ -3405,7 +3405,7 @@ comprimidas e o grafico diagnostico ficam em
 `outputs/atracao_relativa_paulo_2019/`; `fontes.csv` guarda SHA256 das cinco
 entradas. `checks/28_atracao_relativa_paulo.json` registra a auditoria.
 
-## Estabilidade Dos Pagamentos Antes De Filtrar Os Pilotos (07/10/2026)
+## Estabilidade Dos Pagamentos Antes De Filtrar Os Pilotos (07–08/10/2026)
 
 A reunião de 01/10 pediu verificar a consistência das trajetórias financeiras
 antes de decidir filtros. `python 45_auditar_estabilidade_mides.py` usa a
@@ -3413,10 +3413,15 @@ antes de decidir filtros. `python 45_auditar_estabilidade_mides.py` usa a
 inclusive zeros. Pagador é município com `valor_total > 0` naquele ano;
 não equivale a filiado jurídico. São 491.328 linhas, 10.735 pares positivos,
 73 raízes, 576 raízes-ano elegíveis, 559 com algum pagamento e 17 com zero.
-Entre os positivos, **17 raízes-ano têm um ou dois pagadores**, em seis
-raízes, 20 pares pagos e R$ 2.140.608,83. Em 2019: CIS/UBA (um, R$ 6.184),
-raiz `02287790` (um, R$ 16.319,73) e CISAME (dois, R$ 25.800): quatro pares
-e R$ 48.303,73. Os três continuam na base financeira.
+O esclarecimento de 08/10 fixa o corte pedido: para cada raiz, contar
+**municípios distintos que pagaram ao menos uma vez em todo 2014–2021**.
+Somente a raiz `02287790` teve até dois: **um município, Serra dos Aimorés**, sete
+pares anuais pagos e R$ 1.071.997,47. CIS/UBA e CISAME tiveram três
+municípios distintos cada. O cálculo anterior, por ano, permanece apenas
+como outro diagnóstico: **17 raízes-ano com um ou dois pagadores**, em seis
+raízes, 20 pares pagos e R$ 2.140.608,83. Em 2019 são três raízes, quatro
+pares e R$ 48.303,73. Nenhuma dessas contagens transforma pagamento em
+filiação jurídica.
 
 Para cada par de anos consecutivos elegíveis, entradas e saídas são
 diferenças entre conjuntos de municípios pagadores; rotatividade é
@@ -3429,17 +3434,20 @@ consecutivas, 484 com pagamento nos dois anos; 64 correlações calculáveis,
 18 negativas. Oscilação, correlação negativa ou valor pequeno são sinais
 para leitura do caso, sem provar erro.
 
-Dois filtros possíveis foram separados. **Corte anual de 2019:** as três
-raízes pequenas não pertencem a nenhum dos quatro cenários de 53/62
-candidatos, logo linhas, horas, rotas, denominadores e previsões dos
-modelos A/B são matematicamente idênticos, sem necessidade de reestimativa.
-**Corte histórico permanente:** excluir toda raiz que teve qualquer ano
+Três perguntas distintas foram separadas. **Corte correto pelo período
+completo:** a raiz `02287790` não pertence a nenhum dos quatro cenários
+de 53/62 candidatos, logo linhas, horas, rotas, denominadores e previsões
+dos modelos A/B são matematicamente idênticos, sem necessidade de
+reestimativa. **Corte apenas pelo ano de 2019:** as três raízes pequenas
+desse ano também não pertencem aos cenários e igualmente não os mudam.
+**Sensibilidade “qualquer ano”:** excluir toda raiz que teve qualquer ano
 com um ou dois pagadores remove apenas AMVAP Saúde dos cenários de 2019.
 Ela tinha um pagador e R$ 9.900 em 2015, mas 19 pagadores e
 R$ 6.332.519,73 em 2019. No cenário clínico/53 auditado, a amostra cai
 de 45.208 pares/770 pagos para 44.355/751.
 
-Para o segundo corte, A e B foram reestimados nos quatro cenários,
+Somente para a sensibilidade “qualquer ano”, A e B foram reestimados nos
+quatro cenários,
 preservando os cinco grupos de validação por município e os cinco blocos
 espaciais. As previsões antigas foram avaliadas **nas mesmas linhas
 restantes** antes de comparar com as novas, para não confundir mudança da
@@ -3452,8 +3460,10 @@ acesso institucional. O corte histórico não foi aprovado pela equipe e
 seleciona candidatos usando o próprio desfecho; permanece sensibilidade.
 
 O relatório local `outputs/estabilidade_mides_saude_mg/index.html` mostra
-pipeline, distribuições, 17 casos, tabela dos 73 consórcios, contraste dos
-filtros e métricas de todos os cenários. Saídas tabulares e SHA256 das
+pipeline, distribuição de pagadores distintos, rotatividade, correlação,
+o caso que satisfaz o corte do período, os 17 casos anuais auxiliares,
+tabela dos 73 consórcios, contraste dos filtros e métricas de todos os
+cenários. Saídas tabulares e SHA256 das
 entradas estão no mesmo diretório. `python tests/44_validar_estabilidade_mides.py`
 confere contagens, conservação do valor, amostras e Brier independentemente;
 a reprodução de um fold dos modelos A/B originais difere das previsões
