@@ -31,7 +31,7 @@ elegibilidade institucional antes de escolher A ou B. Não excluir
 automaticamente correlações negativas, pagamentos pequenos ou um consórcio
 inteiro por um ano atípico.
 
-**Comunicação da base v1 (28/09):** o mini dash foi publicado no [GitHub Pages](https://driano1221.github.io/consorcios-mg-dados-territorio/) com seis abas de dados. A aba Modelo e seus resultados ficaram fora desse pacote público; a apresentação local de sete abas foi preservada. Essa publicação não altera o estado das etapas do modelo descritas abaixo.
+**Comunicação da base v1 (14/10):** o [mini dash no GitHub Pages](https://driano1221.github.io/consorcios-mg-dados-territorio/) conserva as seis abas de dados e passou a ligar uma página separada de trajetórias financeiras de 2014–2021. A aba Modelo e as reestimativas permanecem fora do pacote público; a apresentação local de sete abas foi preservada. Essa publicação não altera o estado das etapas do modelo descritas abaixo.
 
 **Apresentação comparativa concluída em 25/09.** A aba Modelo agora coloca lado a lado o piloto binário auditado e a atração relativa de Paulo, com pipeline, EDA, fórmulas, quatro recortes, validação municipal e espacial, exemplos e limites. Para comparar previsões nas mesmas linhas, o recorte de 53 usa **45.208 pares/770 pagos** e o de 62 usa **52.885/1.298**: Conselheiro Pena–CISVI foi retirado do treino/teste como indeterminado, não convertido em zero. Os números 45.209/771 e 52.886/1.299 abaixo descrevem o piloto original preservado. O controle sem denominador aparece na tabela detalhada. Base v1, resultados estimados e dashboard Shiny não mudaram. Testes 17, 24, 28 e 43 e inspeção no navegador desktop/celular sustentam a apresentação.
 
