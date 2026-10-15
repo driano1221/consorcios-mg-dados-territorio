@@ -28,6 +28,10 @@ assert len(period) == 73 and period.pagadores_distintos.min() == 1
 assert len(period_small) == 1 and period_small.cnpj_raiz_8.item() == "02287790"
 assert period_small.pagadores_distintos.item() == 1
 assert period_small.pares_ano_pagos.item() == 7
+max_annual = annual.groupby("cnpj_raiz_8").pagadores.max()
+assert max_annual[max_annual.le(2)].to_dict() == {"00840724": 1, "02287790": 1}
+assert (pd.read_csv(OUT / "ate_dois_maximo_anual.csv", dtype={"cnpj_raiz_8": str})
+        .cnpj_raiz_8.tolist() == ["00840724", "02287790"])
 assert financial.loc[financial.cnpj_raiz_8.eq("02287790") &
                      financial.valor_total.gt(0), "municipio"].unique().tolist() == ["Serra Dos Aimorés"]
 assert period.loc[period.cnpj_raiz_8.isin(["00840724", "31974558"]),

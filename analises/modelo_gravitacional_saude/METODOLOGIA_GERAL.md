@@ -3413,12 +3413,14 @@ antes de decidir filtros. `python 45_auditar_estabilidade_mides.py` usa a
 inclusive zeros. Pagador é município com `valor_total > 0` naquele ano;
 não equivale a filiado jurídico. São 491.328 linhas, 10.735 pares positivos,
 73 raízes, 576 raízes-ano elegíveis, 559 com algum pagamento e 17 com zero.
-O esclarecimento de 08/10 fixa o corte pedido: para cada raiz, contar
-**municípios distintos que pagaram ao menos uma vez em todo 2014–2021**.
-Somente a raiz `02287790` teve até dois: **um município, Serra dos Aimorés**, sete
-pares anuais pagos e R$ 1.071.997,47. CIS/UBA e CISAME tiveram três
-municípios distintos cada. O cálculo anterior, por ano, permanece apenas
-como outro diagnóstico: **17 raízes-ano com um ou dois pagadores**, em seis
+O esclarecimento de 15/10 fixa o corte pedido: para cada raiz, contar os
+pagadores de **cada ano** e tomar o **maior número anual** de 2014–2021.
+Somente CIS/UBA e a raiz `02287790` tiveram máximo de até dois: ambos
+alcançaram, no máximo, um pagador por ano. CIS/UBA teve três municípios
+distintos ao longo dos anos, mas nunca simultaneamente. A raiz `02287790`
+teve apenas Serra dos Aimorés em sete anos, R$ 1.071.997,47. A contagem
+complementar de municípios distintos no período inteiro encontra só essa
+última raiz. Como outro diagnóstico, há **17 raízes-ano com um ou dois pagadores**, em seis
 raízes, 20 pares pagos e R$ 2.140.608,83. Em 2019 são três raízes, quatro
 pares e R$ 48.303,73. Nenhuma dessas contagens transforma pagamento em
 filiação jurídica.
@@ -3434,8 +3436,8 @@ consecutivas, 484 com pagamento nos dois anos; 64 correlações calculáveis,
 18 negativas. Oscilação, correlação negativa ou valor pequeno são sinais
 para leitura do caso, sem provar erro.
 
-Três perguntas distintas foram separadas. **Corte correto pelo período
-completo:** a raiz `02287790` não pertence a nenhum dos quatro cenários
+Três perguntas distintas foram separadas. **Corte correto pelo máximo anual
+no período completo:** CIS/UBA e a raiz `02287790` não pertencem a nenhum dos quatro cenários
 de 53/62 candidatos, logo linhas, horas, rotas, denominadores e previsões
 dos modelos A/B são matematicamente idênticos, sem necessidade de
 reestimativa. **Corte apenas pelo ano de 2019:** as três raízes pequenas
@@ -3460,9 +3462,9 @@ acesso institucional. O corte histórico não foi aprovado pela equipe e
 seleciona candidatos usando o próprio desfecho; permanece sensibilidade.
 
 O relatório local `outputs/estabilidade_mides_saude_mg/index.html` mostra
-pipeline, distribuição de pagadores distintos, rotatividade, correlação,
-o caso que satisfaz o corte do período, os 17 casos anuais auxiliares,
-tabela dos 73 consórcios, contraste dos filtros e métricas de todos os
+pipeline, distribuição do máximo anual, rotatividade, correlação,
+os dois casos que satisfazem o corte, os 17 casos anuais auxiliares,
+tabela filtrável dos 73 consórcios, contraste dos filtros e métricas de todos os
 cenários. Saídas tabulares e SHA256 das
 entradas estão no mesmo diretório. `python tests/44_validar_estabilidade_mides.py`
 confere contagens, conservação do valor, amostras e Brier independentemente;

@@ -77,10 +77,11 @@ def build():
     report = STABILITY.read_text(encoding="utf-8")
     intro = re.compile(r'<p class="lead">.*?</p>')
     report, count = intro.subn(
-        '<p class="lead">Contamos os municípios que pagaram ao menos uma vez '
-        'entre 2014 e 2021. Dos 73 consórcios de saúde, só a raiz 02287790 '
-        'teve até dois: recebeu de Serra dos Aimorés em sete anos. Os gráficos '
-        'mostram também entradas, saídas e pagadores em relação ao valor recebido.</p>',
+        '<p class="lead">Para cada um dos 73 consórcios de saúde, contamos '
+        'os municípios com pagamento positivo em cada ano de 2014 a 2021. '
+        'O maior número anual foi um para CIS/UBA e para a raiz 02287790; '
+        'todos os demais chegaram a pelo menos três em algum ano. A tabela '
+        'permite conferir cada série anual.</p>',
         report, count=1)
     assert count == 1
     report = report.replace('<a href="#modelos">Modelos A e B</a>', '')
@@ -101,8 +102,10 @@ def build():
     report = report[:start] + (
         '<section><div class="eyebrow">Método e limites</div>'
         '<h2>O que os pagamentos mostram</h2>'
-        '<p>Contamos cada município uma vez por consórcio quando houve valor MIDES '
-        'positivo em pelo menos um ano de 2014 a 2021. A rotatividade compara '
+        '<p>Contamos os municípios pagadores em cada ano e usamos o maior '
+        'número anual de cada consórcio para o filtro de até dois. A coluna '
+        'de municípios distintos no período responde a outra pergunta. '
+        'A rotatividade compara '
         'os conjuntos de pagadores em anos consecutivos. Os valores são nominais.</p>'
         '<p>Pagamento observado indica vínculo financeiro, não filiação jurídica '
         'ou atendimento. Oscilações e correlações orientam a revisão dos casos; '
@@ -116,7 +119,7 @@ def build():
     assert '<section id="modelos"' not in report
     assert all(term not in report for term in ('Modelo A', 'Modelo B', 'Brier', '53/62',
                                                'reestimado', 'previsões A/B'))
-    assert 'CIS/UBA' in report and 'CIAS' in report and '73 raízes' in report
+    assert 'CIS/UBA' in report and '02287790' in report and '73 raízes' in report
     (DEST / 'estabilidade.html').write_text(report, encoding='utf-8')
     (DEST / ".nojekyll").write_text("", encoding="utf-8")
     for item in (SOURCE / "dados/consulta").glob("*.js"):

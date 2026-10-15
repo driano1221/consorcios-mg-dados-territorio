@@ -1,4 +1,4 @@
-"""Audita pagadores no período inteiro e a sensibilidade anual dos modelos A/B.
+"""Audita o máximo anual de pagadores e a sensibilidade dos modelos A/B.
 
 Executar da pasta do modelo: python 45_auditar_estabilidade_mides.py
 Saídas separadas em outputs/estabilidade_mides_saude_mg/. Não altera a v1.
@@ -76,6 +76,12 @@ small_2019 = set(small.loc[small.ano.eq(2019), "cnpj_raiz_8"])
 small_ever = set(small.cnpj_raiz_8)
 assert len(small) == 17 and len(small_ever) == 6 and len(small_2019) == 3
 assert annual.valor.sum() == financial.valor_total.sum()
+annual_max = (annual.groupby(["cnpj_raiz_8", "entidade"], as_index=False)
+              .agg(max_pagadores_ano=("pagadores", "max")))
+small_max = annual_max[annual_max.max_pagadores_ano.le(2)].copy()
+small_max_roots = set(small_max.cnpj_raiz_8)
+assert len(annual_max) == 73 and small_max_roots == {"00840724", "02287790"}
+assert small_max.max_pagadores_ano.eq(1).all()
 period = (financial[financial.valor_total.gt(0)]
           .groupby(["cnpj_raiz_8", "entidade"], as_index=False)
           .agg(pagadores_distintos=("id_municipio", "nunique"),
@@ -137,6 +143,8 @@ for root, years in annual.groupby("cnpj_raiz_8", sort=True):
         "anos_ate_dois": int(years.ate_dois.sum())})
 correlations = pd.DataFrame(correlations)
 correlations = correlations.merge(period[["cnpj_raiz_8", "pagadores_distintos"]],
+                                  on="cnpj_raiz_8", validate="one_to_one")
+correlations = correlations.merge(annual_max[["cnpj_raiz_8", "max_pagadores_ano"]],
                                   on="cnpj_raiz_8", validate="one_to_one")
 
 grade = pd.read_csv(ROOT / SOURCES["grade"],
@@ -302,13 +310,13 @@ pd.DataFrame([{"cenario": "clinicas53", "validacao": "municipios", "fold": 1,
     "pares_conhecidos": len(ref_rows), "max_diferenca_A": max_a,
     "max_diferenca_B": max_b}]).to_csv(OUT / "verificacao_reproducao.csv", index=False)
 
-# Tanto o corte correto por municípios distintos no período inteiro quanto
+# Tanto o corte pelo maior número de pagadores em um ano quanto
 # o corte anual de 2019 deixam as matrizes dos quatro cenários idênticas.
 annual_identity = []
 period_identity = []
 for name, source, rule in CASES:
     g = grade[grade.cenario.eq(source) & grade[rule]]
-    period_kept = g[~g.cnpj_raiz_8.isin(small_period_roots)]
+    period_kept = g[~g.cnpj_raiz_8.isin(small_max_roots)]
     assert g.equals(period_kept)
     period_identity.append({"cenario": name, "raizes_antes": g.cnpj_raiz_8.nunique(),
                             "raizes_depois": period_kept.cnpj_raiz_8.nunique(),
@@ -374,6 +382,8 @@ for name, source, rule in CASES:
               f"B {result[-2]['brier']:.6f}->{result[-1]['brier']:.6f}", flush=True)
 
 annual.to_csv(OUT / "consorcio_ano.csv", index=False)
+annual_max.to_csv(OUT / "maximo_anual_pagadores.csv", index=False)
+small_max.to_csv(OUT / "ate_dois_maximo_anual.csv", index=False)
 small.to_csv(OUT / "ate_dois_consorcio_ano.csv", index=False)
 period.to_csv(OUT / "consorcios_periodo_completo.csv", index=False)
 small_period.to_csv(OUT / "ate_dois_periodo_completo.csv", index=False)
@@ -434,10 +444,10 @@ amvap = annual[annual.cnpj_raiz_8.eq("18151467")].sort_values("ano")
 amvap_2019 = amvap[amvap.ano.eq(2019)].iloc[0]
 assert amvap_2019.pagadores == 19 and abs(amvap_2019.valor - 6332519.73) < .01
 negative = int(corr.lt(0).sum())
-hist_period = hist_svg(period.pagadores_distintos,
+hist_period = hist_svg(annual_max.max_pagadores_ano,
     [.5, 2.5, 5.5, 10.5, 25.5, 50.5, 100.5, np.inf],
     ["1–2", "3–5", "6–10", "11–25", "26–50", "51–100", "mais de 100"],
-    "Municípios pagadores distintos por consórcio em 2014 a 2021")
+    "Maior número de municípios pagadores em um ano por consórcio")
 hist_churn = hist_svg(valid, [0, .1, .25, .5, 1, np.inf],
     ["0–0,1", "0,1–0,25", "0,25–0,5", "0,5–1", "mais de 1"],
     "Distribuição da rotatividade entre anos com pagamento nos dois lados")
@@ -453,6 +463,16 @@ entity_table = "".join(
     f'<td>{br(row.correlacao_pearson,2) if pd.notna(row.correlacao_pearson) else "—"}</td>'
     f'<td>{row.mudancas_opostas}</td></tr>'
     for row in correlations.sort_values(["pagadores_distintos","entidade"]).itertuples(index=False))
+annual_counts = {(row.cnpj_raiz_8, int(row.ano)): int(row.pagadores)
+                 for row in annual.itertuples(index=False)}
+year_headers = "".join(f"<th>{year}</th>" for year in range(2014, 2022))
+annual_payer_rows = "".join(
+    f'<tr data-small="{str(row.max_pagadores_ano <= 2).lower()}">'
+    f'<td>{escape(row.entidade)}</td>'
+    + "".join(f'<td>{annual_counts.get((row.cnpj_raiz_8, year), "—")}</td>'
+              for year in range(2014, 2022))
+    + f'<td><b>{row.max_pagadores_ano}</b></td><td>{row.pagadores_distintos}</td></tr>'
+    for row in correlations.sort_values(["max_pagadores_ano", "entidade"]).itertuples(index=False))
 metric_rows = []
 for (scenario, validation, model), group in metrics.groupby(["cenario","validacao","modelo"],sort=False):
     old_score = group[group.versao.eq("original_nas_linhas_restantes")].iloc[0]
@@ -486,15 +506,15 @@ p{{max-width:78ch;margin:12px 0;color:var(--muted)}}.lead{{font-size:19px;color:
 .comparison{{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin:20px 0}}.comparison article{{border-top:3px solid var(--blue);padding-top:13px}}.comparison article+article{{border-color:var(--red)}}.comparison strong{{font-size:22px}}.comparison small{{display:block;color:var(--muted)}}footer{{font-size:12px;color:var(--muted);padding:22px 0 35px}}
 @media(max-width:720px){{.top{{display:block}}nav{{margin-top:12px;gap:8px 18px}}.wrap{{padding:0 19px}}section{{padding:35px 0}}h1{{font-size:31px}}h2{{font-size:24px}}.stats{{grid-template-columns:1fr 1fr}}.flow,.split,.comparison{{grid-template-columns:1fr}}.flow{{gap:12px}}.table-wrap{{max-height:350px}}}}
 </style></head><body><header><div class="wrap top"><div class="brand">IPEA · CONSÓRCIOS DE SAÚDE EM MG</div><nav><a href="#corte">O corte</a><a href="#trajetorias">Trajetórias</a><a href="#modelos">Modelos A e B</a><a href="#consulta">Consultar</a></nav></div></header>
-<main class="wrap"><section><div class="eyebrow">Diagnóstico para discussão · MIDES 2014–2021</div><h1>Um consórcio teve até dois pagadores no período inteiro</h1>
-<p class="lead">Contando cada município uma vez, mesmo que tenha pago em vários anos, apenas a raiz 02287790 teve um ou dois pagadores em 2014–2021. Ela não entrou nos recortes de 53 ou 62 consórcios; excluí-la deixa os modelos A e B exatamente iguais.</p>
-<div class="stats"><div><strong>73</strong><span>consórcios no núcleo financeiro</span></div><div><strong>1</strong><span>consórcio com até 2 municípios distintos no período</span></div><div><strong>7</strong><span>anos com pagamento dessa raiz</span></div><div><strong>0</strong><span>deles entre os 53 ou 62 modelados em 2019</span></div></div>
+<main class="wrap"><section><div class="eyebrow">Diagnóstico para discussão · MIDES 2014–2021</div><h1>Dois consórcios nunca passaram de um pagador por ano</h1>
+<p class="lead">Para cada consórcio, contamos os municípios com pagamento em cada ano de 2014 a 2021 e tomamos o maior número anual. Apenas CIS/UBA e a raiz 02287790 ficaram com máximo de até dois. Ambos tiveram máximo de um; nenhum entrou nos recortes de 53 ou 62 consórcios de 2019.</p>
+<div class="stats"><div><strong>73</strong><span>consórcios no núcleo financeiro</span></div><div><strong>2</strong><span>com máximo anual de até 2 pagadores</span></div><div><strong>1</strong><span>com até 2 municípios distintos no período inteiro</span></div><div><strong>0</strong><span>deles entre os 53 ou 62 modelados em 2019</span></div></div>
 <p>Fonte: base financeira v1, uma linha por município × consórcio × ano. “Pagador” significa valor MIDES positivo naquele ano; não é sinônimo de filiação jurídica.</p></section>
 <section id="corte"><div class="eyebrow">01 / O que foi contado</div><h2>Do pagamento municipal ao caso de revisão</h2>
-<div class="flow"><article><b>73 raízes</b><p>Consórcios de saúde do núcleo financeiro de MG.</p></article><article><b>Municípios únicos</b><p>Para cada raiz, contamos todos que pagaram ao menos uma vez entre 2014 e 2021.</p></article><article><b>1 raiz com até 2</b><p>A raiz 02287790 recebeu pagamentos de Serra dos Aimorés em sete anos: R$ {br(small_period.valor.sum(),2)}.</p></article><article><b>0 nos modelos</b><p>O consórcio não é candidato nos cenários 53/62 de 2019.</p></article></div>
-<figure class="figure"><h3>Quantos municípios distintos pagaram cada consórcio?</h3>{hist_period}<figcaption>Distribuição das 73 raízes. Cada município conta uma vez por consórcio em 2014–2021, mesmo se pagou em vários anos.</figcaption></figure>
-<p class="note">A contagem <em>por ano</em> responde a outra pergunta: há 17 consórcios-ano com um ou dois pagadores, em seis raízes. CIS/UBA e CISAME, por exemplo, tiveram três municípios distintos no período inteiro e não entram no corte principal.</p>
-<div class="split" style="margin-top:26px"><article class="case"><h3>CIS/UBA: um em cada ano não é um no período</h3><p>Teve um pagador em cada um dos cinco anos com pagamento, mas foram <b>três municípios diferentes</b> ao longo de 2014–2020. Valor total: R$ 57.968. Merece revisão histórica; não satisfaz o corte de até dois municípios distintos.</p></article><article class="case"><h3>CIAS: oscilação é outra questão</h3><p>Teve <b>58 municípios distintos</b> em 2014–2021. O número anual foi de 52 em 2014 para 13 em 2021, com R$ 49,81 milhões no período. A série pede inspeção, mas não entra no corte de poucos pagadores.</p></article></div>
+<div class="flow"><article><b>73 raízes</b><p>Consórcios de saúde do núcleo financeiro de MG.</p></article><article><b>Oito contagens anuais</b><p>Em cada ano, contamos os municípios com pagamento positivo.</p></article><article><b>Maior ano de cada raiz</b><p>Tomamos o máximo anual, sem somar municípios de anos diferentes.</p></article><article><b>2 com máximo até 2</b><p>CIS/UBA e raiz 02287790; ambos chegaram, no máximo, a um pagador anual.</p></article></div>
+<figure class="figure"><h3>Qual foi o máximo anual de pagadores de cada consórcio?</h3>{hist_period}<figcaption>Distribuição dos 73 consórcios pelo maior número de municípios que pagaram em um único ano de 2014 a 2021. A primeira barra reúne os dois casos do filtro.</figcaption></figure>
+<p class="note">Este filtro é diferente de contar municípios <em>distintos no período inteiro</em>, que encontra só a raiz 02287790. Também é diferente de retirar qualquer consórcio que teve <em>ao menos um ano</em> pequeno: essa regra mais ampla atinge seis raízes.</p>
+<div class="split" style="margin-top:26px"><article class="case"><h3>CIS/UBA: três municípios no período, nunca juntos</h3><p>Teve um pagador em cada um dos cinco anos com pagamento, mas foram <b>três municípios diferentes</b> ao longo de 2014–2020. Valor total: R$ 57.968. Entra no filtro pelo máximo anual de um.</p></article><article class="case"><h3>Raiz 02287790: um município também no período</h3><p>Recebeu pagamentos apenas de Serra dos Aimorés em sete anos: R$ {br(small_period.valor.sum(),2)}. Seu máximo anual também foi um.</p></article></div>
 <details><summary>Ver os 17 casos anuais, apenas como diagnóstico adicional</summary><div class="table-wrap"><table><thead><tr><th>Consórcio</th><th>Ano</th><th>Pagadores no ano</th><th>Valor recebido</th></tr></thead><tbody>{small_table}</tbody></table></div></details>
 <p class="note warn">Ausência de pagamento em um ano foi guardada à parte. Também não tratei o primeiro ano observado como uma “entrada” comprovada.</p></section>
 <section id="trajetorias"><div class="eyebrow">02 / Séries 2014–2021</div><h2>Oscilação indica onde olhar primeiro</h2>
@@ -505,28 +525,31 @@ p{{max-width:78ch;margin:12px 0;color:var(--muted)}}.lead{{font-size:19px;color:
 <div class="case" style="margin-top:30px"><h3>AMVAP Saúde: um ano pequeno não define a entidade</h3><p>Em 2015, só um município pagou R$ 9.900. Em 2019, foram <strong>19 pagadores</strong> e <strong>R$ {br(amvap_2019.valor/1e6,2)} milhões</strong>. Excluir toda a raiz por causa de 2015 retiraria seus 19 vínculos de 2019 do teste.</p></div>
 <div class="split"><figure class="figure"><h3>Municípios pagadores</h3>{annual_svg(amvap,"pagadores","#2980B9")}</figure><figure class="figure"><h3>Valor anual, nominal</h3>{annual_svg(amvap,"valor","#7F8C8D","mi")}</figure></div></section>
 <section id="modelos"><div class="eyebrow">03 / Sensibilidade dos pilotos de 2019</div><h2>O corte pedido não muda os modelos</h2>
-<div class="comparison"><article><h3>Até 2 municípios distintos em 2014–2021</h3><strong>Sem mudança</strong><small>Apenas a raiz 02287790 sai da base financeira; zero dos recortes 53/62.</small><p>As linhas, as horas, os destinos, os denominadores da atração e as previsões A/B continuam idênticos. Também retirar as três raízes com até dois pagadores apenas em 2019 não altera esses pilotos.</p></article>
+<div class="comparison"><article><h3>Máximo anual de até 2 em 2014–2021</h3><strong>Sem mudança</strong><small>CIS/UBA e raiz 02287790 sairiam da base financeira; nenhum pertence aos recortes 53/62.</small><p>As linhas, as horas, os destinos, os denominadores da atração e as previsões A/B continuam idênticos. Nenhuma exclusão foi aplicada à base.</p></article>
 <article><h3>Outra regra: qualquer ano com até 2</h3><strong>AMVAP sai</strong><small>Se um único ano tiver 1 ou 2 pagadores, a raiz toda sai, mesmo com muitos pagadores em outros anos.</small><p>Esta regra diferente remove a AMVAP dos recortes de 2019 por causa de 2015. Ambos os modelos foram reestimados, com os mesmos cinco grupos municipais e espaciais.</p></article></div>
 <p>No recorte clínico, a amostra auditada passa de 45.208 pares/770 pagos para <b>44.355 pares/751 pagos</b>. O Brier mede erro de probabilidade: menor é melhor. Para comparar com justiça, o resultado antigo foi recalculado <em>nas mesmas linhas restantes</em>, antes de ser confrontado com o novo ajuste.</p>
 <div class="comparison"><article><h3>Modelo A · clínica/53 · municípios</h3><strong>{br(headline['A'][0],6)} → {br(headline['A'][1],6)}</strong><small>Brier antigo nas linhas restantes → reestimado sem AMVAP</small></article><article><h3>Modelo B · clínica/53 · municípios</h3><strong>{br(headline['B'][0],6)} → {br(headline['B'][1],6)}</strong><small>Mesmo cálculo; B refaz a soma da atração sem AMVAP.</small></article></div>
-<p class="note warn">A reestimativa sem AMVAP refere-se somente à regra alternativa “qualquer ano pequeno”. Ela não é o resultado do corte pedido para o período inteiro, nem foi aprovada pela equipe. O desempenho dos modelos não valida filiação, acesso ou qualidade do MIDES.</p>
+<p class="note warn">A reestimativa sem AMVAP refere-se somente à regra alternativa “qualquer ano pequeno”. Ela não é o resultado do corte pelo máximo anual, nem foi aprovada pela equipe. O desempenho dos modelos não valida filiação, acesso ou qualidade do MIDES.</p>
 <details><summary>Ver os quatro cenários e as duas validações</summary><div class="table-wrap"><table><thead><tr><th>Cenário</th><th>Validação</th><th>Modelo</th><th>Antigo, mesmas linhas</th><th>Reestimado</th><th>Δ Brier</th></tr></thead><tbody>{metric_table}</tbody></table></div><p>As previsões são fora do treino do município testado. “Clínicas 53” e “Sedes 53” usam os mesmos candidatos; “Sedes 62” e “Misto 62” usam o conjunto ampliado. Depois do corte histórico, ficam 52/61.</p></details></section>
-<section id="consulta"><div class="eyebrow">04 / Conferir os casos</div><h2>Todos os 73 consórcios</h2><p>A tabela deixa visíveis anos com poucos pagadores, rotatividade mediana e correlação quando há série suficiente. Um traço significa que não há base para calcular ou interpretar aquela medida.</p>
-<input type="search" id="search" aria-label="Buscar consórcio" placeholder="Buscar consórcio..."><div class="table-wrap"><table id="entities"><thead><tr><th>Consórcio</th><th>Pagadores distintos 2014–2021</th><th>Anos pagos</th><th>Anos com 1–2</th><th>Rotatividade mediana</th><th>Correlação</th><th>Mudanças opostas</th></tr></thead><tbody>{entity_table}</tbody></table></div>
-<p>Rotatividade mediana considera transições entre dois anos positivos. “Mudanças opostas” conta anos em que pagadores e valor mudaram em direções diferentes. Nenhuma dessas colunas é um selo de confiabilidade.</p></section>
-<section><div class="eyebrow">Método e limites</div><h2>O que esta página permite concluir</h2><p>O filtro de até dois municípios distintos em todo 2014–2021 não altera os pilotos: a única raiz atingida não é candidata em 2019. A regra diferente de excluir quem teve qualquer ano pequeno altera a amostra por retirar AMVAP Saúde. Escolher um recorte pela estabilidade do próprio pagamento pode tornar o exercício menos representativo e favorecer artificialmente a previsão do pagamento.</p>
+<section id="consulta"><div class="eyebrow">04 / Conferir os casos</div><h2>Pagadores por consórcio e ano</h2><p>Cada célula mostra quantos municípios pagaram naquele ano. O máximo anual decide o filtro; “distintos no período” conta cada município uma vez em 2014–2021, mesmo se pagou em vários anos. Um traço indica ano fora da base v1 daquela entidade.</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:end"><label>Buscar consórcio<br><input type="search" id="search" aria-label="Buscar consórcio" placeholder="Nome do consórcio..."></label><label>Máximo anual<br><select id="max-filter" style="padding:10px 12px;border:1px solid #A8B6BF;font:inherit"><option value="all">Todos os 73</option><option value="small">Até 2 pagadores</option><option value="other">Mais de 2 pagadores</option></select></label></div><p id="visible-count" aria-live="polite">73 consórcios exibidos</p>
+<div class="table-wrap"><table id="annual-payers"><thead><tr><th>Consórcio</th>{year_headers}<th>Máximo anual</th><th>Distintos no período</th></tr></thead><tbody>{annual_payer_rows}</tbody></table></div>
+<details><summary>Ver indicadores adicionais dos 73 consórcios</summary><div class="table-wrap"><table id="entities"><thead><tr><th>Consórcio</th><th>Pagadores distintos 2014–2021</th><th>Anos pagos</th><th>Anos com 1–2</th><th>Rotatividade mediana</th><th>Correlação</th><th>Mudanças opostas</th></tr></thead><tbody>{entity_table}</tbody></table></div></details>
+<p>Zero indica nenhum pagamento positivo naquele ano, dentro da base. A rotatividade e a correlação são diagnósticos, não selos de confiabilidade.</p></section>
+<section><div class="eyebrow">Método e limites</div><h2>O que esta página permite concluir</h2><p>O filtro pelo máximo anual de até dois pagadores não altera os pilotos: as duas raízes atingidas não são candidatas em 2019. A regra diferente de excluir quem teve qualquer ano pequeno altera a amostra por retirar AMVAP Saúde. Escolher um recorte pela estabilidade do próprio pagamento pode tornar o exercício menos representativo e favorecer artificialmente a previsão do pagamento.</p>
 <p>Fontes: MIDES consolidado na base financeira v1; CNES/Distbrasil e grupos de validação dos cenários de 2019; decisão documental que retira Conselheiro Pena–CISVI da resposta auditada. CNPJs agrupados por raiz; valores nominais; nenhum zero foi imputado como saída jurídica. As entradas e os scripts usados estão listados em <code>fontes.csv</code> nesta pasta.</p>
-<p>Arquivos de conferência: <code>ate_dois_periodo_completo.csv</code>, <code>consorcio_ano.csv</code>, <code>transicoes.csv</code>, <code>diagnostico_consorcios.csv</code>, <code>metricas_modelos_mesmas_linhas.csv</code> e <code>previsoes_sem_AMVAP.csv.gz</code>. Reproduzir na pasta do projeto com <code>python 45_auditar_estabilidade_mides.py</code>.</p></section></main>
+<p>Arquivos de conferência: <code>ate_dois_maximo_anual.csv</code>, <code>consorcio_ano.csv</code>, <code>transicoes.csv</code>, <code>diagnostico_consorcios.csv</code>, <code>metricas_modelos_mesmas_linhas.csv</code> e <code>previsoes_sem_AMVAP.csv.gz</code>. Reproduzir na pasta do projeto com <code>python 45_auditar_estabilidade_mides.py</code>.</p></section></main>
 <footer class="wrap">Dados: MIDES, CNES/DATASUS e Distbrasil. Período financeiro: 2014–2021. Modelos: exercício de 2019.</footer>
-<script>document.getElementById('search').addEventListener('input',function(){{let q=this.value.toLocaleLowerCase('pt-BR');document.querySelectorAll('#entities tbody tr').forEach(tr=>tr.hidden=!tr.cells[0].textContent.toLocaleLowerCase('pt-BR').includes(q))}})</script>
+<script>function filterRows(){{let q=document.getElementById('search').value.toLocaleLowerCase('pt-BR'),f=document.getElementById('max-filter').value,n=0;document.querySelectorAll('#annual-payers tbody tr').forEach(tr=>{{let ok=tr.cells[0].textContent.toLocaleLowerCase('pt-BR').includes(q)&&(f==='all'||(f==='small')===(tr.dataset.small==='true'));tr.hidden=!ok;if(ok)n++}});document.getElementById('visible-count').textContent=n+' consórcio'+(n===1?'':'s')+' exibido'+(n===1?'':'s')}}document.getElementById('search').addEventListener('input',filterRows);document.getElementById('max-filter').addEventListener('change',filterRows)</script>
 </body></html>'''
 (OUT / "index.html").write_text(html, encoding="utf-8")
 (OUT / "resumo.json").write_text(json.dumps({
     "estado": "sensibilidade_exploratoria", "anos": [2014, 2021],
     "consorcios": 73, "consorcio_ano": len(annual),
+    "ate_dois_maximo_anual": sorted(small_max_roots),
     "ate_dois_pagadores_distintos_periodo": sorted(small_period_roots),
     "pagadores_distintos_da_raiz": int(small_period.iloc[0].pagadores_distintos),
-    "intersecao_corte_periodo_modelos": {name: sorted(roots & small_period_roots) for name, roots in case_roots.items()},
+    "intersecao_corte_periodo_modelos": {name: sorted(roots & small_max_roots) for name, roots in case_roots.items()},
     "consorcio_ano_positivos": int(annual.pagadores.gt(0).sum()),
     "ate_dois_consorcio_ano": len(small), "raizes_com_ano_ate_dois": len(small_ever),
     "ate_dois_em_2019": sorted(small_2019),
