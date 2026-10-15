@@ -28,6 +28,8 @@ assert 'Dois consórcios nunca passaram de um pagador por ano' in report
 assert 'id="max-filter"' in report and 'id="annual-payers"' in report
 assert '<option value="small">Até 2 pagadores</option>' in report
 assert 'Trajetórias MIDES' in home and 'Rotatividade anual' in report
+assert 'Correlação por consórcio' in report and report.count('class="corr-row"') == 64
+assert 'id="corr-search"' in report and 'data-name="CIS/PARANAIBA"' in report
 assert 'Ausência de pagamento em um ano foi guardada à parte' not in report
 assert 'um ano pequeno não define a entidade' not in report
 assert 'Um ano de poucos pagamentos não resume' not in report
