@@ -4,7 +4,7 @@
 
 | Arquivo | Função |
 |---|---|
-| `44_preparar_site_publico.py` | Lê o HTML local completo e o diagnóstico do script 45; produz seis abas e a página pública de trajetórias, sem a aba Modelo nem as reestimativas |
+| `44_preparar_site_publico.py` | Lê o HTML local completo e o diagnóstico do script 45; produz seis abas e a página pública de trajetórias com introdução aos modelos, sem a aba Modelo nem suas estimativas |
 | `outputs/visuais_publicos/` | Pacote local das seis abas e `estabilidade.html`, reconstruível e ignorado pelo Git na branch principal |
 | `tests/45_validar_publicacao_estabilidade.py` | Reconta o corte na base financeira e confere navegação, casos reais e ausência de resultados dos modelos no pacote público |
 | Branch `gh-pages` | Publica o pacote em https://driano1221.github.io/consorcios-mg-dados-territorio/ |

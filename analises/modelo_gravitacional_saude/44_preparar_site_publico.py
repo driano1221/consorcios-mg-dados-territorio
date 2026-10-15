@@ -87,13 +87,15 @@ def build():
     report = report.replace('<a href="#modelos">Modelos A e B</a>', '')
     report = report.replace('<nav><a href="#corte">',
                             '<nav><a href="index.html">Base v1</a><a href="#corte">', 1)
-    report = report.replace('grid-template-columns:repeat(4,1fr)',
-                            'grid-template-columns:repeat(3,1fr)')
+    report = report.replace('</nav>', '<a href="#proxima-etapa">Próxima etapa</a></nav>', 1)
+    report = report.replace('.stats{display:grid;grid-template-columns:repeat(4,1fr)',
+                            '.stats{display:grid;grid-template-columns:repeat(3,1fr)')
+    report = report.replace('</style>',
+                            '@media(min-width:721px) and (max-width:980px)'
+                            '{.flow{grid-template-columns:repeat(2,1fr)}}'
+                            '</style>', 1)
     report = report.replace('<div><strong>0</strong><span>deles entre os 53 ou 62 modelados em 2019</span></div>', '')
     report = report.replace('<article><b>0 nos modelos</b><p>O consórcio não é candidato nos cenários 53/62 de 2019.</p></article>', '')
-    report = report.replace(
-        'Excluir toda a raiz por causa de 2015 retiraria seus 19 vínculos de 2019 do teste.',
-        'Um ano de poucos pagamentos não resume a trajetória de todo o consórcio.')
     start = report.index('<section id="modelos">')
     end = report.index('<section id="consulta">', start)
     report = report[:start] + report[end:]
@@ -113,12 +115,51 @@ def build():
         '<p>Fonte: MIDES consolidado na base financeira v1 de saúde/MG. '
         'Reprodução: <code>python 45_auditar_estabilidade_mides.py</code> '
         'na pasta técnica do projeto.</p></section>') + report[end:]
+    report = report.replace('</main>',
+        '<section id="proxima-etapa"><div class="eyebrow">Próxima discussão · 2019</div>'
+        '<h2>O que os dois modelos vão comparar</h2>'
+        '<p>Os gráficos acima descrevem pagamentos ao longo de 2014–2021. '
+        'Os dois exercícios exploratórios usam um único ano, 2019, para '
+        'perguntar: dado um município e um consórcio, a oferta cadastrada '
+        'e a distância ajudam a prever se houve pagamento?</p>'
+        '<div class="flow"><article><b>1 · Pagamento observado</b><p>O MIDES '
+        'marca 1 quando o município pagou ao consórcio em 2019 e 0 quando '
+        'não pagou. Um município pode ter vários 1.</p></article>'
+        '<article><b>2 · Oferta e trajeto</b><p>IBGE: população do município. '
+        'CNES: horas SUS cadastradas. Distbrasil: distância entre sedes '
+        'municipais; o destino é o município da clínica ou a sede do '
+        'consórcio, conforme o cenário.</p></article>'
+        '<article><b>3 · Recortes mensuráveis</b><p>Dos 73 consórcios '
+        'financeiros, 53 têm horas clínicas positivas e rota para o teste '
+        'restrito; a ampliação chega a 62 com outras modalidades e sede.</p>'
+        '</article><article><b>4 · Saída</b><p>Cada modelo estima uma chance '
+        'de pagamento para cada par município–consórcio. Comparamos essas '
+        'chances aos pagamentos observados e aos erros de previsão.</p>'
+        '</article></div>'
+        '<div class="comparison"><article><h3>Modelo A · oferta própria</h3>'
+        '<p>Relaciona a chance de pagamento à população do município, '
+        'às horas SUS do consórcio e à distância até sua oferta. '
+        'Avalia cada par sem colocar a oferta dos demais consórcios na '
+        'mesma conta.</p></article><article><h3>Modelo B · oferta relativa</h3>'
+        '<p>Primeiro compara a atração desse consórcio com a dos demais '
+        'candidatos mensuráveis para o município; depois estima a chance '
+        'de pagamento do par. Também permite vários vínculos.</p></article></div>'
+        '<p class="note">Exemplo: Igarapé pagou ao CISMEP em 2019. Ambos '
+        'usam esse pagamento observado, horas SUS e distância; o Modelo B '
+        'também compara a atração do CISMEP à dos outros candidatos. '
+        'A saída será uma chance estimada de pagamento, não uma medida '
+        'de filiação jurídica ou de pacientes atendidos. Os candidatos '
+        'ainda não foram validados como alternativas institucionais para '
+        'cada município. As estimativas ficam para a próxima discussão.</p>'
+        '</section></main>', 1)
     report = report.replace(
         'Dados: MIDES, CNES/DATASUS e Distbrasil. Período financeiro: 2014–2021. Modelos: exercício de 2019.',
         'Dados: MIDES, base financeira v1 de saúde/MG. Período: 2014–2021.')
     assert '<section id="modelos"' not in report
-    assert all(term not in report for term in ('Modelo A', 'Modelo B', 'Brier', '53/62',
+    assert all(term not in report for term in ('Brier', '53/62',
                                                'reestimado', 'previsões A/B'))
+    assert '<section id="proxima-etapa">' in report and report.count('Modelo A') == 1
+    assert report.count('Modelo B') == 2  # título e exemplo, sem resultados
     assert 'CIS/UBA' in report and '02287790' in report and '73 raízes' in report
     (DEST / 'estabilidade.html').write_text(report, encoding='utf-8')
     (DEST / ".nojekyll").write_text("", encoding="utf-8")

@@ -22,11 +22,19 @@ assert 'href="estabilidade.html"' in home
 assert 'href="index.html"' in report
 assert 'href="#modelo"' not in home and 'data-page="modelo"' not in home
 assert '<section id="modelos"' not in report
-assert all(term not in report for term in ("Modelo A", "Modelo B", "Brier", "53/62"))
+assert all(term not in report for term in ("Brier", "53/62", "reestimado"))
 assert 'CIS/UBA' in report and 'três municípios diferentes' in report
 assert 'Dois consórcios nunca passaram de um pagador por ano' in report
 assert 'id="max-filter"' in report and 'id="annual-payers"' in report
 assert '<option value="small">Até 2 pagadores</option>' in report
 assert 'Trajetórias MIDES' in home and 'Rotatividade anual' in report
+assert 'Ausência de pagamento em um ano foi guardada à parte' not in report
+assert 'um ano pequeno não define a entidade' not in report
+assert 'Um ano de poucos pagamentos não resume' not in report
+assert '<h3>Exemplo: AMVAP Saúde</h3>' in report
+assert '<section id="proxima-etapa">' in report
+assert 'Modelo A · oferta própria' in report and 'Modelo B · oferta relativa' in report
+assert 'Igarapé pagou ao CISMEP em 2019' in report
+assert not any(term in report for term in ('Brier', '0,008689', '98,15%', '96,72%'))
 assert not any(p.name.startswith("modelo_") for p in site.rglob("*"))
 print("Site público: máximo anual, tabela filtrável e ausência da aba Modelo conferidos.")
