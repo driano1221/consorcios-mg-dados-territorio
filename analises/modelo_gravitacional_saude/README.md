@@ -4,7 +4,7 @@
 
 **Mini dash público da base v1:** [acesse aqui](https://driano1221.github.io/consorcios-mg-dados-territorio/). O mesmo site reúne as seis abas de dados, a [página de trajetórias MIDES](https://driano1221.github.io/consorcios-mg-dados-territorio/estabilidade.html) e a [aba Modelo](https://driano1221.github.io/consorcios-mg-dados-territorio/#modelo). A página de trajetórias mostra o máximo anual de municípios pagadores em 2014–2021, tabela filtrável, rotatividade, pagadores × valor e correlação por consórcio. CIS/UBA e `02287790` nunca passaram de um pagador anual; a contagem de municípios distintos no período é complementar. A aba Modelo apresenta os dois exercícios exploratórios de 2019, com resultados, exemplos e limites. Para reconstruir o site, execute `python 28_montar_visuais_v1.py`, `python 45_auditar_estabilidade_mides.py` e `python 44_preparar_site_publico.py`; confira com `python tests/45_validar_publicacao_estabilidade.py`. O pacote `outputs/visuais_publicos/` alimenta a branch `gh-pages`. O dashboard Shiny anterior continua separado.
 
-**Aba Modelo atualizada em 25/09 e publicada em 22/10:** [abra no painel](https://driano1221.github.io/consorcios-mg-dados-territorio/#modelo). Ela compara, nos mesmos pares auditados de 2019, o logit binário de horas e distância com o teste de atração relativa. O percurso mostra fontes, seleção 73 → 54 → 53/62, EDA dos pagamentos e distâncias, fórmulas, quatro recortes, validação municipal/espacial, casos reais e limites. O piloto antigo permanece em seção recolhida. A publicação não reestimou os modelos nem alterou a base v1. Reproduza com `python 28_montar_visuais_v1.py` e confira com os testes 17, 24, 43 e 45. O dashboard Shiny não foi alterado.
+**Aba Modelo atualizada em 25/09 e publicada em 22/10:** [abra no painel](https://driano1221.github.io/consorcios-mg-dados-territorio/#modelo). Ela compara, nos mesmos pares auditados de 2019, o logit binário de horas e distância com o teste de atração relativa. O percurso mostra fontes, seleção 73 → 54 → 53/62, EDA dos pagamentos e distâncias, fórmulas, quatro recortes, validação municipal/espacial, casos reais e limites. A versão anterior à auditoria permanece em seção recolhida. O exercício antigo de distribuição do dinheiro foi retirado da página, mas seus arquivos técnicos continuam preservados. No menu público, Trajetórias MIDES vem antes de Modelo. Nenhum modelo foi reestimado nem a base v1 alterada nesta revisão. Reproduza com `python 28_montar_visuais_v1.py` e confira com os testes 17, 24, 43 e 45. O dashboard Shiny não foi alterado.
 
 **Comece pelo que foi combinado na reunião de 24/09:** exercício de 2019
 para vínculo financeiro de saúde em MG. Pagamento positivo é o desfecho
@@ -96,8 +96,8 @@ Os parágrafos abaixo preservam o histórico da v1 e da auditoria anterior.
 **V1 revisada em 25/09:** a correcao CNES e os alertas de credor chegaram
 as bases, figuras e atlas. Abra [a consulta local](outputs/visuais_v1/index.html).
 A aba Modelo comeca agora pela adesao financeira com varios vinculos e
-compara os tres cenarios espaciais. O piloto anterior de participacoes
-continua em uma secao recolhida, reestimado com os destinos corrigidos.
+compara os tres cenarios espaciais. Naquela versao, o piloto anterior de
+participacoes ainda ficava em uma secao recolhida.
 Financeira: **491.328 x 21**; direta: **323.287 x 32**. As duas colunas novas
 sinalizam conflito de credor e seu valor, sem alterar pagamentos.
 Em 2019 sao **62 clinicas**, antes 64; horas, profissionais e servicos
@@ -183,7 +183,7 @@ python tests/19_validar_cenarios_adesao.py
 [outputs/visuais_v1/index.html](outputs/visuais_v1/index.html).
 A pagina explica a v1 em seis abas de dados e uma nova aba de modelo:
 base, construcao, pagamentos, CNES, tempos/mapa, consulta completa e
-adesao financeira em 2019, com o piloto anterior recolhido. Sao cinco figuras de dados, com
+adesao financeira em 2019. Sao cinco figuras de dados, com
 ranking, trajetorias e mapa interativos dos 73 consorcios da v1.
 As duas tabelas podem ser consultadas integralmente: 491.328 x 21 e
 323.287 x 32, com filtros e paginacao. Os fluxos mostram fontes, chaves

@@ -21,6 +21,9 @@ assert annual_max[annual_max.le(2)].to_dict() == {"00840724": 1, "02287790": 1}
 assert 'href="estabilidade.html"' in home
 assert 'href="index.html"' in report
 assert 'data-page="modelo"' in home and '<section id="modelo" hidden>' in home
+assert home.index('>Trajetórias MIDES</a>') < home.index('>Modelo gravitacional</button>')
+assert 'Histórico técnico: distribuição do dinheiro' not in home
+assert 'id="piloto-anterior"' not in home and 'const M=D.model' not in home
 assert 'id="mc-validacao"' in home and 'Igarapé × CISMEP' in home
 assert '0,008886' in home and '0,007084' in home
 assert all((site / "figuras" / name).is_file() for name in (

@@ -82,11 +82,10 @@ if '--browser' in sys.argv:
             assert page.locator(f'#{section}').is_visible()
             assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'),section
             page.screenshot(path=str(shots/f'{section}_desktop.png'))
-        page.get_by_role('heading',name='Quatro exemplos reais',exact=True).scroll_into_view_if_needed()
+        page.get_by_role('heading',name='O ganho médio convive com erros relevantes',exact=True).scroll_into_view_if_needed()
         page.screenshot(path=str(shots/'modelo_exemplos.png'))
-        assert page.locator('#piloto-anterior').get_attribute('open') is None
-        page.locator('#piloto-anterior > summary').click()
-        assert page.locator('#model-calculation').inner_text()
+        assert page.locator('#piloto-anterior').count() == 0
+        assert page.locator('#mc-validacao').is_visible()
         page.locator('nav button[data-page="capacidade"]').click()
         annual=page.locator('#cnes-annual tbody tr').filter(has=page.get_by_role('rowheader',name='2019',exact=True))
         assert annual.locator('td').nth(1).inner_text()=='62'

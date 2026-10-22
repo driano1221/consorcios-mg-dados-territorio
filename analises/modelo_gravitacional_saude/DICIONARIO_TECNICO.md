@@ -1016,12 +1016,14 @@ verificacao independente usa NumPy/SciPy. Semente 24092026. Sem consulta externa
 | `coeficientes_validacao.csv` | Parametros e tamanho de treino/teste nos cinco grupos de cada particao |
 | `validacao.csv` | 12 linhas: seis especificacoes/referencias x duas particoes; metricas fora do treino |
 | `fontes.csv` | Quatro entradas e SHA-256, preservados antes/depois |
-| `piloto.json` | Dados incorporados ao HTML, incluindo previsoes de todas as alternativas |
+| `piloto.json` | Arquivo técnico preservado com previsões do exercício antigo de distribuição do dinheiro; não entra no painel atual |
 
-`modelo_v1.js` renderiza a setima aba; `visuais_v1.html` e `.css` preservam
-a estrutura aprovada. O empacotador 28 inclui o JSON e JS no index local,
-registra as fontes e refaz o ZIP. Nao ha dependencia de servico externo.
-As contas interativas usam parametros do treino correspondente a cada
+`modelo_v1.js` pertence ao exercício antigo e não é carregado no painel atual.
+`visuais_v1.html` mantém esse bloco apenas como fonte histórica; o empacotador 28
+o retira da página gerada e não incorpora `piloto.json`. O Modelo A/B ocupa a
+sétima aba. O empacotador registra as fontes usadas e refaz o ZIP. Não há
+dependência de serviço externo.
+Na versão antiga, as contas interativas usavam parametros do treino correspondente a cada
 previsao. `checks/18_piloto_participacoes.json` registra conciliacao e
 comparacao da estimacao R com SciPy. A fonte v1 nao recebe colunas novas.
 

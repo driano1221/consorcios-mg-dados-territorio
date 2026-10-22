@@ -27,10 +27,9 @@ def build():
     html = (SOURCE / "index.html").read_text(encoding="utf-8")
     assert html.count('<button data-page="modelo"') == 1
     assert '<section id="modelo" hidden>' in html
-    nav_end = "</nav>"
-    assert html.count(nav_end) == 1
-    html = html.replace(nav_end,
-        '<a class="report-link" href="estabilidade.html">Trajetórias MIDES</a></nav>')
+    model_nav = '<button data-page="modelo"'
+    html = html.replace(model_nav,
+        '<a class="report-link" href="estabilidade.html">Trajetórias MIDES</a>' + model_nav, 1)
     html = html.replace("</style>",
         "nav .report-link{display:flex;align-items:center;padding:19px 0 15px;"
         "border-bottom:3px solid transparent;font-size:14px;font-weight:700;"
@@ -44,8 +43,8 @@ def build():
     start = html.index(prefix) + len(prefix)
     end = html.index("</script>", start)
     data = json.loads(html[start:end])
-    assert "model" in data and len(data["catalog"]) == 5
-    assert 'id="mc-validacao"' in html and 'const M=D.model' in html
+    assert "model" not in data and len(data["catalog"]) == 5
+    assert 'id="mc-validacao"' in html and 'id="piloto-anterior"' not in html
 
     DEST.mkdir(parents=True, exist_ok=True)
     (DEST / "index.html").write_text(html, encoding="utf-8")

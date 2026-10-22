@@ -74,8 +74,8 @@ assert Counter(r['destino_v1'] for r in selection)=={'financeira_e_gravitacional
 payload=json.loads((OUT/'piloto.json').read_text(encoding='utf-8'))
 html=(HERE/'outputs/visuais_v1/index.html').read_text(encoding='utf-8')
 embedded=json.loads(re.search(r'<script type="application/json" id="data">(.*?)</script>',html,re.S)[1])
-assert embedded['model']==payload, 'HTML desatualizado; executar script 28'
-assert html.count('id="modelo"')==1 and 'id="model-calculation"' in html
+assert 'model' not in embedded and 'id="piloto-anterior"' not in html
+assert html.count('id="modelo"')==1 and 'id="mc-validacao"' in html
 assert len(payload['municipios'])==n and len(payload['consorcios'])==j
 for i,mun in enumerate(payload['municipios']):
     # Municipio exportado vem ordenado pela mesma chave, nao por rotulo.

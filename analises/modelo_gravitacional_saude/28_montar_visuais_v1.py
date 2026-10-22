@@ -13,7 +13,6 @@ model_sources = SOURCES
 binary, model_figures = render(DEST)
 comparison, comparison_figures = render_comparison(DEST)
 data = json.loads((DEST / 'dados' / 'visuais.json').read_text(encoding='utf-8'))
-data['model'] = json.loads((HERE / 'outputs/piloto_participacoes/piloto.json').read_text(encoding='utf-8'))
 active_figures = {'01_pagamentos_anuais', '06_cobertura', '09_funcoes_cnes',
                   '11_capacidade_2019', '14_tempos_distribuicao'}
 data['catalog'] = [r for r in json.loads((DEST / 'dados' / 'catalogo_figuras.json').read_text(encoding='utf-8'))
@@ -26,6 +25,10 @@ with (DEST / 'dados' / 'tempos_extremos.csv').open(encoding='utf-8-sig', newline
 assert len(data['catalog']) == 5 and len(data['entities']) == 73
 assert data['summary']['relacoes'] == 10735 and data['summary']['relacoes_diretas'] == 5612
 template = (HERE / 'visuais_v1.html').read_text(encoding='utf-8')
+# O exercício antigo de parcelas financeiras fica no template como histórico, fora do painel gerado.
+start = template.index('<details class="trace" id="piloto-anterior">')
+end = template.index('</details></section>', start) + len('</details>')
+template = template[:start] + template[end:]
 with (DEST / 'dados/capacidade.csv').open(encoding='utf-8-sig', newline='') as handle:
     capacity = list(csv.DictReader(handle, delimiter=';'))
 assert len({(r['cnpj_raiz_8'], r['ano']) for r in capacity}) == len(capacity)
@@ -47,7 +50,7 @@ parts = {'__CSS__': (HERE / 'visuais_v1.css').read_text(encoding='utf-8'),
          '__ADESAO_ATUAL__': binary,
          '__COMPARACAO_MODELOS__': comparison,
          '__CNES_ANNUAL__': ''.join(annual_rows),
-         '__JS__': (HERE / 'visuais_v1.js').read_text(encoding='utf-8') + '\n' + (HERE / 'modelo_v1.js').read_text(encoding='utf-8'),
+         '__JS__': (HERE / 'visuais_v1.js').read_text(encoding='utf-8'),
          '__DATA__': json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')}
 for marker, content in parts.items():
     assert template.count(marker) == 1
@@ -63,10 +66,9 @@ sources += [HERE / 'outputs' / f for f in ('atlas_dados.json',
 sources += [HERE.parents[1] / 'dashboards' / 'base1_shiny' / 'data' / 'mg_municipios_sf_web.rds']
 sources += [HERE / f for f in ('26_preparar_visuais_v1.R', '27_renderizar_visuais_v1.R',
                              '28_montar_visuais_v1.py', '30_estimar_piloto_participacoes.R',
-                             'modelo_v1.js', 'adesao_visual.py', 'visuais_v1.html', 'visuais_v1.css', 'visuais_v1.js')]
+                             'adesao_visual.py', 'visuais_v1.html', 'visuais_v1.css', 'visuais_v1.js')]
 sources += [HERE / 'comparacao_modelos_visual.py']
 sources += [HERE / 'outputs' / p for p in COMPARISON_SOURCES]
-sources += [HERE / 'outputs/piloto_participacoes/piloto.json']
 sources += [HERE / 'outputs' / p for p in model_sources]
 sources += [HERE / 'evidencias' / p for p in (
     'conciliacao_portais_2026_09_25.csv', 'conselheiro_pena_empenhos_2019_portal.csv',
