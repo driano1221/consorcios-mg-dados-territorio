@@ -1,4 +1,4 @@
-"""Confere o diagnóstico público e a ausência de resultados dos modelos."""
+"""Confere que diagnóstico e modelos estão acessíveis no mesmo site."""
 from pathlib import Path
 
 import pandas as pd
@@ -20,7 +20,14 @@ annual_max = (financial[financial.valor_total.gt(0)]
 assert annual_max[annual_max.le(2)].to_dict() == {"00840724": 1, "02287790": 1}
 assert 'href="estabilidade.html"' in home
 assert 'href="index.html"' in report
-assert 'href="#modelo"' not in home and 'data-page="modelo"' not in home
+assert 'data-page="modelo"' in home and '<section id="modelo" hidden>' in home
+assert 'id="mc-validacao"' in home and 'Igarapé × CISMEP' in home
+assert '0,008886' in home and '0,007084' in home
+assert all((site / "figuras" / name).is_file() for name in (
+    "modelo_brier_espacial.svg", "modelo_brier_municipios.svg",
+    "modelo_calibracao.svg", "modelo_comparacao_espacial.svg",
+    "modelo_comparacao_municipios.svg"))
+assert 'href="index.html#modelo"' in report
 assert '<section id="modelos"' not in report
 assert all(term not in report for term in ("Brier", "53/62", "reestimado"))
 assert 'CIS/UBA' in report and 'três municípios diferentes' in report
@@ -38,5 +45,4 @@ assert '<section id="proxima-etapa">' in report
 assert 'Modelo A · oferta própria' in report and 'Modelo B · oferta relativa' in report
 assert 'Igarapé pagou ao CISMEP em 2019' in report
 assert not any(term in report for term in ('Brier', '0,008689', '98,15%', '96,72%'))
-assert not any(p.name.startswith("modelo_") for p in site.rglob("*"))
-print("Site público: máximo anual, tabela filtrável e ausência da aba Modelo conferidos.")
+print("Site público: Trajetórias MIDES e aba Modelo com resultados conferidos.")

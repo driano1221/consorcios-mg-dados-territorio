@@ -1,4 +1,4 @@
-"""Prepara o mini dash público sem a aba Modelo, preservando o HTML local."""
+"""Publica o painel completo e as trajetórias MIDES no mesmo site."""
 from html.parser import HTMLParser
 from pathlib import Path
 import json
@@ -25,25 +25,8 @@ class Assets(HTMLParser):
 
 def build():
     html = (SOURCE / "index.html").read_text(encoding="utf-8")
-    nav = re.compile(r'<button data-page="modelo"[^>]*>.*?</button>')
-    html, count = nav.subn("", html)
-    assert count == 1
-
-    start = html.index('<section id="modelo" hidden>')
-    end = html.index("</main>", start)
-    html = html[:start] + html[end:]
-    html = html.replace(" · Modelos: 2019", "")
-    html = html.replace(
-        "A aba Modelo gravitacional apresenta a ocorrência de pagamento em 2019, com vários vínculos possíveis e três cenários espaciais. O piloto anterior de participações está recolhido para consulta.",
-        "Os exercícios de modelagem são analisados separadamente.",
-    )
-
-    model_js = (HERE / "modelo_v1.js").read_text(encoding="utf-8")
-    assert html.count("\n" + model_js) == 1
-    html = html.replace("\n" + model_js, "")
-    old_pages = "const pages=['panorama','construcao','pagamentos','capacidade','atlas','consulta','modelo'];"
-    assert html.count(old_pages) == 1
-    html = html.replace(old_pages, old_pages.replace(",'modelo'", ""))
+    assert html.count('<button data-page="modelo"') == 1
+    assert '<section id="modelo" hidden>' in html
     nav_end = "</nav>"
     assert html.count(nav_end) == 1
     html = html.replace(nav_end,
@@ -62,15 +45,7 @@ def build():
     end = html.index("</script>", start)
     data = json.loads(html[start:end])
     assert "model" in data and len(data["catalog"]) == 5
-    del data["model"]
-    html = html[:start] + json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/") + html[end:]
-
-    assert '<section id="modelo"' not in html
-    assert 'data-page="modelo"' not in html
-    assert 'id="mc-validacao"' not in html and 'id="modelo-validacao"' not in html
-    assert "A atração relativa reduziu o erro" not in html
-    assert "const M=D.model" not in html
-    assert 'href="#modelo"' not in html
+    assert 'id="mc-validacao"' in html and 'const M=D.model' in html
 
     DEST.mkdir(parents=True, exist_ok=True)
     (DEST / "index.html").write_text(html, encoding="utf-8")
@@ -84,7 +59,8 @@ def build():
         'permite conferir cada série anual.</p>',
         report, count=1)
     assert count == 1
-    report = report.replace('<a href="#modelos">Modelos A e B</a>', '')
+    report = report.replace('<a href="#modelos">Modelos A e B</a>',
+                            '<a href="index.html#modelo">Modelo gravitacional</a>')
     report = report.replace('<nav><a href="#corte">',
                             '<nav><a href="index.html">Base v1</a><a href="#corte">', 1)
     report = report.replace('</nav>', '<a href="#proxima-etapa">Próxima etapa</a></nav>', 1)
@@ -116,8 +92,8 @@ def build():
         'Reprodução: <code>python 45_auditar_estabilidade_mides.py</code> '
         'na pasta técnica do projeto.</p></section>') + report[end:]
     report = report.replace('</main>',
-        '<section id="proxima-etapa"><div class="eyebrow">Próxima discussão · 2019</div>'
-        '<h2>O que os dois modelos vão comparar</h2>'
+        '<section id="proxima-etapa"><div class="eyebrow">Modelos A/B · 2019</div>'
+        '<h2>O que os dois modelos comparam</h2>'
         '<p>Os gráficos acima descrevem pagamentos ao longo de 2014–2021. '
         'Os dois exercícios exploratórios usam um único ano, 2019, para '
         'perguntar: dado um município e um consórcio, a oferta cadastrada '
@@ -147,10 +123,11 @@ def build():
         '<p class="note">Exemplo: Igarapé pagou ao CISMEP em 2019. Ambos '
         'usam esse pagamento observado, horas SUS e distância; o Modelo B '
         'também compara a atração do CISMEP à dos outros candidatos. '
-        'A saída será uma chance estimada de pagamento, não uma medida '
+        'A saída é uma chance estimada de pagamento, não uma medida '
         'de filiação jurídica ou de pacientes atendidos. Os candidatos '
         'ainda não foram validados como alternativas institucionais para '
-        'cada município. As estimativas ficam para a próxima discussão.</p>'
+        'cada município. <a href="index.html#modelo">Abra a aba Modelo '
+        'gravitacional</a> para ver resultados, exemplos e limites.</p>'
         '</section></main>', 1)
     report = report.replace(
         'Dados: MIDES, CNES/DATASUS e Distbrasil. Período financeiro: 2014–2021. Modelos: exercício de 2019.',
@@ -176,11 +153,23 @@ def build():
 
     assets = Assets()
     assets.feed(html)
+    for name in assets.paths:
+        relative = Path(name)
+        assert not relative.is_absolute() and ".." not in relative.parts
+        if name == "estabilidade.html":
+            continue
+        source = SOURCE / relative
+        assert source.is_file(), source
+        target = DEST / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
     assert all((DEST / path).is_file() for path in assets.paths), assets.paths
-    assert set(p.stem for p in (DEST / "figuras").glob("*.svg")) == {r["id"] for r in data["catalog"]}
+    expected_figures = {r["id"] for r in data["catalog"]}
+    expected_figures |= {Path(p).stem for p in assets.paths if p.startswith("figuras/")}
+    assert set(p.stem for p in (DEST / "figuras").glob("*.svg")) == expected_figures
     expected = {Path("index.html"), Path("estabilidade.html"), Path(".nojekyll")}
     expected |= {Path("dados/consulta") / p.name for p in (SOURCE / "dados/consulta").glob("*.js")}
-    expected |= {Path("figuras") / (r["id"] + ".svg") for r in data["catalog"]}
+    expected |= {Path("figuras") / (name + ".svg") for name in expected_figures}
     assert {p.relative_to(DEST) for p in DEST.rglob("*") if p.is_file()} == expected
     print(f"Mini dash público pronto: {DEST / 'index.html'}")
 

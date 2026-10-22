@@ -1,15 +1,15 @@
 # Dicionario Tecnico - Modelo Gravitacional De Saude
 
-## Mini Dash Público: 28/09, trajetórias acrescentadas em 14/10
+## Mini Dash Público: trajetórias em 14/10, Modelo em 22/10
 
 | Arquivo | Função |
 |---|---|
-| `44_preparar_site_publico.py` | Lê o HTML local completo e o diagnóstico do script 45; produz seis abas e a página pública de trajetórias com introdução aos modelos, sem a aba Modelo nem suas estimativas |
-| `outputs/visuais_publicos/` | Pacote local das seis abas e `estabilidade.html`, reconstruível e ignorado pelo Git na branch principal |
-| `tests/45_validar_publicacao_estabilidade.py` | Reconta o corte na base financeira e confere navegação, casos reais e ausência de resultados dos modelos no pacote público |
+| `44_preparar_site_publico.py` | Lê o HTML local completo e o diagnóstico do script 45; publica as sete abas, incluindo Modelo, e a página de trajetórias no mesmo site |
+| `outputs/visuais_publicos/` | Pacote local das sete abas e `estabilidade.html`, reconstruível e ignorado pelo Git na branch principal |
+| `tests/45_validar_publicacao_estabilidade.py` | Reconta o corte na base financeira e confere navegação, casos reais, resultados e imagens do Modelo no pacote público |
 | Branch `gh-pages` | Publica o pacote em https://driano1221.github.io/consorcios-mg-dados-territorio/ |
 
-Reprodução: `python 28_montar_visuais_v1.py`, `python 45_auditar_estabilidade_mides.py`, `python 44_preparar_site_publico.py` e `python tests/45_validar_publicacao_estabilidade.py`. A versão de sete abas continua em `outputs/visuais_v1/index.html`; essa pasta não foi alterada pela preparação pública. O repositório técnico principal já é público e conserva scripts e documentação dos modelos. O dashboard Shiny é outro produto.
+Reprodução: `python 28_montar_visuais_v1.py`, `python 45_auditar_estabilidade_mides.py`, `python 44_preparar_site_publico.py` e `python tests/45_validar_publicacao_estabilidade.py`. A fonte local continua em `outputs/visuais_v1/index.html`; essa pasta não foi alterada pela preparação pública. O repositório técnico principal já é público e conserva scripts e documentação dos modelos. O dashboard Shiny é outro produto.
 
 ## Aba Modelo Comparativa: 25/09
 
