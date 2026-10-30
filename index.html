@@ -23,7 +23,7 @@
 @media(max-width:920px){.mc-pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}.mc-eda{grid-template-columns:1fr;gap:16px}.mc-cases{grid-template-columns:1fr 1fr}.mc-models{gap:25px}.mc-equation math{font-size:18px}}
 @media(max-width:680px){.model-compare .section-intro h1{font-size:31px}.mc-summary{grid-template-columns:1fr 1fr;gap:18px}.mc-summary>div:last-child{grid-column:1/-1}.mc-summary strong{font-size:25px}.mc-primer h2{font-size:22px}.mc-primer-models{grid-template-columns:1fr;gap:19px}.mc-nav{gap:9px 15px}.mc-section{padding:32px 0 37px}.mc-section>h2{font-size:24px}.mc-pipeline,.mc-models,.mc-example-math,.mc-validation-flow,.mc-cases,.mc-limits{grid-template-columns:1fr;gap:21px}.mc-funnel{grid-template-columns:1fr 1fr;gap:18px}.mc-funnel>div{border:0;padding:0}.mc-funnel strong{font-size:23px}.mc-distribution-head{display:block}.mc-distribution-head span{display:block;text-align:left;margin-top:2px}.mc-panel{overflow:auto}.mc-panel img,.mc-key{display:none}.mc-mobile-scores{display:block;border-top:1px solid var(--line);margin:18px 0 26px}.mc-mobile-scores>div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:11px 0;font-size:12px}.mc-mobile-scores span{text-align:right;white-space:nowrap;color:var(--muted)}.mc-mobile-scores b{color:var(--red)}.mc-example-step{grid-template-columns:75px 1fr}.mc-eda{margin:30px 0}.mc-case{padding:12px 0}}
 /* Consulta de probabilidades: os mesmos tokens e a mesma hierarquia do painel. */
-.prob-filter{display:flex;flex-direction:column;gap:8px;min-width:0;font-size:13px}.prob-controls input[type=search]{width:100%;min-width:0;min-height:40px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:white;color:var(--ink);font:inherit;padding:9px 2px;box-sizing:border-box}.prob-controls input[type=search]::placeholder{color:var(--muted)}
+.prob-filter{display:flex;flex-direction:column;gap:8px;min-width:0;font-size:13px}.prob-picker{position:relative;min-width:0}.prob-picker:after{content:'';position:absolute;right:15px;top:16px;width:7px;height:7px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(45deg);pointer-events:none}.prob-picker input{width:100%;min-width:0;min-height:43px;border:1px solid #A9C1D1;border-radius:0;background:white;color:var(--ink);font:inherit;padding:10px 35px 10px 12px;box-sizing:border-box;text-overflow:ellipsis}.prob-picker input::placeholder{color:var(--muted)}.prob-options{position:absolute;z-index:20;left:0;right:0;top:calc(100% + 3px);max-height:250px;overflow:auto;overscroll-behavior:contain;background:white;border:1px solid #A9C1D1;padding:4px 0;margin:0;list-style:none;box-shadow:0 5px 12px #1a252f12}.prob-options[hidden],.prob-controls select[hidden]{display:none}.prob-options li{padding:11px 12px;line-height:1.45;overflow-wrap:anywhere;cursor:pointer}.prob-options [role=option]:hover,.prob-options .is-active{background:var(--soft);color:var(--blue-dark)}.prob-options [aria-selected=true]{font-weight:600}.prob-options .prob-no-match{color:var(--muted);cursor:default}
 .prob-map-block{border-block:1px solid var(--line);padding:24px 0;margin:0 0 25px}.prob-map-heading{display:flex;justify-content:space-between;gap:25px;align-items:flex-start}.prob-map-heading h3{margin:0 0 8px;font-size:20px}.prob-map-heading p{font-size:13px;line-height:1.6;color:var(--muted);margin:0;max-width:65ch}.prob-map-switch{display:flex;flex-shrink:0;gap:16px;border:0;padding:0;margin:0}.prob-map-switch legend{font-size:11px;color:var(--muted);margin-bottom:8px}.prob-map-switch label{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;min-height:30px}.prob-map-switch input{accent-color:var(--blue-dark)}.prob-map-switch label:last-child input{accent-color:var(--red)}.prob-map-layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:36px;align-items:center;margin:22px 0}.prob-map-figure{min-width:0}.prob-map-figure svg{display:block;width:100%;height:auto}.prob-map-figure path{cursor:pointer;transition:fill .15s ease}.prob-map-figure path.is-selected,.prob-map-figure path:hover,.prob-map-figure path:focus{stroke:var(--ink);stroke-width:1.8;outline:0}.prob-map-detail{border-left:1px solid var(--line);padding-left:24px;min-height:245px;overflow-wrap:anywhere}.prob-map-detail h4{font-size:23px;line-height:1.3;margin:8px 0}.prob-map-detail p{font-size:13px;line-height:1.7;color:var(--muted);margin:0 0 16px}.prob-map-detail small,.prob-map-year{font-size:11px;color:var(--muted)}.prob-map-detail dl{margin:20px 0 0}.prob-map-detail dl>div{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:13px 0}.prob-map-detail dt{font-size:12px;color:var(--muted)}.prob-map-detail dd{font-size:22px;font-weight:600;margin:0;font-variant-numeric:tabular-nums}.prob-map-detail dd.prob-a{color:var(--blue-dark)}.prob-map-detail dd.prob-b{color:var(--red)}.prob-map-detail dl>div:last-child dd{font-size:14px}.prob-map-detail .prob-map-caution{font-size:12px;margin-top:14px}.prob-map-detail button{border:0;border-bottom:1px solid var(--blue-dark);background:transparent;color:var(--blue-dark);font:inherit;font-size:13px;padding:8px 0;cursor:pointer}.prob-map-legend{max-width:360px;margin:12px auto 0}.prob-map-legend>span{display:block;font-size:11px;color:var(--muted);margin-bottom:9px}.prob-map-legend [hidden]{display:none}.prob-map-legend #prob-map-colours{display:flex;height:9px}.prob-map-legend #prob-map-colours i{flex:1}.prob-map-ticks{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:6px}.prob-map-legend small{display:flex;gap:7px;align-items:center;margin-top:10px;font-size:11px;color:var(--muted)}.prob-map-legend small i{display:inline-block;width:10px;height:10px;background:#7F8C8D}.prob-map-help{font-size:12px;line-height:1.7;color:var(--muted);max-width:100ch;margin:0}.prob-map-detail button:focus-visible,.prob-map-switch input:focus-visible{outline:2px solid var(--blue-dark);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.prob-map-figure path{transition:none}}
 @media(max-width:680px){.prob-map-heading{display:block}.prob-map-switch{margin-top:16px}.prob-map-layout{grid-template-columns:1fr;gap:22px;margin:20px 0}.prob-map-detail{border-left:0;border-top:1px solid var(--line);padding:18px 0 0;min-height:160px}.prob-map-detail h4{font-size:21px}.prob-map-detail dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.prob-map-detail dl>div{display:block;padding:10px 0}.prob-map-detail dt{font-size:10px;margin-bottom:7px}.prob-map-detail dd{font-size:17px;overflow-wrap:normal}.prob-map-detail dd:not(.prob-a):not(.prob-b){font-size:12px}.prob-map-legend{max-width:290px}}
@@ -207,8 +207,8 @@ nav .report-link{display:flex;align-items:center;padding:19px 0 15px;border-bott
 <p class="mc-intro">Escolha um município ou consórcio para comparar os dois modelos. Cada porcentagem estima a chance de haver pagamento em 2019; a última coluna mostra o que foi observado no MIDES.</p>
 <p class="prob-model-key"><span><b>Modelo A</b> · oferta e distância do consórcio</span><span><b>Modelo B</b> · também compara a oferta dos demais candidatos</span></p>
 <div class="prob-controls">
-<div class="prob-filter"><label for="prob-municipio">Município</label><input type="search" id="prob-search-municipio" aria-label="Buscar município" aria-controls="prob-municipio prob-rows" placeholder="Buscar por nome…" autocomplete="off"><select id="prob-municipio"><option value="">Todos os municípios</option></select></div>
-<div class="prob-filter"><label for="prob-consorcio">Consórcio</label><input type="search" id="prob-search-consorcio" aria-label="Buscar consórcio" aria-controls="prob-consorcio prob-rows" placeholder="Buscar por nome ou sigla…" autocomplete="off"><select id="prob-consorcio"><option value="">Todos os consórcios</option></select></div>
+<div class="prob-filter"><label for="prob-search-municipio">Município</label><div class="prob-picker"><input type="text" id="prob-search-municipio" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="prob-options-municipio" placeholder="Todos os municípios" autocomplete="off"><ul id="prob-options-municipio" role="listbox" aria-label="Municípios" class="prob-options" hidden></ul></div><select id="prob-municipio" hidden aria-hidden="true" tabindex="-1"><option value="">Todos os municípios</option></select></div>
+<div class="prob-filter"><label for="prob-search-consorcio">Consórcio</label><div class="prob-picker"><input type="text" id="prob-search-consorcio" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="prob-options-consorcio" placeholder="Todos os consórcios" autocomplete="off"><ul id="prob-options-consorcio" role="listbox" aria-label="Consórcios" class="prob-options" hidden></ul></div><select id="prob-consorcio" hidden aria-hidden="true" tabindex="-1"><option value="">Todos os consórcios</option></select></div>
 <button type="button" id="prob-clear">Limpar filtros</button>
 </div>
 <div class="prob-map-block" id="prob-map-block">
@@ -541,15 +541,53 @@ let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);
  const munSearch=$('prob-search-municipio'),consSearch=$('prob-search-consorcio');
  const normalize=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').replace(/[^a-z0-9]/g,'');
  const ordered=(items)=>items.map(([id,name],i)=>({id,name,i})).sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
- function searchOptions(select,input,items,allLabel){
-  const previous=select.value,q=normalize(input.value),matches=ordered(items).filter(x=>normalize(x.name).includes(q));
-  select.replaceChildren(new Option(q?'Todos os resultados da busca':allLabel,''));
-  for(const item of matches)select.add(new Option(item.name,item.id));
-  select.value=matches.some(x=>x.id===previous)?previous:'';
+ function searchableSelect(select,input,items,allLabel){
+  const choices=[{id:'',name:allLabel},...ordered(items)],list=$(input.getAttribute('aria-controls'));
+  for(const item of choices.slice(1))select.add(new Option(item.name,item.id));
+  let matches=[],active=-1;
+  function close(){list.hidden=true;input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');}
+  function sync(){input.value=choices.find(x=>x.id===select.value)?.name||allLabel;close();}
+  function highlight(i){
+   active=i;
+   [...list.querySelectorAll('[role="option"]')].forEach((li,j)=>li.classList.toggle('is-active',i===j));
+   const li=list.children[i];
+   if(li&&matches[i]){
+    input.setAttribute('aria-activedescendant',li.id);
+    if(li.offsetTop<list.scrollTop)list.scrollTop=li.offsetTop;
+    else if(li.offsetTop+li.offsetHeight>list.scrollTop+list.clientHeight)list.scrollTop=li.offsetTop+li.offsetHeight-list.clientHeight;
+   }
+   else input.removeAttribute('aria-activedescendant');
+  }
+  function open(query=''){
+   const q=normalize(query);matches=choices.filter(x=>!q||normalize(x.name).includes(q));active=-1;
+   list.innerHTML=matches.map((x,i)=>`<li role="option" id="${list.id}-${i}" data-index="${i}" aria-selected="${x.id===select.value}">${esc(x.name)}</li>`).join('')||'<li class="prob-no-match" role="presentation">Nenhum resultado. Tente outro nome.</li>';
+   list.hidden=false;list.scrollTop=0;input.setAttribute('aria-expanded','true');input.removeAttribute('aria-activedescendant');
+   if(!q)highlight(matches.findIndex(x=>x.id===select.value));
+  }
+  function choose(i){if(!matches[i])return;select.value=matches[i].id;sync();select.dispatchEvent(new Event('change'));}
+  input.addEventListener('focus',()=>{input.select();open();});
+  input.addEventListener('click',()=>{if(list.hidden){input.select();open();}});
+  input.addEventListener('input',()=>open(input.value));
+  input.addEventListener('blur',sync);
+  input.addEventListener('keydown',e=>{
+   if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+    e.preventDefault();if(list.hidden)open();
+    if(matches.length)highlight(Math.max(0,Math.min(matches.length-1,active+(e.key==='ArrowDown'?1:-1))));
+   }else if(e.key==='Enter'&&!list.hidden){e.preventDefault();choose(active<0?0:active);}
+   else if(e.key==='Escape'){e.preventDefault();sync();}
+  });
+  list.addEventListener('pointerdown',e=>{if(e.target.closest('[role="option"]'))e.preventDefault();});
+  // Preserve focus while choosing; a touch drag must not select an option.
+  let touchStart=null;
+  list.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')touchStart={x:e.clientX,y:e.clientY,index:e.target.closest('[role="option"]')?.dataset.index};});
+  list.addEventListener('pointerup',e=>{if(e.pointerType==='touch'&&touchStart&&Math.hypot(e.clientX-touchStart.x,e.clientY-touchStart.y)<10){choose(+touchStart.index);touchStart=null;}});
+  list.addEventListener('pointercancel',()=>{touchStart=null;});
+  list.addEventListener('click',e=>{const li=e.target.closest('[role="option"]');if(li)choose(+li.dataset.index);});
+  select.addEventListener('change',sync);sync();
+  return sync;
  }
- const refreshMun=()=>searchOptions(mun,munSearch,data.municipalities,'Todos os municípios');
- const refreshCons=()=>searchOptions(cons,consSearch,data.consortia,'Todos os consórcios');
- refreshMun();refreshCons();
+ const syncMun=searchableSelect(mun,munSearch,data.municipalities,'Todos os municípios');
+ const syncCons=searchableSelect(cons,consSearch,data.consortia,'Todos os consórcios');
  let rows=[],page=0;
  const pageSize=25;
  function probability(p){
@@ -569,7 +607,7 @@ let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);
  $('prob-map').innerHTML='<svg viewBox="0 0 850 570" role="group" aria-label="Municípios de Minas Gerais">'+D.polys.map(p=>`<path d="${shape(p,pr)}" data-prob-mi="${geoIndex.get(String(p.code))}" fill="#F2F5F7" stroke="#B9C8D1" stroke-width=".35" vector-effect="non-scaling-stroke" fill-rule="evenodd" role="button" tabindex="-1" aria-label="${esc(p.name)}"/>`).join('')+'</svg>';
  const polygons=[...$('prob-map').querySelectorAll('[data-prob-mi]')];
  function mapDetail(mi){
-  if(mapCons<0){$('prob-map-detail').innerHTML='<p>O mapa mostra um consórcio por vez.</p><button type="button" id="prob-map-example">Ver exemplo: CISMEP</button>'; $('prob-map-example').onclick=()=>{consSearch.value='';refreshCons();cons.value=data.consortia.find(c=>c[1]==='CISMEP')[0];filter();};return;}
+  if(mapCons<0){$('prob-map-detail').innerHTML='<p>O mapa mostra um consórcio por vez.</p><button type="button" id="prob-map-example">Ver exemplo: CISMEP</button>'; $('prob-map-example').onclick=()=>{cons.value=data.consortia.find(c=>c[1]==='CISMEP')[0];filter();};return;}
   if(mi===null){$('prob-map-detail').innerHTML='<p>Passe o mouse ou toque em um município para consultar as duas probabilidades.</p><small>Você também pode escolher o município no filtro acima.</small>';return;}
   const r=perConsortium[mapCons].get(mi);
   $('prob-map-detail').innerHTML=`<span class="prob-map-year">Município · 2019</span><h4>${esc(data.municipalities[mi][1])}</h4><p class="prob-map-entity">${esc(data.consortia[mapCons][1])}</p><dl><div><dt>Modelo A</dt><dd class="prob-a">${probability(r[2])}</dd></div><div><dt>Modelo B</dt><dd class="prob-b">${probability(r[3])}</dd></div><div><dt>Pagou em 2019?</dt><dd>${r[4]===null?'Indeterminado':r[4]===1?'Sim':'Não'}</dd></div></dl>${r[4]===null?'<p class="prob-map-caution">A auditoria não confirmou o credor deste par. Ele ficou fora do treino e do teste; sem estimativa não significa zero.</p>':''}`;
@@ -596,7 +634,7 @@ let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);
  polygons.forEach(p=>{
   const mi=+p.dataset.probMi;
   const inspect=()=>{if(mapCons>=0&&hovered!==mi){hovered=mi;mapDetail(mi);}};
-  const select=()=>{if(mapCons>=0){munSearch.value='';refreshMun();mun.value=data.municipalities[mi][0];filter();}};
+  const select=()=>{if(mapCons>=0){mun.value=data.municipalities[mi][0];filter();}};
   p.addEventListener('pointerenter',inspect);p.addEventListener('focus',inspect);
   p.addEventListener('click',select);
   p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select();}});
@@ -611,9 +649,8 @@ let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);
   $('prob-next').disabled=start+pageSize>=rows.length;
  }
  function filter(){
-  const mq=normalize(munSearch.value),cq=normalize(consSearch.value);
-  const matchingMun=new Set(data.municipalities.map((x,i)=>normalize(x[1]).includes(mq)?i:-1)),matchingCons=new Set(data.consortia.map((x,i)=>normalize(x[1]).includes(cq)?i:-1));
-  rows=data.rows.filter(r=>matchingMun.has(r[0])&&matchingCons.has(r[1])&&(!mun.value||data.municipalities[r[0]][0]===mun.value)&&(!cons.value||data.consortia[r[1]][0]===cons.value));
+  syncMun();syncCons();
+  rows=data.rows.filter(r=>(!mun.value||data.municipalities[r[0]][0]===mun.value)&&(!cons.value||data.consortia[r[1]][0]===cons.value));
   rows.sort((a,b)=>{
    if(sort.value!=='names'){
     const col=sort.value==='a'?2:3,d=(b[col]??-1)-(a[col]??-1);
@@ -628,8 +665,7 @@ let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);
   drawMap();
  }
  mun.addEventListener('change',filter);cons.addEventListener('change',filter);sort.addEventListener('change',filter);
- munSearch.addEventListener('input',()=>{refreshMun();filter();});consSearch.addEventListener('input',()=>{refreshCons();filter();});
- $('prob-clear').onclick=()=>{munSearch.value='';consSearch.value='';refreshMun();refreshCons();mun.value='';cons.value='';sort.value='names';filter();};
+ $('prob-clear').onclick=()=>{mun.value='';cons.value='';sort.value='names';filter();};
  $('prob-prev').onclick=()=>{page--;render();};
  $('prob-next').onclick=()=>{page++;render();};
  const linkedCons=new URLSearchParams(location.search).get('consorcio');
