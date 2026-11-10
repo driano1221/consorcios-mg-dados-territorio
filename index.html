@@ -106,6 +106,35 @@ pre{background:var(--soft);border-left:3px solid var(--blue);padding:20px;font-s
 #mc-moveis .mc-mobile-errors th:first-child{text-align:left;width:48%}
 #mc-moveis .mc-mobile-errors thead{background:var(--soft)}
 @media(max-width:520px){#mc-moveis .mc-mobile-errors{font-size:13px}#mc-moveis .mc-mobile-errors th,#mc-moveis .mc-mobile-errors td{padding:8px 4px;overflow-wrap:anywhere}#mc-moveis .mc-mobile-errors th:first-child{width:43%}}
+.mg-key,.mg-controls,.mg-scale,.mg-folds,#mg-marcas{display:flex;gap:1rem;align-items:center}
+.mg-key,.mg-controls{flex-wrap:wrap;margin:1.25rem 0;color:var(--ink)}
+.mg-key span{display:inline-flex;gap:.45rem;align-items:center}
+.mg-key i,.mg-track i{display:inline-block;width:3px;height:19px;background:#526674}
+.mg-key b,.mg-track b{display:inline-block;width:11px;height:11px;background:#126cad;border-radius:50%}
+#mc-diagnostico .mg-cal{width:100%;min-width:0;font-variant-numeric:tabular-nums}
+#mc-diagnostico>.table-wrap{max-height:none;scrollbar-gutter:auto}
+.mg-cal th,.mg-cal td{padding:.6rem .75rem;text-align:right}
+.mg-cal th:first-child{text-align:left}.mg-cal .mg-track-cell{width:40%;padding:0 20px;vertical-align:middle}
+.mg-scale{justify-content:space-between;font-size:12px}.mg-track{position:relative;height:1px;background:#cdd8df}
+.mg-track i,.mg-track b{position:absolute;top:50%;transform:translate(-50%,-50%)}.mg-track b{border:1px solid white}
+.mg-cal .mg-merces>*{background:#eaf4f9;color:#123c55}
+.mg-note{margin:1.4rem 0;padding:1rem 0 1rem 1.2rem;border-left:3px solid #2482af}
+.mg-note p{max-width:85ch}.mg-note details{margin-top:1rem}.mg-note summary,#mg-ordem summary{cursor:pointer}
+.mg-flow{list-style:decimal;padding-left:1.7rem;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.3rem 2.2rem}
+.mg-flow li{padding-left:.25rem;line-height:1.6;max-width:65ch}.mg-flow li::marker{color:#17619a;font-weight:700}.mg-flow b{display:block}
+.mg-flow a{display:block}.mg-folds{max-width:570px;gap:3px;margin:.3rem 0 1rem}.mg-folds span{flex:1;background:#edf3f6;padding:.35rem;text-align:center}.mg-folds b,.mg-folds small{display:block}
+.mg-controls input,.mg-controls select,.mg-controls button{padding:.45rem .55rem;font:inherit}.mg-controls input{width:6rem}
+#mg-marcas{gap:3px;max-width:520px}#mg-marcas span{flex:1;min-width:0;height:20px}.mg-paid{background:#126cad}.mg-unpaid{background:#d4dfe6}
+@media(max-width:680px){.mg-flow{grid-template-columns:1fr}
+#mc-diagnostico .mg-cal tr{display:grid;grid-template-columns:1fr .8fr .8fr 1fr;align-items:stretch}
+#mc-diagnostico .mg-cal thead,#mc-diagnostico .mg-cal tbody{display:block}
+#mc-diagnostico .mg-cal .mg-track-cell{grid-row:2;grid-column:1/-1;width:auto;display:block;padding:10px 12px 13px}
+#mc-diagnostico .mg-cal tbody .mg-track-cell{border-bottom:1px solid #cdd8df}
+#mc-diagnostico .mg-cal tr>:not(.mg-track-cell){grid-row:1;border-bottom:0;width:auto}
+#mc-diagnostico .mg-cal th:first-child{background:transparent}
+#mc-diagnostico .mg-cal tbody .mg-merces th:first-child{background:#eaf4f9}
+#mc-diagnostico .mg-cal th,#mc-diagnostico .mg-cal td{padding:.45rem .2rem;font-size:12px;overflow-wrap:normal}
+.mg-controls{gap:.5rem}.mg-note{padding-left:.7rem}.mg-folds{gap:2px}}
 nav .report-link{display:flex;align-items:center;padding:19px 0 15px;border-bottom:3px solid transparent;font-size:14px;font-weight:700;text-decoration:none;color:var(--blue-dark)}@media(max-width:720px){nav .report-link{grid-column:1/-1;justify-content:flex-start;border-top:1px solid var(--line);padding:12px 5px;font-size:12px}}</style></head><body>
 <a class="skip" href="#main">Ir ao conteúdo</a>
 <header class="top"><div class="wrap"><div class="brand"><div class="brand-mark">Consórcios de saúde<br><span>Minas Gerais</span></div></div><div class="stage">Base v1<br>Dados de 2014 a 2021</div></div></header>
@@ -206,7 +235,71 @@ nav .report-link{display:flex;align-items:center;padding:19px 0 15px;border-bott
 <div class="mc-primer"><div><span>O que tentamos explicar</span><h2>Houve pagamento entre este município e este consórcio?</h2><p>Em 2019, Igarapé pagou ao CISMEP: esse par recebe 1. Um par sem pagamento registrado recebe 0. Fazemos essa pergunta para cada consórcio separadamente, porque um município pode pagar a mais de um.</p></div>
 <div class="mc-primer-models"><article><b>Modelo A · Oferta própria</b><p>Se considerarmos as horas SUS e a distância das unidades de um consórcio, qual chance o modelo atribui ao pagamento do município a ele?</p></article><article><b>Modelo B · Atração relativa</b><p>Se também compararmos esse consórcio aos outros candidatos do município, a chance estimada de pagamento melhora?</p></article></div>
 <p class="mc-primer-note">No Modelo B, a participação na atração dos candidatos é apenas uma conta intermediária. A chance final de pagamento é calculada depois e admite vários vínculos no mesmo município.</p></div>
-<div class="mc-nav" role="navigation" aria-label="Percurso da aba Modelo"><a href="#mc-consulta">Consultar probabilidades</a><a href="#mc-dados">Dados e recortes</a><a href="#mc-formulas">As duas ideias</a><a href="#mc-validacao">Teste e resultados</a><a href="#mc-exemplos">Exemplos</a><a href="#mc-limites">Limites</a><a href="#mc-moveis">Redes móveis</a></div>
+<div class="mc-nav" role="navigation" aria-label="Percurso da aba Modelo"><a href="#mc-diagnostico">Previsão e pagamento</a><a href="#mc-consulta">Consultar probabilidades</a><a href="#mc-dados">Dados e recortes</a><a href="#mc-formulas">As duas ideias</a><a href="#mc-validacao">Teste e resultados</a><a href="#mc-exemplos">Exemplos</a><a href="#mc-limites">Limites</a><a href="#mc-moveis">Redes móveis</a></div>
+<section class="mc-section" id="mc-diagnostico">
+    <div class="mc-section-label">Minas Gerais · 2019 · 53 consórcios clínicos</div>
+    <h2>Quando o Modelo B prevê pagamento, com que frequência ele acontece?</h2>
+    <p class="mc-intro">Ordenamos os pares município × consórcio pela chance prevista, da maior para a menor.
+    Em cada faixa, a previsão média pode ser comparada com a parcela que teve pagamento registrado no MIDES.
+    Cada município ficou fora do treino usado para calcular suas chances.</p>
+    <div class="mg-key"><span><i></i> Previsão média do B</span><span><b></b> Pagamento observado</span></div>
+    <div class="table-wrap"><table class="mg-cal"><thead><tr><th>Chance prevista</th>
+    <th class="mg-track-cell"><div class="mg-scale"><span>0%</span><span>50%</span><span>100%</span></div></th>
+    <th>Previsão média</th><th>Pagaram</th><th>Pagos / pares</th></tr></thead><tbody><tr><th scope="row">90 a 100%</th>
+          <td class="mg-track-cell"><div class="mg-track" aria-hidden="true">
+          <i style="left:96.73793%"></i><b style="left:89.81481%"></b></div></td>
+          <td>96,74%</td><td>89,81%</td>
+          <td>194 / 216</td></tr><tr><th scope="row">80 a 90%</th>
+          <td class="mg-track-cell"><div class="mg-track" aria-hidden="true">
+          <i style="left:85.13510%"></i><b style="left:80.61224%"></b></div></td>
+          <td>85,14%</td><td>80,61%</td>
+          <td>79 / 98</td></tr><tr><th scope="row">60 a 80%</th>
+          <td class="mg-track-cell"><div class="mg-track" aria-hidden="true">
+          <i style="left:70.32780%"></i><b style="left:75.14793%"></b></div></td>
+          <td>70,33%</td><td>75,15%</td>
+          <td>127 / 169</td></tr><tr><th scope="row">40 a 60%</th>
+          <td class="mg-track-cell"><div class="mg-track" aria-hidden="true">
+          <i style="left:48.51215%"></i><b style="left:57.44681%"></b></div></td>
+          <td>48,51%</td><td>57,45%</td>
+          <td>108 / 188</td></tr><tr><th scope="row">20 a 40%</th>
+          <td class="mg-track-cell"><div class="mg-track" aria-hidden="true">
+          <i style="left:29.02116%"></i><b style="left:36.11940%"></b></div></td>
+          <td>29,02%</td><td>36,12%</td>
+          <td>121 / 335</td></tr><tr><th scope="row">10 a 20%</th>
+          <td class="mg-track-cell"><div class="mg-track" aria-hidden="true">
+          <i style="left:14.32782%"></i><b style="left:15.22843%"></b></div></td>
+          <td>14,33%</td><td>15,23%</td>
+          <td>60 / 394</td></tr><tr class="mg-merces"><th scope="row">5 a 10%</th>
+          <td class="mg-track-cell"><div class="mg-track" aria-hidden="true">
+          <i style="left:7.08534%"></i><b style="left:7.55102%"></b></div></td>
+          <td>7,09%</td><td>7,55%</td>
+          <td>37 / 490</td></tr><tr><th scope="row">1 a 5%</th>
+          <td class="mg-track-cell"><div class="mg-track" aria-hidden="true">
+          <i style="left:2.19094%"></i><b style="left:1.61751%"></b></div></td>
+          <td>2,19%</td><td>1,62%</td>
+          <td>34 / 2.102</td></tr><tr><th scope="row">0 a 1%</th>
+          <td class="mg-track-cell"><div class="mg-track" aria-hidden="true">
+          <i style="left:0.08085%"></i><b style="left:0.02426%"></b></div></td>
+          <td>0,08%</td><td>0,02%</td>
+          <td>10 / 41.216</td></tr></tbody></table></div>
+    <p class="mc-source">45.208 pares avaliados, 770 com pagamento. O limite inferior pertence à faixa; a última inclui 100%.
+    Um par com credor indeterminado ficou fora da conta. As faixas têm tamanhos diferentes.</p>
+    <div class="mg-note"><h3>Onde entra Mercês?</h3><p>Mercês pagou <b>R$ 1.069,45</b> à ACISPES.
+    A previsão foi <b>8,34%</b>. Esse pagamento está entre os 37 observados nos
+    490 pares da faixa de 5 a 10%. O grupo teve 7,55% de pagamentos, perto dos 7,09% previstos em média.</p></div>
+    <p>Nas faixas escolhidas, a frequência de pagamento cai conforme descemos a tabela. O tamanho da diferença varia.
+    Entre 40% e 60%, por exemplo, pagaram 108 dos 188 pares (57,45%), acima dos 48,51% previstos.
+    Na faixa mais alta, pagaram 194 de 216 (89,81%), abaixo da média prevista de 96,74%.</p>
+    <details class="trace" id="mg-ordem"><summary>Ver os pares em grupos de 10 ou 20, por ordem de probabilidade</summary>
+    <p>Comece pelas previsões mais altas ou vá direto ao grupo de Mercês. Cada quadrado representa um par.
+    Os totais de grupos pequenos podem oscilar bastante.</p>
+    <div class="mg-controls"><label>Pares por grupo <select id="mg-tamanho"><option>20</option><option>10</option></select></label>
+    <label>Grupo <input id="mg-grupo" type="number" min="1" value="1"></label>
+    <button type="button" id="mg-anterior">Anterior</button><button type="button" id="mg-proximo">Próximo</button>
+    <button type="button" id="mg-ir-merces">Grupo de Mercês–ACISPES</button></div>
+    <div id="mg-marcas" aria-hidden="true"></div><p id="mg-leitura" aria-live="polite"></p>
+    <details><summary>Quais pares estão neste grupo?</summary><div class="table-wrap"><table><thead><tr><th>Município</th><th>Consórcio</th><th>Modelo B</th><th>Pagou?</th></tr></thead><tbody id="mg-pares"></tbody></table></div></details>
+    </details></section>
 
 <section class="mc-section probability-query" id="mc-consulta" aria-labelledby="prob-title">
 <div class="mc-section-label">Consulta · 2019 · 53 consórcios com clínicas</div>
@@ -247,6 +340,20 @@ nav .report-link{display:flex;align-items:center;padding:19px 0 15px;border-bott
 <p>Fontes: pagamentos MIDES, população IBGE, horas SUS CNES de dezembro de 2019 e distâncias Distbrasil. As probabilidades vêm das saídas auditadas dos modelos A/B; esta consulta apenas apresenta os resultados. A lista de candidatos é exploratória e não comprova acesso institucional.</p>
 </details></section><section class="mc-section" id="mc-dados"><div class="mc-section-label">01 / Dados e recortes</div>
 <h2>Quem entra no teste, e por quê</h2>
+<div class="mg-note"><h3>Como montamos uma linha da base</h3>
+<ol class="mg-flow"><li><b>MIDES · quem pagou</b>Partimos dos registros da tabela de pagamentos na Base dos Dados.
+Somamos os valores de 2019 por município e pelos oito primeiros dígitos do CNPJ do credor, que reúnem matriz e filiais.
+Um total positivo marca pagamento. <a href="https://basedosdados.org/dataset/d3874769-bcbd-4ece-a38a-157ba1021514?table=14c5d05b-9830-4710-b7ac-7e0ca1bf9d8b">Tabela de origem</a></li>
+<li><b>IBGE · tamanho do município</b>Pelo código municipal, ligamos a estimativa de habitantes de 2019 ao município que poderia pagar.
+Igarapé aparece com 43.045 habitantes em cada par que o envolve. <a href="https://www.ibge.gov.br/estatisticas/sociais/populacao/9103-estimativas-de-populacao.html">Estimativas do IBGE</a></li>
+<li><b>CNES · onde e quanto se oferece</b>Identificamos unidades pelos CNPJs próprios e de mantenedor e conferimos o cadastro histórico.
+Para cada clínica admitida, somamos as horas SUS dos registros profissionais de dezembro de 2019. Horas cadastradas medem oferta; consultas realizadas exigiriam outra fonte.
+<a href="https://cnes.datasus.gov.br/">Cadastro de estabelecimentos</a></li>
+<li><b>Distbrasil · distância por estrada</b>Consultamos a matriz de rotas pelo par de municípios. Para Igarapé e a clínica de Betim,
+usamos os 17,748 km entre as sedes municipais. A matriz publicada em 2024 é uma aproximação para 2019.
+<a href="https://zenodo.org/records/11400243">Matriz utilizada</a></li></ol>
+<p>Juntamos população, horas e quilômetros a cada alternativa, inclusive quando o pagamento observado era zero.
+Das 45.209 combinações possíveis, a auditoria deixou Conselheiro Pena–CISVI com credor indeterminado. Restaram 45.208 para comparar com as previsões.</p></div>
 <p class="mc-intro">Começamos com 853 municípios e 73 consórcios no núcleo financeiro de saúde. Para cada par, perguntamos se houve pagamento em 2019. Só conseguimos testar oferta e distância quando há horas SUS positivas e um destino que possamos localizar.</p>
 <div class="mc-pipeline"><article><span>01 · O que queremos explicar</span><strong>MIDES: pagou ou não?</strong><p>Em 2019, Igarapé pagou ao CISMEP: esse par recebe 1. Um par sem pagamento registrado recebe 0. O valor pago não entra como variável explicativa.</p></article>
 <article><span>02 · Tamanho e oferta</span><strong>IBGE + CNES</strong><p>Usamos a população do município e as horas SUS cadastradas pelo consórcio em dezembro de 2019.</p></article>
@@ -279,6 +386,19 @@ nav .report-link{display:flex;align-items:center;padding:19px 0 15px;border-bott
 
 <section class="mc-section" id="mc-formulas"><div class="mc-section-label">02 / Duas especificações</div>
 <h2>Os dois modelos partem da mesma linha município × consórcio</h2>
+<div class="mg-note"><h3>Da clínica até a previsão de Igarapé</h3>
+<ol class="mg-flow"><li><b>Pesar as duas clínicas</b>Das 1.651 horas SUS do CISMEP, 1.417 estão em Betim (85,8%) e 234 em Brumadinho (14,2%).
+O peso vem da divisão das horas da clínica pelo total do consórcio.</li>
+<li><b>A · olhar o próprio CISMEP</b>Betim fica a 17,748 km e Brumadinho a 23,104 km. A distância transformada de Betim pesa mais por concentrar mais horas.
+Com a população de Igarapé e as horas totais, A estima 96,72% de chance de pagamento.</li>
+<li><b>B · comparar os 53 destinos</b>As horas aumentam a atração estimada e a distância reduz a contribuição de cada clínica.
+Dividimos a atração do CISMEP pela soma dos 53 candidatos de Igarapé. Ao CISMEP cabem 73,15% dessa atração.</li>
+<li><b>B · passar da fração para a chance</b>Usamos essa fração e a população numa regressão ajustada com pagamentos de outros municípios.
+A chance resultante é 98,15%. Igarapé poderia pagar a vários consórcios no mesmo ano.</li></ol>
+<details><summary>Por que as equações usam logaritmos e logística?</summary><p>O logaritmo permite representar diferenças proporcionais de população e horas.
+No A, passar de 10 para 20 km pesa mais que passar de 100 para 110 km. Somar 1 à distância permite incluir destinos no próprio município (0 km).
+No B, o expoente da distância controla o quanto a atração cai com os quilômetros. Os coeficientes são ajustados no treino.
+A função logística transforma o resultado em uma chance entre 0 e 100%.</p></details></div>
 <p class="mc-intro">A resposta é sempre pagamento positivo em 2019. O que muda é o modo de representar a atração. Uma unidade não vira uma nova observação de pagamento: seus dados entram no cálculo do par.</p>
 <div class="mc-models"><article><div class="mc-model-head"><span>MODELO A</span><b>Oferta própria</b></div>
 <h3>Horas e distância do consórcio</h3><p>Somamos as horas SUS. A distância de cada unidade entra numa média ponderada pelas horas. O modelo estima uma chance de pagamento para cada par.</p>
@@ -291,7 +411,7 @@ nav .report-link{display:flex;align-items:center;padding:19px 0 15px;border-bott
 <div class="mc-equation"><span class="mc-eq-label">02 · Parte da atração entre os candidatos</span><math display="block" aria-label="Parte da atração igual à atração do consórcio dividida pela soma da atração de todos os candidatos"><msub><mi>s</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mfrac><msub><mi>A</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mrow><munder><mo>∑</mo><mi>k</mi></munder><msub><mi>A</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></mrow></mfrac></math></div>
 <div class="mc-equation"><span class="mc-eq-label">03 · Chance de pagamento do par</span><math display="block" aria-label="Logit da probabilidade de pagamento igual ao intercepto mais o efeito da população e o efeito da atração relativa"><mi mathvariant="normal">logit</mi><mo>(</mo><msub><mi>p</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>)</mo><mo>=</mo><mi>a</mi><mo>+</mo><msub><mi>b</mi><mi>P</mi></msub><mo>(</mo><mi mathvariant="normal">ln</mi><msub><mi>P</mi><mi>i</mi></msub><mo>−</mo><mn>10</mn><mo>)</mo><mo>+</mo><mi>λ</mi><mi mathvariant="normal">logit</mi><mo>(</mo><msub><mi>s</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>)</mo></math></div>
 <p class="mc-formula-reading">As frações s somam 100% por município. As chances binárias p não precisam somar 100% e permitem vários pagamentos.</p></article></div>
-<p class="mc-definition">Aqui, <b>P</b> é população da origem; <b>H</b> são horas SUS do consórcio; <b>w</b> é a parte das horas na unidade; <b>d</b> é a distância rodoviária em km. <b>logit(p)</b> é ln[p/(1−p)]. Os expoentes e pesos foram aprendidos apenas nos dados de treino.</p>
+<p class="mc-definition">Para cada par, <b>P</b> é a população do município que pode pagar, <b>H</b> é a soma das horas SUS cadastradas do consórcio, <b>w</b> é a fração dessas horas na unidade e <b>d</b> é a distância rodoviária até seu município. <b>logit(p)</b> é ln[p/(1−p)]. Os coeficientes e expoentes são estimados no treino. O peso de cada clínica vem das horas cadastradas.</p>
 <div class="mc-example-math"><div><span>Exemplo usado nas contas</span><h3>Igarapé × CISMEP</h3><p>Em 2019, Igarapé pagou <b>R$ 4.740.790,51</b> ao CISMEP. No cenário clínico, Betim tem 1.417 horas SUS e fica a 17,748 km; Brumadinho tem 234 horas e fica a 23,104 km. Total: 1.651 horas.</p></div>
 <div><div class="mc-example-step"><b>Modelo A</b><span>L ≈ 2,9667; chance prevista fora do treino: <strong>96,72%</strong>.</span></div>
 <div class="mc-example-step"><b>Modelo B</b><span>s = 73,15% da atração dos 53 candidatos; chance binária de pagamento: <strong>98,15%</strong>.</span></div>
@@ -299,6 +419,19 @@ nav .report-link{display:flex;align-items:center;padding:19px 0 15px;border-bott
 
 <section class="mc-section" id="mc-validacao"><div class="mc-section-label">03 / Estimação e teste</div>
 <h2>A comparação usa os mesmos pares e separa municípios do treino</h2>
+<div class="mg-note"><h3>Quem ficou fora do treino?</h3><p>Cada número abaixo conta municípios.
+    No sorteio, distribuímos os 853 em cinco grupos equilibrados. Nos blocos, usamos as coordenadas do centro dos municípios para
+    formar cinco conjuntos próximos entre si (k-means). O tamanho de cada bloco depende da distribuição geográfica.</p>
+    <div><strong>Sorteio municipal</strong><div class="mg-folds"><span><small>Grupo 1</small><b>171</b></span><span><small>Grupo 2</small><b>171</b></span><span><small>Grupo 3</small><b>171</b></span><span><small>Grupo 4</small><b>170</b></span><span><small>Grupo 5</small><b>170</b></span></div></div><div><strong>Blocos geográficos</strong><div class="mg-folds"><span><small>Grupo 1</small><b>326</b></span><span><small>Grupo 2</small><b>199</b></span><span><small>Grupo 3</small><b>88</b></span><span><small>Grupo 4</small><b>93</b></span><span><small>Grupo 5</small><b>147</b></span></div></div><p>Fazemos cinco rodadas para que todos sejam testados uma vez. Na rodada do grupo 4, por exemplo,
+    os grupos 1, 2, 3 e 5 treinam o modelo. No sorteio, Mercês ficou no grupo 4: todos os seus pares foram previstos
+    com os coeficientes aprendidos nos outros municípios. Os blocos testam o que acontece quando uma área inteira fica fora.
+    Ambos os exercícios usam pagamentos de 2019.</p></div>
+    <div class="mg-note"><h3>Como ler o erro de Brier</h3><p>Para quem pagou usamos 1; para quem não teve pagamento registrado usamos 0.
+    Comparamos cada previsão com esse número e elevamos a diferença ao quadrado. Uma previsão de 90% para quem pagou contribui com
+    (1 − 0,90)² = <b>0,01</b>. Se previr 90% para quem não pagou, a contribuição sobe para (0 − 0,90)² = <b>0,81</b>.</p>
+    <p>Tiramos a média nos 45.208 pares. No sorteio, A teve 0,00889 e B teve 0,00708, uma redução de 20,3% do erro.
+    Zero seria previsão perfeita. Como só 770 pares tiveram pagamento, vale comparar modelos nos mesmos pares e observar também o gráfico por faixa.
+    Não há um corte universal de aprovação.</p></div>
 <div class="mc-validation-flow"><div><strong>45.208 pares</strong><span>53 candidatos · 770 pagamentos confirmados</span></div><div><strong>52.885 pares</strong><span>62 candidatos · 1.298 pagamentos confirmados</span></div><div><strong>5 + 5 grupos</strong><span>Municípios sorteados e blocos geográficos; quatro grupos treinam, o quinto testa.</span></div></div>
 <p class="mc-intro">O Modelo A foi reestimado após a decisão documental. O Modelo B e um controle com atração própria foram treinados nas mesmas divisões. O controle ajuda a distinguir o efeito de somar unidades do efeito de comparar concorrentes. São previsões fora do treino, mas continuam no mesmo ano: não demonstram previsão para 2020 ou 2021.</p>
 <fieldset class="mc-switch"><legend>Escolha a validação</legend><input type="radio" name="mc-validation" id="mc-radio-m" checked><label for="mc-radio-m">Municípios sorteados</label><input type="radio" name="mc-validation" id="mc-radio-e"><label for="mc-radio-e">Blocos geográficos</label><div class="mc-panel mc-municipios" id="mc-municipios">
@@ -568,6 +701,36 @@ let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);
 (() => {
  const data=window.PROBABILIDADES_2019;
  if(!data){$('prob-count').textContent='Não foi possível carregar a consulta. Atualize a página ou mantenha a pasta dados junto do HTML.';return;}
+ // A ordem da consulta geral pode mudar com os filtros. Aqui preservamos o ranking estadual.
+ const rankDetails=$('mg-ordem');
+ function iniciarRanking(){
+  if(!rankDetails.open)return;
+  rankDetails.removeEventListener('toggle',iniciarRanking);
+  const ranking=data.rows.filter(r=>r[3]!==null && r[4]!==null).sort((a,b)=>b[3]-a[3] || a[0]-b[0] || a[1]-b[1]);
+  const size=$('mg-tamanho'),group=$('mg-grupo');
+  const merces=ranking.findIndex(r=>data.municipalities[r[0]][1]==='Mercês' && data.consortia[r[1]][1]==='ACISPES');
+  const percent=n=>n.toLocaleString('pt-BR',{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2});
+  function draw(){
+   const n=Number(size.value),max=Math.ceil(ranking.length/n);
+   const page=Math.min(max,Math.max(1,Math.trunc(Number(group.value))||1));
+   group.max=max;group.value=page;
+   const start=(page-1)*n,rows=ranking.slice(start,start+n);
+   $('mg-anterior').disabled=page===1;$('mg-proximo').disabled=page===max;
+   const marks=$('mg-marcas'),body=$('mg-pares');marks.replaceChildren();body.replaceChildren();
+   for(const [mi,ci,,p,y] of rows){
+    const mark=document.createElement('span');mark.className=y?'mg-paid':'mg-unpaid';marks.append(mark);
+    const row=body.insertRow();
+    for(const val of [data.municipalities[mi][1],data.consortia[ci][1],percent(p),y?'Sim':'Não'])row.insertCell().textContent=val;
+   }
+   const paid=rows.filter(r=>r[4]===1).length,mean=rows.reduce((s,r)=>s+r[3],0)/rows.length;
+   $('mg-leitura').textContent='Grupo '+page+' de '+max+' · posições '+(start+1)+' a '+(start+rows.length)+'. Em azul, '+paid+' de '+rows.length+' pares com pagamento ('+percent(paid/rows.length)+'). Previsão média de '+percent(mean)+'.';
+  }
+  size.onchange=()=>{group.value=1;draw();};group.onchange=draw;
+  $('mg-anterior').onclick=()=>{group.valueAsNumber--;draw();};$('mg-proximo').onclick=()=>{group.valueAsNumber++;draw();};
+  $('mg-ir-merces').onclick=()=>{group.value=Math.floor(merces/Number(size.value))+1;draw();};
+  draw();
+ }
+ if(rankDetails){rankDetails.addEventListener('toggle',iniciarRanking);iniciarRanking();}
  const mun=$('prob-municipio'),cons=$('prob-consorcio'),sort=$('prob-sort');
  const munSearch=$('prob-search-municipio'),consSearch=$('prob-search-consorcio');
  const normalize=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').replace(/[^a-z0-9]/g,'');
