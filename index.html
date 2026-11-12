@@ -107,6 +107,16 @@ pre{background:var(--soft);border-left:3px solid var(--blue);padding:20px;font-s
 #mc-moveis .mc-mobile-errors thead{background:var(--soft)}
 @media(max-width:520px){#mc-moveis .mc-mobile-errors{font-size:13px}#mc-moveis .mc-mobile-errors th,#mc-moveis .mc-mobile-errors td{padding:8px 4px;overflow-wrap:anywhere}#mc-moveis .mc-mobile-errors th:first-child{width:43%}}
 .mg-key,.mg-controls,.mg-scale,.mg-folds,#mg-marcas{display:flex;gap:1rem;align-items:center}
+.mg-equation-guide{margin:2rem 0;max-width:90ch}
+.mg-equation-guide table{font-size:14px}.mg-equation-guide .table-wrap{max-height:none}
+.mg-eq-reading{margin:1rem 0 2rem;line-height:1.65}
+.mg-eq-reading h4{font-size:18px;margin:0 0 .7rem}
+.mg-eq-reading p{margin:.7rem 0}.mg-eq-reading details{border-top:1px solid var(--line);padding-top:.6rem}
+.mg-eq-reading summary{cursor:pointer;font-weight:600}
+.mg-worked{background:#f6f8f9;border-left:2px solid #94afbe;padding:.65rem .8rem;margin:1rem 0;max-width:100%;overflow-x:auto}
+.mg-worked math{font-size:clamp(15px,1.2vw,20px);margin:.8rem 0;white-space:nowrap}
+#mc-formulas .mc-models>article{min-width:0}
+@media(max-width:680px){.mg-equation-guide table{font-size:12px}.mg-equation-guide td,.mg-equation-guide th{padding:8px 4px}.mg-worked{padding:.5rem}.mg-worked math{font-size:14px}#mc-formulas .mc-equation math{font-size:15px}}
 .mg-key,.mg-controls{flex-wrap:wrap;margin:1.25rem 0;color:var(--ink)}
 .mg-key span{display:inline-flex;gap:.45rem;align-items:center}
 .mg-key i,.mg-track i{display:inline-block;width:3px;height:19px;background:#526674}
@@ -400,16 +410,68 @@ No A, passar de 10 para 20 km pesa mais que passar de 100 para 110 km. Somar 1 �
 No B, o expoente da distância controla o quanto a atração cai com os quilômetros. Os coeficientes são ajustados no treino.
 A função logística transforma o resultado em uma chance entre 0 e 100%.</p></details></div>
 <p class="mc-intro">A resposta é sempre pagamento positivo em 2019. O que muda é o modo de representar a atração. Uma unidade não vira uma nova observação de pagamento: seus dados entram no cálculo do par.</p>
+<div class="mg-equation-guide"><h3>Como ler as letras usando Igarapé e CISMEP</h3>
+<p>Nestas contas, <b>i é Igarapé</b>, <b>j é CISMEP</b> e <b>u indica cada clínica</b>, em Betim ou Brumadinho.
+O símbolo ∑ pede para somar uma contribuição de cada unidade. Na comparação do B, <b>k percorre os 53 consórcios candidatos</b>.</p>
+<div class="table-wrap"><table><thead><tr><th>Símbolo</th><th>O que representa</th><th>Número deste exemplo</th></tr></thead><tbody>
+<tr><th>Pᵢ</th><td>Habitantes de Igarapé em 2019</td><td>43.045</td></tr>
+<tr><th>Hⱼ</th><td>Horas SUS cadastradas nas clínicas do CISMEP</td><td>1.417 + 234 = 1.651</td></tr>
+<tr><th>wⱼᵤ</th><td>Fração das horas do consórcio naquela clínica</td><td>Betim 85,83% · Brumadinho 14,17%</td></tr>
+<tr><th>dᵢᵤ</th><td>Km rodoviários até o município da clínica</td><td>Betim 17,748 · Brumadinho 23,104</td></tr>
+</tbody></table></div>
+<p>Os números a seguir usam o cenário de clínicas, os mesmos 53 candidatos e o ajuste que deixou Igarapé no grupo 3 de teste.
+Mostramos valores arredondados para leitura; os cálculos usam a precisão completa.</p></div>
 <div class="mc-models"><article><div class="mc-model-head"><span>MODELO A</span><b>Oferta própria</b></div>
 <h3>Horas e distância do consórcio</h3><p>Somamos as horas SUS. A distância de cada unidade entra numa média ponderada pelas horas. O modelo estima uma chance de pagamento para cada par.</p>
 <div class="mc-equation"><span class="mc-eq-label">01 · Distância ponderada pelas horas</span><math display="block" aria-label="L i j igual à soma, para cada unidade, do peso de suas horas vezes logaritmo de um mais a distância"><msub><mi>L</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><munder><mo>∑</mo><mi>u</mi></munder><msub><mi>w</mi><mrow><mi>j</mi><mi>u</mi></mrow></msub><mi mathvariant="normal">ln</mi><mo>(</mo><mn>1</mn><mo>+</mo><msub><mi>d</mi><mrow><mi>i</mi><mi>u</mi></mrow></msub><mo>)</mo></math></div>
+<div class="mg-eq-reading"><h4>1. Resumir as distâncias das duas clínicas</h4>
+<p>Multiplicamos a distância transformada de cada clínica pela sua fração de horas. Depois somamos.
+Betim pesa mais porque concentra a maior parte da oferta cadastrada do CISMEP.</p>
+<div class="mg-worked"><math display="block" aria-label="Peso de Betim, 1417 dividido por 1651, igual a 0,8583"><msub><mi>w</mi><mtext>Betim</mtext></msub><mo>=</mo><mfrac><mn>1417</mn><mn>1651</mn></mfrac><mo>≈</mo><mn>0,8583</mn></math>
+<math display="block" aria-label="L aproximadamente 0,8583 vezes logaritmo de 18,748 mais 0,1417 vezes logaritmo de 24,104"><mi>L</mi><mo>≈</mo><mn>0,8583</mn><mi>ln</mi><mo>(</mo><mn>18,748</mn><mo>)</mo><mo>+</mo><mn>0,1417</mn><mi>ln</mi><mo>(</mo><mn>24,104</mn><mo>)</mo></math>
+<math display="block" aria-label="L aproximadamente 2,9667"><mi>L</mi><mo>≈</mo><mn>2,9667</mn></math></div>
+<p>L é a medida de distância transformada que entra na regressão. Somar 1 antes do logaritmo permite usar também destinos com zero km, no próprio município.</p></div>
 <div class="mc-equation"><span class="mc-eq-label">02 · Chance de pagamento do par</span><math display="block" aria-label="Logit da probabilidade de pagamento igual ao intercepto mais população, horas SUS e distância ponderada, cada uma com seu coeficiente"><mi mathvariant="normal">logit</mi><mo>(</mo><msub><mi>p</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>)</mo><mo>=</mo><mi>α</mi><mo>+</mo><msub><mi>β</mi><mi>P</mi></msub><mi mathvariant="normal">ln</mi><mo>(</mo><msub><mi>P</mi><mi>i</mi></msub><mo>)</mo><mo>+</mo><msub><mi>β</mi><mi>H</mi></msub><mi mathvariant="normal">ln</mi><mo>(</mo><msub><mi>H</mi><mi>j</mi></msub><mo>)</mo><mo>+</mo><msub><mi>β</mi><mi>D</mi></msub><msub><mi>L</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math></div>
+<div class="mg-eq-reading"><h4>2. Combinar população, horas e distância</h4>
+<p>α é o ponto de partida da conta. Cada β é um coeficiente ajustado com os municípios de treino:
+multiplica a população transformada, as horas transformadas ou L. Chamamos a soma de <b>z</b>.</p>
+<div class="mg-worked"><math display="block" aria-label="z A igual a 15,3394 menos 2,9345 mais 1,4211 menos 10,4421"><msub><mi>z</mi><mi>A</mi></msub><mo>≈</mo><mn>15,3394</mn><mo>−</mo><mn>2,9345</mn><mo>+</mo><mn>1,4211</mn><mo>−</mo><mn>10,4421</mn></math>
+<math display="block" aria-label="Chance de pagamento igual a 1 dividido por 1 mais exponencial de menos 3,3838, aproximadamente 96,72 por cento"><msub><mi>p</mi><mi>A</mi></msub><mo>≈</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mo>−</mo><mn>3,3838</mn></mrow></msup></mrow></mfrac><mo>≈</mo><mn>96,72%</mn></math></div>
+<p>A função logística transforma a soma z em uma chance entre 0 e 100%. Neste ajuste, o coeficiente da distância foi negativo: distâncias maiores reduzem a chance calculada, mantendo os outros termos fixos.</p>
+<details><summary>Conferir os coeficientes de A</summary><p>α ≈ 15,3394; β da população ≈ −0,2750; β das horas ≈ 0,1918; β da distância ≈ −3,5198.
+Multiplicamos por ln(43.045), ln(1.651) e L ≈ 2,9667, respectivamente.
+O sinal da população é uma associação estimada neste recorte.</p></details></div>
 <p class="mc-formula-reading">β<sub>D</sub> é estimado nos dados; o sinal observado foi negativo. O modelo não soma a oferta dos concorrentes na equação.</p></article>
 <article><div class="mc-model-head"><span>MODELO B</span><b>Atração relativa</b></div>
 <h3>Oferta diante dos demais candidatos</h3><p>Calculamos uma atração por consórcio e a dividimos pela soma das atrações de todos os 53 ou 62 candidatos daquele município.</p>
 <div class="mc-equation"><span class="mc-eq-label">01 · Atração de cada consórcio</span><math display="block" aria-label="Atração igual às horas SUS elevadas a b vezes a soma, por unidade, do peso das horas dividido por um mais a distância elevado a gama"><msub><mi>A</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msup><msub><mi>H</mi><mi>j</mi></msub><mi>b</mi></msup><munder><mo>∑</mo><mi>u</mi></munder><mfrac><msub><mi>w</mi><mrow><mi>j</mi><mi>u</mi></mrow></msub><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><msub><mi>d</mi><mrow><mi>i</mi><mi>u</mi></mrow></msub><mo>)</mo></mrow><mi>γ</mi></msup></mfrac></math></div>
+<div class="mg-eq-reading"><h4>1. Calcular a atração do CISMEP para Igarapé</h4>
+<p>H elevado a b representa a influência das horas totais. Dentro da soma, dividimos o peso de cada clínica
+pela distância acrescida de 1 e elevada a γ. Assim, uma clínica distante contribui menos para a atração.</p>
+<p>Neste ajuste, <b>b ≈ 0,1962</b> e <b>γ ≈ 1,8521</b>. Esses números foram estimados com os pagamentos do treino.</p>
+<div class="mg-worked"><math display="block" aria-label="Atração do CISMEP aproximadamente 1651 elevado a 0,1962 vezes a soma de duas contribuições"><msub><mi>A</mi><mtext>CISMEP</mtext></msub><mo>≈</mo><msup><mn>1651</mn><mn>0,1962</mn></msup><mo>(</mo><mfrac><mn>0,8583</mn><msup><mn>18,748</mn><mn>1,8521</mn></msup></mfrac><mo>+</mo><mfrac><mn>0,1417</mn><msup><mn>24,104</mn><mn>1,8521</mn></msup></mfrac><mo>)</mo></math>
+<math display="block" aria-label="Atração aproximadamente 0,017793"><msub><mi>A</mi><mtext>CISMEP</mtext></msub><mo>≈</mo><mn>0,017793</mn></math></div>
+<p>Essa pontuação intermediária combina capacidade e acesso por estrada. Seu significado aparece na comparação com as pontuações dos demais candidatos.</p></div>
 <div class="mc-equation"><span class="mc-eq-label">02 · Parte da atração entre os candidatos</span><math display="block" aria-label="Parte da atração igual à atração do consórcio dividida pela soma da atração de todos os candidatos"><msub><mi>s</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mfrac><msub><mi>A</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mrow><munder><mo>∑</mo><mi>k</mi></munder><msub><mi>A</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></mrow></mfrac></math></div>
+<div class="mg-eq-reading"><h4>2. Comparar o CISMEP com os demais candidatos</h4>
+<p>Repetimos a primeira conta para cada um dos 53 consórcios, sempre usando Igarapé como município de origem.
+Somamos as 53 atrações, incluindo a do CISMEP, e dividimos sua pontuação pelo total.</p>
+<div class="mg-worked"><math display="block" aria-label="Fração de atração aproximadamente 0,017793 dividido por 0,024322, igual a 73,15 por cento"><msub><mi>s</mi><mtext>CISMEP</mtext></msub><mo>≈</mo><mfrac><mn>0,017793</mn><mn>0,024322</mn></mfrac><mo>≈</mo><mn>73,15%</mn></math></div>
+<p>O CISMEP reúne 73,15% da atração calculada para Igarapé. Os outros 52 dividem os 26,85% restantes.
+As frações somam 100% dentro desse conjunto. A próxima etapa estima a chance de pagamento.</p></div>
 <div class="mc-equation"><span class="mc-eq-label">03 · Chance de pagamento do par</span><math display="block" aria-label="Logit da probabilidade de pagamento igual ao intercepto mais o efeito da população e o efeito da atração relativa"><mi mathvariant="normal">logit</mi><mo>(</mo><msub><mi>p</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>)</mo><mo>=</mo><mi>a</mi><mo>+</mo><msub><mi>b</mi><mi>P</mi></msub><mo>(</mo><mi mathvariant="normal">ln</mi><msub><mi>P</mi><mi>i</mi></msub><mo>−</mo><mn>10</mn><mo>)</mo><mo>+</mo><mi>λ</mi><mi mathvariant="normal">logit</mi><mo>(</mo><msub><mi>s</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>)</mo></math></div>
+<div class="mg-eq-reading"><h4>3. Transformar a fração em chance de pagamento</h4>
+<p>O logit transforma s pela conta ln[s/(1−s)]. Entram também a população de Igarapé e os coeficientes aprendidos no treino.
+Subtrair 10 do logaritmo da população apenas muda a referência numérica usada no ajuste.</p>
+<div class="mg-worked"><math display="block" aria-label="Logit da fração igual ao logaritmo de 0,731545 dividido por 1 menos 0,731545"><mi>logit</mi><mo>(</mo><mi>s</mi><mo>)</mo><mo>≈</mo><mi>ln</mi><mo>(</mo><mfrac><mn>0,731545</mn><mrow><mn>1</mn><mo>−</mo><mn>0,731545</mn></mrow></mfrac><mo>)</mo><mo>≈</mo><mn>1,0025</mn></math>
+<math display="block" aria-label="z B aproximadamente 2,0490 menos 0,1220 mais 2,0464 igual a 3,9734"><msub><mi>z</mi><mi>B</mi></msub><mo>≈</mo><mn>2,0490</mn><mo>−</mo><mn>0,1220</mn><mo>+</mo><mn>2,0464</mn><mo>≈</mo><mn>3,9734</mn></math>
+<math display="block" aria-label="Chance de pagamento aproximadamente 98,15 por cento"><msub><mi>p</mi><mi>B</mi></msub><mo>≈</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mo>−</mo><mn>3,9734</mn></mrow></msup></mrow></mfrac><mo>≈</mo><mn>98,15%</mn></math></div>
+<p>Agora p responde à pergunta sobre pagamento ao CISMEP em 2019. Cada consórcio recebe sua própria chance.
+Igarapé pode ter chance alta de pagar a mais de um.</p>
+<details><summary>Conferir os coeficientes de B e o treinamento</summary><p>Nesta rodada, a ≈ 2,0490, b da população ≈ −0,1821 e λ ≈ 2,0413.
+Os cinco parâmetros de B, incluindo b das horas e γ da distância, são estimados conjuntamente pela perda logística (logloss).
+O erro de Brier é calculado depois, para avaliar as previsões.
+Igarapé ficou fora desse treino. Outra rodada pode produzir coeficientes diferentes.</p></details></div>
 <p class="mc-formula-reading">As frações s somam 100% por município. As chances binárias p não precisam somar 100% e permitem vários pagamentos.</p></article></div>
 <p class="mc-definition">Para cada par, <b>P</b> é a população do município que pode pagar, <b>H</b> é a soma das horas SUS cadastradas do consórcio, <b>w</b> é a fração dessas horas na unidade e <b>d</b> é a distância rodoviária até seu município. <b>logit(p)</b> é ln[p/(1−p)]. Os coeficientes e expoentes são estimados no treino. O peso de cada clínica vem das horas cadastradas.</p>
 <div class="mc-example-math"><div><span>Exemplo usado nas contas</span><h3>Igarapé × CISMEP</h3><p>Em 2019, Igarapé pagou <b>R$ 4.740.790,51</b> ao CISMEP. No cenário clínico, Betim tem 1.417 horas SUS e fica a 17,748 km; Brumadinho tem 234 horas e fica a 23,104 km. Total: 1.651 horas.</p></div>
